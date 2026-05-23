@@ -1,0 +1,21 @@
+name: Sync to rangtarini_webv2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to target repo
+        run: |
+          git remote add target https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/ysdeora-rangtarini/rangtarini_webv2.git
+          git push target main --force
