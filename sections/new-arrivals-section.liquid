@@ -26,7 +26,7 @@
   Fallback: if nothing qualifies (e.g. all products older than threshold),
   just show the most recent N regardless of date.
 {%- endcomment -%}
-{%- if new_products.size == 0 -%}
+{%- if new_products.size < 4 -%}
   {%- assign new_products = all_sorted | slice: 0, product_limit -%}
 {%- endif -%}
 
