@@ -19,5 +19,5 @@ jobs:
 
       - name: Push to target repo
         run: |
-          git remote add target https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/ysdeora-rangtarini/rangtarini_webv2.git
+          git remote add target https://x-access-token:${{secrets.TARGET_REPO_TOKEN}}@github.com/ysdeora-rangtarini/rangtarini_webv2.git
           git push target main --force
