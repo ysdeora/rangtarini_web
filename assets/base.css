@@ -13,60 +13,7 @@
   --rt-font-deva: 'Noto Serif Devanagari', serif;
 }
 
-/* ============================================
-   HEADER — editorial overrides (Dawn classes)
-   ============================================ */
-/* Dawn applies color scheme on the wrapper / sticky-header element, so target both */
-sticky-header,
-.header-wrapper {
-  background: var(--rt-paper) !important;
-  border-bottom: 1px solid var(--rt-ink) !important;
-}
-.header {
-  background: transparent !important;
-}
-.header__heading-link,
-.header__heading-logo,
-.header__heading {
-  color: var(--rt-ink) !important;
-}
-.header__menu-item span,
-.header__menu-item .link,
-.header__active-menu-item {
-  font-family: var(--rt-font-grotesk) !important;
-  font-size: 10px !important;
-  letter-spacing: 0.2em !important;
-  text-transform: uppercase !important;
-  font-weight: 600 !important;
-  color: var(--rt-ink) !important;
-}
-.header__icon,
-.header__icon--cart {
-  color: var(--rt-ink) !important;
-}
-.header__icon svg,
-.icon-cart svg {
-  fill: var(--rt-ink) !important;
-  color: var(--rt-ink) !important;
-}
-.cart-count-bubble {
-  background: var(--rt-ink) !important;
-  color: var(--rt-paper) !important;
-}
-.header__inline-menu .header__submenu {
-  background: var(--rt-paper);
-  border: 1px solid var(--rt-ink);
-  padding: 1rem;
-  box-shadow: 0 8px 24px rgba(10,10,10,0.08);
-  min-width: 200px;
-}
-.header__submenu .header__menu-item {
-  padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid var(--rt-ink);
-  transition: opacity 0.2s;
-}
-.header__submenu .header__menu-item:last-child { border: none; }
-.header__submenu .header__menu-item:hover { opacity: 0.6; }
+/* Header styling handled by sections/rt-header.liquid */
 
 /* ============================================
    REFINED TYPOGRAPHY SYSTEM

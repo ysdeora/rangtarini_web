@@ -1,0 +1,247 @@
+<style>
+  .rt-hd-wrap {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .rt-hd {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 28px;
+    height: 60px;
+    max-width: 100%;
+  }
+
+  /* ── Left: nav links ── */
+  .rt-hd__nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .rt-hd__nav-link {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 180ms;
+    white-space: nowrap;
+  }
+  .rt-hd__nav-link:hover,
+  .rt-hd__nav-link[aria-current] { opacity: 1; }
+
+  /* ── Centre: wordmark ── */
+  .rt-hd__logo {
+    font-family: var(--rt-font-grotesk);
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    line-height: 1;
+  }
+
+  /* ── Right: icons ── */
+  .rt-hd__actions {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .rt-hd__icon {
+    color: var(--rt-ink);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+  }
+  .rt-hd__icon svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: var(--rt-ink);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    display: block;
+  }
+  .rt-hd__cart-count {
+    font-family: var(--rt-font-grotesk);
+    font-size: 8px;
+    font-weight: 700;
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    line-height: 1;
+  }
+
+  /* ── Mobile: hamburger ── */
+  .rt-hd__menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .rt-hd__menu-btn span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--rt-ink);
+    transition: transform 240ms ease, opacity 240ms ease;
+  }
+  .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(1) {
+    transform: rotate(45deg) translate(4.5px, 4.5px);
+  }
+  .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+  .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(3) {
+    transform: rotate(-45deg) translate(4.5px, -4.5px);
+  }
+
+  /* ── Mobile drawer ── */
+  .rt-hd__mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: var(--rt-paper);
+    border-top: 1px solid rgba(10,10,10,0.1);
+    padding: 8px 0 24px;
+  }
+  .rt-hd__mobile-nav.is-open { display: flex; }
+  .rt-hd__mobile-nav .rt-hd__nav-link {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    opacity: 1;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(10,10,10,0.06);
+  }
+  .rt-hd__mobile-nav .rt-hd__nav-link:last-child { border-bottom: none; }
+
+  @media (max-width: 749px) {
+    .rt-hd {
+      grid-template-columns: auto 1fr auto;
+      padding: 0 16px;
+      gap: 12px;
+    }
+    .rt-hd__nav  { display: none; }
+    .rt-hd__logo { text-align: center; }
+    .rt-hd__menu-btn { display: flex; }
+  }
+</style>
+
+<div class="rt-hd-wrap">
+  <div class="rt-hd">
+
+    {%- comment %} Left – nav (desktop) / hamburger (mobile) {%- endcomment %}
+    <nav class="rt-hd__nav" aria-label="{{ 'accessibility.skip_to_content' | t }}">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <a href="{{ link.url }}"
+           class="rt-hd__nav-link"
+           {% if link.active %}aria-current="page"{% endif %}>
+          {{ link.title | escape }}
+        </a>
+      {%- endfor -%}
+    </nav>
+
+    <button class="rt-hd__menu-btn"
+            aria-expanded="false"
+            aria-controls="rt-mobile-nav"
+            aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    {%- comment %} Centre – wordmark {%- endcomment %}
+    <a href="{{ routes.root_url }}" class="rt-hd__logo">
+      {{ section.settings.logo_text | default: 'Rangtarini' }}
+    </a>
+
+    {%- comment %} Right – search + cart {%- endcomment %}
+    <div class="rt-hd__actions">
+      <a href="{{ routes.search_url }}" class="rt-hd__icon" aria-label="Search">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </a>
+      <a href="{{ routes.cart_url }}" class="rt-hd__icon" aria-label="Cart, {{ cart.item_count }} items">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        {%- if cart.item_count > 0 -%}
+          <span class="rt-hd__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+  </div>
+
+  {%- comment %} Mobile nav {%- endcomment %}
+  <nav class="rt-hd__mobile-nav" id="rt-mobile-nav" aria-label="Main navigation" hidden>
+    {%- for link in linklists[section.settings.menu].links -%}
+      <a href="{{ link.url }}"
+         class="rt-hd__nav-link"
+         {% if link.active %}aria-current="page"{% endif %}>
+        {{ link.title | escape }}
+      </a>
+    {%- endfor -%}
+  </nav>
+</div>
+
+<script>
+(function () {
+  var btn = document.querySelector('.rt-hd__menu-btn');
+  var nav = document.getElementById('rt-mobile-nav');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', function () {
+    var open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav.hidden = open;
+    nav.classList.toggle('is-open', !open);
+  });
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "rt-header-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "Rangtarini"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [{ "name": "Header" }]
+}
+{% endschema %}
