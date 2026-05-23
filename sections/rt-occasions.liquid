@@ -144,13 +144,56 @@
     .rt-occ__img { min-height: 300px; }
   }
   @media (max-width: 749px) {
-    .rt-occ__row { grid-template-columns: 1fr; }
-    .rt-occ__row--right .rt-occ__img-wrap { order: 1; }
-    .rt-occ__row--right .rt-occ__copy    { order: 2; }
-    .rt-occ__img { aspect-ratio: 4/3; min-height: unset; }
-    .rt-occ__copy { padding: 28px 16px; }
-    .rt-occ__enter { width: 100%; }
-    .rt-occ__hd { padding: 40px 16px 20px; }
+    .rt-occ__hd { padding: 32px 16px 16px; }
+    .rt-occ__display { font-size: 40px; }
+
+    /* 2×2 card grid */
+    .rt-occ__rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rt-ink);
+      border-top: none;
+    }
+    .rt-occ__row {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      border-bottom: none;
+    }
+    /* reset alternation — not needed in flat grid */
+    .rt-occ__row--right .rt-occ__img-wrap,
+    .rt-occ__row--right .rt-occ__copy { order: unset; }
+
+    /* portrait card image */
+    .rt-occ__img { aspect-ratio: 3/4; min-height: unset; }
+
+    /* copy becomes an absolute overlay pinned to image bottom */
+    .rt-occ__copy {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: block;
+      padding: 0;
+    }
+    .rt-occ__letter,
+    .rt-occ__name,
+    .rt-occ__sub { display: none; }
+
+    /* "Enter the edit →" = full-width tappable dark bar */
+    .rt-occ__enter {
+      display: flex;
+      width: 100%;
+      background: rgba(10,10,10,0.72);
+      color: var(--rt-paper);
+      border-color: rgba(239,236,228,0.2);
+      border-left: none;
+      border-right: none;
+      padding: 10px 12px;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      margin-top: 0;
+      justify-content: space-between;
+    }
   }
 </style>
 

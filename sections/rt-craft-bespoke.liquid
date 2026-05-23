@@ -271,8 +271,9 @@
   }
   @media (max-width: 749px) {
     .rt-craft__hero { height: 60vh; min-height: 420px; }
-    .rt-craft__bottom { flex-direction: column; gap: 16px; }
+    .rt-craft__bottom { grid-template-columns: 1fr; gap: 16px; }
     .rt-craft__story-link { min-width: unset; width: 100%; }
+    .rt-craft__panel--desc { display: none; }
   }
 </style>
 
@@ -332,7 +333,7 @@
     </div>
 
     <!-- Panel 2: description + chips -->
-    <div class="rt-craft__panel" style="display:flex;flex-direction:column;gap:22px;">
+    <div class="rt-craft__panel rt-craft__panel--desc" style="display:flex;flex-direction:column;gap:22px;">
       <p class="rt-craft__desc">
         Send us a reference, a sketch, or an idea — we design completely new pieces from scratch.
         Our karigars craft each commission in kundan, moissanite, CZ, polki, silver or gold-plated,

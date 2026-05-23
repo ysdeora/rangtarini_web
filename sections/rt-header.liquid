@@ -313,7 +313,11 @@
     background: var(--rt-paper);
     border-top: 1px solid rgba(10,10,10,0.1);
   }
-  .rt-hd__mobile-nav.is-open { display: flex; }
+  .rt-hd__mobile-nav.is-open {
+    display: flex;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
 
   .rt-hd__mobile-item { border-bottom: 1px solid rgba(10,10,10,0.07); }
   .rt-hd__mobile-item:last-child { border-bottom: none; }
