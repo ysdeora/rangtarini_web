@@ -61,8 +61,6 @@
   <div class="rt-mq__track">
     {%- for i in (1..16) -%}
       <span class="rt-mq__cell">
-        {%- if i == i | modulo: 2 | plus: i -%}
-        {%- endif -%}
         {%- assign is_deva = i | modulo: 2 -%}
         {%- if is_deva == 0 -%}
           <span class="rt-mq__dv">रंगतारिणी</span>
