@@ -1,0 +1,296 @@
+<style>
+  .rt-pair {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rt-pair__frame {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .rt-pair__frame--dark {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    border-right: 1px solid var(--rt-ink);
+  }
+  .rt-pair__frame--light {
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+  }
+
+  .rt-pair__img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    transition: transform 500ms ease;
+  }
+  .rt-pair__frame:hover .rt-pair__img {
+    transform: scale(1.03);
+  }
+
+  .rt-pair__tag {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 4px 9px;
+    z-index: 2;
+  }
+  .rt-pair__frame--dark .rt-pair__tag {
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+  }
+  .rt-pair__frame--light .rt-pair__tag {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+  }
+
+  .rt-pair__info {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: end;
+    color: var(--rt-paper);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    z-index: 2;
+  }
+  .rt-pair__frame--dark .rt-pair__info {
+    text-shadow: none;
+  }
+  .rt-pair__name {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(24px, 3vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin: 0 0 8px;
+    color: var(--rt-paper);
+  }
+  .rt-pair__meta {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.78;
+    color: var(--rt-paper);
+    display: block;
+  }
+  .rt-pair__price {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rt-paper);
+    white-space: nowrap;
+    letter-spacing: 0;
+  }
+
+  @media (max-width: 749px) {
+    .rt-pair { grid-template-columns: 1fr; }
+    .rt-pair__frame--dark { border-right: none; border-bottom: 1px solid var(--rt-ink); }
+    .rt-pair__img { aspect-ratio: 3 / 4; }
+  }
+</style>
+
+{%- assign col1 = collections[section.settings.collection_1] -%}
+{%- assign col2 = collections[section.settings.collection_2] -%}
+{%- assign prod1 = col1.products | first -%}
+{%- assign prod2 = col2.products | first -%}
+
+<section class="rt-pair">
+  <!-- Left frame (dark) -->
+  <a
+    href="{{ prod1.url | default: section.settings.link_1 | default: '/collections/necklaces-sets' }}"
+    class="rt-pair__frame rt-pair__frame--dark"
+    aria-label="{{ prod1.title | default: section.settings.label_1 | escape }}"
+  >
+    {%- if section.settings.image_1 != blank -%}
+      <img
+        src="{{ section.settings.image_1 | image_url: width: 1000 }}"
+        srcset="{{ section.settings.image_1 | image_url: width: 600 }} 600w,
+                {{ section.settings.image_1 | image_url: width: 1000 }} 1000w"
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="{{ section.settings.label_1 | escape }}"
+        class="rt-pair__img"
+        loading="lazy"
+        decoding="async">
+    {%- elsif prod1.featured_image -%}
+      <img
+        src="{{ prod1.featured_image | image_url: width: 1000 }}"
+        srcset="{{ prod1.featured_image | image_url: width: 600 }} 600w,
+                {{ prod1.featured_image | image_url: width: 1000 }} 1000w"
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="{{ prod1.title | escape }}"
+        class="rt-pair__img"
+        loading="lazy"
+        decoding="async"
+        width="{{ prod1.featured_image.width }}"
+        height="{{ prod1.featured_image.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Necklace_category_image.jpg?v=1777315165"
+        alt="{{ section.settings.label_1 | default: 'Necklaces' | escape }}"
+        class="rt-pair__img"
+        loading="lazy">
+    {%- endif -%}
+
+    <span class="rt-pair__tag">{{ section.settings.tag_1 | default: 'Featured · 01' }}</span>
+
+    <div class="rt-pair__info">
+      <div>
+        <h3 class="rt-pair__name">{{ prod1.title | default: section.settings.label_1 | default: 'Necklaces & Sets' }}</h3>
+        <span class="rt-pair__meta">{{ section.settings.meta_1 | default: 'Necklace · Kundan · 925' }}</span>
+      </div>
+      {%- if prod1 -%}
+        <span class="rt-pair__price">{{ prod1.price_min | money_without_trailing_zeros }}</span>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <!-- Right frame (light) -->
+  <a
+    href="{{ prod2.url | default: section.settings.link_2 | default: '/collections/earrings' }}"
+    class="rt-pair__frame rt-pair__frame--light"
+    aria-label="{{ prod2.title | default: section.settings.label_2 | escape }}"
+  >
+    {%- if section.settings.image_2 != blank -%}
+      <img
+        src="{{ section.settings.image_2 | image_url: width: 1000 }}"
+        srcset="{{ section.settings.image_2 | image_url: width: 600 }} 600w,
+                {{ section.settings.image_2 | image_url: width: 1000 }} 1000w"
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="{{ section.settings.label_2 | escape }}"
+        class="rt-pair__img"
+        loading="lazy"
+        decoding="async">
+    {%- elsif prod2.featured_image -%}
+      <img
+        src="{{ prod2.featured_image | image_url: width: 1000 }}"
+        srcset="{{ prod2.featured_image | image_url: width: 600 }} 600w,
+                {{ prod2.featured_image | image_url: width: 1000 }} 1000w"
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="{{ prod2.title | escape }}"
+        class="rt-pair__img"
+        loading="lazy"
+        decoding="async"
+        width="{{ prod2.featured_image.width }}"
+        height="{{ prod2.featured_image.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Earrings_category_image.jpg?v=1777315473"
+        alt="{{ section.settings.label_2 | default: 'Earrings' | escape }}"
+        class="rt-pair__img"
+        loading="lazy">
+    {%- endif -%}
+
+    <span class="rt-pair__tag">{{ section.settings.tag_2 | default: 'Featured · 02' }}</span>
+
+    <div class="rt-pair__info">
+      <div>
+        <h3 class="rt-pair__name">{{ prod2.title | default: section.settings.label_2 | default: 'Earrings' }}</h3>
+        <span class="rt-pair__meta">{{ section.settings.meta_2 | default: 'Earring · Polki · 925' }}</span>
+      </div>
+      {%- if prod2 -%}
+        <span class="rt-pair__price">{{ prod2.price_min | money_without_trailing_zeros }}</span>
+      {%- endif -%}
+    </div>
+  </a>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Pair",
+  "class": "rt-pair-section",
+  "presets": [{"name": "Featured Pair"}],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left frame"
+    },
+    {
+      "type": "collection",
+      "id": "collection_1",
+      "label": "Left collection (first product shown)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Override image (left)"
+    },
+    {
+      "type": "text",
+      "id": "tag_1",
+      "label": "Tag label (left)",
+      "default": "Featured · 01"
+    },
+    {
+      "type": "text",
+      "id": "label_1",
+      "label": "Fallback product name (left)",
+      "default": "Necklaces & Sets"
+    },
+    {
+      "type": "text",
+      "id": "meta_1",
+      "label": "Material / type meta (left)",
+      "default": "Necklace · Kundan · 925"
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Fallback link (left)"
+    },
+    {
+      "type": "header",
+      "content": "Right frame"
+    },
+    {
+      "type": "collection",
+      "id": "collection_2",
+      "label": "Right collection (first product shown)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Override image (right)"
+    },
+    {
+      "type": "text",
+      "id": "tag_2",
+      "label": "Tag label (right)",
+      "default": "Featured · 02"
+    },
+    {
+      "type": "text",
+      "id": "label_2",
+      "label": "Fallback product name (right)",
+      "default": "Earrings"
+    },
+    {
+      "type": "text",
+      "id": "meta_2",
+      "label": "Material / type meta (right)",
+      "default": "Earring · Polki · 925"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Fallback link (right)"
+    }
+  ]
+}
+{% endschema %}

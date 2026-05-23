@@ -1,0 +1,74 @@
+<style>
+  .rt-ticker {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    overflow: hidden;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  @keyframes rt-ticker-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-33.333%); }
+  }
+  .rt-ticker__track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: rt-ticker-scroll 60s linear infinite;
+  }
+  .rt-ticker__item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 28px;
+  }
+  .rt-ticker__sep {
+    margin-left: 28px;
+    opacity: 0.4;
+  }
+  .rt-ticker__en {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-paper);
+    line-height: 1;
+  }
+  .rt-ticker__dv {
+    font-family: var(--rt-font-deva);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--rt-gold);
+    line-height: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-ticker__track { animation: none; }
+  }
+</style>
+
+{%- assign ticker_items = "FREE SHIPPING — PAN-INDIA,DEVA,BIS HALLMARKED — 925 SILVER,7-DAY EXCHANGE,DEVA,LIFETIME POLISH & RESIZING,DEVA" | split: "," -%}
+{%- assign looped_items = ticker_items | concat: ticker_items | concat: ticker_items -%}
+
+<div class="rt-ticker" aria-hidden="true">
+  <div class="rt-ticker__track">
+    {%- for item in looped_items -%}
+      <span class="rt-ticker__item">
+        {%- if item == "DEVA" -%}
+          <span class="rt-ticker__dv">रंगतारिणी</span>
+        {%- else -%}
+          <span class="rt-ticker__en">{{ item }}</span>
+        {%- endif -%}
+        <span class="rt-ticker__sep">—</span>
+      </span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ticker Bar",
+  "class": "rt-ticker-section",
+  "presets": [{"name": "Ticker Bar"}],
+  "settings": []
+}
+{% endschema %}

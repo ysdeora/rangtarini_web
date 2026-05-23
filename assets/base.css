@@ -1,5 +1,19 @@
 
 /* ============================================
+   RANGTARINI EDITORIAL DESIGN SYSTEM (v3)
+   Prefixed --rt-* to avoid Dawn conflicts
+   ============================================ */
+
+:root {
+  --rt-ink: #0a0a0a;
+  --rt-paper: #efece4;
+  --rt-gold: #b59159;
+  --rt-gold-deep: #7a5e2c;
+  --rt-font-grotesk: 'Archivo', 'Montserrat', sans-serif;
+  --rt-font-deva: 'Noto Serif Devanagari', serif;
+}
+
+/* ============================================
    REFINED TYPOGRAPHY SYSTEM
    ============================================ */
 

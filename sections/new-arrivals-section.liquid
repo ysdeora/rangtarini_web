@@ -32,117 +32,66 @@
 
 <style>
   .na-section {
-    padding: 5rem 0 4rem;
-    background: var(--color-bg-primary);
+    padding: 72px 28px 64px;
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
   }
-  .na-header {
-    text-align: center;
-    max-width: 640px;
-    margin: 0 auto 3rem;
-    padding: 0 1.5rem;
+  .na-hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 36px;
+    gap: 24px;
+    flex-wrap: wrap;
   }
   .na-eyebrow {
-    font-family: var(--font-body);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 0.35em;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--color-gold-dark);
-    margin-bottom: 0.9rem;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    margin: 0 0 12px;
   }
   .na-heading {
-    font-family: var(--font-heading);
-    font-size: 2.6rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
     text-transform: uppercase;
-    line-height: 1.2;
-    color: var(--color-text-primary);
-    margin: 0 0 1rem;
-  }
-  .na-rule {
-    width: 48px;
-    height: 1px;
-    background: var(--color-gold);
-    margin: 0 auto 1.25rem;
-  }
-  .na-subheading {
-    font-family: var(--font-body);
-    font-size: 1.2rem;
-    font-weight: 300;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
+    line-height: 0.92;
+    color: var(--rt-ink);
     margin: 0;
   }
-
-  /* ── Carousel ── */
-  .na-carousel { position: relative; margin-bottom: 3.5rem; }
-
-  .na-arrow {
-    position: absolute;
-    top: 38%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: 3.6rem;
-    height: 3.6rem;
-    border: 1px solid rgba(var(--color-foreground, 30, 23, 18), 0.18);
-    border-radius: 50%;
-    background: var(--color-bg-primary, #faf8f5);
-    color: var(--color-text-primary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s;
-    padding: 0;
-    outline: none;
+  .na-cta-link {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 220ms;
   }
-  .na-arrow:hover {
-    border-color: var(--color-gold, #b8955a);
-    background: var(--color-gold, #b8955a);
-    color: #fff;
-    transform: translateY(-50%) scale(1.06);
-  }
-  .na-arrow:focus-visible {
-    outline: 2px solid var(--color-gold, #b8955a);
-    outline-offset: 2px;
-  }
-  .na-arrow[disabled] { opacity: 0; pointer-events: none; }
-  .na-arrow--prev { left: 0.75rem; }
-  .na-arrow--next { right: 0.75rem; }
-  .na-arrow svg { width: 1.1rem; height: 1.1rem; stroke-width: 1.5; flex-shrink: 0; }
+  .na-cta-link:hover { opacity: 0.6; }
 
-  /* Scroll track */
   .na-grid {
-    display: flex;
-    gap: 1.4rem;
-    padding: 0 4.5rem 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
   }
-  .na-grid::-webkit-scrollbar { display: none; }
 
   .na-card {
-    flex: 0 0 calc(23% - 1rem);
-    min-width: calc(23% - 1rem);
-    position: relative;
-    text-decoration: none;
-    color: inherit;
     display: block;
-    scroll-snap-align: start;
+    text-decoration: none;
+    color: var(--rt-ink);
   }
-
   .na-media {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 3 / 4;
-    border-radius: 4px;
-    margin-bottom: 0.85rem;
-    background: var(--color-bg-white, #f6f2ec);
+    aspect-ratio: 1 / 1.18;
   }
   .na-img {
     position: absolute;
@@ -150,263 +99,199 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: opacity 0.5s ease, transform 0.7s ease;
+    transition: opacity 0.5s ease, transform 0.6s ease;
   }
   .na-img--secondary { opacity: 0; }
-  .na-card:hover .na-img--primary  { opacity: 0; }
-  .na-card:hover .na-img--secondary { opacity: 1; transform: scale(1.04); }
-  .na-card:hover .na-img--primary:only-child { opacity: 1; transform: scale(1.04); }
+  .na-card:hover .na-img--primary   { opacity: 0; }
+  .na-card:hover .na-img--secondary { opacity: 1; transform: scale(1.03); }
+  .na-card:hover .na-img--primary:only-child { opacity: 1; transform: scale(1.03); }
 
-  /* "New" badge — minimal dot + text */
-  .na-badge {
+  .na-add-btn {
     position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: rgba(250, 248, 245, 0.92);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    color: var(--color-text-primary, #2a1f14);
-    padding: 0.28rem 0.7rem 0.28rem 0.55rem;
-    font-family: var(--font-body);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+    border: 1px solid var(--rt-ink);
+    padding: 10px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 240ms, transform 240ms;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    border-radius: 2px;
-    z-index: 2;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    display: block;
   }
-  .na-badge-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-gold, #b8955a);
-    flex-shrink: 0;
-    animation: na-pulse 2.2s ease-in-out infinite;
-  }
-  @keyframes na-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: 0.5; transform: scale(0.7); }
+  .na-card:hover .na-add-btn {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .na-soldout-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(44, 37, 32, 0.55);
+    background: rgba(10,10,10,0.45);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
+    color: var(--rt-paper);
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     z-index: 3;
   }
 
-  .na-info { text-align: center; padding: 0 0.15rem; }
+  .na-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 14px;
+    gap: 8px;
+  }
   .na-name {
-    font-family: var(--font-heading-secondary);
-    font-size: 1.5rem;
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.02em;
-    color: var(--color-text-primary);
-    margin: 0 0 0.3rem;
+    color: var(--rt-ink);
+    margin: 0;
+    letter-spacing: 0;
+    overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    overflow: hidden;
   }
   .na-price-row {
-    font-family: var(--font-body);
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: var(--color-gold-dark);
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rt-ink);
     margin: 0;
+    white-space: nowrap;
+    letter-spacing: 0;
   }
   .na-price-compare {
-    color: var(--color-text-secondary);
     text-decoration: line-through;
-    margin-right: 0.4rem;
+    opacity: 0.5;
+    margin-right: 4px;
     font-size: 0.9em;
-  }
-  .na-price-from {
-    font-size: 0.75em;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-text-secondary);
-    margin-right: 0.3rem;
   }
 
   .na-empty {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    color: var(--color-text-secondary);
-    font-style: italic;
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    padding: 40px 0;
   }
 
-  .na-cta { text-align: center; }
-  .na-cta a {
-    display: inline-block;
-    background: transparent;
-    color: var(--color-text-primary);
-    border: 1.5px solid var(--color-gold);
-    padding: 1rem 2.75rem;
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 2px;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  @media (max-width: 990px) {
+    .na-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .na-section { padding: 48px 20px 40px; }
   }
-  .na-cta a:hover {
-    background: var(--color-gold);
-    color: #fff;
-    transform: translateY(-2px);
-  }
-
-  /* ── Tablet ── */
-  @media (max-width: 1100px) {
-    .na-card { flex: 0 0 calc(28% - 1rem); min-width: calc(28% - 1rem); }
-    .na-heading { font-size: 2.2rem; }
-    .na-name { font-size: 1.3rem; }
-  }
-
-  /* ── Mobile ── */
   @media (max-width: 749px) {
-    .na-arrow { display: none; }
-    .na-section { padding: 2.5rem 0; }
-    .na-header { margin-bottom: 2rem; }
-    .na-heading { font-size: 1.6rem; }
-    .na-subheading { font-size: 0.95rem; }
-    .na-eyebrow { font-size: 1.2rem; }
-    .na-grid { gap: 1rem; padding: 0 1.25rem 1rem; }
-    .na-card { flex: 0 0 68%; min-width: 68%; }
-    .na-name { font-size: 1.4rem; }
-    .na-price-row { font-size: 1.2rem; }
-    .na-card:hover .na-img--primary  { opacity: 1; }
+    .na-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .na-section { padding: 40px 16px 32px; }
+    .na-heading { font-size: 40px; }
+    .na-add-btn { display: none; }
+    .na-card:hover .na-img--primary   { opacity: 1; }
     .na-card:hover .na-img--secondary { opacity: 0; }
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .na-grid { scroll-behavior: auto; }
-    .na-img  { transition: none; }
-    .na-badge-dot { animation: none; }
-    .na-cta a { transition: none; }
+    .na-img { transition: none; }
+    .na-add-btn { transition: none; }
   }
 </style>
 
 <section class="na-section" aria-labelledby="na-heading">
 
-  <div class="na-header">
-    <p class="na-eyebrow">{{ section.settings.eyebrow }}</p>
-    <h2 class="na-heading" id="na-heading">{{ section.settings.heading }}</h2>
-    <div class="na-rule"></div>
-    <p class="na-subheading">{{ section.settings.subheading }}</p>
+  <div class="na-hd">
+    <div>
+      <p class="na-eyebrow">{{ section.settings.eyebrow | default: 'Latest drop · This season' }}</p>
+      <h2 class="na-heading" id="na-heading">{{ section.settings.heading | default: 'New in.' }}</h2>
+    </div>
+    <a
+      href="{{ section.settings.cta_url | default: '/collections/all?sort_by=created-descending' }}"
+      class="na-cta-link"
+    >{{ section.settings.cta_label | default: 'View all' }} →</a>
   </div>
 
   {%- if new_products.size > 0 -%}
-    <div class="na-carousel" id="na-carousel">
+    <div class="na-grid" role="list">
+      {%- for product in new_products -%}
+        {%- assign primary_img   = product.featured_image -%}
+        {%- assign secondary_img = product.images[1] -%}
+        {%- assign on_sale = false -%}
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign on_sale = true -%}
+        {%- endif -%}
 
-      <button class="na-arrow na-arrow--prev" id="na-prev" aria-label="Previous" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-      </button>
+        <a href="{{ product.url }}"
+           class="na-card"
+           role="listitem"
+           aria-label="{{ product.title | escape }}, {{ product.price_min | money_without_trailing_zeros }}">
 
-      <div class="na-grid" id="na-grid" role="list">
-        {%- for product in new_products -%}
-          {%- assign primary_img   = product.featured_image -%}
-          {%- assign secondary_img = product.images[1] -%}
-          {%- assign on_sale = false -%}
-          {%- if product.compare_at_price > product.price -%}
-            {%- assign on_sale = true -%}
-          {%- endif -%}
+          <div class="na-media">
+            {%- if primary_img -%}
+              <img
+                class="na-img na-img--primary"
+                src="{{ primary_img | image_url: width: 600 }}"
+                srcset="{{ primary_img | image_url: width: 300 }} 300w,
+                        {{ primary_img | image_url: width: 500 }} 500w,
+                        {{ primary_img | image_url: width: 700 }} 700w"
+                sizes="(max-width: 749px) 50vw, (max-width: 990px) 50vw, 25vw"
+                alt="{{ product.title | escape }}"
+                loading="lazy"
+                decoding="async"
+                width="{{ primary_img.width }}"
+                height="{{ primary_img.height }}">
+            {%- else -%}
+              <div class="na-img na-img--primary" aria-hidden="true"></div>
+            {%- endif -%}
 
-          <a href="{{ product.url }}"
-             class="na-card"
-             role="listitem"
-             aria-label="{{ product.title | escape }}, {{ product.price | money_without_trailing_zeros }}">
+            {%- if secondary_img -%}
+              <img
+                class="na-img na-img--secondary"
+                src="{{ secondary_img | image_url: width: 600 }}"
+                srcset="{{ secondary_img | image_url: width: 300 }} 300w,
+                        {{ secondary_img | image_url: width: 500 }} 500w,
+                        {{ secondary_img | image_url: width: 700 }} 700w"
+                sizes="(max-width: 749px) 50vw, (max-width: 990px) 50vw, 25vw"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width="{{ secondary_img.width }}"
+                height="{{ secondary_img.height }}"
+                aria-hidden="true">
+            {%- endif -%}
 
-            <div class="na-media">
+            {%- if product.available -%}
+              <a href="{{ product.url }}" class="na-add-btn" tabindex="-1" aria-hidden="true">
+                Add — {{ product.price_min | money_without_trailing_zeros }}
+              </a>
+            {%- else -%}
+              <div class="na-soldout-overlay">Sold Out</div>
+            {%- endif -%}
+          </div>
 
-              <span class="na-badge" aria-label="New arrival">
-                <span class="na-badge-dot"></span>New
-              </span>
-
-              {%- if primary_img -%}
-                <img
-                  class="na-img na-img--primary"
-                  src="{{ primary_img | image_url: width: 600 }}"
-                  srcset="{{ primary_img | image_url: width: 300 }} 300w,
-                          {{ primary_img | image_url: width: 500 }} 500w,
-                          {{ primary_img | image_url: width: 700 }} 700w,
-                          {{ primary_img | image_url: width: 1000 }} 1000w"
-                  sizes="(max-width: 749px) 68vw, (max-width: 1100px) 28vw, 23vw"
-                  alt="{{ product.title | escape }}"
-                  loading="lazy"
-                  decoding="async"
-                  width="{{ primary_img.width }}"
-                  height="{{ primary_img.height }}">
-              {%- else -%}
-                <div class="na-img na-img--primary" aria-hidden="true"></div>
+          <div class="na-info">
+            <h3 class="na-name">{{ product.title | escape }}</h3>
+            <p class="na-price-row">
+              {%- if on_sale -%}
+                <span class="na-price-compare">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
               {%- endif -%}
-
-              {%- if secondary_img -%}
-                <img
-                  class="na-img na-img--secondary"
-                  src="{{ secondary_img | image_url: width: 600 }}"
-                  srcset="{{ secondary_img | image_url: width: 300 }} 300w,
-                          {{ secondary_img | image_url: width: 500 }} 500w,
-                          {{ secondary_img | image_url: width: 700 }} 700w,
-                          {{ secondary_img | image_url: width: 1000 }} 1000w"
-                  sizes="(max-width: 749px) 68vw, (max-width: 1100px) 28vw, 23vw"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  width="{{ secondary_img.width }}"
-                  height="{{ secondary_img.height }}"
-                  aria-hidden="true">
-              {%- endif -%}
-
-              {%- unless product.available -%}
-                <div class="na-soldout-overlay">Sold Out</div>
-              {%- endunless -%}
-            </div>
-
-            <div class="na-info">
-              <h3 class="na-name">{{ product.title | escape }}</h3>
-              <p class="na-price-row">
-                {%- if product.price_varies -%}
-                  <span class="na-price-from">From</span>
-                {%- endif -%}
-                {%- if on_sale -%}
-                  <span class="na-price-compare">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
-                {%- endif -%}
-                {{ product.price_min | money_without_trailing_zeros }}
-              </p>
-            </div>
-          </a>
-        {%- endfor -%}
-      </div>
-
-      <button class="na-arrow na-arrow--next" id="na-next" aria-label="Next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
-
-    </div>
-
-    <div class="na-cta">
-      <a href="{{ section.settings.cta_url | default: '/collections/all?sort_by=created-descending' }}">
-        {{ section.settings.cta_label }}
-      </a>
+              {{ product.price_min | money_without_trailing_zeros }}
+            </p>
+          </div>
+        </a>
+      {%- endfor -%}
     </div>
 
   {%- else -%}
@@ -414,32 +299,6 @@
   {%- endif -%}
 
 </section>
-
-<script>
-  (function () {
-    var grid = document.getElementById('na-grid');
-    var prev = document.getElementById('na-prev');
-    var next = document.getElementById('na-next');
-    if (!grid || !prev || !next) return;
-
-    function scrollByOne(dir) {
-      var card = grid.querySelector('.na-card');
-      if (!card) return;
-      var gap  = parseFloat(getComputedStyle(grid).gap) || 0;
-      grid.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: 'smooth' });
-    }
-
-    function updateArrows() {
-      prev.disabled = grid.scrollLeft <= 4;
-      next.disabled = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 4;
-    }
-
-    prev.addEventListener('click', function () { scrollByOne(-1); });
-    next.addEventListener('click', function () { scrollByOne(1); });
-    grid.addEventListener('scroll', updateArrows, { passive: true });
-    updateArrows();
-  })();
-</script>
 
 {% schema %}
 {

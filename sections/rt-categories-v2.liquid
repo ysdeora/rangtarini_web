@@ -1,0 +1,235 @@
+<style>
+  .rt-cat {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+    padding: 72px 28px 60px;
+  }
+  .rt-cat__hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .rt-cat__eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .rt-cat__display {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-cat__count {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.6;
+  }
+
+  .rt-cat__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .rt-cat__tile {
+    text-decoration: none;
+    color: var(--rt-ink);
+    display: block;
+  }
+  .rt-cat__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1.2;
+  }
+  .rt-cat__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 500ms ease;
+  }
+  .rt-cat__tile:hover .rt-cat__img {
+    transform: scale(1.03);
+  }
+  .rt-cat__num {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--rt-paper);
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 7px;
+    color: var(--rt-ink);
+    z-index: 2;
+  }
+  .rt-cat__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rt-ink);
+  }
+  .rt-cat__name {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(16px, 1.8vw, 24px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-cat__meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .rt-cat__pieces {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.6;
+  }
+  .rt-cat__arrow {
+    font-size: 16px;
+    display: inline-block;
+    transition: transform 220ms;
+  }
+  .rt-cat__tile:hover .rt-cat__arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 990px) {
+    .rt-cat__grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .rt-cat { padding: 48px 20px 40px; }
+  }
+  @media (max-width: 749px) {
+    .rt-cat__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .rt-cat { padding: 40px 16px 32px; }
+    .rt-cat__display { font-size: 40px; }
+    .rt-cat__name { font-size: 13px; }
+    .rt-cat__pieces { display: none; }
+  }
+</style>
+
+{%- assign total_count = 0 -%}
+{%- for block in section.blocks -%}
+  {%- assign total_count = total_count | plus: 1 -%}
+{%- endfor -%}
+
+<section class="rt-cat">
+  <div class="rt-cat__hd">
+    <div>
+      <span class="rt-cat__eyebrow">Index 01 — The Collection</span>
+      <h2 class="rt-cat__display">The catalog.</h2>
+    </div>
+    <span class="rt-cat__count">{{ total_count }} categories</span>
+  </div>
+
+  <div class="rt-cat__grid">
+    {%- for block in section.blocks -%}
+      {%- assign num = forloop.index -%}
+      {%- assign total = total_count -%}
+      <a href="{{ block.settings.url }}" class="rt-cat__tile" {{ block.shopify_attributes }}>
+        <div class="rt-cat__media">
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 800 }}"
+              srcset="{{ block.settings.image | image_url: width: 400 }} 400w,
+                      {{ block.settings.image | image_url: width: 800 }} 800w,
+                      {{ block.settings.image | image_url: width: 1000 }} 1000w"
+              sizes="(max-width: 749px) 50vw, (max-width: 990px) 50vw, 33vw"
+              alt="{{ block.settings.name | escape }}"
+              class="rt-cat__img"
+              loading="lazy"
+              decoding="async"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}">
+          {%- else -%}
+            <img
+              src="{{ block.settings.fallback_image_url }}"
+              alt="{{ block.settings.name | escape }}"
+              class="rt-cat__img"
+              loading="lazy">
+          {%- endif -%}
+          <span class="rt-cat__num">{{ num | prepend: '0' | slice: -2, 2 }} / {{ total | prepend: '0' | slice: -2, 2 }}</span>
+        </div>
+        <div class="rt-cat__info">
+          <h3 class="rt-cat__name">{{ block.settings.name }}</h3>
+          <div class="rt-cat__meta">
+            {%- if block.settings.piece_count != blank -%}
+              <span class="rt-cat__pieces">{{ block.settings.piece_count }}</span>
+            {%- endif -%}
+            <span class="rt-cat__arrow">→</span>
+          </div>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Categories V2",
+  "class": "rt-cat-section",
+  "presets": [{"name": "Categories V2"}],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_image_url",
+          "label": "Fallback image URL (if no image set)"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Category name"
+        },
+        {
+          "type": "text",
+          "id": "piece_count",
+          "label": "Piece count (e.g. '62 pieces')"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "settings": []
+}
+{% endschema %}

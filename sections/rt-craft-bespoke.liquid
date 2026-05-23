@@ -1,0 +1,419 @@
+<style>
+  .rt-craft {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+
+  /* ── Cinematic image section ── */
+  .rt-craft__hero {
+    position: relative;
+    height: 72vh;
+    min-height: 520px;
+    overflow: hidden;
+  }
+  .rt-craft__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .rt-craft__grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+      rgba(10,10,10,0.45) 0%,
+      rgba(10,10,10,0) 25%,
+      rgba(10,10,10,0) 60%,
+      rgba(10,10,10,0.65) 100%);
+    pointer-events: none;
+  }
+
+  .rt-craft__corner-cap {
+    position: absolute;
+    left: 28px;
+    top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .rt-craft__corner-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--rt-paper);
+    letter-spacing: 0;
+  }
+  .rt-craft__corner-sub {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--rt-paper);
+    opacity: 0.55;
+  }
+  .rt-craft__deva-tr {
+    position: absolute;
+    right: 28px;
+    top: 24px;
+    font-family: var(--rt-font-deva);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--rt-gold);
+  }
+
+  .rt-craft__bottom {
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    bottom: 32px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+  }
+  .rt-craft__headline {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(40px, 7vw, 96px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-paper);
+    margin: 0;
+    max-width: 14ch;
+  }
+  .rt-craft__story-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-width: 220px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rt-paper);
+    border-bottom: 1px solid var(--rt-paper);
+    color: var(--rt-paper);
+    text-decoration: none;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: opacity 220ms;
+    white-space: nowrap;
+  }
+  .rt-craft__story-link:hover { opacity: 0.75; }
+
+  /* ── Bespoke 3-panel band ── */
+  .rt-craft__bespoke {
+    border-top: 1px solid rgba(239,236,228,0.18);
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  }
+
+  .rt-craft__panel {
+    padding: 44px 44px;
+    border-right: 1px solid rgba(239,236,228,0.18);
+  }
+  .rt-craft__panel:first-child { padding-left: 28px; }
+  .rt-craft__panel:last-child { border-right: none; padding-right: 28px; }
+
+  .rt-craft__bespoke-badge {
+    display: inline-block;
+    background: var(--rt-gold);
+    color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 4px 9px;
+    margin-bottom: 16px;
+  }
+  .rt-craft__bespoke-sub {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-left: 14px;
+    vertical-align: middle;
+  }
+  .rt-craft__bespoke-hd {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(28px, 4.4vw, 56px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--rt-paper);
+    margin: 0;
+    max-width: 16ch;
+  }
+
+  .rt-craft__desc {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    line-height: 1.65;
+    opacity: 0.82;
+    color: var(--rt-paper);
+    margin: 0 0 22px;
+    max-width: 44ch;
+  }
+  .rt-craft__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+  }
+  .rt-craft__chip {
+    border: 1px solid rgba(239,236,228,0.28);
+    padding: 6px 12px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    color: var(--rt-paper);
+  }
+
+  .rt-craft__panel:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    min-width: 280px;
+  }
+  .rt-craft__wa-btn {
+    background: #25D366;
+    color: #0a0a0a;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border: 1px solid #25D366;
+    font-family: var(--rt-font-grotesk);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: opacity 220ms;
+  }
+  .rt-craft__wa-btn:hover { opacity: 0.9; }
+  .rt-craft__wa-btn-inner {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .rt-craft__wa-small {
+    font-size: 11px;
+    font-family: monospace;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .rt-craft__wa-big {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .rt-craft__wa-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.7;
+    font-family: monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rt-paper);
+  }
+  .rt-craft__wa-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #25D366;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .rt-craft__email-link {
+    color: var(--rt-paper);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(239,236,228,0.22);
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transition: opacity 220ms;
+  }
+  .rt-craft__email-link:hover { opacity: 1; }
+
+  @media (max-width: 990px) {
+    .rt-craft__bespoke {
+      grid-template-columns: 1fr;
+    }
+    .rt-craft__panel {
+      border-right: none;
+      border-bottom: 1px solid rgba(239,236,228,0.18);
+      padding: 32px 24px;
+    }
+    .rt-craft__panel:first-child { padding-left: 24px; }
+    .rt-craft__panel:last-child { border-bottom: none; padding-right: 24px; min-width: unset; }
+  }
+  @media (max-width: 749px) {
+    .rt-craft__hero { height: 60vh; min-height: 420px; }
+    .rt-craft__bottom { flex-direction: column; gap: 16px; }
+    .rt-craft__story-link { min-width: unset; width: 100%; }
+  }
+</style>
+
+{%- assign wa_number = section.settings.whatsapp_number | default: '919251110762' -%}
+{%- assign wa_msg    = 'Hi Rangtarini, I' | append: "'" | append: 'd like to customize a piece of jewellery.' -%}
+{%- assign wa_href   = 'https://wa.me/' | append: wa_number | append: '?text=' | append: wa_msg | url_encode -%}
+{%- assign email     = section.settings.bespoke_email | default: 'bespoke@rangtarini.com' -%}
+
+<section class="rt-craft">
+
+  <!-- Cinematic image -->
+  <div class="rt-craft__hero">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1600 }}"
+        srcset="{{ section.settings.image | image_url: width: 800 }} 800w,
+                {{ section.settings.image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.image | image_url: width: 1600 }} 1600w"
+        sizes="100vw"
+        alt="{{ section.settings.image_alt | default: 'Rangtarini karkhana' | escape }}"
+        class="rt-craft__bg"
+        loading="lazy"
+        decoding="async">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/worker_poster.jpg?v=1776532899"
+        alt="Rangtarini karkhana"
+        class="rt-craft__bg"
+        loading="lazy">
+    {%- endif -%}
+    <div class="rt-craft__grad"></div>
+
+    <div class="rt-craft__corner-cap">
+      <span class="rt-craft__corner-title">The karkhana, Jaipur</span>
+      <span class="rt-craft__corner-sub">On craft &amp; lineage</span>
+    </div>
+    <span class="rt-craft__deva-tr">रंगतारिणी</span>
+
+    <div class="rt-craft__bottom">
+      <h2 class="rt-craft__headline">{{ section.settings.headline | default: 'Made by hand. Made to outlive.' }}</h2>
+      <a href="{{ section.settings.story_url | default: '/pages/about-us' }}" class="rt-craft__story-link">
+        {{ section.settings.story_label | default: 'Read our story' }} <span>→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bespoke band -->
+  <div class="rt-craft__bespoke">
+
+    <!-- Panel 1: headline -->
+    <div class="rt-craft__panel">
+      <div>
+        <span class="rt-craft__bespoke-badge">Bespoke</span>
+        <span class="rt-craft__bespoke-sub">Custom · made to order</span>
+      </div>
+      <h3 class="rt-craft__bespoke-hd">Have something in mind?<br>We'll make it for you.</h3>
+    </div>
+
+    <!-- Panel 2: description + chips -->
+    <div class="rt-craft__panel" style="display:flex;flex-direction:column;gap:22px;">
+      <p class="rt-craft__desc">
+        Send us a reference, a sketch, or an idea — we design completely new pieces from scratch.
+        Our karigars craft each commission in kundan, moissanite, CZ, polki, silver or gold-plated,
+        with a quote and timeline within 24 hours.
+      </p>
+      <div class="rt-craft__chips">
+        {%- assign chip_labels = 'Design from scratch,Recreate heirlooms,From a reference photo,Match an outfit,Couple sets' | split: ',' -%}
+        {%- for chip in chip_labels -%}
+          <span class="rt-craft__chip">{{ chip }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- Panel 3: CTAs -->
+    <div class="rt-craft__panel">
+      <a href="{{ wa_href }}" target="_blank" rel="noopener noreferrer" class="rt-craft__wa-btn">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <path d="M16 3C8.82 3 3 8.82 3 16c0 2.3.61 4.46 1.68 6.32L3 29l6.86-1.65A12.93 12.93 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3Zm7.45 18.34c-.31.88-1.82 1.73-2.5 1.79-.67.07-1.31.34-4.4-.92-3.7-1.5-6.05-5.32-6.23-5.57-.18-.25-1.5-1.99-1.5-3.79 0-1.8.94-2.69 1.27-3.06.33-.37.73-.46.97-.46h.7c.22 0 .52-.08.81.62.31.74 1.04 2.54 1.13 2.73.09.18.15.4.03.65-.12.25-.18.4-.37.62-.18.22-.39.49-.55.66-.18.18-.37.38-.16.74.21.36.95 1.57 2.04 2.54 1.41 1.25 2.6 1.64 2.97 1.83.37.18.58.15.79-.09.21-.25.92-1.07 1.16-1.44.25-.37.5-.31.83-.18.34.12 2.13 1.01 2.49 1.19.37.18.62.27.71.42.09.16.09.92-.22 1.8Z" fill="#0a0a0a"/>
+        </svg>
+        <span class="rt-craft__wa-btn-inner">
+          <span class="rt-craft__wa-small">Talk to the studio</span>
+          <span class="rt-craft__wa-big">Start on WhatsApp →</span>
+        </span>
+      </a>
+      <span class="rt-craft__wa-status">
+        <span class="rt-craft__wa-dot"></span>
+        Replies within a business day · Mon–Sat
+      </span>
+      <a href="mailto:{{ email }}" class="rt-craft__email-link">
+        Or email {{ email }} →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Craft & Bespoke",
+  "class": "rt-craft-section",
+  "presets": [{"name": "Craft & Bespoke"}],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image (karkhana / craft)"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Main headline",
+      "default": "Made by hand. Made to outlive."
+    },
+    {
+      "type": "url",
+      "id": "story_url",
+      "label": "Story CTA link"
+    },
+    {
+      "type": "text",
+      "id": "story_label",
+      "label": "Story CTA label",
+      "default": "Read our story"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "WhatsApp number (E.164 without +, e.g. 919251110762)",
+      "default": "919251110762"
+    },
+    {
+      "type": "text",
+      "id": "bespoke_email",
+      "label": "Bespoke enquiry email",
+      "default": "bespoke@rangtarini.com"
+    }
+  ]
+}
+{% endschema %}

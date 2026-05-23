@@ -1,0 +1,257 @@
+<style>
+  .rt-occ {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-occ__hd {
+    padding: 72px 28px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .rt-occ__eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    margin: 0 0 12px;
+  }
+  .rt-occ__display {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-occ__subcount {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.6;
+  }
+
+  .rt-occ__rows {
+    border-top: 1px solid var(--rt-ink);
+  }
+  .rt-occ__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+
+  .rt-occ__img-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .rt-occ__img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: 380px;
+    object-fit: cover;
+    display: block;
+    transition: transform 600ms ease;
+  }
+  .rt-occ__row:hover .rt-occ__img {
+    transform: scale(1.03);
+  }
+  .rt-occ__img-tag {
+    position: absolute;
+    left: 22px;
+    top: 20px;
+    background: var(--rt-paper);
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 4px 9px;
+    color: var(--rt-ink);
+  }
+
+  .rt-occ__copy {
+    padding: 0 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+  }
+  .rt-occ__letter {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(80px, 10vw, 120px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-occ__name {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-occ__sub {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--rt-ink);
+    opacity: 0.75;
+    letter-spacing: 0;
+  }
+  .rt-occ__enter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 240px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rt-ink);
+    border-bottom: 1px solid var(--rt-ink);
+    color: var(--rt-ink);
+    text-decoration: none;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 8px;
+    transition: opacity 220ms;
+  }
+  .rt-occ__enter:hover { opacity: 0.6; }
+
+  /* odd rows: image left; even rows: image right */
+  .rt-occ__row--right .rt-occ__img-wrap { order: 2; }
+  .rt-occ__row--right .rt-occ__copy    { order: 1; }
+
+  @media (max-width: 990px) {
+    .rt-occ__copy { padding: 32px 32px; }
+    .rt-occ__img { min-height: 300px; }
+  }
+  @media (max-width: 749px) {
+    .rt-occ__row { grid-template-columns: 1fr; }
+    .rt-occ__row--right .rt-occ__img-wrap { order: 1; }
+    .rt-occ__row--right .rt-occ__copy    { order: 2; }
+    .rt-occ__img { aspect-ratio: 4/3; min-height: unset; }
+    .rt-occ__copy { padding: 28px 16px; }
+    .rt-occ__enter { width: 100%; }
+    .rt-occ__hd { padding: 40px 16px 20px; }
+  }
+</style>
+
+<section class="rt-occ">
+  <div class="rt-occ__hd">
+    <div>
+      <p class="rt-occ__eyebrow">Index 02 — By occasion</p>
+      <h2 class="rt-occ__display">Edits.</h2>
+    </div>
+    <span class="rt-occ__subcount">Four · curated by the studio</span>
+  </div>
+
+  <div class="rt-occ__rows">
+    {%- for block in section.blocks -%}
+      {%- assign is_right = forloop.index | modulo: 2 -%}
+      <div class="rt-occ__row {% if is_right == 0 %}rt-occ__row--right{% endif %}" {{ block.shopify_attributes }}>
+
+        <div class="rt-occ__img-wrap">
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 1200 }}"
+              srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
+                      {{ block.settings.image | image_url: width: 900 }} 900w,
+                      {{ block.settings.image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 749px) 100vw, 50vw"
+              alt="{{ block.settings.name | escape }}"
+              class="rt-occ__img"
+              loading="lazy"
+              decoding="async"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}">
+          {%- else -%}
+            <img
+              src="{{ block.settings.fallback_url }}"
+              alt="{{ block.settings.name | escape }}"
+              class="rt-occ__img"
+              loading="lazy">
+          {%- endif -%}
+          <span class="rt-occ__img-tag">{{ block.settings.name }}</span>
+        </div>
+
+        <div class="rt-occ__copy">
+          <p class="rt-occ__letter">{{ block.settings.letter }}</p>
+          <h3 class="rt-occ__name">{{ block.settings.name }}</h3>
+          <p class="rt-occ__sub">{{ block.settings.sub }}</p>
+          <a href="{{ block.settings.url }}" class="rt-occ__enter">
+            Enter the edit <span>→</span>
+          </a>
+        </div>
+
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Occasions",
+  "class": "rt-occ-section",
+  "presets": [{"name": "Occasions"}],
+  "blocks": [
+    {
+      "type": "occasion",
+      "name": "Occasion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "letter",
+          "label": "Index letter (A, B, C…)",
+          "default": "A"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Occasion name",
+          "default": "Bridal"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Sub-description",
+          "default": "Heirloom kundan & polki"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Occasion image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_url",
+          "label": "Fallback image URL (if no image set)"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Collection / page link"
+        }
+      ]
+    }
+  ],
+  "settings": []
+}
+{% endschema %}

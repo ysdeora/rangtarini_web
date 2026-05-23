@@ -1,0 +1,229 @@
+<style>
+  .rt-nl {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 540px;
+  }
+  .rt-nl__img-wrap {
+    overflow: hidden;
+    border-right: 1px solid var(--rt-ink);
+  }
+  .rt-nl__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .rt-nl__copy {
+    padding: 72px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+  .rt-nl__eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    margin: 0;
+  }
+  .rt-nl__display {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(56px, 8vw, 112px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-nl__deva {
+    font-family: var(--rt-font-deva);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--rt-gold);
+  }
+  .rt-nl__body {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--rt-ink);
+    opacity: 0.8;
+    margin: 0;
+    max-width: 420px;
+    letter-spacing: 0;
+  }
+  .rt-nl__form {
+    display: flex;
+    border-bottom: 1px solid var(--rt-ink);
+    margin-top: 8px;
+    align-items: center;
+  }
+  .rt-nl__input {
+    flex: 1;
+    border: 0;
+    padding: 16px 0;
+    background: transparent;
+    font-family: var(--rt-font-grotesk);
+    font-size: 17px;
+    color: var(--rt-ink);
+    outline: none;
+    min-width: 0;
+  }
+  .rt-nl__input::placeholder { opacity: 0.45; }
+  .rt-nl__submit {
+    background: transparent;
+    border: 0;
+    color: var(--rt-ink);
+    cursor: pointer;
+    padding: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity 220ms;
+  }
+  .rt-nl__submit:hover { opacity: 0.6; }
+  .rt-nl__arrow { font-size: 18px; }
+  .rt-nl__success {
+    display: none;
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    padding: 16px 0;
+  }
+
+  @media (max-width: 749px) {
+    .rt-nl {
+      grid-template-columns: 1fr;
+    }
+    .rt-nl__img-wrap {
+      border-right: none;
+      border-bottom: 1px solid var(--rt-ink);
+      min-height: 280px;
+    }
+    .rt-nl__copy {
+      padding: 40px 16px;
+      gap: 16px;
+    }
+    .rt-nl__display { font-size: 56px; }
+  }
+</style>
+
+<section class="rt-nl">
+  <div class="rt-nl__img-wrap">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1000 }}"
+        srcset="{{ section.settings.image | image_url: width: 600 }} 600w,
+                {{ section.settings.image | image_url: width: 1000 }} 1000w"
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="{{ section.settings.image_alt | default: 'Rangtarini jewelry' | escape }}"
+        class="rt-nl__img"
+        loading="lazy"
+        decoding="async"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/brand_story.jpg?v=1776532899"
+        alt="Rangtarini"
+        class="rt-nl__img"
+        loading="lazy">
+    {%- endif -%}
+  </div>
+
+  <div class="rt-nl__copy">
+    <p class="rt-nl__eyebrow">{{ section.settings.eyebrow | default: 'The Rangtarini Circle' }}</p>
+    <h2 class="rt-nl__display">{{ section.settings.heading | default: 'Subscribe.' }}</h2>
+    <span class="rt-nl__deva">रंगतारिणी</span>
+    <p class="rt-nl__body">{{ section.settings.body | default: 'One thoughtful email a fortnight — drops, the journal from the karkhana, and members-only edits. ₹500 off your first order over ₹3,500.' }}</p>
+
+    {%- form 'customer', id: 'rt-nl-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="rt-nl__form" id="rt-nl-fields">
+        <input
+          type="email"
+          name="contact[email]"
+          id="rt-nl-email"
+          class="rt-nl__input"
+          placeholder="{{ section.settings.placeholder | default: 'your@email.com' }}"
+          required
+          autocomplete="email">
+        <button type="submit" class="rt-nl__submit">
+          {{ section.settings.button_label | default: 'Subscribe' }}
+          <span class="rt-nl__arrow">→</span>
+        </button>
+      </div>
+      {%- if form.posted_successfully? -%}
+        <div class="rt-nl__success" style="display:block;">Subscribed — welcome to the Circle.</div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "class": "rt-nl-section",
+  "presets": [{"name": "Newsletter"}],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Left image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Rangtarini Circle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Subscribe."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body text",
+      "default": "One thoughtful email a fortnight — drops, the journal from the karkhana, and members-only edits. ₹500 off your first order over ₹3,500."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "default": "your@email.com"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Subscribe"
+    }
+  ]
+}
+{% endschema %}

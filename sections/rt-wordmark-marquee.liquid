@@ -1,0 +1,85 @@
+<style>
+  @keyframes rt-mq-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .rt-mq {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    overflow: hidden;
+    padding: 10px 0;
+    border-top: 1px solid var(--rt-ink);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-mq__track {
+    display: inline-flex;
+    align-items: center;
+    gap: 36px;
+    padding-left: 36px;
+    white-space: nowrap;
+    animation: rt-mq-scroll 55s linear infinite;
+  }
+  .rt-mq__cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 36px;
+  }
+  .rt-mq__en {
+    font-family: var(--rt-font-grotesk);
+    font-weight: 700;
+    font-size: clamp(12px, 1.2vw, 16px);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--rt-paper);
+  }
+  .rt-mq__dv {
+    font-family: var(--rt-font-deva);
+    font-weight: 600;
+    font-size: clamp(14px, 1.4vw, 18px);
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--rt-gold);
+    transform: translateY(2px);
+    display: inline-block;
+  }
+  .rt-mq__sep {
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    opacity: 0.45;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-mq__track { animation: none; }
+  }
+</style>
+
+<div class="rt-mq" aria-hidden="true">
+  <div class="rt-mq__track">
+    {%- for i in (1..16) -%}
+      <span class="rt-mq__cell">
+        {%- if i == i | modulo: 2 | plus: i -%}
+        {%- endif -%}
+        {%- assign is_deva = i | modulo: 2 -%}
+        {%- if is_deva == 0 -%}
+          <span class="rt-mq__dv">रंगतारिणी</span>
+        {%- else -%}
+          <span class="rt-mq__en">Rangtarini</span>
+        {%- endif -%}
+        <span class="rt-mq__sep"></span>
+      </span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Wordmark Marquee",
+  "class": "rt-mq-section",
+  "presets": [{"name": "Wordmark Marquee"}],
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,339 @@
+<style>
+  .rt-hero {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    height: 92vh;
+    min-height: 640px;
+    overflow: hidden;
+  }
+
+  /* Left: two stacked */
+  .rt-hero__left {
+    display: grid;
+    grid-template-rows: 1.1fr 1fr;
+    border-right: 1px solid var(--rt-ink);
+  }
+  .rt-hero__left-top {
+    position: relative;
+    border-bottom: 1px solid var(--rt-ink);
+    overflow: hidden;
+  }
+  .rt-hero__left-bottom {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Right: single tall */
+  .rt-hero__right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rt-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 600ms ease;
+  }
+  .rt-hero__left-top:hover .rt-hero__img,
+  .rt-hero__left-bottom:hover .rt-hero__img,
+  .rt-hero__right:hover .rt-hero__img {
+    transform: scale(1.03);
+  }
+
+  /* Corner overlays */
+  .rt-hero__meta-tl {
+    position: absolute;
+    left: 22px;
+    top: 20px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-paper);
+    background: var(--rt-ink);
+    padding: 4px 9px;
+    z-index: 2;
+  }
+  .rt-hero__meta-bl {
+    position: absolute;
+    left: 22px;
+    bottom: 16px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-paper);
+    opacity: 0.7;
+    z-index: 2;
+  }
+  .rt-hero__deva-tr {
+    position: absolute;
+    right: 22px;
+    top: 20px;
+    text-align: right;
+    z-index: 2;
+  }
+  .rt-hero__deva-tr span {
+    font-family: var(--rt-font-deva);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--rt-gold);
+    display: block;
+  }
+  .rt-hero__deva-tr small {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-paper);
+    opacity: 0.7;
+    display: block;
+    margin-top: 6px;
+  }
+
+  /* Bottom CTA bar on right image */
+  .rt-hero__cta-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 28px;
+    background: linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.6) 100%);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    z-index: 2;
+  }
+  .rt-hero__caption {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .rt-hero__caption-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--rt-paper);
+    letter-spacing: 0;
+  }
+  .rt-hero__caption-sub {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--rt-paper);
+    opacity: 0.55;
+  }
+  .rt-hero__enter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 220px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rt-paper);
+    border-bottom: 1px solid var(--rt-paper);
+    color: var(--rt-paper);
+    text-decoration: none;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: opacity 220ms;
+  }
+  .rt-hero__enter:hover { opacity: 0.75; }
+  .rt-hero__arrow { font-size: 16px; }
+
+  /* Mobile: stack vertically */
+  @media (max-width: 749px) {
+    .rt-hero {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: unset;
+    }
+    .rt-hero__left {
+      border-right: none;
+      border-bottom: 1px solid var(--rt-ink);
+      grid-template-rows: 1fr 1fr;
+      height: 60vh;
+    }
+    .rt-hero__right {
+      height: 70vh;
+    }
+  }
+</style>
+
+<section class="rt-hero">
+  <!-- Left: two stacked images -->
+  <div class="rt-hero__left">
+    <div class="rt-hero__left-top">
+      {%- if section.settings.image_top_left != blank -%}
+        <img
+          src="{{ section.settings.image_top_left | image_url: width: 800 }}"
+          srcset="{{ section.settings.image_top_left | image_url: width: 400 }} 400w,
+                  {{ section.settings.image_top_left | image_url: width: 800 }} 800w,
+                  {{ section.settings.image_top_left | image_url: width: 1200 }} 1200w"
+          sizes="(max-width: 749px) 100vw, 40vw"
+          alt="{{ section.settings.image_top_left_alt | default: 'Rangtarini jewelry' | escape }}"
+          class="rt-hero__img"
+          fetchpriority="high"
+          loading="eager"
+          width="{{ section.settings.image_top_left.width }}"
+          height="{{ section.settings.image_top_left.height }}">
+      {%- else -%}
+        <img
+          src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Earrings_category_image.jpg?v=1777315473"
+          alt="Rangtarini Earrings"
+          class="rt-hero__img"
+          fetchpriority="high"
+          loading="eager">
+      {%- endif -%}
+      <div class="rt-hero__meta-tl">{{ section.settings.meta_top | default: 'SS26 / Look 01' }}</div>
+    </div>
+
+    <div class="rt-hero__left-bottom">
+      {%- if section.settings.image_bottom_left != blank -%}
+        <img
+          src="{{ section.settings.image_bottom_left | image_url: width: 800 }}"
+          srcset="{{ section.settings.image_bottom_left | image_url: width: 400 }} 400w,
+                  {{ section.settings.image_bottom_left | image_url: width: 800 }} 800w"
+          sizes="(max-width: 749px) 100vw, 40vw"
+          alt="{{ section.settings.image_bottom_left_alt | default: 'Rangtarini jewelry detail' | escape }}"
+          class="rt-hero__img"
+          loading="lazy"
+          width="{{ section.settings.image_bottom_left.width }}"
+          height="{{ section.settings.image_bottom_left.height }}">
+      {%- else -%}
+        <img
+          src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Rakhdi_Category_image.jpg?v=1777315707"
+          alt="Rangtarini Maang Tikka detail"
+          class="rt-hero__img"
+          loading="lazy">
+      {%- endif -%}
+      <div class="rt-hero__meta-bl">Detail · Handcrafted</div>
+    </div>
+  </div>
+
+  <!-- Right: single tall image -->
+  <div class="rt-hero__right">
+    {%- if section.settings.image_right != blank -%}
+      <img
+        src="{{ section.settings.image_right | image_url: width: 1200 }}"
+        srcset="{{ section.settings.image_right | image_url: width: 600 }} 600w,
+                {{ section.settings.image_right | image_url: width: 900 }} 900w,
+                {{ section.settings.image_right | image_url: width: 1200 }} 1200w"
+        sizes="(max-width: 749px) 100vw, 55vw"
+        alt="{{ section.settings.image_right_alt | default: 'Rangtarini collection' | escape }}"
+        class="rt-hero__img"
+        fetchpriority="high"
+        loading="eager"
+        width="{{ section.settings.image_right.width }}"
+        height="{{ section.settings.image_right.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Necklace_category_image.jpg?v=1777315165"
+        alt="Rangtarini Necklaces"
+        class="rt-hero__img"
+        fetchpriority="high"
+        loading="eager">
+    {%- endif -%}
+
+    <div class="rt-hero__deva-tr">
+      <span>रंगतारिणी</span>
+      <small>SS26</small>
+    </div>
+
+    <div class="rt-hero__cta-bar">
+      <div class="rt-hero__caption">
+        <span class="rt-hero__caption-title">{{ section.settings.caption_title | default: 'Heirlooms, remade.' }}</span>
+        <span class="rt-hero__caption-sub">{{ section.settings.caption_sub | default: 'The Bridal Edit' }}</span>
+      </div>
+      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="rt-hero__enter">
+        {{ section.settings.cta_label | default: 'Enter the Collection' }}
+        <span class="rt-hero__arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Triptych",
+  "class": "rt-hero-section",
+  "presets": [{"name": "Hero Triptych"}],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_top_left",
+      "label": "Top-left image"
+    },
+    {
+      "type": "text",
+      "id": "image_top_left_alt",
+      "label": "Top-left image alt text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_bottom_left",
+      "label": "Bottom-left image"
+    },
+    {
+      "type": "text",
+      "id": "image_bottom_left_alt",
+      "label": "Bottom-left image alt text"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right (tall) image"
+    },
+    {
+      "type": "text",
+      "id": "image_right_alt",
+      "label": "Right image alt text"
+    },
+    {
+      "type": "text",
+      "id": "meta_top",
+      "label": "Top-left meta label",
+      "default": "SS26 / Look 01"
+    },
+    {
+      "type": "text",
+      "id": "caption_title",
+      "label": "CTA caption",
+      "default": "Heirlooms, remade."
+    },
+    {
+      "type": "text",
+      "id": "caption_sub",
+      "label": "CTA sub-caption",
+      "default": "The Bridal Edit"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label",
+      "default": "Enter the Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link",
+      "default": "/collections/all"
+    }
+  ]
+}
+{% endschema %}

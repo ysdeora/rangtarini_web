@@ -1,0 +1,229 @@
+<style>
+  .rt-cover {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-cover__header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    padding: 18px 28px;
+    align-items: end;
+    gap: 32px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-cover__caption {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .rt-cover__caption-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--rt-ink);
+    letter-spacing: 0;
+  }
+  .rt-cover__caption-sub {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--rt-ink);
+    opacity: 0.55;
+  }
+  .rt-cover__vol {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    text-align: center;
+  }
+  .rt-cover__look {
+    text-align: right;
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--rt-ink);
+  }
+
+  /* Full-bleed image */
+  .rt-cover__img-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .rt-cover__img {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Footer bar */
+  .rt-cover__footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    padding: 22px 28px;
+    border-top: 1px solid var(--rt-ink);
+    align-items: center;
+  }
+  .rt-cover__credit {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+  }
+  .rt-cover__line {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--rt-ink);
+    opacity: 0.85;
+    text-align: center;
+    letter-spacing: 0;
+  }
+  .rt-cover__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-align: right;
+    justify-content: flex-end;
+    text-decoration: none;
+    color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: opacity 220ms;
+  }
+  .rt-cover__cta:hover { opacity: 0.6; }
+
+  @media (max-width: 749px) {
+    .rt-cover__img { aspect-ratio: 4 / 3; }
+    .rt-cover__header { grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
+    .rt-cover__vol { display: none; }
+    .rt-cover__footer { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+    .rt-cover__line { text-align: left; }
+    .rt-cover__cta { justify-content: flex-start; }
+  }
+</style>
+
+<section class="rt-cover">
+  <div class="rt-cover__header">
+    <div class="rt-cover__caption">
+      <span class="rt-cover__caption-title">{{ section.settings.header_left | default: 'The cover, SS26' }}</span>
+      <span class="rt-cover__caption-sub">{{ section.settings.header_left_sub | default: 'Photographed in Jaipur' }}</span>
+    </div>
+    <div class="rt-cover__vol">{{ section.settings.vol_label | default: 'Vol. 02 — Campaign' }}</div>
+    <div class="rt-cover__look">{{ section.settings.header_right | default: 'Look 03 / 14' }}</div>
+  </div>
+
+  <div class="rt-cover__img-wrap">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1600 }}"
+        srcset="{{ section.settings.image | image_url: width: 800 }} 800w,
+                {{ section.settings.image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.image | image_url: width: 1600 }} 1600w"
+        sizes="100vw"
+        alt="{{ section.settings.image_alt | default: 'Rangtarini campaign' | escape }}"
+        class="rt-cover__img"
+        loading="lazy"
+        decoding="async"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/hero_desktop_poster.jpg?v=1776532899"
+        alt="Rangtarini campaign"
+        class="rt-cover__img"
+        loading="lazy">
+    {%- endif -%}
+  </div>
+
+  <div class="rt-cover__footer">
+    <span class="rt-cover__credit">{{ section.settings.credit | default: 'Photography · Rangtarini Studio' }}</span>
+    <span class="rt-cover__line">{{ section.settings.editorial_line | default: 'A study of weight, light, and inheritance.' }}</span>
+    <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="rt-cover__cta">
+      {{ section.settings.cta_label | default: 'View campaign' }} →
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Cover",
+  "class": "rt-cover-section",
+  "presets": [{"name": "Editorial Cover"}],
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Cover image (wide, 21:9 ideal)"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "text",
+      "id": "header_left",
+      "label": "Header left title",
+      "default": "The cover, SS26"
+    },
+    {
+      "type": "text",
+      "id": "header_left_sub",
+      "label": "Header left sub-text",
+      "default": "Photographed in Jaipur"
+    },
+    {
+      "type": "text",
+      "id": "vol_label",
+      "label": "Center label",
+      "default": "Vol. 02 — Campaign"
+    },
+    {
+      "type": "text",
+      "id": "header_right",
+      "label": "Header right text",
+      "default": "Look 03 / 14"
+    },
+    {
+      "type": "text",
+      "id": "credit",
+      "label": "Photography credit",
+      "default": "Photography · Rangtarini Studio"
+    },
+    {
+      "type": "text",
+      "id": "editorial_line",
+      "label": "Editorial line",
+      "default": "A study of weight, light, and inheritance."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "View campaign"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA link"
+    }
+  ]
+}
+{% endschema %}
