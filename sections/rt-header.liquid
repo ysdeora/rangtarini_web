@@ -117,6 +117,11 @@
     min-width: 155px;
   }
   .rt-mega__col:last-child { border-right: none; }
+  /* Compact column for leaf children (no sub-items) */
+  .rt-mega__col--flat {
+    min-width: 120px;
+    gap: 4px;
+  }
   .rt-mega__col-heading {
     font-family: var(--rt-font-grotesk);
     font-size: 9px;
@@ -317,7 +322,7 @@
     max-height: 0;
     transition: max-height 300ms ease;
   }
-  .rt-hd__mobile-section.is-open { max-height: 700px; }
+  .rt-hd__mobile-section.is-open { max-height: 1400px; }
   .rt-hd__mobile-children {
     padding: 4px 20px 16px;
     display: flex;
@@ -331,24 +336,50 @@
     color: var(--rt-ink); opacity: 0.65;
     text-decoration: none;
     display: block;
-    padding: 7px 0;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(10,10,10,0.05);
   }
   .rt-hd__mobile-child:last-child { border-bottom: none; }
-  /* 3-level group */
-  .rt-mobile-grp { margin-bottom: 14px; }
-  .rt-mobile-grp:last-child { margin-bottom: 0; }
-  .rt-mobile-grp__hd {
+  /* Sub-accordion row (child WITH grandchildren) */
+  .rt-mobile-sub { border-top: 1px solid rgba(10,10,10,0.05); }
+  .rt-mobile-sub:first-child { border-top: none; }
+  .rt-mobile-sub__row {
+    display: flex;
+    align-items: center;
+  }
+  .rt-mobile-sub__link {
     font-family: var(--rt-font-grotesk);
-    font-size: 9px; font-weight: 700;
-    letter-spacing: 0.22em;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--rt-ink); opacity: 0.4;
+    color: var(--rt-ink); opacity: 0.5;
     text-decoration: none;
     display: block;
-    margin-bottom: 6px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgba(10,10,10,0.08);
+    padding: 10px 0;
+    flex: 1;
+  }
+  .rt-mobile-sub__btn {
+    background: none; border: none;
+    cursor: pointer; padding: 10px 0 10px 14px;
+    font-size: 16px; line-height: 1;
+    color: var(--rt-ink); opacity: 0.4;
+    transition: transform 220ms, opacity 220ms;
+  }
+  .rt-mobile-sub__btn[aria-expanded="true"] {
+    transform: rotate(45deg);
+    opacity: 1;
+  }
+  .rt-mobile-sub__section {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 280ms ease;
+    padding-left: 12px;
+  }
+  .rt-mobile-sub__section.is-open { max-height: 600px; }
+  .rt-hd__mobile-child--gc {
+    font-size: 11px;
+    opacity: 0.55;
+    padding: 6px 0;
   }
 
   @media (max-width: 749px) {
@@ -386,6 +417,7 @@
 
             {%- if is_mega -%}
               <div class="rt-hd__dropdown rt-hd__dropdown--mega" role="menu">
+                {%- comment %} Children WITH grandchildren → each gets its own column {%- endcomment %}
                 {%- for child in link.links -%}
                   {%- if child.links.size > 0 -%}
                     <div class="rt-mega__col">
@@ -394,12 +426,22 @@
                         <a href="{{ gc.url }}" class="rt-hd__drop-link" role="menuitem">{{ gc.title | escape }}</a>
                       {%- endfor -%}
                     </div>
-                  {%- else -%}
-                    <div class="rt-mega__col">
-                      <a href="{{ child.url }}" class="rt-hd__drop-link" role="menuitem">{{ child.title | escape }}</a>
-                    </div>
                   {%- endif -%}
                 {%- endfor -%}
+                {%- comment %} Leaf children (no grandchildren) → grouped into one compact column {%- endcomment %}
+                {%- assign has_flat_children = false -%}
+                {%- for child in link.links -%}
+                  {%- if child.links.size == 0 -%}{%- assign has_flat_children = true -%}{%- endif -%}
+                {%- endfor -%}
+                {%- if has_flat_children -%}
+                  <div class="rt-mega__col rt-mega__col--flat">
+                    {%- for child in link.links -%}
+                      {%- if child.links.size == 0 -%}
+                        <a href="{{ child.url }}" class="rt-hd__drop-link" role="menuitem">{{ child.title | escape }}</a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
               </div>
             {%- else -%}
               <div class="rt-hd__dropdown" role="menu">
@@ -510,11 +552,18 @@
               {%- if is_mega_mob -%}
                 {%- for child in link.links -%}
                   {%- if child.links.size > 0 -%}
-                    <div class="rt-mobile-grp">
-                      <a href="{{ child.url }}" class="rt-mobile-grp__hd">{{ child.title | escape }}</a>
-                      {%- for gc in child.links -%}
-                        <a href="{{ gc.url }}" class="rt-hd__mobile-child">{{ gc.title | escape }}</a>
-                      {%- endfor -%}
+                    <div class="rt-mobile-sub">
+                      <div class="rt-mobile-sub__row">
+                        <a href="{{ child.url }}" class="rt-mobile-sub__link">{{ child.title | escape }}</a>
+                        <button class="rt-mobile-sub__btn"
+                                aria-expanded="false"
+                                aria-label="Expand {{ child.title | escape }}">+</button>
+                      </div>
+                      <div class="rt-mobile-sub__section">
+                        {%- for gc in child.links -%}
+                          <a href="{{ gc.url }}" class="rt-hd__mobile-child rt-hd__mobile-child--gc">{{ gc.title | escape }}</a>
+                        {%- endfor -%}
+                      </div>
                     </div>
                   {%- else -%}
                     <a href="{{ child.url }}" class="rt-hd__mobile-child">{{ child.title | escape }}</a>
@@ -556,11 +605,22 @@
     });
   }
 
-  /* ── Mobile accordion ── */
+  /* ── Mobile accordion (top level) ── */
   document.querySelectorAll('.rt-hd__mobile-acc-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var item    = btn.closest('.rt-hd__mobile-item');
       var section = item && item.querySelector('.rt-hd__mobile-section');
+      var open    = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      if (section) section.classList.toggle('is-open', !open);
+    });
+  });
+
+  /* ── Mobile sub-accordion (sub-collections with grandchildren) ── */
+  document.querySelectorAll('.rt-mobile-sub__btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var sub     = btn.closest('.rt-mobile-sub');
+      var section = sub && sub.querySelector('.rt-mobile-sub__section');
       var open    = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
       if (section) section.classList.toggle('is-open', !open);
