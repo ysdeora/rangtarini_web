@@ -1,24 +1,29 @@
-name: Sync to rangtarini_webv2
+name: Sync from rangtarini_web
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write        # ← this is the fix
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      - name: Checkout source repo
+      - name: Checkout target repo
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Push to target repo
-        env:
-          TARGET_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+      - name: Pull from source and push
         run: |
-          git config --global credential.helper '!f() { echo "username=x-access-token"; echo "password=${TARGET_TOKEN}"; }; f'
-          git remote add target https://github.com/ysdeora-rangtarini/rangtarini_webv2.git
-          git push target main --force
+          git remote add source https://github.com/ysdeora/rangtarini_web.git
+          git fetch source main
+          git reset --hard source/main
+          git push origin main --force
