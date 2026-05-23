@@ -14,6 +14,48 @@
 }
 
 /* ============================================
+   HEADER — editorial overrides (Dawn classes)
+   ============================================ */
+.header {
+  background: var(--rt-paper) !important;
+  border-bottom: 1px solid var(--rt-ink) !important;
+}
+.header__heading-link,
+.header__heading-logo {
+  color: var(--rt-ink) !important;
+}
+.header__menu-item span,
+.header__active-menu-item {
+  font-family: var(--rt-font-grotesk);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--rt-ink) !important;
+}
+.header__icon {
+  color: var(--rt-ink) !important;
+}
+.header__icon svg {
+  fill: var(--rt-ink) !important;
+  color: var(--rt-ink) !important;
+}
+.header__inline-menu .header__submenu {
+  background: var(--rt-paper);
+  border: 1px solid var(--rt-ink);
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(10,10,10,0.08);
+  min-width: 200px;
+}
+.header__submenu .header__menu-item {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--rt-ink);
+  transition: opacity 0.2s;
+}
+.header__submenu .header__menu-item:last-child { border: none; }
+.header__submenu .header__menu-item:hover { opacity: 0.6; }
+
+/* ============================================
    REFINED TYPOGRAPHY SYSTEM
    ============================================ */
 
