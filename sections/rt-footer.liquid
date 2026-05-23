@@ -5,15 +5,16 @@
     border-top: 1px solid rgba(239,236,228,0.1);
   }
 
-  /* ── Giant wordmark headline ── */
+  /* ── Giant wordmark ── */
   .rt-ft__hero {
-    padding: 56px 40px 0;
+    padding: 48px 0 0;
     text-align: center;
     border-bottom: 1px solid rgba(239,236,228,0.1);
+    overflow: hidden;
   }
   .rt-ft__wordmark {
     font-family: var(--rt-font-grotesk);
-    font-size: clamp(72px, 15.5vw, 240px);
+    font-size: clamp(56px, 13vw, 192px);
     font-weight: 900;
     letter-spacing: -0.03em;
     text-transform: uppercase;
@@ -22,14 +23,15 @@
     margin: 0;
     text-decoration: none;
     display: block;
+    white-space: nowrap;
   }
   .rt-ft__deva {
     font-family: var(--rt-font-deva);
-    font-size: clamp(22px, 2.8vw, 38px);
+    font-size: clamp(20px, 2.4vw, 34px);
     font-weight: 600;
     color: var(--rt-gold);
     display: block;
-    margin: 18px 0 44px;
+    margin: 16px 0 40px;
     letter-spacing: 0;
   }
 
@@ -39,7 +41,7 @@
     grid-template-columns: repeat(5, 1fr);
   }
   .rt-ft__col {
-    padding: 44px 32px;
+    padding: 44px 28px;
     border-right: 1px solid rgba(239,236,228,0.1);
   }
   .rt-ft__col:last-child { border-right: none; }
@@ -52,7 +54,7 @@
     font-weight: 700;
     color: var(--rt-gold);
     display: block;
-    margin-bottom: 26px;
+    margin-bottom: 24px;
   }
 
   .rt-ft__desc {
@@ -61,10 +63,10 @@
     line-height: 1.65;
     color: var(--rt-paper);
     opacity: 0.7;
-    margin: 0 0 28px;
+    margin: 0 0 24px;
   }
 
-  /* Social buttons — outlined rectangles */
+  /* Social buttons */
   .rt-ft__social {
     display: flex;
     flex-direction: column;
@@ -117,7 +119,7 @@
     align-items: center;
     gap: 16px;
     border-top: 1px solid rgba(239,236,228,0.1);
-    padding: 18px 40px;
+    padding: 18px 28px;
   }
   .rt-ft__copy {
     font-family: var(--rt-font-grotesk);
@@ -129,7 +131,7 @@
   }
   .rt-ft__payments {
     display: flex;
-    gap: 22px;
+    gap: 20px;
     align-items: center;
     justify-content: center;
   }
@@ -156,13 +158,10 @@
     .rt-ft__cols { grid-template-columns: repeat(3, 1fr); }
     .rt-ft__col:nth-child(3) { border-right: none; }
     .rt-ft__col:nth-child(4),
-    .rt-ft__col:nth-child(5) {
-      border-top: 1px solid rgba(239,236,228,0.1);
-    }
-    .rt-ft__col:nth-child(5) { border-right: none; }
+    .rt-ft__col:nth-child(5) { border-top: 1px solid rgba(239,236,228,0.1); }
+    .rt-ft__col:nth-child(6) { border-right: none; }
   }
   @media (max-width: 749px) {
-    .rt-ft__hero { padding: 36px 20px 0; }
     .rt-ft__cols { grid-template-columns: 1fr 1fr; }
     .rt-ft__col { padding: 28px 20px; }
     .rt-ft__col:nth-child(odd) { border-right: 1px solid rgba(239,236,228,0.1); }
@@ -189,72 +188,77 @@
 
     <!-- Studio -->
     <div class="rt-ft__col">
-      <span class="rt-ft__col-heading">Studio</span>
+      <span class="rt-ft__col-heading">{{ section.settings.heading_studio | default: 'Studio' }}</span>
       <p class="rt-ft__desc">{{ section.settings.studio_desc | default: 'Handmade goldplated and silver 925 jewellery. Made in Jaipur.' }}</p>
       <div class="rt-ft__social">
-        <a href="{{ section.settings.instagram_url | default: 'https://instagram.com/rangtarini' }}"
-           target="_blank" rel="noopener" class="rt-ft__social-btn">Instagram</a>
-        <a href="https://wa.me/{{ section.settings.whatsapp_number | default: '919251110762' }}"
-           target="_blank" rel="noopener" class="rt-ft__social-btn">WhatsApp</a>
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" class="rt-ft__social-btn">Instagram</a>
+        {%- endif -%}
+        {%- if section.settings.whatsapp_number != blank -%}
+          <a href="https://wa.me/{{ section.settings.whatsapp_number }}" target="_blank" rel="noopener" class="rt-ft__social-btn">WhatsApp</a>
+        {%- endif -%}
       </div>
     </div>
 
     <!-- Shop -->
     <div class="rt-ft__col">
-      <span class="rt-ft__col-heading">Shop</span>
+      <span class="rt-ft__col-heading">{{ section.settings.heading_shop | default: 'Shop' }}</span>
       <ul class="rt-ft__links">
-        <li><a href="/collections/necklaces-sets" class="rt-ft__link">Necklaces &amp; Sets</a></li>
-        <li><a href="/collections/earrings" class="rt-ft__link">Earrings</a></li>
-        <li><a href="/collections/rings" class="rt-ft__link">Rings</a></li>
-        <li><a href="/collections/maang-tikka-rakhdi" class="rt-ft__link">Maang Tikka</a></li>
-        <li><a href="/collections/payal-anklets" class="rt-ft__link">Payal</a></li>
-        <li><a href="/collections/bangles-bracelets" class="rt-ft__link">Bangles</a></li>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'shop' -%}
+            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
       </ul>
     </div>
 
     <!-- Edits -->
     <div class="rt-ft__col">
-      <span class="rt-ft__col-heading">Edits</span>
+      <span class="rt-ft__col-heading">{{ section.settings.heading_edits | default: 'Edits' }}</span>
       <ul class="rt-ft__links">
-        <li><a href="/collections/bridal" class="rt-ft__link">SS26 / Bridal</a></li>
-        <li><a href="/collections/festive" class="rt-ft__link">Festive 2026</a></li>
-        <li><a href="/collections/everyday" class="rt-ft__link">Everyday silver</a></li>
-        <li><a href="/collections/all?sort_by=price-ascending" class="rt-ft__link">Under ₹5,000</a></li>
-        <li><a href="/collections/gifting" class="rt-ft__link">Gifting</a></li>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'edits' -%}
+            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
       </ul>
     </div>
 
     <!-- Help -->
     <div class="rt-ft__col">
-      <span class="rt-ft__col-heading">Help</span>
+      <span class="rt-ft__col-heading">{{ section.settings.heading_help | default: 'Help' }}</span>
       <ul class="rt-ft__links">
-        <li><a href="/pages/returns-exchange" class="rt-ft__link">Shipping &amp; returns</a></li>
-        <li><a href="/pages/care-guide" class="rt-ft__link">Care guide</a></li>
-        <li><a href="/pages/contact" class="rt-ft__link">Track order</a></li>
-        <li><a href="/pages/contact" class="rt-ft__link">Contact</a></li>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'help' -%}
+            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
       </ul>
     </div>
 
     <!-- About -->
     <div class="rt-ft__col">
-      <span class="rt-ft__col-heading">About</span>
+      <span class="rt-ft__col-heading">{{ section.settings.heading_about | default: 'About' }}</span>
       <ul class="rt-ft__links">
-        <li><a href="/pages/about-us" class="rt-ft__link">Our story</a></li>
-        <li><a href="/blogs/jewellery-guide" class="rt-ft__link">Journal</a></li>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.column == 'about' -%}
+            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
       </ul>
     </div>
 
   </div>
 
   <div class="rt-ft__bottom">
-    <span class="rt-ft__copy">© {{ 'now' | date: '%Y' }} Rangtarini · info@rangtarini.com</span>
+    <span class="rt-ft__copy">© {{ 'now' | date: '%Y' }} {{ section.settings.wordmark | default: 'Rangtarini' }} · {{ section.settings.email | default: 'info@rangtarini.com' }}</span>
     <div class="rt-ft__payments">
       <span class="rt-ft__payment">Visa</span>
       <span class="rt-ft__payment">Mastercard</span>
       <span class="rt-ft__payment">UPI</span>
       <span class="rt-ft__payment">RuPay</span>
     </div>
-    <span class="rt-ft__origin">Made in Jaipur · Shipped from Mumbai</span>
+    <span class="rt-ft__origin">{{ section.settings.origin_text | default: 'Made in Jaipur · Shipped from Mumbai' }}</span>
   </div>
 
 </footer>
@@ -263,7 +267,7 @@
 {
   "name": "Footer",
   "class": "rt-footer-section",
-  "presets": [{"name": "Footer"}],
+  "max_blocks": 40,
   "settings": [
     {
       "type": "text",
@@ -287,7 +291,89 @@
       "id": "whatsapp_number",
       "label": "WhatsApp number (with country code, no +)",
       "default": "919251110762"
+    },
+    {
+      "type": "header",
+      "content": "Column headings"
+    },
+    {
+      "type": "text",
+      "id": "heading_studio",
+      "label": "Studio column heading",
+      "default": "Studio"
+    },
+    {
+      "type": "text",
+      "id": "heading_shop",
+      "label": "Shop column heading",
+      "default": "Shop"
+    },
+    {
+      "type": "text",
+      "id": "heading_edits",
+      "label": "Edits column heading",
+      "default": "Edits"
+    },
+    {
+      "type": "text",
+      "id": "heading_help",
+      "label": "Help column heading",
+      "default": "Help"
+    },
+    {
+      "type": "text",
+      "id": "heading_about",
+      "label": "About column heading",
+      "default": "About"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Contact email",
+      "default": "info@rangtarini.com"
+    },
+    {
+      "type": "text",
+      "id": "origin_text",
+      "label": "Origin / shipping line",
+      "default": "Made in Jaipur · Shipped from Mumbai"
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Navigation link",
+      "settings": [
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Column",
+          "options": [
+            { "value": "shop",  "label": "Shop"  },
+            { "value": "edits", "label": "Edits" },
+            { "value": "help",  "label": "Help"  },
+            { "value": "about", "label": "About" }
+          ],
+          "default": "shop"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Link label"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Link URL",
+          "info": "Relative (/collections/earrings) or absolute URL"
+        }
+      ]
+    }
+  ],
+  "presets": [{"name": "Footer"}]
 }
 {% endschema %}
