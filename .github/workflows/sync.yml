@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  workflows: write
+  contents: write        # ← this is the fix
 
 jobs:
   sync:
