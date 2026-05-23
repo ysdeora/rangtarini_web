@@ -1,1 +1,16 @@
-{"name":"t:sections.footer.name","type":"footer","sections":{"rt_footer":{"type":"rt-footer","settings":{"wordmark":"Rangtarini","tagline":"Handcrafted in India · Since MMXXI","instagram_url":"https://instagram.com/rangtarini","whatsapp_number":"919251110762"}}},"order":["rt_footer"]}
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "rt_footer": {
+      "type": "rt-footer",
+      "settings": {
+        "wordmark": "Rangtarini",
+        "tagline": "Handcrafted in India · Since MMXXI",
+        "instagram_url": "https://instagram.com/rangtarini",
+        "whatsapp_number": "919251110762"
+      }
+    }
+  },
+  "order": ["rt_footer"]
+}
