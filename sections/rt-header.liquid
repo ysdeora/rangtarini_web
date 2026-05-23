@@ -6,20 +6,28 @@
     top: 0;
     z-index: 100;
   }
+
+  /* 3-column grid — nav | LOGO | actions */
   .rt-hd {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 0 28px;
     height: 60px;
-    max-width: 100%;
+    padding: 0 28px;
   }
 
-  /* ── Left: nav links ── */
+  /* ── Left: nav ── */
+  /* Nav stretches to full header height so dropdowns anchor to the header bottom */
   .rt-hd__nav {
     display: flex;
-    gap: 28px;
+    gap: 32px;
+    align-self: stretch;
     align-items: center;
+  }
+  .rt-hd__nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
   }
   .rt-hd__nav-link {
     font-family: var(--rt-font-grotesk);
@@ -32,9 +40,71 @@
     opacity: 0.6;
     transition: opacity 180ms;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
   .rt-hd__nav-link:hover,
+  .rt-hd__nav-item:hover > .rt-hd__nav-link,
+  .rt-hd__nav-item:focus-within > .rt-hd__nav-link,
   .rt-hd__nav-link[aria-current] { opacity: 1; }
+
+  .rt-hd__chevron {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 3.5px solid transparent;
+    border-right: 3.5px solid transparent;
+    border-top: 4px solid currentColor;
+    opacity: 0.7;
+    transition: transform 200ms ease;
+    margin-top: 1px;
+  }
+  .rt-hd__nav-item:hover .rt-hd__chevron,
+  .rt-hd__nav-item:focus-within .rt-hd__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ── Dropdown ── */
+  .rt-hd__dropdown {
+    position: absolute;
+    top: 100%;        /* aligns to bottom of full-height nav item = header bottom */
+    left: 0;
+    background: var(--rt-paper);
+    border: 1px solid var(--rt-ink);
+    border-top: none;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 40px;
+    min-width: 260px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition: opacity 180ms ease, visibility 180ms ease, transform 180ms ease;
+    z-index: 200;
+  }
+  .rt-hd__nav-item:hover .rt-hd__dropdown,
+  .rt-hd__nav-item:focus-within .rt-hd__dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .rt-hd__drop-link {
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--rt-ink);
+    text-decoration: none;
+    opacity: 0.65;
+    transition: opacity 180ms;
+    white-space: nowrap;
+    display: block;
+    padding: 3px 0;
+  }
+  .rt-hd__drop-link:hover { opacity: 1; }
 
   /* ── Centre: wordmark ── */
   .rt-hd__logo {
@@ -46,8 +116,11 @@
     color: var(--rt-ink);
     text-decoration: none;
     text-align: center;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     line-height: 1;
+    align-self: center;
   }
 
   /* ── Right: icons ── */
@@ -92,7 +165,7 @@
     line-height: 1;
   }
 
-  /* ── Mobile: hamburger ── */
+  /* ── Mobile hamburger ── */
   .rt-hd__menu-btn {
     display: none;
     flex-direction: column;
@@ -101,6 +174,7 @@
     border: none;
     cursor: pointer;
     padding: 4px;
+    align-self: center;
   }
   .rt-hd__menu-btn span {
     display: block;
@@ -112,9 +186,7 @@
   .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(1) {
     transform: rotate(45deg) translate(4.5px, 4.5px);
   }
-  .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(2) {
-    opacity: 0;
-  }
+  .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
   .rt-hd__menu-btn[aria-expanded="true"] span:nth-child(3) {
     transform: rotate(-45deg) translate(4.5px, -4.5px);
   }
@@ -125,27 +197,47 @@
     flex-direction: column;
     background: var(--rt-paper);
     border-top: 1px solid rgba(10,10,10,0.1);
-    padding: 8px 0 24px;
   }
   .rt-hd__mobile-nav.is-open { display: flex; }
-  .rt-hd__mobile-nav .rt-hd__nav-link {
-    font-size: 12px;
+
+  .rt-hd__mobile-item { border-bottom: 1px solid rgba(10,10,10,0.07); }
+  .rt-hd__mobile-item:last-child { border-bottom: none; }
+
+  .rt-hd__mobile-link {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.18em;
-    opacity: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    text-decoration: none;
+    display: block;
     padding: 14px 20px;
-    border-bottom: 1px solid rgba(10,10,10,0.06);
   }
-  .rt-hd__mobile-nav .rt-hd__nav-link:last-child { border-bottom: none; }
+  .rt-hd__mobile-children {
+    padding: 0 20px 14px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rt-hd__mobile-child {
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.65;
+    text-decoration: none;
+    display: block;
+  }
 
   @media (max-width: 749px) {
     .rt-hd {
       grid-template-columns: auto 1fr auto;
       padding: 0 16px;
-      gap: 12px;
+      gap: 0;
     }
-    .rt-hd__nav  { display: none; }
-    .rt-hd__logo { text-align: center; }
+    .rt-hd__nav    { display: none; }
+    .rt-hd__logo   { justify-content: center; padding: 0 12px; }
     .rt-hd__menu-btn { display: flex; }
   }
 </style>
@@ -153,21 +245,42 @@
 <div class="rt-hd-wrap">
   <div class="rt-hd">
 
-    {%- comment %} Left – nav (desktop) / hamburger (mobile) {%- endcomment %}
-    <nav class="rt-hd__nav" aria-label="{{ 'accessibility.skip_to_content' | t }}">
+    {%- comment %} Left – desktop nav / mobile hamburger {%- endcomment %}
+    <nav class="rt-hd__nav" aria-label="Main navigation">
       {%- for link in linklists[section.settings.menu].links -%}
-        <a href="{{ link.url }}"
-           class="rt-hd__nav-link"
-           {% if link.active %}aria-current="page"{% endif %}>
-          {{ link.title | escape }}
-        </a>
+        {%- if link.links.size > 0 -%}
+          <div class="rt-hd__nav-item">
+            <a href="{{ link.url }}"
+               class="rt-hd__nav-link"
+               aria-haspopup="true"
+               {% if link.active %}aria-current="page"{% endif %}>
+              {{ link.title | escape }}
+              <span class="rt-hd__chevron" aria-hidden="true"></span>
+            </a>
+            <div class="rt-hd__dropdown" role="menu">
+              {%- for child in link.links -%}
+                <a href="{{ child.url }}" class="rt-hd__drop-link" role="menuitem">
+                  {{ child.title | escape }}
+                </a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- else -%}
+          <div class="rt-hd__nav-item">
+            <a href="{{ link.url }}"
+               class="rt-hd__nav-link"
+               {% if link.active %}aria-current="page"{% endif %}>
+              {{ link.title | escape }}
+            </a>
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </nav>
 
     <button class="rt-hd__menu-btn"
             aria-expanded="false"
             aria-controls="rt-mobile-nav"
-            aria-label="Menu">
+            aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
 
@@ -198,14 +311,25 @@
 
   </div>
 
-  {%- comment %} Mobile nav {%- endcomment %}
-  <nav class="rt-hd__mobile-nav" id="rt-mobile-nav" aria-label="Main navigation" hidden>
+  {%- comment %} Mobile nav – flat list with sub-links shown inline {%- endcomment %}
+  <nav class="rt-hd__mobile-nav" id="rt-mobile-nav" hidden>
     {%- for link in linklists[section.settings.menu].links -%}
-      <a href="{{ link.url }}"
-         class="rt-hd__nav-link"
-         {% if link.active %}aria-current="page"{% endif %}>
-        {{ link.title | escape }}
-      </a>
+      <div class="rt-hd__mobile-item">
+        <a href="{{ link.url }}"
+           class="rt-hd__mobile-link"
+           {% if link.active %}aria-current="page"{% endif %}>
+          {{ link.title | escape }}
+        </a>
+        {%- if link.links.size > 0 -%}
+          <div class="rt-hd__mobile-children">
+            {%- for child in link.links -%}
+              <a href="{{ child.url }}" class="rt-hd__mobile-child">
+                {{ child.title | escape }}
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
     {%- endfor -%}
   </nav>
 </div>
@@ -218,6 +342,7 @@
   btn.addEventListener('click', function () {
     var open = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!open));
+    btn.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
     nav.hidden = open;
     nav.classList.toggle('is-open', !open);
   });
@@ -233,12 +358,13 @@
       "type": "text",
       "id": "logo_text",
       "label": "Logo text",
-      "default": "Rangtarini"
+      "default": "RANGTARINI"
     },
     {
       "type": "link_list",
       "id": "menu",
       "label": "Navigation menu",
+      "info": "Create a menu with 2–4 items. Add child links under 'Shop' to populate the dropdown.",
       "default": "main-menu"
     }
   ],
