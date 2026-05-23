@@ -273,9 +273,9 @@
             {%- endif -%}
 
             {%- if product.available -%}
-              <a href="{{ product.url }}" class="na-add-btn" tabindex="-1" aria-hidden="true">
+              <div class="na-add-btn" aria-hidden="true">
                 Add — {{ product.price_min | money_without_trailing_zeros }}
-              </a>
+              </div>
             {%- else -%}
               <div class="na-soldout-overlay">Sold Out</div>
             {%- endif -%}

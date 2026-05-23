@@ -3,48 +3,28 @@
     background: var(--rt-paper);
     border-bottom: 1px solid var(--rt-ink);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    height: 80vh;
-    min-height: 560px;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 85vh;
+    min-height: 520px;
     overflow: hidden;
   }
-
-  /* Left: two stacked */
-  .rt-hero__left {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
+  .rt-hero__panel {
+    position: relative;
+    overflow: hidden;
     border-right: 1px solid var(--rt-ink);
   }
-  .rt-hero__left-top {
-    position: relative;
-    border-bottom: 1px solid var(--rt-ink);
-    overflow: hidden;
-  }
-  .rt-hero__left-bottom {
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Right: single tall */
-  .rt-hero__right {
-    position: relative;
-    overflow: hidden;
-  }
-
+  .rt-hero__panel:last-child { border-right: none; }
   .rt-hero__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 600ms ease;
   }
-  .rt-hero__left-top:hover .rt-hero__img,
-  .rt-hero__left-bottom:hover .rt-hero__img,
-  .rt-hero__right:hover .rt-hero__img {
-    transform: scale(1.03);
-  }
+  .rt-hero__panel:hover .rt-hero__img { transform: scale(1.03); }
 
-  /* Corner overlays */
   .rt-hero__meta-tl {
     position: absolute;
     left: 22px;
@@ -57,19 +37,6 @@
     color: var(--rt-paper);
     background: var(--rt-ink);
     padding: 4px 9px;
-    z-index: 2;
-  }
-  .rt-hero__meta-bl {
-    position: absolute;
-    left: 22px;
-    bottom: 16px;
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--rt-paper);
-    opacity: 0.7;
     z-index: 2;
   }
   .rt-hero__deva-tr {
@@ -99,142 +66,135 @@
     margin-top: 6px;
   }
 
-  /* Bottom CTA bar on right image */
   .rt-hero__cta-bar {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     padding: 28px;
-    background: linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.6) 100%);
+    background: linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.65) 100%);
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: end;
+    grid-template-columns: 1fr;
+    gap: 16px;
     z-index: 2;
-  }
-  .rt-hero__caption {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
   }
   .rt-hero__caption-title {
     font-family: var(--rt-font-grotesk);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    line-height: 1.4;
     color: var(--rt-paper);
-    letter-spacing: 0;
+    display: block;
+    margin-bottom: 4px;
   }
   .rt-hero__caption-sub {
     font-family: var(--rt-font-grotesk);
     font-size: 10px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    font-weight: 400;
     color: var(--rt-paper);
     opacity: 0.55;
+    display: block;
+    margin-bottom: 16px;
   }
   .rt-hero__enter {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    min-width: 220px;
-    padding: 12px 0;
+    gap: 10px;
+    padding: 10px 0;
     border-top: 1px solid var(--rt-paper);
     border-bottom: 1px solid var(--rt-paper);
     color: var(--rt-paper);
     text-decoration: none;
     font-family: var(--rt-font-grotesk);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     font-weight: 600;
+    white-space: nowrap;
     transition: opacity 220ms;
+    width: fit-content;
   }
   .rt-hero__enter:hover { opacity: 0.75; }
-  .rt-hero__arrow { font-size: 16px; }
 
-  /* Mobile: stack vertically */
   @media (max-width: 749px) {
     .rt-hero {
       grid-template-columns: 1fr;
       height: auto;
       min-height: unset;
     }
-    .rt-hero__left {
+    .rt-hero__panel {
       border-right: none;
       border-bottom: 1px solid var(--rt-ink);
-      grid-template-rows: 1fr 1fr;
-      height: 60vh;
+      height: 65vw;
     }
-    .rt-hero__right {
-      height: 70vh;
+    .rt-hero__panel:last-child {
+      border-bottom: none;
+      height: 80vw;
     }
   }
 </style>
 
 <section class="rt-hero">
-  <!-- Left: two stacked images -->
-  <div class="rt-hero__left">
-    <div class="rt-hero__left-top">
-      {%- if section.settings.image_top_left != blank -%}
-        <img
-          src="{{ section.settings.image_top_left | image_url: width: 800 }}"
-          srcset="{{ section.settings.image_top_left | image_url: width: 400 }} 400w,
-                  {{ section.settings.image_top_left | image_url: width: 800 }} 800w,
-                  {{ section.settings.image_top_left | image_url: width: 1200 }} 1200w"
-          sizes="(max-width: 749px) 100vw, 40vw"
-          alt="{{ section.settings.image_top_left_alt | default: 'Rangtarini jewelry' | escape }}"
-          class="rt-hero__img"
-          fetchpriority="high"
-          loading="eager"
-          width="{{ section.settings.image_top_left.width }}"
-          height="{{ section.settings.image_top_left.height }}">
-      {%- else -%}
-        <img
-          src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Earrings_category_image.jpg?v=1777315473"
-          alt="Rangtarini Earrings"
-          class="rt-hero__img"
-          fetchpriority="high"
-          loading="eager">
-      {%- endif -%}
-      <div class="rt-hero__meta-tl">{{ section.settings.meta_top | default: 'SS26 / Look 01' }}</div>
-    </div>
+  <!-- Panel 1 — left -->
+  <div class="rt-hero__panel">
+    {%- if section.settings.image_top_left != blank -%}
+      <img
+        src="{{ section.settings.image_top_left | image_url: width: 800 }}"
+        srcset="{{ section.settings.image_top_left | image_url: width: 400 }} 400w,
+                {{ section.settings.image_top_left | image_url: width: 800 }} 800w,
+                {{ section.settings.image_top_left | image_url: width: 1200 }} 1200w"
+        sizes="(max-width: 749px) 100vw, 33vw"
+        alt="{{ section.settings.image_top_left_alt | default: 'Rangtarini jewelry' | escape }}"
+        class="rt-hero__img"
+        fetchpriority="high"
+        loading="eager"
+        width="{{ section.settings.image_top_left.width }}"
+        height="{{ section.settings.image_top_left.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Earrings_category_image.jpg?v=1777315473"
+        alt="Rangtarini Earrings"
+        class="rt-hero__img"
+        fetchpriority="high"
+        loading="eager">
+    {%- endif -%}
+    <div class="rt-hero__meta-tl">{{ section.settings.meta_top | default: 'SS26 / Look 01' }}</div>
+  </div>
 
-    <div class="rt-hero__left-bottom">
-      {%- if section.settings.image_bottom_left != blank -%}
-        <img
-          src="{{ section.settings.image_bottom_left | image_url: width: 800 }}"
-          srcset="{{ section.settings.image_bottom_left | image_url: width: 400 }} 400w,
-                  {{ section.settings.image_bottom_left | image_url: width: 800 }} 800w"
-          sizes="(max-width: 749px) 100vw, 40vw"
-          alt="{{ section.settings.image_bottom_left_alt | default: 'Rangtarini jewelry detail' | escape }}"
-          class="rt-hero__img"
-          loading="lazy"
-          width="{{ section.settings.image_bottom_left.width }}"
-          height="{{ section.settings.image_bottom_left.height }}">
-      {%- else -%}
-        <img
-          src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Rakhdi_Category_image.jpg?v=1777315707"
-          alt="Rangtarini Maang Tikka detail"
-          class="rt-hero__img"
-          loading="lazy">
-      {%- endif -%}
-      <div class="rt-hero__meta-bl">Detail · Handcrafted</div>
+  <!-- Panel 2 — center -->
+  <div class="rt-hero__panel">
+    {%- if section.settings.image_bottom_left != blank -%}
+      <img
+        src="{{ section.settings.image_bottom_left | image_url: width: 800 }}"
+        srcset="{{ section.settings.image_bottom_left | image_url: width: 400 }} 400w,
+                {{ section.settings.image_bottom_left | image_url: width: 800 }} 800w"
+        sizes="(max-width: 749px) 100vw, 33vw"
+        alt="{{ section.settings.image_bottom_left_alt | default: 'Rangtarini jewelry detail' | escape }}"
+        class="rt-hero__img"
+        loading="eager"
+        width="{{ section.settings.image_bottom_left.width }}"
+        height="{{ section.settings.image_bottom_left.height }}">
+    {%- else -%}
+      <img
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Rakhdi_Category_image.jpg?v=1777315707"
+        alt="Rangtarini Maang Tikka"
+        class="rt-hero__img"
+        loading="eager">
+    {%- endif -%}
+    <div class="rt-hero__deva-tr">
+      <span>रंगतारिणी</span>
+      <small>SS26</small>
     </div>
   </div>
 
-  <!-- Right: single tall image -->
-  <div class="rt-hero__right">
+  <!-- Panel 3 — right with CTA -->
+  <div class="rt-hero__panel">
     {%- if section.settings.image_right != blank -%}
       <img
-        src="{{ section.settings.image_right | image_url: width: 1200 }}"
+        src="{{ section.settings.image_right | image_url: width: 1000 }}"
         srcset="{{ section.settings.image_right | image_url: width: 600 }} 600w,
-                {{ section.settings.image_right | image_url: width: 900 }} 900w,
-                {{ section.settings.image_right | image_url: width: 1200 }} 1200w"
-        sizes="(max-width: 749px) 100vw, 55vw"
+                {{ section.settings.image_right | image_url: width: 1000 }} 1000w"
+        sizes="(max-width: 749px) 100vw, 33vw"
         alt="{{ section.settings.image_right_alt | default: 'Rangtarini collection' | escape }}"
         class="rt-hero__img"
         fetchpriority="high"
@@ -250,19 +210,12 @@
         loading="eager">
     {%- endif -%}
 
-    <div class="rt-hero__deva-tr">
-      <span>रंगतारिणी</span>
-      <small>SS26</small>
-    </div>
-
     <div class="rt-hero__cta-bar">
-      <div class="rt-hero__caption">
-        <span class="rt-hero__caption-title">{{ section.settings.caption_title | default: 'Heirlooms, remade.' }}</span>
-        <span class="rt-hero__caption-sub">{{ section.settings.caption_sub | default: 'The Bridal Edit' }}</span>
-      </div>
+      <span class="rt-hero__caption-title">{{ section.settings.caption_title | default: 'Heirlooms, remade.' }}</span>
+      <span class="rt-hero__caption-sub">{{ section.settings.caption_sub | default: 'The Bridal Edit' }}</span>
       <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="rt-hero__enter">
         {{ section.settings.cta_label | default: 'Enter the Collection' }}
-        <span class="rt-hero__arrow">→</span>
+        <span>→</span>
       </a>
     </div>
   </div>
@@ -277,32 +230,32 @@
     {
       "type": "image_picker",
       "id": "image_top_left",
-      "label": "Top-left image"
+      "label": "Left panel image"
     },
     {
       "type": "text",
       "id": "image_top_left_alt",
-      "label": "Top-left image alt text"
+      "label": "Left panel alt text"
     },
     {
       "type": "image_picker",
       "id": "image_bottom_left",
-      "label": "Bottom-left image"
+      "label": "Centre panel image"
     },
     {
       "type": "text",
       "id": "image_bottom_left_alt",
-      "label": "Bottom-left image alt text"
+      "label": "Centre panel alt text"
     },
     {
       "type": "image_picker",
       "id": "image_right",
-      "label": "Right (tall) image"
+      "label": "Right panel image"
     },
     {
       "type": "text",
       "id": "image_right_alt",
-      "label": "Right image alt text"
+      "label": "Right panel alt text"
     },
     {
       "type": "text",
