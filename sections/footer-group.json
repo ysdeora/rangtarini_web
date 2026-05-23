@@ -16,27 +16,7 @@
         "heading_about": "About",
         "email": "info@rangtarini.com",
         "origin_text": "Made in Jaipur · Shipped from Mumbai"
-      },
-      "blocks": {
-        "sl1": { "type": "link", "settings": { "column": "shop",  "label": "Necklaces & Sets", "url": "/collections/necklaces-sets" } },
-        "sl2": { "type": "link", "settings": { "column": "shop",  "label": "Earrings",          "url": "/collections/earrings" } },
-        "sl3": { "type": "link", "settings": { "column": "shop",  "label": "Rings",             "url": "/collections/rings" } },
-        "sl4": { "type": "link", "settings": { "column": "shop",  "label": "Maang Tikka",       "url": "/collections/maang-tikka-rakhdi" } },
-        "sl5": { "type": "link", "settings": { "column": "shop",  "label": "Payal",             "url": "/collections/payal-anklets" } },
-        "sl6": { "type": "link", "settings": { "column": "shop",  "label": "Bangles",           "url": "/collections/bangles-bracelets" } },
-        "el1": { "type": "link", "settings": { "column": "edits", "label": "SS26 / Bridal",     "url": "/collections/bridal" } },
-        "el2": { "type": "link", "settings": { "column": "edits", "label": "Festive 2026",      "url": "/collections/festive" } },
-        "el3": { "type": "link", "settings": { "column": "edits", "label": "Everyday silver",   "url": "/collections/everyday" } },
-        "el4": { "type": "link", "settings": { "column": "edits", "label": "Under ₹5,000", "url": "/collections/all" } },
-        "el5": { "type": "link", "settings": { "column": "edits", "label": "Gifting",           "url": "/collections/gifting" } },
-        "hl1": { "type": "link", "settings": { "column": "help",  "label": "Shipping & returns","url": "/pages/returns-exchange" } },
-        "hl2": { "type": "link", "settings": { "column": "help",  "label": "Care guide",        "url": "/pages/care-guide" } },
-        "hl3": { "type": "link", "settings": { "column": "help",  "label": "Track order",       "url": "/pages/contact" } },
-        "hl4": { "type": "link", "settings": { "column": "help",  "label": "Contact",           "url": "/pages/contact" } },
-        "al1": { "type": "link", "settings": { "column": "about", "label": "Our story",         "url": "/pages/about-us" } },
-        "al2": { "type": "link", "settings": { "column": "about", "label": "Journal",           "url": "/blogs/jewellery-guide" } }
-      },
-      "block_order": ["sl1","sl2","sl3","sl4","sl5","sl6","el1","el2","el3","el4","el5","hl1","hl2","hl3","hl4","al1","al2"]
+      }
     }
   },
   "order": ["rt_footer"]

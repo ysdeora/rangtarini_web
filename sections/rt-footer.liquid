@@ -56,7 +56,6 @@
     display: block;
     margin-bottom: 24px;
   }
-
   .rt-ft__desc {
     font-family: var(--rt-font-grotesk);
     font-size: 13px;
@@ -159,23 +158,25 @@
     .rt-ft__col:nth-child(3) { border-right: none; }
     .rt-ft__col:nth-child(4),
     .rt-ft__col:nth-child(5) { border-top: 1px solid rgba(239,236,228,0.1); }
-    .rt-ft__col:nth-child(6) { border-right: none; }
+    .rt-ft__col:nth-child(5) { border-right: none; }
   }
   @media (max-width: 749px) {
     .rt-ft__cols { grid-template-columns: 1fr 1fr; }
     .rt-ft__col { padding: 28px 20px; }
-    .rt-ft__col:nth-child(odd) { border-right: 1px solid rgba(239,236,228,0.1); }
+    .rt-ft__col:nth-child(odd)  { border-right: 1px solid rgba(239,236,228,0.1); }
     .rt-ft__col:nth-child(even) { border-right: none; }
-    .rt-ft__col:nth-child(n+3) { border-top: 1px solid rgba(239,236,228,0.1); }
+    .rt-ft__col:nth-child(n+3)  { border-top: 1px solid rgba(239,236,228,0.1); }
     .rt-ft__bottom {
       grid-template-columns: 1fr;
       padding: 20px;
       gap: 12px;
     }
     .rt-ft__payments { justify-content: flex-start; }
-    .rt-ft__origin { text-align: left; }
+    .rt-ft__origin   { text-align: left; }
   }
 </style>
+
+{%- comment %} Helper macro: render a nav column from a linklist, falling back to a static list {%- endcomment %}
 
 <footer class="rt-ft" aria-label="Site footer">
 
@@ -204,11 +205,19 @@
     <div class="rt-ft__col">
       <span class="rt-ft__col-heading">{{ section.settings.heading_shop | default: 'Shop' }}</span>
       <ul class="rt-ft__links">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'shop' -%}
-            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- assign shop_links = linklists[section.settings.shop_menu].links -%}
+        {%- if shop_links.size > 0 -%}
+          {%- for link in shop_links -%}
+            <li><a href="{{ link.url }}" class="rt-ft__link">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/collections/necklaces-sets"       class="rt-ft__link">Necklaces &amp; Sets</a></li>
+          <li><a href="/collections/earrings"             class="rt-ft__link">Earrings</a></li>
+          <li><a href="/collections/rings"                class="rt-ft__link">Rings</a></li>
+          <li><a href="/collections/maang-tikka-rakhdi"   class="rt-ft__link">Maang Tikka</a></li>
+          <li><a href="/collections/payal-anklets"        class="rt-ft__link">Payal</a></li>
+          <li><a href="/collections/bangles-bracelets"    class="rt-ft__link">Bangles</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
@@ -216,11 +225,18 @@
     <div class="rt-ft__col">
       <span class="rt-ft__col-heading">{{ section.settings.heading_edits | default: 'Edits' }}</span>
       <ul class="rt-ft__links">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'edits' -%}
-            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- assign edits_links = linklists[section.settings.edits_menu].links -%}
+        {%- if edits_links.size > 0 -%}
+          {%- for link in edits_links -%}
+            <li><a href="{{ link.url }}" class="rt-ft__link">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/collections/bridal"   class="rt-ft__link">SS26 / Bridal</a></li>
+          <li><a href="/collections/festive"  class="rt-ft__link">Festive 2026</a></li>
+          <li><a href="/collections/everyday" class="rt-ft__link">Everyday silver</a></li>
+          <li><a href="/collections/all"      class="rt-ft__link">Under &#8377;5,000</a></li>
+          <li><a href="/collections/gifting"  class="rt-ft__link">Gifting</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
@@ -228,11 +244,17 @@
     <div class="rt-ft__col">
       <span class="rt-ft__col-heading">{{ section.settings.heading_help | default: 'Help' }}</span>
       <ul class="rt-ft__links">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'help' -%}
-            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- assign help_links = linklists[section.settings.help_menu].links -%}
+        {%- if help_links.size > 0 -%}
+          {%- for link in help_links -%}
+            <li><a href="{{ link.url }}" class="rt-ft__link">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/pages/returns-exchange" class="rt-ft__link">Shipping &amp; returns</a></li>
+          <li><a href="/pages/care-guide"       class="rt-ft__link">Care guide</a></li>
+          <li><a href="/pages/contact"          class="rt-ft__link">Track order</a></li>
+          <li><a href="/pages/contact"          class="rt-ft__link">Contact</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
@@ -240,25 +262,29 @@
     <div class="rt-ft__col">
       <span class="rt-ft__col-heading">{{ section.settings.heading_about | default: 'About' }}</span>
       <ul class="rt-ft__links">
-        {%- for block in section.blocks -%}
-          {%- if block.settings.column == 'about' -%}
-            <li><a href="{{ block.settings.url }}" class="rt-ft__link" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a></li>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- assign about_links = linklists[section.settings.about_menu].links -%}
+        {%- if about_links.size > 0 -%}
+          {%- for link in about_links -%}
+            <li><a href="{{ link.url }}" class="rt-ft__link">{{ link.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="/pages/about-us"         class="rt-ft__link">Our story</a></li>
+          <li><a href="/blogs/jewellery-guide"  class="rt-ft__link">Journal</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
   </div>
 
   <div class="rt-ft__bottom">
-    <span class="rt-ft__copy">© {{ 'now' | date: '%Y' }} {{ section.settings.wordmark | default: 'Rangtarini' }} · {{ section.settings.email | default: 'info@rangtarini.com' }}</span>
+    <span class="rt-ft__copy">&#169; {{ 'now' | date: '%Y' }} {{ section.settings.wordmark | default: 'Rangtarini' }} &middot; {{ section.settings.email | default: 'info@rangtarini.com' }}</span>
     <div class="rt-ft__payments">
       <span class="rt-ft__payment">Visa</span>
       <span class="rt-ft__payment">Mastercard</span>
       <span class="rt-ft__payment">UPI</span>
       <span class="rt-ft__payment">RuPay</span>
     </div>
-    <span class="rt-ft__origin">{{ section.settings.origin_text | default: 'Made in Jaipur · Shipped from Mumbai' }}</span>
+    <span class="rt-ft__origin">{{ section.settings.origin_text | default: 'Made in Jaipur &middot; Shipped from Mumbai' }}</span>
   </div>
 
 </footer>
@@ -267,7 +293,6 @@
 {
   "name": "Footer",
   "class": "rt-footer-section",
-  "max_blocks": 40,
   "settings": [
     {
       "type": "text",
@@ -328,6 +353,31 @@
     },
     {
       "type": "header",
+      "content": "Navigation menus",
+      "info": "Create menus in Online Store > Navigation and assign them here. Falls back to default links if left empty."
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop column menu"
+    },
+    {
+      "type": "link_list",
+      "id": "edits_menu",
+      "label": "Edits column menu"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help column menu"
+    },
+    {
+      "type": "link_list",
+      "id": "about_menu",
+      "label": "About column menu"
+    },
+    {
+      "type": "header",
       "content": "Bottom bar"
     },
     {
@@ -343,37 +393,6 @@
       "default": "Made in Jaipur · Shipped from Mumbai"
     }
   ],
-  "blocks": [
-    {
-      "type": "link",
-      "name": "Navigation link",
-      "settings": [
-        {
-          "type": "select",
-          "id": "column",
-          "label": "Column",
-          "options": [
-            { "value": "shop",  "label": "Shop"  },
-            { "value": "edits", "label": "Edits" },
-            { "value": "help",  "label": "Help"  },
-            { "value": "about", "label": "About" }
-          ],
-          "default": "shop"
-        },
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Link label"
-        },
-        {
-          "type": "text",
-          "id": "url",
-          "label": "Link URL",
-          "info": "Relative (/collections/earrings) or absolute URL"
-        }
-      ]
-    }
-  ],
-  "presets": [{"name": "Footer"}]
+  "presets": [{ "name": "Footer" }]
 }
 {% endschema %}
