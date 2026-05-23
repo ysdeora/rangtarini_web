@@ -11,6 +11,8 @@
     display: block;
     text-decoration: none;
     overflow: hidden;
+    height: 60vh;
+    max-height: 540px;
   }
   .rt-pair__frame--dark {
     background: var(--rt-ink);
@@ -23,8 +25,10 @@
   }
 
   .rt-pair__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    aspect-ratio: 1 / 1.15;
+    height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 500ms ease;
@@ -101,8 +105,8 @@
 
   @media (max-width: 749px) {
     .rt-pair { grid-template-columns: 1fr; }
+    .rt-pair__frame { height: 55vh; max-height: 400px; }
     .rt-pair__frame--dark { border-right: none; border-bottom: 1px solid var(--rt-ink); }
-    .rt-pair__img { aspect-ratio: 3 / 4; }
   }
 </style>
 

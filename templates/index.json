@@ -1,10 +1,5 @@
 {
   "sections": {
-    "rt_ticker": {
-      "type": "rt-ticker",
-      "name": "Ticker Bar",
-      "settings": {}
-    },
     "rt_hero": {
       "type": "rt-hero-triptych",
       "name": "Hero Triptych",
@@ -224,7 +219,6 @@
     }
   },
   "order": [
-    "rt_ticker",
     "rt_hero",
     "rt_marquee",
     "rt_cover",
