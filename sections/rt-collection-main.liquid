@@ -1,0 +1,524 @@
+{% comment %}
+  RANGTARINI — rt-collection-main.liquid  v3
+  sections/rt-collection-main.liquid
+
+  Changes in v3
+  • Product type now appears as a regular dropdown filter
+    (category strip still present for quick browsing)
+  • columns_mobile schema setting added
+  • Inline <style> sets --rt-cols for desktop AND mobile via media query
+  • {%- continue -%} replaced with {%- unless -%} (broader Liquid compatibility)
+  • image_tag replaced with plain <img> (broader Liquid compatibility)
+{% endcomment %}
+
+{{ 'rt-collection.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Inline style sets --rt-cols for desktop and mobile from section settings.
+  CSS file does NOT hardcode column counts so the theme editor controls them.
+{%- endcomment -%}
+<style>
+  #rt-{{ section.id }} .rt-grid { --rt-cols: {{ section.settings.columns_desktop }}; }
+  @media (max-width: 768px) {
+    #rt-{{ section.id }} .rt-grid { --rt-cols: {{ section.settings.columns_mobile }}; }
+  }
+</style>
+
+{%- paginate collection.products by section.settings.products_per_page -%}
+
+<section id="rt-{{ section.id }}" class="rt-collection">
+
+  {%- comment -%}══════════════════════════════
+    HEADER
+  ══════════════════════════════{%- endcomment -%}
+  <div class="rt-header">
+    <h1 class="rt-page-title">{{ collection.title }}</h1>
+    <span class="rt-total-count">
+      {{ collection.products_count }}
+      {{ collection.products_count | pluralize: 'product', 'products' }}
+    </span>
+  </div>
+
+  {%- comment -%}══════════════════════════════
+    CATEGORY STRIP
+    Reads Product type filter values automatically.
+    Gives shoppers a fast single-tap way to jump to a type.
+  ══════════════════════════════{%- endcomment -%}
+  {%- assign rt_type_filter = nil -%}
+  {%- for filter in collection.filters -%}
+    {%- if filter.label == 'Product type' or filter.label == 'Type' -%}
+      {%- assign rt_type_filter = filter -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if rt_type_filter -%}
+    {%- assign rt_any_type_active = false -%}
+    {%- for v in rt_type_filter.active_values -%}
+      {%- assign rt_any_type_active = true -%}
+    {%- endfor -%}
+
+    <nav class="rt-cat-bar" aria-label="Browse by product type">
+      <a href="{{ collection.url }}"
+         class="rt-cat-pill{% unless rt_any_type_active %} rt-cat-active{% endunless %}">
+        All
+      </a>
+      {%- for value in rt_type_filter.values -%}
+        {%- if value.count > 0 -%}
+          <a href="{{ value.url_to_add }}"
+             class="rt-cat-pill{% if value.active %} rt-cat-active{% endif %}">
+            {{ value.label }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+
+  {%- comment -%}══════════════════════════════
+    FILTER FORM
+    All filter dropdowns + sort submit together via GET.
+    Every filter configured in Search & Discovery auto-renders —
+    no code changes needed when you add/remove filters there.
+  ══════════════════════════════{%- endcomment -%}
+  <form id="rt-filter-form" method="GET" action="{{ collection.url }}">
+
+    {%- if collection.sort_by != blank -%}
+      <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+    {%- endif -%}
+
+    <div class="rt-filter-bar" role="toolbar" aria-label="Product filters">
+      <span class="rt-filter-label" aria-hidden="true">Filter</span>
+
+      {%- comment -%}
+        Loop ALL filters from Search & Discovery.
+        Product type is included here as a dropdown AND in the
+        category strip above — two ways to reach the same filter.
+      {%- endcomment -%}
+      {%- for filter in collection.filters -%}
+        {%- assign rt_dp_id = filter.label | handleize -%}
+
+        {%- if filter.type == 'price_range' -%}
+          {%- comment -%}──────────────────────────────
+            PRICE — dual-range slider
+          ──────────────────────────────{%- endcomment -%}
+          {%- assign rt_price_max = filter.range_max | divided_by: 100 -%}
+          {%- assign rt_price_cur_min = 0 -%}
+          {%- assign rt_price_cur_max = rt_price_max -%}
+          {%- if filter.min_value.value -%}
+            {%- assign rt_price_cur_min = filter.min_value.value | divided_by: 100.0 | ceil -%}
+          {%- endif -%}
+          {%- if filter.max_value.value -%}
+            {%- assign rt_price_cur_max = filter.max_value.value | divided_by: 100.0 | ceil -%}
+          {%- endif -%}
+          {%- assign rt_price_active = false -%}
+          {%- if filter.min_value.value or filter.max_value.value -%}
+            {%- assign rt_price_active = true -%}
+          {%- endif -%}
+
+          <div class="rt-dp-wrap">
+            <button type="button"
+                    class="rt-f-btn"
+                    data-dp="{{ rt_dp_id }}"
+                    aria-expanded="false"
+                    aria-controls="dp-{{ rt_dp_id }}"
+                    aria-haspopup="dialog">
+              Price
+              <span class="rt-chevron" aria-hidden="true">&#9660;</span>
+              {%- if rt_price_active -%}
+                <span class="rt-badge">1</span>
+              {%- endif -%}
+            </button>
+
+            <div class="rt-dp-panel rt-dp-price"
+                 id="dp-{{ rt_dp_id }}"
+                 role="dialog"
+                 aria-label="Price range filter"
+                 hidden>
+              <div class="rt-price-slider-wrap"
+                   data-min="0"
+                   data-max="{{ rt_price_max }}"
+                   data-cur-min="{{ rt_price_cur_min }}"
+                   data-cur-max="{{ rt_price_cur_max }}"
+                   data-param-min="{{ filter.min_value.param_name }}"
+                   data-param-max="{{ filter.max_value.param_name }}">
+
+                <div class="rt-price-labels">
+                  <span>&#8377;<span class="rt-price-min-val">{{ rt_price_cur_min | floor }}</span></span>
+                  <span>&#8377;<span class="rt-price-max-val">{{ rt_price_cur_max | floor }}</span></span>
+                </div>
+
+                <div class="rt-slider-outer">
+                  <div class="rt-slider-track"></div>
+                  <input class="rt-range rt-range-min"
+                         type="range"
+                         min="0" max="{{ rt_price_max }}"
+                         value="{{ rt_price_cur_min }}"
+                         step="100"
+                         aria-label="Minimum price" />
+                  <input class="rt-range rt-range-max"
+                         type="range"
+                         min="0" max="{{ rt_price_max }}"
+                         value="{{ rt_price_cur_max }}"
+                         step="100"
+                         aria-label="Maximum price" />
+                </div>
+
+                <input class="rt-price-hidden-min" type="hidden"
+                       name="{{ filter.min_value.param_name }}"
+                       value="{{ rt_price_cur_min | floor }}" />
+                <input class="rt-price-hidden-max" type="hidden"
+                       name="{{ filter.max_value.param_name }}"
+                       value="{{ rt_price_cur_max | floor }}" />
+
+                <button type="button" class="rt-price-apply-btn">Apply</button>
+              </div>
+            </div>
+          </div>
+
+        {%- elsif filter.type == 'list' -%}
+          {%- comment -%}──────────────────────────────
+            LIST — checkbox dropdown
+            Covers: Product type, Jewelry material, Color,
+            Occasion, Availability and any future filter.
+          ──────────────────────────────{%- endcomment -%}
+          <div class="rt-dp-wrap">
+            <button type="button"
+                    class="rt-f-btn"
+                    data-dp="{{ rt_dp_id }}"
+                    aria-expanded="false"
+                    aria-controls="dp-{{ rt_dp_id }}"
+                    aria-haspopup="listbox">
+              {{ filter.label }}
+              <span class="rt-chevron" aria-hidden="true">&#9660;</span>
+              {%- if filter.active_values.size > 0 -%}
+                <span class="rt-badge">{{ filter.active_values.size }}</span>
+              {%- endif -%}
+            </button>
+
+            <div class="rt-dp-panel"
+                 id="dp-{{ rt_dp_id }}"
+                 role="listbox"
+                 aria-label="{{ filter.label }}"
+                 aria-multiselectable="true"
+                 hidden>
+              {%- for value in filter.values -%}
+                {%- if value.count > 0 or value.active -%}
+
+                  {%- comment -%} Color filter gets a swatch circle {%- endcomment -%}
+                  {%- assign rt_is_color = false -%}
+                  {%- if filter.label == 'Color' or filter.label == 'Colour' -%}
+                    {%- assign rt_is_color = true -%}
+                  {%- endif -%}
+
+                  {%- if rt_is_color -%}
+                    {%- assign rt_clr = value.label | downcase -%}
+                    {%- assign rt_sw_bg = '#D4CFC6' -%}
+                    {%- assign rt_sw_multi = false -%}
+                    {%- if rt_clr == 'blue' -%}      {%- assign rt_sw_bg = '#4A7FB5' -%}
+                    {%- elsif rt_clr == 'gold' -%}   {%- assign rt_sw_bg = '#C9A84C' -%}
+                    {%- elsif rt_clr == 'green' -%}  {%- assign rt_sw_bg = '#4A7A3A' -%}
+                    {%- elsif rt_clr == 'pink' -%}   {%- assign rt_sw_bg = '#E8A0B0' -%}
+                    {%- elsif rt_clr == 'purple' -%} {%- assign rt_sw_bg = '#7B5EA7' -%}
+                    {%- elsif rt_clr == 'red' -%}    {%- assign rt_sw_bg = '#C0392B' -%}
+                    {%- elsif rt_clr == 'silver' -%} {%- assign rt_sw_bg = '#A8A8A8' -%}
+                    {%- elsif rt_clr == 'white' -%}  {%- assign rt_sw_bg = '#F0F0F0' -%}
+                    {%- elsif rt_clr == 'multicolor' or rt_clr == 'multi-color' -%}
+                      {%- assign rt_sw_multi = true -%}
+                    {%- endif -%}
+
+                    <label class="rt-dp-opt rt-dp-color{% if value.active %} rt-sel{% endif %}"
+                           role="option"
+                           aria-selected="{{ value.active }}">
+                      <input type="checkbox"
+                             class="rt-f-checkbox"
+                             name="{{ value.param_name }}"
+                             value="{{ value.value }}"
+                             {% if value.active %}checked{% endif %} />
+                      {%- if rt_sw_multi -%}
+                        <span class="rt-swatch rt-swatch--multi" aria-hidden="true"></span>
+                      {%- else -%}
+                        <span class="rt-swatch"
+                              style="background:{{ rt_sw_bg }};{% if rt_clr == 'white' %}border-color:rgba(0,0,0,.2);{% endif %}"
+                              aria-hidden="true"></span>
+                      {%- endif -%}
+                      <span class="rt-dp-label">{{ value.label }}</span>
+                      <span class="rt-dp-cnt">{{ value.count }}</span>
+                    </label>
+
+                  {%- else -%}
+                    <label class="rt-dp-opt{% if value.active %} rt-sel{% endif %}"
+                           role="option"
+                           aria-selected="{{ value.active }}">
+                      <input type="checkbox"
+                             class="rt-f-checkbox"
+                             name="{{ value.param_name }}"
+                             value="{{ value.value }}"
+                             {% if value.active %}checked{% endif %} />
+                      <span class="rt-dp-label">{{ value.label }}</span>
+                      <span class="rt-dp-cnt">{{ value.count }}</span>
+                    </label>
+                  {%- endif -%}
+
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+
+        {%- elsif filter.type == 'boolean' -%}
+          {%- comment -%}──────────────────────────────
+            BOOLEAN — inline toggle (future-proof)
+          ──────────────────────────────{%- endcomment -%}
+          <div class="rt-dp-wrap">
+            <label class="rt-f-btn rt-f-toggle">
+              <input type="checkbox"
+                     class="rt-f-checkbox"
+                     name="{{ filter.param_name }}"
+                     value="true"
+                     {% if filter.true_value.active %}checked{% endif %} />
+              {{ filter.label }}
+              {%- if filter.true_value.active -%}
+                <span class="rt-badge">1</span>
+              {%- endif -%}
+            </label>
+          </div>
+
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%}── SORT — always far right ──{%- endcomment -%}
+      <div class="rt-sort-wrap">
+        <label class="rt-sort-lbl" for="rt-sort-{{ section.id }}">Sort</label>
+        <select class="rt-sort-sel"
+                id="rt-sort-{{ section.id }}"
+                name="sort_by"
+                onchange="this.closest('form').submit()">
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}"
+                    {% if option.value == collection.sort_by %}selected{% endif %}>
+              {{ option.name }}
+            </option>
+          {%- endfor -%}
+        </select>
+        <span class="rt-sort-arrow" aria-hidden="true">&#9660;</span>
+      </div>
+
+    </div>
+  </form>
+
+  {%- comment -%}══════════════════════════════
+    ACTIVE FILTER CHIPS
+  ══════════════════════════════{%- endcomment -%}
+  {%- assign rt_active_total = 0 -%}
+  {%- for filter in collection.filters -%}
+    {%- assign rt_active_total = rt_active_total | plus: filter.active_values.size -%}
+    {%- if filter.type == 'price_range' -%}
+      {%- if filter.min_value.value or filter.max_value.value -%}
+        {%- assign rt_active_total = rt_active_total | plus: 1 -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  <div class="rt-chips-row" aria-live="polite">
+    {%- if rt_active_total == 0 -%}
+      <span class="rt-no-filter">No filters applied</span>
+    {%- else -%}
+      {%- for filter in collection.filters -%}
+        {%- for value in filter.active_values -%}
+          <a href="{{ value.url_to_remove }}"
+             class="rt-chip"
+             aria-label="Remove {{ value.label }} filter">
+            {{ value.label }}<span class="rt-chip-x" aria-hidden="true">&#215;</span>
+          </a>
+        {%- endfor -%}
+        {%- if filter.type == 'price_range' -%}
+          {%- if filter.min_value.value or filter.max_value.value -%}
+            <a href="{{ filter.url_to_remove }}" class="rt-chip">
+              &#8377;{%- if filter.min_value.value -%}{{ filter.min_value.value | divided_by: 100 | floor }}{%- else -%}0{%- endif -%}
+              &nbsp;&mdash;&nbsp;
+              &#8377;{%- if filter.max_value.value -%}{{ filter.max_value.value | divided_by: 100 | floor }}{%- else -%}{{ filter.range_max | divided_by: 100 }}{%- endif -%}
+              <span class="rt-chip-x" aria-hidden="true">&#215;</span>
+            </a>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <a href="{{ collection.url }}" class="rt-clear-all">Clear all</a>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}══════════════════════════════
+    RESULTS BAR
+  ══════════════════════════════{%- endcomment -%}
+  <div class="rt-results-bar">
+    {%- if collection.products_count == collection.all_products_count -%}
+      {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
+    {%- else -%}
+      {{ collection.products_count }} {{ collection.products_count | pluralize: 'result', 'results' }}
+      <span class="rt-results-of">of {{ collection.all_products_count }}</span>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}══════════════════════════════
+    PRODUCT GRID
+  ══════════════════════════════{%- endcomment -%}
+  <div class="rt-grid" aria-label="Products">
+    {%- if collection.products.size > 0 -%}
+      {%- for product in collection.products -%}
+
+        {%- assign rt_avail = product.metafields.custom.availability | downcase -%}
+        {%- assign rt_is_mto = false -%}
+        {%- if rt_avail contains 'made to order' or rt_avail contains 'made-to-order' -%}
+          {%- assign rt_is_mto = true -%}
+        {%- endif -%}
+        {%- unless rt_is_mto -%}
+          {%- for tag in product.tags -%}
+            {%- if tag == 'made-to-order' or tag == 'Made to Order' or tag == 'MTO' -%}
+              {%- assign rt_is_mto = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endunless -%}
+
+        {%- assign rt_on_sale = false -%}
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign rt_on_sale = true -%}
+        {%- endif -%}
+
+        <a class="rt-card" href="{{ product.url }}">
+          <div class="rt-card-img">
+
+            {%- if product.featured_image -%}
+              {%- assign rt_img_src = product.featured_image | image_url: width: 600 -%}
+              {%- assign rt_img_alt = product.featured_image.alt | default: product.title | escape -%}
+              <img src="{{ rt_img_src }}"
+                   alt="{{ rt_img_alt }}"
+                   class="rt-img-primary"
+                   loading="lazy"
+                   width="{{ product.featured_image.width }}"
+                   height="{{ product.featured_image.height }}">
+            {%- else -%}
+              <div class="rt-img-placeholder"></div>
+            {%- endif -%}
+
+            {%- if section.settings.enable_hover_image and product.images[1] -%}
+              {%- assign rt_img2_src = product.images[1] | image_url: width: 600 -%}
+              {%- assign rt_img2_alt = product.images[1].alt | default: product.title | escape -%}
+              <img src="{{ rt_img2_src }}"
+                   alt="{{ rt_img2_alt }}"
+                   class="rt-img-hover"
+                   loading="lazy"
+                   width="{{ product.images[1].width }}"
+                   height="{{ product.images[1].height }}">
+            {%- endif -%}
+
+            {%- if rt_on_sale -%}<span class="rt-sale-tag">Sale</span>{%- endif -%}
+            {%- if rt_is_mto -%}<span class="rt-mto-tag">Made to Order</span>{%- endif -%}
+
+          </div>
+
+          <div class="rt-card-info">
+            <p class="rt-card-name">{{ product.title }}</p>
+            <div class="rt-card-price">
+              <span class="rt-price-cur">{{ product.price | money }}</span>
+              {%- if rt_on_sale -%}
+                <span class="rt-price-orig">{{ product.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        </a>
+
+      {%- endfor -%}
+    {%- else -%}
+      <div class="rt-no-results">
+        <p>No products match your selection.</p>
+        <a href="{{ collection.url }}">Clear all filters</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}══════════════════════════════
+    PAGINATION
+  ══════════════════════════════{%- endcomment -%}
+  {%- if paginate.pages > 1 -%}
+    <nav class="rt-pagination" aria-label="Pagination">
+      {%- if paginate.previous -%}
+        <a href="{{ paginate.previous.url }}" class="rt-page-btn">&larr;</a>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a href="{{ part.url }}"
+             class="rt-page-btn{% if part.title == paginate.current_page %} rt-page-active{% endif %}"
+             {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>
+            {{ part.title }}
+          </a>
+        {%- else -%}
+          <span class="rt-page-btn{% if part.title == paginate.current_page %} rt-page-active{% endif %}">
+            {{ part.title }}
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="rt-page-btn">&rarr;</a>
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+
+</section>
+
+{%- endpaginate -%}
+
+<script src="{{ 'rt-collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RT Collection",
+  "tag": "section",
+  "class": "section-rt-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "options": [
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" },
+        { "value": "5", "label": "5 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_image",
+      "label": "Show second image on hover",
+      "default": true
+    }
+  ],
+  "presets": [
+    { "name": "RT Collection" }
+  ]
+}
+{% endschema %}

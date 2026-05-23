@@ -1,0 +1,598 @@
+/*
+ * ─────────────────────────────────────────────────────────────
+ *  RANGTARINI — rt-collection.css  v3
+ *  Upload to: assets/rt-collection.css
+ * ─────────────────────────────────────────────────────────────
+ */
+
+.rt-collection {
+  --rt-bg:      #F6F4EF;
+  --rt-text:    #181512;
+  --rt-muted:   #7A7268;
+  --rt-border:  #D4CFC6;
+  --rt-hover:   #EDEBE5;
+  --rt-surface: #EDE9E2;
+  --rt-gold:    #9A7B2E;
+  --rt-cols:    4;
+
+  background: var(--rt-bg);
+  color: var(--rt-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.rt-collection *, .rt-collection *::before, .rt-collection *::after {
+  box-sizing: border-box;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   HEADER
+════════════════════════════════════════════════════════════ */
+.rt-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 40px 40px 14px;
+}
+.rt-page-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.rt-total-count {
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--rt-muted);
+  white-space: nowrap;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   CATEGORY STRIP
+════════════════════════════════════════════════════════════ */
+.rt-cat-bar {
+  display: flex;
+  overflow-x: auto;
+  border-top: 1px solid var(--rt-border);
+  border-bottom: 1px solid var(--rt-border);
+  padding: 0 40px;
+  scrollbar-width: none;
+}
+.rt-cat-bar::-webkit-scrollbar { display: none; }
+
+.rt-cat-pill {
+  display: block;
+  padding: 12px 20px;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--rt-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  flex-shrink: 0;
+  transition: color .15s, border-color .15s;
+}
+.rt-cat-pill:hover         { color: var(--rt-text); }
+.rt-cat-pill.rt-cat-active { color: var(--rt-text); border-bottom-color: var(--rt-text); }
+
+
+/* ════════════════════════════════════════════════════════════
+   FILTER BAR
+   NOTE: overflow-x:auto here clips position:absolute children.
+   Panels use position:fixed + JS getBoundingClientRect() to
+   escape the overflow clipping entirely.
+════════════════════════════════════════════════════════════ */
+.rt-filter-bar {
+  display: flex;
+  align-items: stretch;
+  background: var(--rt-bg);
+  border-bottom: 1px solid var(--rt-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.rt-filter-bar::-webkit-scrollbar { display: none; }
+
+.rt-filter-label {
+  flex-shrink: 0;
+  padding: 0 24px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  font-size: 9px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--rt-muted);
+  border-right: 1px solid var(--rt-border);
+  white-space: nowrap;
+}
+
+.rt-dp-wrap { position: relative; flex-shrink: 0; }
+
+.rt-f-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 20px;
+  height: 46px;
+  border: none;
+  border-right: 1px solid var(--rt-border);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 9px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--rt-text);
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background .12s, color .12s;
+  -webkit-appearance: none;
+}
+.rt-f-btn:hover,
+.rt-f-btn[aria-expanded="true"] {
+  background: var(--rt-text);
+  color: var(--rt-bg);
+}
+
+.rt-f-toggle { cursor: pointer; border-right: 1px solid var(--rt-border); }
+.rt-f-toggle input { display: none; }
+
+.rt-badge {
+  background: var(--rt-gold);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  min-width: 15px;
+  height: 15px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.rt-chevron {
+  font-size: 7px;
+  display: inline-block;
+  transition: transform .2s ease;
+}
+.rt-f-btn[aria-expanded="true"] .rt-chevron { transform: rotate(180deg); }
+
+
+/* ════════════════════════════════════════════════════════════
+   DROPDOWN PANELS
+   position:fixed so the filter bar's overflow:auto cannot
+   clip them. JS sets exact top/left from getBoundingClientRect.
+════════════════════════════════════════════════════════════ */
+.rt-dp-panel {
+  position: fixed;
+  top: 0; left: 0;        /* JS overrides on open */
+  min-width: 230px;
+  max-height: 340px;
+  overflow-y: auto;
+  background: var(--rt-bg);
+  border: 1px solid var(--rt-border);
+  z-index: 800;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rt-border) transparent;
+  box-shadow: 0 6px 20px rgba(24,21,18,.1);
+}
+.rt-dp-panel[hidden] { display: none; }
+
+.rt-dp-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .06em;
+  border-bottom: 1px solid var(--rt-border);
+  transition: background .1s;
+  user-select: none;
+}
+.rt-dp-opt:last-child { border-bottom: none; }
+.rt-dp-opt:hover      { background: var(--rt-hover); }
+.rt-dp-opt.rt-sel     { background: var(--rt-text); color: var(--rt-bg); }
+
+.rt-dp-opt input[type="checkbox"] {
+  position: absolute;
+  opacity: 0; width: 0; height: 0;
+  pointer-events: none;
+}
+.rt-dp-label { flex: 1; }
+.rt-dp-cnt   { font-size: 9px; color: var(--rt-muted); flex-shrink: 0; }
+.rt-dp-opt.rt-sel .rt-dp-cnt { color: rgba(246,244,239,.45); }
+
+
+/* ════════════════════════════════════════════════════════════
+   PRICE DROPDOWN — dual-range slider
+════════════════════════════════════════════════════════════ */
+.rt-dp-price {
+  min-width: 300px;
+  max-height: none;
+  overflow-y: visible;
+  overflow-x: visible;
+}
+
+.rt-price-slider-wrap { padding: 22px 22px 20px; }
+
+.rt-price-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--rt-text);
+}
+
+.rt-slider-outer {
+  position: relative;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  margin: 0 8px;
+  /* The outer element's OWN background is used to render the
+     gradient track — it paints behind ALL children including
+     WebKit shadow DOM elements, so nothing can cover it. */
+}
+
+/* Track div: inset by half-thumb-width (8px) on each side so its
+   endpoints align exactly with the thumbs' min/max positions.
+   This is a secondary track for non-WebKit browsers; the primary
+   is the outer's background-image set by JS. */
+.rt-slider-track {
+  position: absolute;
+  left: 8px; right: 8px; /* inset matches thumb travel range */
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rt-border);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Two overlapping range inputs — original sizing, no offset tricks */
+.rt-range {
+  position: absolute;
+  left: 0; right: 0;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 28px;
+  pointer-events: none;
+  z-index: 2;
+  outline: none;
+}
+
+/* ─── CRITICAL: clear the native WebKit runnable track ───────
+   Even with -webkit-appearance:none the browser still renders
+   a default track element (often white) that covers our
+   custom .rt-slider-track div. Explicitly making it
+   transparent and height:0 removes the obstruction.          */
+.rt-range::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  height: 4px;
+}
+/* ─────────────────────────────────────────────────────────── */
+
+.rt-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  /* margin-top centers the thumb vertically on the track.
+     Formula: (track_height - thumb_height) / 2 = (4 - 16) / 2 = -6px */
+  margin-top: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--rt-text);
+  border: 2.5px solid var(--rt-bg);
+  cursor: grab;
+  pointer-events: all;
+  box-shadow: 0 1px 6px rgba(24,21,18,.22);
+  transition: transform .12s;
+}
+.rt-range::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.18);
+}
+.rt-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--rt-text);
+  border: 2.5px solid var(--rt-bg);
+  cursor: grab;
+  pointer-events: all;
+  box-shadow: 0 1px 6px rgba(24,21,18,.22);
+}
+.rt-range::-moz-range-track {
+  background: transparent;
+  border: none;
+  height: 4px;
+}
+.rt-range::-moz-range-progress {
+  background: transparent; /* let our track div show */
+}
+
+.rt-price-apply-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-family: inherit;
+  background: var(--rt-text);
+  color: var(--rt-bg);
+  border: none;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.rt-price-apply-btn:hover { opacity: .8; }
+
+
+/* ════════════════════════════════════════════════════════════
+   SORT
+════════════════════════════════════════════════════════════ */
+.rt-sort-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 22px;
+  border-left: 1px solid var(--rt-border);
+  flex-shrink: 0;
+  position: relative;
+}
+.rt-sort-lbl {
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rt-muted);
+  white-space: nowrap;
+}
+.rt-sort-sel {
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  color: var(--rt-text);
+  cursor: pointer;
+  font-weight: 500;
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 14px;
+}
+.rt-sort-sel:focus { outline: none; }
+.rt-sort-arrow {
+  position: absolute;
+  right: 22px;
+  font-size: 7px;
+  color: var(--rt-muted);
+  pointer-events: none;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   ACTIVE FILTER CHIPS
+════════════════════════════════════════════════════════════ */
+.rt-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 40px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--rt-border);
+}
+.rt-no-filter {
+  font-size: 9px;
+  color: var(--rt-muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.rt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border: 1px solid var(--rt-text);
+  text-decoration: none;
+  color: var(--rt-text);
+  transition: background .12s, color .12s;
+  line-height: 1;
+}
+.rt-chip:hover { background: var(--rt-text); color: var(--rt-bg); }
+.rt-chip-x { font-size: 12px; line-height: 1; }
+
+.rt-clear-all {
+  display: inline-block;
+  padding: 5px 4px;
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--rt-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.rt-clear-all:hover { color: var(--rt-text); }
+
+
+/* ════════════════════════════════════════════════════════════
+   RESULTS BAR
+════════════════════════════════════════════════════════════ */
+.rt-results-bar {
+  padding: 10px 40px;
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--rt-muted);
+  border-bottom: 1px solid var(--rt-border);
+}
+.rt-results-of { opacity: .5; }
+
+
+/* ════════════════════════════════════════════════════════════
+   PRODUCT GRID
+   --rt-cols is set by an inline <style> in the Liquid section,
+   letting Shopify's theme settings control both desktop and
+   mobile column counts without hardcoding them here.
+════════════════════════════════════════════════════════════ */
+.rt-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--rt-cols), 1fr);
+  border-left: 1px solid var(--rt-border);
+}
+.rt-card {
+  /*border-right: 1px solid var(--rt-border);
+  border-bottom: 1px solid var(--rt-border); */
+  text-decoration: none;
+  color: var(--rt-text);
+  display: block;
+  overflow: hidden;
+  transition: opacity .2s;
+  padding: 6px;
+}
+.rt-card:hover { opacity: .84; }
+
+.rt-card-img {
+  position: relative;
+  padding-top: 120%;
+  overflow: hidden;
+  background: var(--rt-surface);
+}
+.rt-img-placeholder { position: absolute; inset: 0; background: var(--rt-surface); }
+
+.rt-img-primary, .rt-img-hover {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.rt-img-primary { z-index: 1; transition: opacity .35s ease, transform .45s ease; }
+.rt-img-hover   { z-index: 0; opacity: 0; transition: opacity .35s ease; }
+.rt-card:hover .rt-img-primary { opacity: 0; transform: scale(1.04); }
+.rt-card:hover .rt-img-hover   { opacity: 1; }
+
+.rt-sale-tag {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  background: var(--rt-text); color: var(--rt-bg);
+  font-size: 7px; letter-spacing: .16em; text-transform: uppercase;
+  padding: 3px 9px; line-height: 1.4;
+}
+.rt-mto-tag {
+  position: absolute; bottom: 10px; left: 10px; z-index: 2;
+  background: rgba(246,244,239,.9);
+  font-size: 7px; letter-spacing: .12em; text-transform: uppercase;
+  padding: 3px 9px; color: var(--rt-muted); line-height: 1.4;
+}
+
+.rt-card-info { padding: 11px 14px 15px; }
+.rt-card-name { font-size: 11px; letter-spacing: .04em; line-height: 1.5; margin: 0 0 5px; font-weight: 400; }
+.rt-card-price { display: flex; align-items: baseline; gap: 7px; }
+.rt-price-cur  { font-size: 11px; font-weight: 500; letter-spacing: .04em; }
+.rt-price-orig { font-size: 10px; color: var(--rt-muted); text-decoration: line-through; }
+
+.rt-no-results { grid-column: 1 / -1; padding: 80px 40px; text-align: center; }
+.rt-no-results p {
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--rt-muted); margin-bottom: 18px;
+}
+.rt-no-results a {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--rt-text); text-decoration: underline; text-underline-offset: 3px;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   PAGINATION
+════════════════════════════════════════════════════════════ */
+.rt-pagination {
+  display: flex; align-items: stretch; justify-content: center;
+  padding: 52px 40px; border-top: 1px solid var(--rt-border);
+}
+.rt-page-btn {
+  display: flex; align-items: center; justify-content: center;
+  min-width: 42px; height: 42px; padding: 0 14px;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid var(--rt-border); margin-left: -1px;
+  text-decoration: none; color: var(--rt-text); background: transparent;
+  font-family: inherit; cursor: pointer;
+  transition: background .12s, color .12s; white-space: nowrap;
+}
+.rt-page-btn:first-child { margin-left: 0; }
+.rt-page-btn:hover,
+.rt-page-btn.rt-page-active { background: var(--rt-text); color: var(--rt-bg); z-index: 1; }
+
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE — Tablet (≤ 1024px)
+════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .rt-header, .rt-chips-row,
+  .rt-results-bar, .rt-pagination { padding-left: 24px; padding-right: 24px; }
+  .rt-cat-bar { padding-left: 24px; }
+  .rt-grid { border-left: none; }
+  .rt-card { border-left: 1px solid var(--rt-border); }
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile (≤ 768px)
+════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .rt-header, .rt-chips-row,
+  .rt-results-bar { padding-left: 16px; padding-right: 16px; }
+  .rt-cat-bar { padding-left: 16px; }
+  .rt-filter-label { display: none; }
+  .rt-card-info { padding: 9px 11px 13px; }
+  .rt-card-name { font-size: 10px; }
+  .rt-pagination { padding: 36px 16px; }
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   COLOR SWATCHES
+════════════════════════════════════════════════════════════ */
+.rt-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(24,21,18,.14);
+  flex-shrink: 0;
+  display: inline-block;
+}
+.rt-swatch--multi {
+  background: conic-gradient(
+    #C0392B 0deg 72deg,
+    #E8A0B0 72deg 144deg,
+    #C9A84C 144deg 216deg,
+    #4A7A3A 216deg 288deg,
+    #4A90D9 288deg 360deg
+  );
+  border-color: transparent;
+}
+.rt-dp-opt.rt-sel .rt-swatch { border-color: rgba(246,244,239,.25); }

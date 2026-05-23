@@ -1,0 +1,499 @@
+{%- comment -%}
+  New Arrivals — auto-detects newest products from all collections
+  sorted by creation date. No dedicated collection needed.
+{%- endcomment -%}
+
+{%- assign product_limit    = 8 -%}
+{%- assign days_threshold   = section.settings.days_new | default: 60 -%}
+{%- assign now_unix          = 'now' | date: '%s' | plus: 0 -%}
+{%- assign threshold_seconds = days_threshold | times: 86400 -%}
+
+{%- comment -%} Sort all products newest-first {%- endcomment -%}
+{%- assign all_sorted = collections.all.products | sort: 'created_at' | reverse -%}
+
+{%- comment -%} Build a filtered array of products within the date window {%- endcomment -%}
+{%- assign new_products = '' | split: '' -%}
+{%- for product in all_sorted -%}
+  {%- assign product_unix = product.created_at | date: '%s' | plus: 0 -%}
+  {%- assign age_seconds   = now_unix | minus: product_unix -%}
+  {%- if age_seconds <= threshold_seconds -%}
+    {%- assign new_products = new_products | concat: product -%}
+  {%- endif -%}
+  {%- if new_products.size >= product_limit -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+
+{%- comment -%}
+  Fallback: if nothing qualifies (e.g. all products older than threshold),
+  just show the most recent N regardless of date.
+{%- endcomment -%}
+{%- if new_products.size == 0 -%}
+  {%- assign new_products = all_sorted | slice: 0, product_limit -%}
+{%- endif -%}
+
+<style>
+  .na-section {
+    padding: 5rem 0 4rem;
+    background: var(--color-bg-primary);
+  }
+  .na-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+  }
+  .na-eyebrow {
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--color-gold-dark);
+    margin-bottom: 0.9rem;
+  }
+  .na-heading {
+    font-family: var(--font-heading);
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+  }
+  .na-rule {
+    width: 48px;
+    height: 1px;
+    background: var(--color-gold);
+    margin: 0 auto 1.25rem;
+  }
+  .na-subheading {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* ── Carousel ── */
+  .na-carousel { position: relative; margin-bottom: 3.5rem; }
+
+  .na-arrow {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 3.6rem;
+    height: 3.6rem;
+    border: 1px solid rgba(var(--color-foreground, 30, 23, 18), 0.18);
+    border-radius: 50%;
+    background: var(--color-bg-primary, #faf8f5);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, background 0.2s, opacity 0.2s, transform 0.2s;
+    padding: 0;
+    outline: none;
+  }
+  .na-arrow:hover {
+    border-color: var(--color-gold, #b8955a);
+    background: var(--color-gold, #b8955a);
+    color: #fff;
+    transform: translateY(-50%) scale(1.06);
+  }
+  .na-arrow:focus-visible {
+    outline: 2px solid var(--color-gold, #b8955a);
+    outline-offset: 2px;
+  }
+  .na-arrow[disabled] { opacity: 0; pointer-events: none; }
+  .na-arrow--prev { left: 0.75rem; }
+  .na-arrow--next { right: 0.75rem; }
+  .na-arrow svg { width: 1.1rem; height: 1.1rem; stroke-width: 1.5; flex-shrink: 0; }
+
+  /* Scroll track */
+  .na-grid {
+    display: flex;
+    gap: 1.4rem;
+    padding: 0 4.5rem 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .na-grid::-webkit-scrollbar { display: none; }
+
+  .na-card {
+    flex: 0 0 calc(23% - 1rem);
+    min-width: calc(23% - 1rem);
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    scroll-snap-align: start;
+  }
+
+  .na-media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    border-radius: 4px;
+    margin-bottom: 0.85rem;
+    background: var(--color-bg-white, #f6f2ec);
+  }
+  .na-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease, transform 0.7s ease;
+  }
+  .na-img--secondary { opacity: 0; }
+  .na-card:hover .na-img--primary  { opacity: 0; }
+  .na-card:hover .na-img--secondary { opacity: 1; transform: scale(1.04); }
+  .na-card:hover .na-img--primary:only-child { opacity: 1; transform: scale(1.04); }
+
+  /* "New" badge — minimal dot + text */
+  .na-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(250, 248, 245, 0.92);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    color: var(--color-text-primary, #2a1f14);
+    padding: 0.28rem 0.7rem 0.28rem 0.55rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    z-index: 2;
+  }
+  .na-badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-gold, #b8955a);
+    flex-shrink: 0;
+    animation: na-pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes na-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .na-soldout-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(44, 37, 32, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  .na-info { text-align: center; padding: 0 0.15rem; }
+  .na-name {
+    font-family: var(--font-heading-secondary);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .na-price-row {
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--color-gold-dark);
+    margin: 0;
+  }
+  .na-price-compare {
+    color: var(--color-text-secondary);
+    text-decoration: line-through;
+    margin-right: 0.4rem;
+    font-size: 0.9em;
+  }
+  .na-price-from {
+    font-size: 0.75em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-right: 0.3rem;
+  }
+
+  .na-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  .na-cta { text-align: center; }
+  .na-cta a {
+    display: inline-block;
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1.5px solid var(--color-gold);
+    padding: 1rem 2.75rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  .na-cta a:hover {
+    background: var(--color-gold);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Tablet ── */
+  @media (max-width: 1100px) {
+    .na-card { flex: 0 0 calc(28% - 1rem); min-width: calc(28% - 1rem); }
+    .na-heading { font-size: 2.2rem; }
+    .na-name { font-size: 1.3rem; }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 749px) {
+    .na-arrow { display: none; }
+    .na-section { padding: 2.5rem 0; }
+    .na-header { margin-bottom: 2rem; }
+    .na-heading { font-size: 1.6rem; }
+    .na-subheading { font-size: 0.95rem; }
+    .na-eyebrow { font-size: 1.2rem; }
+    .na-grid { gap: 1rem; padding: 0 1.25rem 1rem; }
+    .na-card { flex: 0 0 68%; min-width: 68%; }
+    .na-name { font-size: 1.4rem; }
+    .na-price-row { font-size: 1.2rem; }
+    .na-card:hover .na-img--primary  { opacity: 1; }
+    .na-card:hover .na-img--secondary { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .na-grid { scroll-behavior: auto; }
+    .na-img  { transition: none; }
+    .na-badge-dot { animation: none; }
+    .na-cta a { transition: none; }
+  }
+</style>
+
+<section class="na-section" aria-labelledby="na-heading">
+
+  <div class="na-header">
+    <p class="na-eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="na-heading" id="na-heading">{{ section.settings.heading }}</h2>
+    <div class="na-rule"></div>
+    <p class="na-subheading">{{ section.settings.subheading }}</p>
+  </div>
+
+  {%- if new_products.size > 0 -%}
+    <div class="na-carousel" id="na-carousel">
+
+      <button class="na-arrow na-arrow--prev" id="na-prev" aria-label="Previous" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+
+      <div class="na-grid" id="na-grid" role="list">
+        {%- for product in new_products -%}
+          {%- assign primary_img   = product.featured_image -%}
+          {%- assign secondary_img = product.images[1] -%}
+          {%- assign on_sale = false -%}
+          {%- if product.compare_at_price > product.price -%}
+            {%- assign on_sale = true -%}
+          {%- endif -%}
+
+          <a href="{{ product.url }}"
+             class="na-card"
+             role="listitem"
+             aria-label="{{ product.title | escape }}, {{ product.price | money_without_trailing_zeros }}">
+
+            <div class="na-media">
+
+              <span class="na-badge" aria-label="New arrival">
+                <span class="na-badge-dot"></span>New
+              </span>
+
+              {%- if primary_img -%}
+                <img
+                  class="na-img na-img--primary"
+                  src="{{ primary_img | image_url: width: 600 }}"
+                  srcset="{{ primary_img | image_url: width: 300 }} 300w,
+                          {{ primary_img | image_url: width: 500 }} 500w,
+                          {{ primary_img | image_url: width: 700 }} 700w,
+                          {{ primary_img | image_url: width: 1000 }} 1000w"
+                  sizes="(max-width: 749px) 68vw, (max-width: 1100px) 28vw, 23vw"
+                  alt="{{ product.title | escape }}"
+                  loading="lazy"
+                  decoding="async"
+                  width="{{ primary_img.width }}"
+                  height="{{ primary_img.height }}">
+              {%- else -%}
+                <div class="na-img na-img--primary" aria-hidden="true"></div>
+              {%- endif -%}
+
+              {%- if secondary_img -%}
+                <img
+                  class="na-img na-img--secondary"
+                  src="{{ secondary_img | image_url: width: 600 }}"
+                  srcset="{{ secondary_img | image_url: width: 300 }} 300w,
+                          {{ secondary_img | image_url: width: 500 }} 500w,
+                          {{ secondary_img | image_url: width: 700 }} 700w,
+                          {{ secondary_img | image_url: width: 1000 }} 1000w"
+                  sizes="(max-width: 749px) 68vw, (max-width: 1100px) 28vw, 23vw"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width="{{ secondary_img.width }}"
+                  height="{{ secondary_img.height }}"
+                  aria-hidden="true">
+              {%- endif -%}
+
+              {%- unless product.available -%}
+                <div class="na-soldout-overlay">Sold Out</div>
+              {%- endunless -%}
+            </div>
+
+            <div class="na-info">
+              <h3 class="na-name">{{ product.title | escape }}</h3>
+              <p class="na-price-row">
+                {%- if product.price_varies -%}
+                  <span class="na-price-from">From</span>
+                {%- endif -%}
+                {%- if on_sale -%}
+                  <span class="na-price-compare">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+                {%- endif -%}
+                {{ product.price_min | money_without_trailing_zeros }}
+              </p>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      <button class="na-arrow na-arrow--next" id="na-next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="na-cta">
+      <a href="{{ section.settings.cta_url | default: '/collections/all?sort_by=created-descending' }}">
+        {{ section.settings.cta_label }}
+      </a>
+    </div>
+
+  {%- else -%}
+    <p class="na-empty">New pieces are on their way. Check back soon.</p>
+  {%- endif -%}
+
+</section>
+
+<script>
+  (function () {
+    var grid = document.getElementById('na-grid');
+    var prev = document.getElementById('na-prev');
+    var next = document.getElementById('na-next');
+    if (!grid || !prev || !next) return;
+
+    function scrollByOne(dir) {
+      var card = grid.querySelector('.na-card');
+      if (!card) return;
+      var gap  = parseFloat(getComputedStyle(grid).gap) || 0;
+      grid.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: 'smooth' });
+    }
+
+    function updateArrows() {
+      prev.disabled = grid.scrollLeft <= 4;
+      next.disabled = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 4;
+    }
+
+    prev.addEventListener('click', function () { scrollByOne(-1); });
+    next.addEventListener('click', function () { scrollByOne(1); });
+    grid.addEventListener('scroll', updateArrows, { passive: true });
+    updateArrows();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "New Arrivals",
+  "tag": "div",
+  "class": "new-arrivals-section",
+  "limit": 1,
+  "templates": ["index"],
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Just In"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The latest additions to our collection — handcrafted, just for you."
+    },
+    {
+    "type": "range",
+    "id": "days_new",
+    "label": "Show products added within (days)",
+    "info": "Products created within this many days will appear. Falls back to the most recent products if none qualify.",
+    "min": 30,
+    "max": 180,
+    "step": 30,
+    "default": 60
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "View All New Arrivals"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button link",
+      "info": "Leave blank to default to all products sorted by newest."
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrivals"
+    }
+  ]
+}
+{% endschema %}
