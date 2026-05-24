@@ -1382,12 +1382,13 @@
   .rt-hero-copy {
     border-right: 0;
     border-bottom: 1px solid var(--ink);
-    padding: 10px 14px 12px;
-    gap: 8px;
+    padding: 18px 16px 16px;
+    gap: 12px;
+    justify-content: flex-start;
   }
-  .rt-hero-meta { display: none; }
-  .rt-hero-title { font-size: clamp(26px, 8.5vw, 44px); }
-  .rt-hero-desc { font-size: 13px; margin: 2px 0 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .rt-hero-deva { font-size: 18px; }
+  .rt-hero-title { font-size: clamp(32px, 9vw, 52px); }
+  .rt-hero-desc { font-size: 13px; margin: 6px 0 0; line-height: 1.55; }
   .rt-hero-image { display: none; }
 
   /* Stats: single scrollable row on mobile */
@@ -1397,12 +1398,12 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    gap: 14px;
+    gap: 18px;
     align-items: flex-end;
   }
   .rt-hero-stats::-webkit-scrollbar { display: none; }
-  .rt-hero-stat-n { font-size: 16px; }
-  .rt-hero-stat-l { margin-top: 2px; }
+  .rt-hero-stat-n { font-size: 18px; }
+  .rt-hero-stat-l { margin-top: 3px; }
 
   /* Quick-add: hide price on mobile so text fits in one line */
   .rt-quick-add-price { display: none; }
