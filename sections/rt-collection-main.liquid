@@ -558,15 +558,15 @@
                   {%- if tag == 'low-stock' or tag == 'Low Stock' -%}               {%- assign rt_is_low  = true -%}{%- endif -%}
                 {%- endfor -%}
 
-                {%- comment -%} Swatch/size detection: find Color, Plating, or Size option {%- endcomment -%}
-                {%- assign rt_swatch_option_idx = nil -%}
-                {%- assign rt_size_option_idx = nil -%}
-                {%- for option in product.options -%}
-                  {%- assign rt_opt_low = option | downcase -%}
+                {%- comment -%} Find color and size options — options_with_values gives swatch access {%- endcomment -%}
+                {%- assign rt_color_option = nil -%}
+                {%- assign rt_size_option = nil -%}
+                {%- for option in product.options_with_values -%}
+                  {%- assign rt_opt_low = option.name | downcase -%}
                   {%- if rt_opt_low == 'color' or rt_opt_low == 'colour' or rt_opt_low == 'plating' -%}
-                    {%- assign rt_swatch_option_idx = forloop.index0 -%}
+                    {%- assign rt_color_option = option -%}
                   {%- elsif rt_opt_low == 'size' or rt_opt_low == 'ring size' -%}
-                    {%- assign rt_size_option_idx = forloop.index0 -%}
+                    {%- assign rt_size_option = option -%}
                   {%- endif -%}
                 {%- endfor -%}
 
