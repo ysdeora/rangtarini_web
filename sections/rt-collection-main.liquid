@@ -761,26 +761,33 @@
 
   {%- comment -%}══════════════════════════════
     04 · RELATED COLLECTIONS
+    Schema pickers take precedence; otherwise auto-picks up to 3 other
+    collections (skips current, frontpage, all, and empty collections).
   ══════════════════════════════{%- endcomment -%}
-  {%- assign rt_has_related = false -%}
+  {%- assign rt_manual_related = false -%}
   {%- if section.settings.related_collection_1 != blank
       or section.settings.related_collection_2 != blank
       or section.settings.related_collection_3 != blank -%}
-    {%- assign rt_has_related = true -%}
+    {%- assign rt_manual_related = true -%}
   {%- endif -%}
 
-  {%- if rt_has_related -%}
-    {%- assign rt_related_cols = '' -%}
-    {%- if section.settings.related_collection_1 != blank -%}
-      {%- assign rt_related_cols = rt_related_cols | append: '1,' -%}
-    {%- endif -%}
-    {%- if section.settings.related_collection_2 != blank -%}
-      {%- assign rt_related_cols = rt_related_cols | append: '2,' -%}
-    {%- endif -%}
-    {%- if section.settings.related_collection_3 != blank -%}
-      {%- assign rt_related_cols = rt_related_cols | append: '3,' -%}
-    {%- endif -%}
+  {%- comment -%} Pre-scan auto collections to decide whether to render the section {%- endcomment -%}
+  {%- assign rt_has_related = rt_manual_related -%}
+  {%- unless rt_manual_related -%}
+    {%- assign rt_auto_scan_count = 0 -%}
+    {%- for auto_col in collections -%}
+      {%- if rt_auto_scan_count >= 3 -%}{%- break -%}{%- endif -%}
+      {%- if auto_col.handle != collection.handle
+          and auto_col.handle != 'frontpage'
+          and auto_col.handle != 'all'
+          and auto_col.products_count > 0 -%}
+        {%- assign rt_auto_scan_count = rt_auto_scan_count | plus: 1 -%}
+        {%- assign rt_has_related = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endunless -%}
 
+  {%- if rt_has_related -%}
     <div class="rt-related">
       <div class="rt-related-header">
         <div>
@@ -794,35 +801,71 @@
 
       <div class="rt-related-grid">
         {%- assign rt_col_num = 0 -%}
-        {%- for i in (1..3) -%}
-          {%- assign rt_col_handle_key = 'related_collection_' | append: i -%}
-          {%- assign rt_col = section.settings[rt_col_handle_key] -%}
-          {%- if rt_col != blank -%}
-            {%- assign rt_col_num = rt_col_num | plus: 1 -%}
-            <a href="{{ rt_col.url }}" class="rt-related-card">
-              <div class="rt-related-img">
-                {%- if rt_col.image -%}
-                  {%- assign rt_rel_img = rt_col.image | image_url: width: 600 -%}
-                  <img src="{{ rt_rel_img }}"
-                       alt="{{ rt_col.image.alt | default: rt_col.title | escape }}"
-                       loading="lazy"
-                       width="{{ rt_col.image.width }}"
-                       height="{{ rt_col.image.height }}">
-                {%- else -%}
-                  <div class="rt-related-placeholder"></div>
-                {%- endif -%}
-                <span class="rt-related-img-badge" aria-hidden="true">0{{ rt_col_num }} / 06</span>
-              </div>
-              <div class="rt-related-card-footer">
-                <h3 class="rt-related-card-name">{{ rt_col.title | escape }}</h3>
-                <div class="rt-related-card-right">
-                  <span class="rt-related-card-count">{{ rt_col.products_count }} {{ rt_col.products_count | pluralize: 'piece', 'pieces' }}</span>
-                  <span class="rt-related-arrow" aria-hidden="true">&#8594;</span>
+        {%- if rt_manual_related -%}
+          {%- comment -%} Manual mode: use schema-configured collection pickers {%- endcomment -%}
+          {%- for i in (1..3) -%}
+            {%- assign rt_col_handle_key = 'related_collection_' | append: i -%}
+            {%- assign rt_col = section.settings[rt_col_handle_key] -%}
+            {%- if rt_col != blank -%}
+              {%- assign rt_col_num = rt_col_num | plus: 1 -%}
+              <a href="{{ rt_col.url }}" class="rt-related-card">
+                <div class="rt-related-img">
+                  {%- if rt_col.image -%}
+                    {%- assign rt_rel_img = rt_col.image | image_url: width: 600 -%}
+                    <img src="{{ rt_rel_img }}"
+                         alt="{{ rt_col.image.alt | default: rt_col.title | escape }}"
+                         loading="lazy"
+                         width="{{ rt_col.image.width }}"
+                         height="{{ rt_col.image.height }}">
+                  {%- else -%}
+                    <div class="rt-related-placeholder"></div>
+                  {%- endif -%}
+                  <span class="rt-related-img-badge" aria-hidden="true">0{{ rt_col_num }} / 06</span>
                 </div>
-              </div>
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
+                <div class="rt-related-card-footer">
+                  <h3 class="rt-related-card-name">{{ rt_col.title | escape }}</h3>
+                  <div class="rt-related-card-right">
+                    <span class="rt-related-card-count">{{ rt_col.products_count }} {{ rt_col.products_count | pluralize: 'piece', 'pieces' }}</span>
+                    <span class="rt-related-arrow" aria-hidden="true">&#8594;</span>
+                  </div>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Auto mode: iterate all store collections, skip current/frontpage/all/empty {%- endcomment -%}
+          {%- for auto_col in collections -%}
+            {%- if rt_col_num >= 3 -%}{%- break -%}{%- endif -%}
+            {%- if auto_col.handle != collection.handle
+                and auto_col.handle != 'frontpage'
+                and auto_col.handle != 'all'
+                and auto_col.products_count > 0 -%}
+              {%- assign rt_col_num = rt_col_num | plus: 1 -%}
+              <a href="{{ auto_col.url }}" class="rt-related-card">
+                <div class="rt-related-img">
+                  {%- if auto_col.image -%}
+                    {%- assign rt_rel_img = auto_col.image | image_url: width: 600 -%}
+                    <img src="{{ rt_rel_img }}"
+                         alt="{{ auto_col.image.alt | default: auto_col.title | escape }}"
+                         loading="lazy"
+                         width="{{ auto_col.image.width }}"
+                         height="{{ auto_col.image.height }}">
+                  {%- else -%}
+                    <div class="rt-related-placeholder"></div>
+                  {%- endif -%}
+                  <span class="rt-related-img-badge" aria-hidden="true">0{{ rt_col_num }} / 06</span>
+                </div>
+                <div class="rt-related-card-footer">
+                  <h3 class="rt-related-card-name">{{ auto_col.title | escape }}</h3>
+                  <div class="rt-related-card-right">
+                    <span class="rt-related-card-count">{{ auto_col.products_count }} {{ auto_col.products_count | pluralize: 'piece', 'pieces' }}</span>
+                    <span class="rt-related-arrow" aria-hidden="true">&#8594;</span>
+                  </div>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </div>
     </div>
   {%- endif -%}
