@@ -1388,11 +1388,35 @@
   /* Hero: single column */
   .rt-hero-inner { grid-template-columns: 1fr; }
   .rt-hero-copy { border-right: 0; border-bottom: 1px solid var(--ink); padding: 32px 16px 28px; }
-  .rt-hero-stats { grid-template-columns: repeat(2, 1fr); }
   .rt-hero-image { display: none; }
 
-  /* Toolbar */
-  .rt-toolbar { padding: 10px 16px; gap: 12px; grid-template-columns: auto 1fr auto; }
+  /* Stats: single scrollable row on mobile */
+  .rt-hero-stats {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 20px;
+    align-items: flex-end;
+  }
+  .rt-hero-stats::-webkit-scrollbar { display: none; }
+  .rt-hero-stat-n { font-size: 20px; }
+
+  /* Pills: not sticky on mobile (saves vertical space) */
+  .rt-pills {
+    position: static;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  /* Toolbar: stick right below header on mobile */
+  .rt-toolbar {
+    top: var(--rt-header-h, 56px);
+    padding: 10px 16px;
+    gap: 12px;
+    grid-template-columns: auto 1fr auto;
+  }
   .rt-view-switcher { display: none; }
   .rt-toolbar-count { display: none; }
 
@@ -1404,7 +1428,6 @@
   /* Grid */
   .rt-grid-wrap { padding: 18px 14px; }
   .rt-grid { gap: 12px; row-gap: 32px; }
-  .rt-pills { padding: 12px 14px; gap: 8px; }
   .rt-chips { padding: 10px 14px; }
 
   /* Related */
