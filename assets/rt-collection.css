@@ -93,7 +93,7 @@
 }
 .rt-hero-deva {
   font-family: var(--font-deva);
-  font-size: 28px;
+  font-size: 22px;
   color: var(--gold-cool);
   font-weight: 500;
   line-height: 1;
@@ -102,7 +102,7 @@
 .rt-hero-title {
   font-family: var(--font-grotesk);
   font-weight: 900;
-  font-size: clamp(56px, 8vw, 120px);
+  font-size: clamp(44px, 5.5vw, 88px);
   line-height: 0.9;
   letter-spacing: -0.04em;
   text-transform: uppercase;
@@ -110,23 +110,23 @@
 }
 .rt-hero-desc {
   font-family: var(--font-grotesk);
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.6;
   max-width: 52ch;
-  margin: 20px 0 0;
+  margin: 12px 0 0;
   opacity: 0.82;
 }
 .rt-hero-stats {
   display: grid;
   grid-template-columns: repeat(4, auto);
-  gap: 28px;
+  gap: 22px;
   align-items: end;
   justify-content: start;
 }
 .rt-hero-stat-n {
   font-family: var(--font-grotesk);
   font-weight: 800;
-  font-size: 32px;
+  font-size: 26px;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -136,7 +136,7 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   opacity: 0.6;
-  margin-top: 6px;
+  margin-top: 5px;
 }
 .rt-hero-image {
   position: relative;
