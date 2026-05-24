@@ -260,7 +260,7 @@
 ════════════════════════════════════════════════════════════ */
 .rt-toolbar {
   position: sticky;
-  top: var(--rt-header-h, 56px);
+  top: calc(var(--rt-header-h, 56px) + var(--rt-pills-h, 0px));
   z-index: 30;
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
