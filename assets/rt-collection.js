@@ -39,7 +39,13 @@
 
   document.addEventListener('DOMContentLoaded', setHeightVars);
   window.addEventListener('load', setHeightVars);
-  window.addEventListener('resize', setHeightVars, { passive: true });
+  window.addEventListener('resize', function () {
+    setHeightVars();
+    /* When resizing to mobile, remove any JS-set column override so CSS media query takes over */
+    if (isMobile() && grid) {
+      grid.style.removeProperty('--rt-cols');
+    }
+  }, { passive: true });
 
 
   /* ══════════════════════════════════════════════════════════
