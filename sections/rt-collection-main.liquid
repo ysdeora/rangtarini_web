@@ -657,54 +657,39 @@
                     </div>
                     <div class="rt-card-row2">
                       <span class="rt-card-attrs">{{ rt_attr_string | escape }}</span>
-                      {%- comment -%} Swatches {%- endcomment -%}
-                      {%- if rt_swatch_option_idx != nil -%}
+                      {%- comment -%} Swatches: native Shopify swatch API → jewelry map → CSS named color fallback {%- endcomment -%}
+                      {%- if rt_color_option -%}
                         <div class="rt-card-swatches" aria-hidden="true">
-                          {%- assign rt_shown_swatches = '' -%}
-                          {%- for variant in product.variants -%}
-                            {%- if rt_swatch_option_idx == 0 -%}      {%- assign rt_swatch_val = variant.option1 | downcase -%}
-                            {%- elsif rt_swatch_option_idx == 1 -%}   {%- assign rt_swatch_val = variant.option2 | downcase -%}
-                            {%- else -%}                              {%- assign rt_swatch_val = variant.option3 | downcase -%}
-                            {%- endif -%}
-
-                            {%- unless rt_shown_swatches contains rt_swatch_val -%}
-                              {%- comment -%}
-                                Generic approach: CSS named colors (red, blue, green, white, turquoise, etc.)
-                                work as background values directly. Only override for jewelry-specific
-                                names that CSS does not know: gold (CSS gold is too bright), rose,
-                                oxidised, rhodium. Multicolor gets its own gradient class.
-                              {%- endcomment -%}
-                              {%- if rt_swatch_val contains 'multi' -%}
-                                <span class="rt-card-swatch rt-card-swatch--multi" title="{{ variant.option1 | escape }}"></span>
-                              {%- else -%}
-                                {%- assign rt_sw_color = nil -%}
-                                {%- if rt_swatch_val contains 'gold' -%}      {%- assign rt_sw_color = '#c9a961' -%}
-                                {%- elsif rt_swatch_val contains 'rose' -%}   {%- assign rt_sw_color = '#d6a89a' -%}
-                                {%- elsif rt_swatch_val contains 'oxidis' -%} {%- assign rt_sw_color = '#8a7260' -%}
-                                {%- elsif rt_swatch_val contains 'rhodium' -%}{%- assign rt_sw_color = '#b0b4b8' -%}
-                                {%- endif -%}
-                                {%- if rt_sw_color != nil -%}
-                                  <span class="rt-card-swatch" style="background:{{ rt_sw_color }}" title="{{ variant.option1 | escape }}"></span>
-                                {%- else -%}
-                                  <span class="rt-card-swatch" style="background:{{ rt_swatch_val }}" title="{{ variant.option1 | escape }}"></span>
-                                {%- endif -%}
+                          {%- for ov in rt_color_option.values -%}
+                            {%- assign rt_ov_low = ov | downcase -%}
+                            {%- if rt_ov_low contains 'multi' -%}
+                              <span class="rt-card-swatch rt-card-swatch--multi" title="{{ ov | escape }}"></span>
+                            {%- elsif ov.swatch.color -%}
+                              <span class="rt-card-swatch" style="background:{{ ov.swatch.color }}" title="{{ ov | escape }}"></span>
+                            {%- elsif ov.swatch.image -%}
+                              <span class="rt-card-swatch rt-card-swatch--img" style="background-image:url({{ ov.swatch.image | image_url: width: 20 }})" title="{{ ov | escape }}"></span>
+                            {%- else -%}
+                              {%- assign rt_sw_color = nil -%}
+                              {%- if rt_ov_low contains 'gold' -%}      {%- assign rt_sw_color = '#c9a961' -%}
+                              {%- elsif rt_ov_low contains 'rose' -%}   {%- assign rt_sw_color = '#d6a89a' -%}
+                              {%- elsif rt_ov_low contains 'oxidis' -%} {%- assign rt_sw_color = '#8a7260' -%}
+                              {%- elsif rt_ov_low contains 'rhodium' -%}{%- assign rt_sw_color = '#b0b4b8' -%}
                               {%- endif -%}
-                              {%- assign rt_shown_swatches = rt_shown_swatches | append: rt_swatch_val | append: '|' -%}
-                            {%- endunless -%}
+                              {%- if rt_sw_color != nil -%}
+                                <span class="rt-card-swatch" style="background:{{ rt_sw_color }}" title="{{ ov | escape }}"></span>
+                              {%- else -%}
+                                <span class="rt-card-swatch" style="background:{{ rt_ov_low }}" title="{{ ov | escape }}"></span>
+                              {%- endif -%}
+                            {%- endif -%}
                           {%- endfor -%}
                         </div>
                       {%- endif -%}
-                      {%- comment -%} Size labels — only when no color option and 2+ distinct meaningful sizes {%- endcomment -%}
-                      {%- if rt_size_option_idx != nil and rt_swatch_option_idx == nil -%}
-                        {%- assign rt_shown_sizes = '' -%}
+                      {%- comment -%} Size labels — only when no color option and 2+ meaningful sizes {%- endcomment -%}
+                      {%- if rt_size_option and rt_color_option == nil -%}
                         {%- assign rt_size_count = 0 -%}
-                        {%- for variant in product.variants -%}
-                          {%- if rt_size_option_idx == 0 -%}      {%- assign rt_sv = variant.option1 | downcase -%}
-                          {%- elsif rt_size_option_idx == 1 -%}   {%- assign rt_sv = variant.option2 | downcase -%}
-                          {%- else -%}                            {%- assign rt_sv = variant.option3 | downcase -%}
-                          {%- endif -%}
-                          {%- unless rt_shown_sizes contains rt_sv or rt_sv == 'free size' or rt_sv == 'default title' or rt_sv == 'one size' -%}
-                            {%- assign rt_shown_sizes = rt_shown_sizes | append: rt_sv | append: '|' -%}
+                        {%- for ov in rt_size_option.values -%}
+                          {%- assign rt_ov_low = ov | downcase -%}
+                          {%- unless rt_ov_low == 'free size' or rt_ov_low == 'default title' or rt_ov_low == 'one size' -%}
                             {%- assign rt_size_count = rt_size_count | plus: 1 -%}
                           {%- endunless -%}
                         {%- endfor -%}
