@@ -628,15 +628,6 @@
                       {%- endif -%}
                     </div>
 
-                    {%- comment -%} Wishlist button {%- endcomment -%}
-                    <button type="button"
-                            class="rt-wishlist-btn"
-                            aria-label="{{ 'products.product.add_to_wishlist' | t | default: 'Add to wishlist' }}">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M12 21s-7-4.5-9.5-9.2C.7 8 2.5 4 6 4c2 0 3.5 1.3 4 2.5C10.5 5.3 12 4 14 4c3.5 0 5.3 4 3.5 7.8C19 16.5 12 21 12 21z"/>
-                      </svg>
-                    </button>
-
                     {%- comment -%} Quick-add (not shown for sold-out) {%- endcomment -%}
                     {%- if product.available -%}
                       <button type="button"
