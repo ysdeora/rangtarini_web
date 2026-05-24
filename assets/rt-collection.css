@@ -651,6 +651,28 @@
   cursor: pointer;
 }
 
+/* Global Apply filters button */
+.rt-sidebar-apply {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 0 20px 4px;
+  padding: 11px 0;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  font-family: var(--font-grotesk);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.rt-sidebar-apply:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
 /* Sidebar footer note */
 .rt-sidebar-note {
   padding: 18px 20px;
