@@ -669,13 +669,20 @@
 
                             {%- unless rt_shown_swatches contains rt_swatch_val -%}
                               {%- assign rt_sw_color = '#c8c1b0' -%}
-                              {%- if rt_swatch_val contains 'gold' -%}         {%- assign rt_sw_color = '#c9a961' -%}
-                              {%- elsif rt_swatch_val contains 'silver' -%}    {%- assign rt_sw_color = '#cfcfcf' -%}
-                              {%- elsif rt_swatch_val contains 'rose' -%}      {%- assign rt_sw_color = '#d6a89a' -%}
-                              {%- elsif rt_swatch_val contains 'oxidis' -%}    {%- assign rt_sw_color = '#8a7260' -%}
-                              {%- elsif rt_swatch_val contains 'rhodium' -%}   {%- assign rt_sw_color = '#b0b4b8' -%}
-                              {%- elsif rt_swatch_val contains 'black' -%}     {%- assign rt_sw_color = '#1a1a1a' -%}
-                              {%- elsif rt_swatch_val contains 'white' -%}     {%- assign rt_sw_color = '#f0ece4' -%}
+                              {%- if rt_swatch_val contains 'gold' -%}                                         {%- assign rt_sw_color = '#c9a961' -%}
+                              {%- elsif rt_swatch_val contains 'silver' -%}                                   {%- assign rt_sw_color = '#cfcfcf' -%}
+                              {%- elsif rt_swatch_val contains 'rose' -%}                                     {%- assign rt_sw_color = '#d6a89a' -%}
+                              {%- elsif rt_swatch_val contains 'oxidis' -%}                                   {%- assign rt_sw_color = '#8a7260' -%}
+                              {%- elsif rt_swatch_val contains 'rhodium' -%}                                  {%- assign rt_sw_color = '#b0b4b8' -%}
+                              {%- elsif rt_swatch_val contains 'purple' or rt_swatch_val contains 'violet' -%}{%- assign rt_sw_color = '#9B59B6' -%}
+                              {%- elsif rt_swatch_val contains 'red' or rt_swatch_val contains 'maroon' -%}   {%- assign rt_sw_color = '#C0392B' -%}
+                              {%- elsif rt_swatch_val contains 'blue' or rt_swatch_val contains 'navy' -%}    {%- assign rt_sw_color = '#4A7FB5' -%}
+                              {%- elsif rt_swatch_val contains 'green' or rt_swatch_val contains 'emerald' -%}{%- assign rt_sw_color = '#4A7A3A' -%}
+                              {%- elsif rt_swatch_val contains 'pink' -%}                                     {%- assign rt_sw_color = '#E8A0B0' -%}
+                              {%- elsif rt_swatch_val contains 'orange' -%}                                   {%- assign rt_sw_color = '#E67E22' -%}
+                              {%- elsif rt_swatch_val contains 'yellow' -%}                                   {%- assign rt_sw_color = '#F4D03F' -%}
+                              {%- elsif rt_swatch_val contains 'black' -%}                                    {%- assign rt_sw_color = '#1a1a1a' -%}
+                              {%- elsif rt_swatch_val contains 'white' -%}                                    {%- assign rt_sw_color = '#f0ece4' -%}
                               {%- endif -%}
                               <span class="rt-card-swatch" style="background:{{ rt_sw_color }}" title="{{ variant.option1 | escape }}"></span>
                               {%- assign rt_shown_swatches = rt_shown_swatches | append: rt_swatch_val | append: '|' -%}
