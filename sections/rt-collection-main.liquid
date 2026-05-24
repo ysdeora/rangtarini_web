@@ -380,7 +380,7 @@
                   <input class="rt-price-hidden-max" type="hidden"
                          name="{{ filter.max_value.param_name }}"
                          value="{{ rt_price_cur_max | floor }}">
-                  <button type="button" class="rt-price-apply-btn">Apply</button>
+                  {%- comment -%} Apply is now global at sidebar bottom {%- endcomment -%}
                 </div>
               </div>
             </details>
