@@ -19,6 +19,14 @@
 
 {%- paginate collection.products by section.settings.products_per_page -%}
 
+{%- comment -%} Min price across this page's products — used in hero stat {%- endcomment -%}
+{%- assign rt_stat_price_min = nil -%}
+{%- for p in collection.products -%}
+  {%- if rt_stat_price_min == nil or p.price < rt_stat_price_min -%}
+    {%- assign rt_stat_price_min = p.price -%}
+  {%- endif -%}
+{%- endfor -%}
+
 <section id="rt-{{ section.id }}" class="rt-collection">
 
   {%- comment -%}══════════════════════════════
