@@ -558,12 +558,15 @@
                   {%- if tag == 'low-stock' or tag == 'Low Stock' -%}               {%- assign rt_is_low  = true -%}{%- endif -%}
                 {%- endfor -%}
 
-                {%- comment -%} Swatch detection: find Color or Plating option {%- endcomment -%}
+                {%- comment -%} Swatch/size detection: find Color, Plating, or Size option {%- endcomment -%}
                 {%- assign rt_swatch_option_idx = nil -%}
+                {%- assign rt_size_option_idx = nil -%}
                 {%- for option in product.options -%}
                   {%- assign rt_opt_low = option | downcase -%}
                   {%- if rt_opt_low == 'color' or rt_opt_low == 'colour' or rt_opt_low == 'plating' -%}
                     {%- assign rt_swatch_option_idx = forloop.index0 -%}
+                  {%- elsif rt_opt_low == 'size' or rt_opt_low == 'ring size' -%}
+                    {%- assign rt_size_option_idx = forloop.index0 -%}
                   {%- endif -%}
                 {%- endfor -%}
 
