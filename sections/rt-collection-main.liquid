@@ -771,28 +771,55 @@
 
   {%- comment -%}══════════════════════════════
     04 · RELATED COLLECTIONS
-    Schema pickers take precedence; otherwise auto-picks up to 3 other
-    collections (skips current, frontpage, all, and empty collections).
+    Priority: 1) schema pickers  2) nav-menu siblings  3) any store collections
   ══════════════════════════════{%- endcomment -%}
   {%- assign rt_manual_related = false -%}
+  {%- assign rt_nav_sibling_links = nil -%}
+  {%- assign rt_has_related = false -%}
+
+  {%- comment -%} 1. Schema pickers (manual override) {%- endcomment -%}
   {%- if section.settings.related_collection_1 != blank
       or section.settings.related_collection_2 != blank
       or section.settings.related_collection_3 != blank -%}
     {%- assign rt_manual_related = true -%}
+    {%- assign rt_has_related = true -%}
   {%- endif -%}
 
-  {%- comment -%} Pre-scan auto collections to decide whether to render the section {%- endcomment -%}
-  {%- assign rt_has_related = rt_manual_related -%}
+  {%- comment -%} 2. Nav-menu siblings: find which parent group contains current collection {%- endcomment -%}
   {%- unless rt_manual_related -%}
-    {%- assign rt_auto_scan_count = 0 -%}
+    {%- assign rt_nav = linklists['main-menu'] -%}
+    {%- for link in rt_nav.links -%}
+      {%- if rt_nav_sibling_links -%}{%- break -%}{%- endif -%}
+      {%- if link.type == 'collection_link' and link.object.handle == collection.handle -%}
+        {%- assign rt_nav_sibling_links = rt_nav.links -%}
+      {%- else -%}
+        {%- for child in link.links -%}
+          {%- if rt_nav_sibling_links -%}{%- break -%}{%- endif -%}
+          {%- if child.type == 'collection_link' and child.object.handle == collection.handle -%}
+            {%- assign rt_nav_sibling_links = link.links -%}
+          {%- else -%}
+            {%- for grandchild in child.links -%}
+              {%- if rt_nav_sibling_links -%}{%- break -%}{%- endif -%}
+              {%- if grandchild.type == 'collection_link' and grandchild.object.handle == collection.handle -%}
+                {%- assign rt_nav_sibling_links = child.links -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if rt_nav_sibling_links -%}{%- assign rt_has_related = true -%}{%- endif -%}
+  {%- endunless -%}
+
+  {%- comment -%} 3. Fallback: any store collection if nav gave nothing {%- endcomment -%}
+  {%- unless rt_has_related -%}
     {%- for auto_col in collections -%}
-      {%- if rt_auto_scan_count >= 3 -%}{%- break -%}{%- endif -%}
       {%- if auto_col.handle != collection.handle
           and auto_col.handle != 'frontpage'
           and auto_col.handle != 'all'
           and auto_col.products_count > 0 -%}
-        {%- assign rt_auto_scan_count = rt_auto_scan_count | plus: 1 -%}
         {%- assign rt_has_related = true -%}
+        {%- break -%}
       {%- endif -%}
     {%- endfor -%}
   {%- endunless -%}
@@ -811,8 +838,9 @@
 
       <div class="rt-related-grid">
         {%- assign rt_col_num = 0 -%}
+
         {%- if rt_manual_related -%}
-          {%- comment -%} Manual mode: use schema-configured collection pickers {%- endcomment -%}
+          {%- comment -%} Schema pickers {%- endcomment -%}
           {%- for i in (1..3) -%}
             {%- assign rt_col_handle_key = 'related_collection_' | append: i -%}
             {%- assign rt_col = section.settings[rt_col_handle_key] -%}
@@ -842,8 +870,42 @@
               </a>
             {%- endif -%}
           {%- endfor -%}
+
+        {%- elsif rt_nav_sibling_links -%}
+          {%- comment -%} Nav-menu siblings: other collections in the same menu group {%- endcomment -%}
+          {%- for sibling in rt_nav_sibling_links -%}
+            {%- if rt_col_num >= 3 -%}{%- break -%}{%- endif -%}
+            {%- if sibling.type == 'collection_link'
+                and sibling.object.handle != collection.handle
+                and sibling.object.products_count > 0 -%}
+              {%- assign rt_col_num = rt_col_num | plus: 1 -%}
+              <a href="{{ sibling.object.url }}" class="rt-related-card">
+                <div class="rt-related-img">
+                  {%- if sibling.object.image -%}
+                    {%- assign rt_rel_img = sibling.object.image | image_url: width: 600 -%}
+                    <img src="{{ rt_rel_img }}"
+                         alt="{{ sibling.object.image.alt | default: sibling.object.title | escape }}"
+                         loading="lazy"
+                         width="{{ sibling.object.image.width }}"
+                         height="{{ sibling.object.image.height }}">
+                  {%- else -%}
+                    <div class="rt-related-placeholder"></div>
+                  {%- endif -%}
+                  <span class="rt-related-img-badge" aria-hidden="true">0{{ rt_col_num }} / 06</span>
+                </div>
+                <div class="rt-related-card-footer">
+                  <h3 class="rt-related-card-name">{{ sibling.object.title | escape }}</h3>
+                  <div class="rt-related-card-right">
+                    <span class="rt-related-card-count">{{ sibling.object.products_count }} {{ sibling.object.products_count | pluralize: 'piece', 'pieces' }}</span>
+                    <span class="rt-related-arrow" aria-hidden="true">&#8594;</span>
+                  </div>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+
         {%- else -%}
-          {%- comment -%} Auto mode: iterate all store collections, skip current/frontpage/all/empty {%- endcomment -%}
+          {%- comment -%} Fallback: any store collection {%- endcomment -%}
           {%- for auto_col in collections -%}
             {%- if rt_col_num >= 3 -%}{%- break -%}{%- endif -%}
             {%- if auto_col.handle != collection.handle
@@ -876,6 +938,7 @@
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
+
       </div>
     </div>
   {%- endif -%}
