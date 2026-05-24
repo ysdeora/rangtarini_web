@@ -858,27 +858,6 @@
   font-size: 8px;
 }
 
-/* Wishlist button */
-.rt-wishlist-btn {
-  position: absolute;
-  top: 9px;
-  right: 9px;
-  z-index: 3;
-  width: 30px;
-  height: 30px;
-  background: var(--paper);
-  border: 1px solid var(--ink);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 200ms;
-  color: var(--ink);
-}
-.rt-card:hover .rt-wishlist-btn { opacity: 1; }
-.rt-wishlist-btn--wished { opacity: 1; }
-
 /* Quick-add overlay */
 .rt-quick-add {
   position: absolute;
