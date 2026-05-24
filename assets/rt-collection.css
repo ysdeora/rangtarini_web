@@ -68,7 +68,8 @@
 .rt-hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 340px;
+  height: 380px;
+  overflow: hidden;
 }
 .rt-hero-copy {
   padding: 32px 40px 32px 28px;
