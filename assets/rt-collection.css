@@ -256,8 +256,10 @@
    STICKY TOOLBAR
 ════════════════════════════════════════════════════════════ */
 .rt-toolbar {
-  position: sticky;
-  top: calc(var(--rt-header-h, 56px) + var(--rt-pills-h, 0px));
+  position: fixed;
+  top: var(--rt-header-h, 56px);
+  left: 0;
+  right: 0;
   z-index: 30;
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
