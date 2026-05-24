@@ -690,6 +690,24 @@
                           {%- endfor -%}
                         </div>
                       {%- endif -%}
+                      {%- comment -%} Size labels — only when no color option and 2+ distinct meaningful sizes {%- endcomment -%}
+                      {%- if rt_size_option_idx != nil and rt_swatch_option_idx == nil -%}
+                        {%- assign rt_shown_sizes = '' -%}
+                        {%- assign rt_size_count = 0 -%}
+                        {%- for variant in product.variants -%}
+                          {%- if rt_size_option_idx == 0 -%}      {%- assign rt_sv = variant.option1 | downcase -%}
+                          {%- elsif rt_size_option_idx == 1 -%}   {%- assign rt_sv = variant.option2 | downcase -%}
+                          {%- else -%}                            {%- assign rt_sv = variant.option3 | downcase -%}
+                          {%- endif -%}
+                          {%- unless rt_shown_sizes contains rt_sv or rt_sv == 'free size' or rt_sv == 'default title' or rt_sv == 'one size' -%}
+                            {%- assign rt_shown_sizes = rt_shown_sizes | append: rt_sv | append: '|' -%}
+                            {%- assign rt_size_count = rt_size_count | plus: 1 -%}
+                          {%- endunless -%}
+                        {%- endfor -%}
+                        {%- if rt_size_count >= 2 -%}
+                          <span class="rt-card-sizes">{{ rt_size_count }} sizes</span>
+                        {%- endif -%}
+                      {%- endif -%}
                     </div>
                   </div>
 
