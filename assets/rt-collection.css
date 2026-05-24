@@ -1452,9 +1452,6 @@
    RESPONSIVE — Small mobile ≤ 480px
 ════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
-  .rt-hero-title { font-size: clamp(40px, 12vw, 64px); }
-  .rt-hero-stats { gap: 16px; }
   .rt-grid { gap: 8px; row-gap: 28px; }
-  .rt-editorial-tile { grid-column: span 1; aspect-ratio: 1 / 1.18; }
   .rt-pagination { padding: 20px 0; }
 }
