@@ -33,6 +33,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', setHeightVars);
+  window.addEventListener('load', setHeightVars);
   window.addEventListener('resize', setHeightVars, { passive: true });
 
 
