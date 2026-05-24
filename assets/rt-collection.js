@@ -16,11 +16,13 @@
   ══════════════════════════════════════════════════════════ */
   function setHeightVars() {
     var header =
+      document.querySelector('.rt-hd-wrap') ||
+      document.querySelector('.shopify-section-group-header-group') ||
       document.querySelector('sticky-header') ||
       document.querySelector('.shopify-section-header') ||
       document.querySelector('.header-wrapper') ||
       document.querySelector('header');
-    var headerH = header ? header.offsetHeight : 56;
+    var headerH = header ? header.offsetHeight : 61;
 
     var toolbar = document.querySelector('.rt-toolbar');
     var toolbarH = toolbar ? toolbar.offsetHeight : 57;
