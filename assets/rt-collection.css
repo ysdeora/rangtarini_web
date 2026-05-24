@@ -691,11 +691,6 @@
 /* ════════════════════════════════════════════════════════════
    MAIN CONTENT AREA
 ════════════════════════════════════════════════════════════ */
-/* Offset for fixed toolbar so content isn't hidden behind it */
-.rt-body {
-  padding-top: var(--rt-toolbar-h, 57px);
-}
-
 .rt-main {
   flex: 1;
   min-width: 0;
