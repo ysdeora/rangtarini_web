@@ -45,12 +45,34 @@
             {%- endif -%}
           </div>
 
+          {%- comment -%} Auto-detect material count from any filter labelled 'material' {%- endcomment -%}
+          {%- assign rt_mat_filter = nil -%}
+          {%- for filter in collection.filters -%}
+            {%- assign rt_flabel_lower = filter.label | downcase -%}
+            {%- if rt_flabel_lower contains 'material' -%}
+              {%- assign rt_mat_filter = filter -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- assign rt_mat_count = 0 -%}
+          {%- if rt_mat_filter -%}
+            {%- for v in rt_mat_filter.values -%}
+              {%- if v.count > 0 -%}{%- assign rt_mat_count = rt_mat_count | plus: 1 -%}{%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+
           <div class="rt-hero-stats">
             <div>
               <div class="rt-hero-stat-n">{{ collection.products_count }}</div>
               <div class="rt-hero-stat-l">{{ collection.products_count | pluralize: 'Piece', 'Pieces' }}</div>
             </div>
-            {%- if section.settings.stat_materials != blank -%}
+
+            {%- comment -%} Materials: auto from filter, fallback to schema setting {%- endcomment -%}
+            {%- if rt_mat_count > 0 -%}
+              <div>
+                <div class="rt-hero-stat-n">{%- if rt_mat_count < 10 -%}0{{ rt_mat_count }}{%- else -%}{{ rt_mat_count }}{%- endif -%}</div>
+                <div class="rt-hero-stat-l">Materials</div>
+              </div>
+            {%- elsif section.settings.stat_materials != blank -%}
               <div>
                 {%- assign stat_mat_parts = section.settings.stat_materials | split: ' ' -%}
                 <div class="rt-hero-stat-n">{{ stat_mat_parts[0] }}</div>
@@ -60,7 +82,14 @@
                 </div>
               </div>
             {%- endif -%}
-            {%- if section.settings.stat_from_price != blank -%}
+
+            {%- comment -%} From price: auto from collection.price_min, fallback to schema setting {%- endcomment -%}
+            {%- if collection.price_min > 0 -%}
+              <div>
+                <div class="rt-hero-stat-n">{{ collection.price_min | money_without_trailing_zeros }}</div>
+                <div class="rt-hero-stat-l">From</div>
+              </div>
+            {%- elsif section.settings.stat_from_price != blank -%}
               <div>
                 {%- assign stat_price_parts = section.settings.stat_from_price | split: ' ' -%}
                 <div class="rt-hero-stat-n">{{ stat_price_parts[0] }}</div>
@@ -70,6 +99,7 @@
                 </div>
               </div>
             {%- endif -%}
+
             {%- if section.settings.stat_shipping != blank -%}
               <div>
                 {%- assign stat_ship_parts = section.settings.stat_shipping | split: ' ' -%}
