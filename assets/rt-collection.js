@@ -151,11 +151,13 @@
     });
   });
 
-  /* Restore saved view */
+  /* Restore saved view — desktop only; on mobile let CSS media query set columns */
   document.addEventListener('DOMContentLoaded', function () {
     try {
-      var saved = sessionStorage.getItem('rt-view');
-      if (saved) setView(parseInt(saved, 10));
+      if (!isMobile()) {
+        var saved = sessionStorage.getItem('rt-view');
+        if (saved) setView(parseInt(saved, 10));
+      }
     } catch (e) {}
   });
 
