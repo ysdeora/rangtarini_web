@@ -203,7 +203,7 @@
         {%- if collection.products_count == collection.all_products_count -%}
           {{ collection.products_count }} {{ collection.products_count | pluralize: 'piece', 'pieces' }}
         {%- else -%}
-          {{ collection.products_count }} of {{ collection.all_products_count }} {{ 'products' | t | default: 'pieces' }}
+          {{ collection.products_count }} of {{ collection.all_products_count }} pieces
         {%- endif -%}
       </span>
 
