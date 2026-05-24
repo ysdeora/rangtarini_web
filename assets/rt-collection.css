@@ -1375,8 +1375,8 @@
    RESPONSIVE — Tablet ≤ 1024px
 ════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .rt-hero-copy { padding: 40px 36px 36px 20px; }
-  .rt-hero-title { font-size: clamp(44px, 7vw, 80px); }
+  .rt-hero-copy { padding: 28px 28px 28px 20px; }
+  .rt-hero-title { font-size: clamp(38px, 5vw, 72px); }
   .rt-toolbar { padding: 12px 20px; gap: 16px; }
   .rt-grid-wrap { padding: 24px 20px; }
   .rt-pills { padding: 14px 20px; }
