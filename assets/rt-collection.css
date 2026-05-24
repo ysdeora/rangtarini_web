@@ -372,9 +372,9 @@
   border-right: 0;
   background: var(--paper);
   position: sticky;
-  top: var(--rt-toolbar-bottom, 113px);
+  top: var(--rt-header-h, 61px);
   align-self: flex-start;
-  max-height: calc(100vh - var(--rt-toolbar-bottom, 113px));
+  max-height: calc(100vh - var(--rt-header-h, 61px));
   overflow-y: auto;
   transition:
     flex-basis 280ms cubic-bezier(0.2, 0.7, 0.2, 1),
