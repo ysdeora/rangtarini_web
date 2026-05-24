@@ -23,17 +23,7 @@
       document.querySelector('.header-wrapper') ||
       document.querySelector('header');
     var headerH = header ? header.offsetHeight : 61;
-
-    var pills = document.querySelector('.rt-pills');
-    var pillsH = pills ? pills.offsetHeight : 0;
-
-    var toolbar = document.querySelector('.rt-toolbar');
-    var toolbarH = toolbar ? toolbar.offsetHeight : 57;
-
-    var root = document.documentElement;
-    root.style.setProperty('--rt-header-h', headerH + 'px');
-    root.style.setProperty('--rt-pills-h', pillsH + 'px');
-    root.style.setProperty('--rt-toolbar-bottom', (headerH + pillsH + toolbarH) + 'px');
+    document.documentElement.style.setProperty('--rt-header-h', headerH + 'px');
   }
 
   document.addEventListener('DOMContentLoaded', setHeightVars);
