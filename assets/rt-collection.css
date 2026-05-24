@@ -1412,10 +1412,10 @@
   .rt-hero-stat-n { font-size: 18px; }
   .rt-hero-stat-l { margin-top: 3px; }
 
-  /* Pills: scroll normally */
+  /* Pills: sticky on mobile too */
   .rt-pills { padding: 12px 14px; gap: 8px; }
 
-  /* Toolbar: fixed below header on mobile */
+  /* Toolbar */
   .rt-toolbar {
     padding: 10px 16px;
     gap: 12px;
