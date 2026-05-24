@@ -1378,7 +1378,7 @@
 ════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   /* Hero: compact single column */
-  .rt-hero-inner { grid-template-columns: 1fr; min-height: 0; }
+  .rt-hero-inner { grid-template-columns: 1fr; height: auto; min-height: 0; }
   .rt-hero-copy {
     border-right: 0;
     border-bottom: 1px solid var(--ink);
