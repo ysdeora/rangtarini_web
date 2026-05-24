@@ -253,12 +253,9 @@
 
 
 /* ════════════════════════════════════════════════════════════
-   STICKY TOOLBAR
+   TOOLBAR
 ════════════════════════════════════════════════════════════ */
 .rt-toolbar {
-  position: sticky;
-  top: calc(var(--rt-header-h, 56px) + var(--rt-pills-h, 0px));
-  z-index: 30;
   background: var(--paper);
   border-bottom: 1px solid var(--ink);
   padding: 13px 28px;
