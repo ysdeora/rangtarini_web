@@ -1,21 +1,14 @@
 {% comment %}
-  RANGTARINI — rt-collection-main.liquid  v3
-  sections/rt-collection-main.liquid
-
-  Changes in v3
-  • Product type now appears as a regular dropdown filter
-    (category strip still present for quick browsing)
-  • columns_mobile schema setting added
-  • Inline <style> sets --rt-cols for desktop AND mobile via media query
-  • {%- continue -%} replaced with {%- unless -%} (broader Liquid compatibility)
-  • image_tag replaced with plain <img> (broader Liquid compatibility)
+  RANGTARINI — rt-collection-main.liquid  v4
+  Editorial redesign: Archivo + hard ink lines + paper/bone palette
+  Matches v3 Visual homepage aesthetic (collection-page.jsx design source)
 {% endcomment %}
 
 {{ 'rt-collection.css' | asset_url | stylesheet_tag }}
 
 {%- comment -%}
-  Inline style sets --rt-cols for desktop and mobile from section settings.
-  CSS file does NOT hardcode column counts so the theme editor controls them.
+  Set --rt-cols from schema setting (JS view-switcher can override at runtime).
+  Mobile column count is set via media query in CSS using the same variable.
 {%- endcomment -%}
 <style>
   #rt-{{ section.id }} .rt-grid { --rt-cols: {{ section.settings.columns_desktop }}; }
@@ -29,20 +22,100 @@
 <section id="rt-{{ section.id }}" class="rt-collection">
 
   {%- comment -%}══════════════════════════════
-    HEADER
+    01 · COLLECTION HERO
   ══════════════════════════════{%- endcomment -%}
-  <div class="rt-header">
-    <h1 class="rt-page-title">{{ collection.title }}</h1>
-    <span class="rt-total-count">
-      {{ collection.products_count }}
-      {{ collection.products_count | pluralize: 'product', 'products' }}
-    </span>
-  </div>
+  {%- if section.settings.show_hero -%}
+    <div class="rt-hero">
+      <div class="rt-hero-inner">
+
+        {%- comment -%} Left — copy {%- endcomment -%}
+        <div class="rt-hero-copy">
+
+          <div class="rt-hero-meta">
+            <div>
+              <p class="rt-hero-eyebrow">{{ 'collections.general.collection' | t | default: 'Collection' }}</p>
+            </div>
+            <span class="rt-hero-deva" aria-hidden="true">रंगतारिणी</span>
+          </div>
+
+          <div>
+            <h1 class="rt-hero-title">{{ collection.title }}</h1>
+            {%- if collection.description != blank -%}
+              <div class="rt-hero-desc">{{ collection.description | strip_html }}</div>
+            {%- endif -%}
+          </div>
+
+          <div class="rt-hero-stats">
+            <div>
+              <div class="rt-hero-stat-n">{{ collection.products_count }}</div>
+              <div class="rt-hero-stat-l">{{ collection.products_count | pluralize: 'Piece', 'Pieces' }}</div>
+            </div>
+            {%- if section.settings.stat_materials != blank -%}
+              <div>
+                {%- assign stat_mat_parts = section.settings.stat_materials | split: ' ' -%}
+                <div class="rt-hero-stat-n">{{ stat_mat_parts[0] }}</div>
+                <div class="rt-hero-stat-l">
+                  {%- assign stat_mat_label = stat_mat_parts | shift | join: ' ' -%}
+                  {{ stat_mat_label | default: 'Materials' }}
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.stat_from_price != blank -%}
+              <div>
+                {%- assign stat_price_parts = section.settings.stat_from_price | split: ' ' -%}
+                <div class="rt-hero-stat-n">{{ stat_price_parts[0] }}</div>
+                <div class="rt-hero-stat-l">
+                  {%- assign stat_price_label = stat_price_parts | shift | join: ' ' -%}
+                  {{ stat_price_label | default: 'From' }}
+                </div>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.stat_shipping != blank -%}
+              <div>
+                {%- assign stat_ship_parts = section.settings.stat_shipping | split: ' ' -%}
+                <div class="rt-hero-stat-n">{{ stat_ship_parts[0] }}</div>
+                <div class="rt-hero-stat-l">
+                  {%- assign stat_ship_label = stat_ship_parts | shift | join: ' ' -%}
+                  {{ stat_ship_label | default: 'Ships within' }}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+
+        </div>
+
+        {%- comment -%} Right — editorial image {%- endcomment -%}
+        <div class="rt-hero-image">
+          {%- if collection.image -%}
+            {%- assign hero_img_src = collection.image | image_url: width: 1200 -%}
+            {%- assign hero_img_src_2x = collection.image | image_url: width: 2400 -%}
+            <img src="{{ hero_img_src }}"
+                 srcset="{{ hero_img_src }} 1200w, {{ hero_img_src_2x }} 2400w"
+                 sizes="50vw"
+                 alt="{{ collection.image.alt | default: collection.title | escape }}"
+                 loading="eager"
+                 fetchpriority="high"
+                 width="{{ collection.image.width }}"
+                 height="{{ collection.image.height }}">
+          {%- else -%}
+            <div class="rt-hero-placeholder"></div>
+          {%- endif -%}
+          <span class="rt-hero-image-badge">{{ collection.title | escape }}</span>
+          <div class="rt-hero-image-caption">
+            <span class="rt-hero-image-tagline">Heirlooms, remade.</span>
+            <span class="rt-hero-image-count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'piece', 'pieces' }}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  {%- endif -%}
+
 
   {%- comment -%}══════════════════════════════
-    CATEGORY STRIP
-    Reads Product type filter values automatically.
-    Gives shoppers a fast single-tap way to jump to a type.
+    02 · QUICK PILLS
+    "All" + Product Type values from Search & Discovery
+    + any schema-defined quick_pill blocks
   ══════════════════════════════{%- endcomment -%}
   {%- assign rt_type_filter = nil -%}
   {%- for filter in collection.filters -%}
@@ -51,33 +124,58 @@
     {%- endif -%}
   {%- endfor -%}
 
+  {%- assign rt_any_type_active = false -%}
   {%- if rt_type_filter -%}
-    {%- assign rt_any_type_active = false -%}
     {%- for v in rt_type_filter.active_values -%}
       {%- assign rt_any_type_active = true -%}
     {%- endfor -%}
+  {%- endif -%}
 
-    <nav class="rt-cat-bar" aria-label="Browse by product type">
+  {%- assign rt_has_pills = false -%}
+  {%- if rt_type_filter or section.blocks.size > 0 -%}
+    {%- assign rt_has_pills = true -%}
+  {%- endif -%}
+
+  {%- if rt_has_pills -%}
+    <nav class="rt-pills" aria-label="{{ 'collections.general.quick_filters' | t | default: 'Quick filters' }}">
+      <span class="rt-pills-label" aria-hidden="true">Quick</span>
+
+      {%- comment -%} "All" pill — links to bare collection URL, active when no type filter {%- endcomment -%}
       <a href="{{ collection.url }}"
-         class="rt-cat-pill{% unless rt_any_type_active %} rt-cat-active{% endunless %}">
+         class="rt-pill{% unless rt_any_type_active %} rt-pill--active{% endunless %}">
         All
       </a>
-      {%- for value in rt_type_filter.values -%}
-        {%- if value.count > 0 -%}
-          <a href="{{ value.url_to_add }}"
-             class="rt-cat-pill{% if value.active %} rt-cat-active{% endif %}">
-            {{ value.label }}
+
+      {%- comment -%} Auto-pills from Product Type filter {%- endcomment -%}
+      {%- if rt_type_filter -%}
+        {%- for value in rt_type_filter.values -%}
+          {%- if value.count > 0 -%}
+            <a href="{{ value.url_to_add }}"
+               class="rt-pill{% if value.active %} rt-pill--active{% endif %}">
+              {{ value.label | escape }}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- comment -%} Schema-defined quick pill blocks {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'quick_pill' and block.settings.label != blank -%}
+          <a href="{{ block.settings.url | default: collection.url }}"
+             class="rt-pill"
+             {{ block.shopify_attributes }}>
+            {{ block.settings.label | escape }}
           </a>
         {%- endif -%}
       {%- endfor -%}
     </nav>
   {%- endif -%}
 
+
   {%- comment -%}══════════════════════════════
-    FILTER FORM
-    All filter dropdowns + sort submit together via GET.
-    Every filter configured in Search & Discovery auto-renders —
-    no code changes needed when you add/remove filters there.
+    03 · FILTER FORM WRAPPER
+    Toolbar + sidebar + grid all live inside one <form>
+    so checkboxes, sort, and price inputs submit together.
   ══════════════════════════════{%- endcomment -%}
   <form id="rt-filter-form" method="GET" action="{{ collection.url }}">
 
@@ -85,211 +183,35 @@
       <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
     {%- endif -%}
 
-    <div class="rt-filter-bar" role="toolbar" aria-label="Product filters">
-      <span class="rt-filter-label" aria-hidden="true">Filter</span>
+    {%- comment -%}── 03a · STICKY TOOLBAR ──{%- endcomment -%}
+    <div class="rt-toolbar" role="toolbar" aria-label="{{ 'collections.filtering.filter_and_sort_label' | t | default: 'Filter and sort' }}">
 
-      {%- comment -%}
-        Loop ALL filters from Search & Discovery.
-        Product type is included here as a dropdown AND in the
-        category strip above — two ways to reach the same filter.
-      {%- endcomment -%}
-      {%- for filter in collection.filters -%}
-        {%- assign rt_dp_id = filter.label | handleize -%}
+      <button type="button"
+              class="rt-sidebar-toggle"
+              aria-pressed="false"
+              aria-controls="rt-sidebar-{{ section.id }}"
+              aria-label="{{ 'collections.filtering.filter_button_label' | t | default: 'Toggle filters' }}">
+        <svg width="13" height="11" viewBox="0 0 13 11" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          <line x1="0" y1="1" x2="13" y2="1"/>
+          <line x1="0" y1="5.5" x2="9" y2="5.5"/>
+          <line x1="0" y1="10" x2="5" y2="10"/>
+        </svg>
+        <span class="rt-toggle-label">Filter</span>
+      </button>
 
-        {%- if filter.type == 'price_range' -%}
-          {%- comment -%}──────────────────────────────
-            PRICE — dual-range slider
-          ──────────────────────────────{%- endcomment -%}
-          {%- assign rt_price_max = filter.range_max | divided_by: 100 -%}
-          {%- assign rt_price_cur_min = 0 -%}
-          {%- assign rt_price_cur_max = rt_price_max -%}
-          {%- if filter.min_value.value -%}
-            {%- assign rt_price_cur_min = filter.min_value.value | divided_by: 100.0 | ceil -%}
-          {%- endif -%}
-          {%- if filter.max_value.value -%}
-            {%- assign rt_price_cur_max = filter.max_value.value | divided_by: 100.0 | ceil -%}
-          {%- endif -%}
-          {%- assign rt_price_active = false -%}
-          {%- if filter.min_value.value or filter.max_value.value -%}
-            {%- assign rt_price_active = true -%}
-          {%- endif -%}
-
-          <div class="rt-dp-wrap">
-            <button type="button"
-                    class="rt-f-btn"
-                    data-dp="{{ rt_dp_id }}"
-                    aria-expanded="false"
-                    aria-controls="dp-{{ rt_dp_id }}"
-                    aria-haspopup="dialog">
-              Price
-              <span class="rt-chevron" aria-hidden="true">&#9660;</span>
-              {%- if rt_price_active -%}
-                <span class="rt-badge">1</span>
-              {%- endif -%}
-            </button>
-
-            <div class="rt-dp-panel rt-dp-price"
-                 id="dp-{{ rt_dp_id }}"
-                 role="dialog"
-                 aria-label="Price range filter"
-                 hidden>
-              <div class="rt-price-slider-wrap"
-                   data-min="0"
-                   data-max="{{ rt_price_max }}"
-                   data-cur-min="{{ rt_price_cur_min }}"
-                   data-cur-max="{{ rt_price_cur_max }}"
-                   data-param-min="{{ filter.min_value.param_name }}"
-                   data-param-max="{{ filter.max_value.param_name }}">
-
-                <div class="rt-price-labels">
-                  <span>&#8377;<span class="rt-price-min-val">{{ rt_price_cur_min | floor }}</span></span>
-                  <span>&#8377;<span class="rt-price-max-val">{{ rt_price_cur_max | floor }}</span></span>
-                </div>
-
-                <div class="rt-slider-outer">
-                  <div class="rt-slider-track"></div>
-                  <input class="rt-range rt-range-min"
-                         type="range"
-                         min="0" max="{{ rt_price_max }}"
-                         value="{{ rt_price_cur_min }}"
-                         step="100"
-                         aria-label="Minimum price" />
-                  <input class="rt-range rt-range-max"
-                         type="range"
-                         min="0" max="{{ rt_price_max }}"
-                         value="{{ rt_price_cur_max }}"
-                         step="100"
-                         aria-label="Maximum price" />
-                </div>
-
-                <input class="rt-price-hidden-min" type="hidden"
-                       name="{{ filter.min_value.param_name }}"
-                       value="{{ rt_price_cur_min | floor }}" />
-                <input class="rt-price-hidden-max" type="hidden"
-                       name="{{ filter.max_value.param_name }}"
-                       value="{{ rt_price_cur_max | floor }}" />
-
-                <button type="button" class="rt-price-apply-btn">Apply</button>
-              </div>
-            </div>
-          </div>
-
-        {%- elsif filter.type == 'list' -%}
-          {%- comment -%}──────────────────────────────
-            LIST — checkbox dropdown
-            Covers: Product type, Jewelry material, Color,
-            Occasion, Availability and any future filter.
-          ──────────────────────────────{%- endcomment -%}
-          <div class="rt-dp-wrap">
-            <button type="button"
-                    class="rt-f-btn"
-                    data-dp="{{ rt_dp_id }}"
-                    aria-expanded="false"
-                    aria-controls="dp-{{ rt_dp_id }}"
-                    aria-haspopup="listbox">
-              {{ filter.label }}
-              <span class="rt-chevron" aria-hidden="true">&#9660;</span>
-              {%- if filter.active_values.size > 0 -%}
-                <span class="rt-badge">{{ filter.active_values.size }}</span>
-              {%- endif -%}
-            </button>
-
-            <div class="rt-dp-panel"
-                 id="dp-{{ rt_dp_id }}"
-                 role="listbox"
-                 aria-label="{{ filter.label }}"
-                 aria-multiselectable="true"
-                 hidden>
-              {%- for value in filter.values -%}
-                {%- if value.count > 0 or value.active -%}
-
-                  {%- comment -%} Color filter gets a swatch circle {%- endcomment -%}
-                  {%- assign rt_is_color = false -%}
-                  {%- if filter.label == 'Color' or filter.label == 'Colour' -%}
-                    {%- assign rt_is_color = true -%}
-                  {%- endif -%}
-
-                  {%- if rt_is_color -%}
-                    {%- assign rt_clr = value.label | downcase -%}
-                    {%- assign rt_sw_bg = '#D4CFC6' -%}
-                    {%- assign rt_sw_multi = false -%}
-                    {%- if rt_clr == 'blue' -%}      {%- assign rt_sw_bg = '#4A7FB5' -%}
-                    {%- elsif rt_clr == 'gold' -%}   {%- assign rt_sw_bg = '#C9A84C' -%}
-                    {%- elsif rt_clr == 'green' -%}  {%- assign rt_sw_bg = '#4A7A3A' -%}
-                    {%- elsif rt_clr == 'pink' -%}   {%- assign rt_sw_bg = '#E8A0B0' -%}
-                    {%- elsif rt_clr == 'purple' -%} {%- assign rt_sw_bg = '#7B5EA7' -%}
-                    {%- elsif rt_clr == 'red' -%}    {%- assign rt_sw_bg = '#C0392B' -%}
-                    {%- elsif rt_clr == 'silver' -%} {%- assign rt_sw_bg = '#A8A8A8' -%}
-                    {%- elsif rt_clr == 'white' -%}  {%- assign rt_sw_bg = '#F0F0F0' -%}
-                    {%- elsif rt_clr == 'multicolor' or rt_clr == 'multi-color' -%}
-                      {%- assign rt_sw_multi = true -%}
-                    {%- endif -%}
-
-                    <label class="rt-dp-opt rt-dp-color{% if value.active %} rt-sel{% endif %}"
-                           role="option"
-                           aria-selected="{{ value.active }}">
-                      <input type="checkbox"
-                             class="rt-f-checkbox"
-                             name="{{ value.param_name }}"
-                             value="{{ value.value }}"
-                             {% if value.active %}checked{% endif %} />
-                      {%- if rt_sw_multi -%}
-                        <span class="rt-swatch rt-swatch--multi" aria-hidden="true"></span>
-                      {%- else -%}
-                        <span class="rt-swatch"
-                              style="background:{{ rt_sw_bg }};{% if rt_clr == 'white' %}border-color:rgba(0,0,0,.2);{% endif %}"
-                              aria-hidden="true"></span>
-                      {%- endif -%}
-                      <span class="rt-dp-label">{{ value.label }}</span>
-                      <span class="rt-dp-cnt">{{ value.count }}</span>
-                    </label>
-
-                  {%- else -%}
-                    <label class="rt-dp-opt{% if value.active %} rt-sel{% endif %}"
-                           role="option"
-                           aria-selected="{{ value.active }}">
-                      <input type="checkbox"
-                             class="rt-f-checkbox"
-                             name="{{ value.param_name }}"
-                             value="{{ value.value }}"
-                             {% if value.active %}checked{% endif %} />
-                      <span class="rt-dp-label">{{ value.label }}</span>
-                      <span class="rt-dp-cnt">{{ value.count }}</span>
-                    </label>
-                  {%- endif -%}
-
-                {%- endif -%}
-              {%- endfor -%}
-            </div>
-          </div>
-
-        {%- elsif filter.type == 'boolean' -%}
-          {%- comment -%}──────────────────────────────
-            BOOLEAN — inline toggle (future-proof)
-          ──────────────────────────────{%- endcomment -%}
-          <div class="rt-dp-wrap">
-            <label class="rt-f-btn rt-f-toggle">
-              <input type="checkbox"
-                     class="rt-f-checkbox"
-                     name="{{ filter.param_name }}"
-                     value="true"
-                     {% if filter.true_value.active %}checked{% endif %} />
-              {{ filter.label }}
-              {%- if filter.true_value.active -%}
-                <span class="rt-badge">1</span>
-              {%- endif -%}
-            </label>
-          </div>
-
+      <span class="rt-toolbar-count">
+        {%- if collection.products_count == collection.all_products_count -%}
+          {{ collection.products_count }} {{ collection.products_count | pluralize: 'piece', 'pieces' }}
+        {%- else -%}
+          {{ collection.products_count }} of {{ collection.all_products_count }} {{ 'products' | t | default: 'pieces' }}
         {%- endif -%}
-      {%- endfor -%}
+      </span>
 
-      {%- comment -%}── SORT — always far right ──{%- endcomment -%}
       <div class="rt-sort-wrap">
-        <label class="rt-sort-lbl" for="rt-sort-{{ section.id }}">Sort</label>
-        <select class="rt-sort-sel"
-                id="rt-sort-{{ section.id }}"
+        <span class="rt-sort-label">Sort</span>
+        <select class="rt-sort-select"
                 name="sort_by"
+                aria-label="{{ 'collections.sorting.title' | t | default: 'Sort by' }}"
                 onchange="this.closest('form').submit()">
           {%- for option in collection.sort_options -%}
             <option value="{{ option.value }}"
@@ -298,171 +220,589 @@
             </option>
           {%- endfor -%}
         </select>
-        <span class="rt-sort-arrow" aria-hidden="true">&#9660;</span>
       </div>
 
-    </div>
-  </form>
+      <div class="rt-view-switcher" role="group" aria-label="Grid columns">
+        {%- for n in (2..4) -%}
+          {%- assign n_str = n | append: '' -%}
+          {%- assign is_active = false -%}
+          {%- if section.settings.columns_desktop == n_str -%}
+            {%- assign is_active = true -%}
+          {%- endif -%}
+          <button type="button"
+                  class="rt-view-btn{% if is_active %} rt-view-btn--active{% endif %}"
+                  data-view="{{ n }}"
+                  aria-pressed="{{ is_active }}"
+                  title="{{ n }} columns">
+            {%- comment -%} SVG grid icon: n vertical bars {%- endcomment -%}
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+              {%- if n == 2 -%}
+                <rect x="0"   y="0" width="5.5" height="14"/>
+                <rect x="8.5" y="0" width="5.5" height="14"/>
+              {%- elsif n == 3 -%}
+                <rect x="0"    y="0" width="3.5" height="14"/>
+                <rect x="5.25" y="0" width="3.5" height="14"/>
+                <rect x="10.5" y="0" width="3.5" height="14"/>
+              {%- else -%}
+                <rect x="0"      y="0" width="2.5" height="14"/>
+                <rect x="3.833"  y="0" width="2.5" height="14"/>
+                <rect x="7.667"  y="0" width="2.5" height="14"/>
+                <rect x="11.5"   y="0" width="2.5" height="14"/>
+              {%- endif -%}
+            </svg>
+          </button>
+        {%- endfor -%}
+      </div>
+
+    </div>{%- comment -%} / .rt-toolbar {%- endcomment -%}
+
+
+    {%- comment -%}── 03b · BODY (sidebar + main) ──{%- endcomment -%}
+    <div class="rt-body">
+
+      {%- comment -%}════════════════════
+        FILTER SIDEBAR
+      ════════════════════{%- endcomment -%}
+      <aside id="rt-sidebar-{{ section.id }}"
+             class="rt-sidebar"
+             aria-label="{{ 'collections.filtering.filter_button_label' | t | default: 'Filters' }}">
+
+        {%- comment -%} Mobile close row (shown via CSS on ≤768px) {%- endcomment -%}
+        <div class="rt-sidebar-close">
+          <span class="rt-sidebar-heading">Filter</span>
+          <button type="button" class="rt-sidebar-close-btn" aria-label="Close filters">✕</button>
+        </div>
+
+        <div class="rt-sidebar-header">
+          <span class="rt-sidebar-heading">Filter</span>
+          <a href="{{ collection.url }}" class="rt-sidebar-clear">Clear all</a>
+        </div>
+
+        {%- for filter in collection.filters -%}
+          {%- assign rt_dp_id = filter.label | handleize -%}
+
+          {%- if filter.type == 'price_range' -%}
+            {%- comment -%}── PRICE RANGE ──{%- endcomment -%}
+            {%- assign rt_price_max    = filter.range_max | divided_by: 100 -%}
+            {%- assign rt_price_cur_min = 0 -%}
+            {%- assign rt_price_cur_max = rt_price_max -%}
+            {%- if filter.min_value.value -%}
+              {%- assign rt_price_cur_min = filter.min_value.value | divided_by: 100.0 | ceil -%}
+            {%- endif -%}
+            {%- if filter.max_value.value -%}
+              {%- assign rt_price_cur_max = filter.max_value.value | divided_by: 100.0 | ceil -%}
+            {%- endif -%}
+            {%- assign rt_price_active = false -%}
+            {%- if filter.min_value.value or filter.max_value.value -%}
+              {%- assign rt_price_active = true -%}
+            {%- endif -%}
+
+            <details class="rt-filter-group" open>
+              <summary>
+                <span class="rt-filter-group-label">{{ filter.label }}</span>
+                <span class="rt-filter-group-right">
+                  {%- if rt_price_active -%}
+                    <span class="rt-filter-badge">1</span>
+                  {%- endif -%}
+                  <span class="rt-filter-chevron" aria-hidden="true">▾</span>
+                </span>
+              </summary>
+
+              <div class="rt-filter-price">
+                <div class="rt-price-labels">
+                  <span>&#8377;<span class="rt-price-min-val">{{ rt_price_cur_min | floor }}</span></span>
+                  <span>&#8377;<span class="rt-price-max-val">{{ rt_price_cur_max | floor }}</span></span>
+                </div>
+
+                <div class="rt-price-slider-wrap"
+                     data-min="0"
+                     data-max="{{ rt_price_max }}"
+                     data-cur-min="{{ rt_price_cur_min }}"
+                     data-cur-max="{{ rt_price_cur_max }}"
+                     data-param-min="{{ filter.min_value.param_name }}"
+                     data-param-max="{{ filter.max_value.param_name }}">
+                  <div class="rt-slider-outer">
+                    <div class="rt-slider-track"></div>
+                    <input class="rt-range rt-range-min"
+                           type="range"
+                           min="0" max="{{ rt_price_max }}"
+                           value="{{ rt_price_cur_min }}"
+                           step="100"
+                           aria-label="{{ 'products.facets.from' | t | default: 'Minimum price' }}">
+                    <input class="rt-range rt-range-max"
+                           type="range"
+                           min="0" max="{{ rt_price_max }}"
+                           value="{{ rt_price_cur_max }}"
+                           step="100"
+                           aria-label="{{ 'products.facets.to' | t | default: 'Maximum price' }}">
+                  </div>
+                  <input class="rt-price-hidden-min" type="hidden"
+                         name="{{ filter.min_value.param_name }}"
+                         value="{{ rt_price_cur_min | floor }}">
+                  <input class="rt-price-hidden-max" type="hidden"
+                         name="{{ filter.max_value.param_name }}"
+                         value="{{ rt_price_cur_max | floor }}">
+                  <button type="button" class="rt-price-apply-btn">Apply</button>
+                </div>
+              </div>
+            </details>
+
+          {%- elsif filter.type == 'list' -%}
+            {%- comment -%}── LIST FILTER (checkboxes) ──{%- endcomment -%}
+            {%- assign rt_is_color = false -%}
+            {%- if filter.label == 'Color' or filter.label == 'Colour' -%}
+              {%- assign rt_is_color = true -%}
+            {%- endif -%}
+
+            <details class="rt-filter-group" open>
+              <summary>
+                <span class="rt-filter-group-label">{{ filter.label }}</span>
+                <span class="rt-filter-group-right">
+                  {%- if filter.active_values.size > 0 -%}
+                    <span class="rt-filter-badge">{{ filter.active_values.size }}</span>
+                  {%- endif -%}
+                  <span class="rt-filter-chevron" aria-hidden="true">▾</span>
+                </span>
+              </summary>
+
+              <div class="rt-filter-options">
+                {%- for value in filter.values -%}
+                  {%- if value.count > 0 or value.active -%}
+                    <label class="rt-filter-option">
+                      <input type="checkbox"
+                             class="rt-check rt-f-checkbox"
+                             name="{{ value.param_name }}"
+                             value="{{ value.value }}"
+                             {% if value.active %}checked{% endif %}
+                             aria-label="{{ value.label | escape }}">
+                      {%- if rt_is_color -%}
+                        {%- assign rt_clr = value.label | downcase -%}
+                        {%- assign rt_sw_bg = '#c8c1b0' -%}
+                        {%- if rt_clr == 'gold' or rt_clr == 'gold-plated' -%}      {%- assign rt_sw_bg = '#c9a961' -%}
+                        {%- elsif rt_clr == 'silver' or rt_clr == 'rhodium' -%}     {%- assign rt_sw_bg = '#cfcfcf' -%}
+                        {%- elsif rt_clr == 'rose' or rt_clr == 'rose gold' -%}     {%- assign rt_sw_bg = '#d6a89a' -%}
+                        {%- elsif rt_clr == 'oxidised' or rt_clr == 'oxidized' -%}  {%- assign rt_sw_bg = '#8a7260' -%}
+                        {%- elsif rt_clr == 'blue' -%}      {%- assign rt_sw_bg = '#4A7FB5' -%}
+                        {%- elsif rt_clr == 'green' -%}     {%- assign rt_sw_bg = '#4A7A3A' -%}
+                        {%- elsif rt_clr == 'pink' -%}      {%- assign rt_sw_bg = '#E8A0B0' -%}
+                        {%- elsif rt_clr == 'red' -%}       {%- assign rt_sw_bg = '#C0392B' -%}
+                        {%- elsif rt_clr == 'white' -%}     {%- assign rt_sw_bg = '#F0F0F0' -%}
+                        {%- elsif rt_clr == 'black' -%}     {%- assign rt_sw_bg = '#1a1a1a' -%}
+                        {%- elsif rt_clr == 'multicolor' or rt_clr == 'multi-color' -%}
+                          <span class="rt-swatch rt-swatch--multi" aria-hidden="true"></span>
+                          {%- assign rt_sw_bg = nil -%}
+                        {%- endif -%}
+                        {%- if rt_sw_bg != nil -%}
+                          <span class="rt-swatch" style="background:{{ rt_sw_bg }}" aria-hidden="true"></span>
+                        {%- endif -%}
+                      {%- endif -%}
+                      <span class="rt-filter-option-name">{{ value.label | escape }}</span>
+                      <span class="rt-filter-option-count">{{ value.count }}</span>
+                    </label>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </details>
+
+          {%- elsif filter.type == 'boolean' -%}
+            {%- comment -%}── BOOLEAN TOGGLE ──{%- endcomment -%}
+            <div class="rt-instock-row">
+              <label class="rt-instock-label" for="rt-bool-{{ rt_dp_id }}-{{ section.id }}">
+                {{ filter.label }}
+              </label>
+              <input type="checkbox"
+                     class="rt-check rt-f-checkbox"
+                     id="rt-bool-{{ rt_dp_id }}-{{ section.id }}"
+                     name="{{ filter.param_name }}"
+                     value="true"
+                     {% if filter.true_value.active %}checked{% endif %}>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        <p class="rt-sidebar-note">
+          All pieces BIS hallmarked — 925 silver.
+          Lifetime polish &amp; resizing. 7&#x2011;day exchange.
+        </p>
+
+      </aside>{%- comment -%} / .rt-sidebar {%- endcomment -%}
+
+
+      {%- comment -%}════════════════════
+        MAIN — chips + grid + pagination
+      ════════════════════{%- endcomment -%}
+      <div class="rt-main">
+
+        {%- comment -%}── ACTIVE FILTER CHIPS ──{%- endcomment -%}
+        {%- assign rt_active_total = 0 -%}
+        {%- for filter in collection.filters -%}
+          {%- assign rt_active_total = rt_active_total | plus: filter.active_values.size -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value or filter.max_value.value -%}
+              {%- assign rt_active_total = rt_active_total | plus: 1 -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if rt_active_total > 0 -%}
+          <div class="rt-chips" aria-live="polite">
+            <span class="rt-chips-label" aria-hidden="true">Applied</span>
+
+            {%- for filter in collection.filters -%}
+              {%- for value in filter.active_values -%}
+                <a href="{{ value.url_to_remove }}"
+                   class="rt-chip"
+                   aria-label="{{ 'collections.filtering.clear_filter' | t: filter: value.label | default: 'Remove filter' }}">
+                  {{- value.label | escape -}}<span class="rt-chip-x" aria-hidden="true">&#215;</span>
+                </a>
+              {%- endfor -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value or filter.max_value.value -%}
+                  <a href="{{ filter.url_to_remove }}" class="rt-chip">
+                    &#8377;{%- if filter.min_value.value -%}{{ filter.min_value.value | divided_by: 100 | floor }}{%- else -%}0{%- endif -%}&nbsp;&mdash;&nbsp;&#8377;{%- if filter.max_value.value -%}{{ filter.max_value.value | divided_by: 100 | floor }}{%- else -%}{{ filter.range_max | divided_by: 100 }}{%- endif -%}<span class="rt-chip-x" aria-hidden="true">&#215;</span>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            <button type="button" class="rt-chips-clear" onclick="window.location='{{ collection.url }}'">
+              Clear all
+            </button>
+          </div>
+        {%- endif -%}
+
+
+        {%- comment -%}── PRODUCT GRID ──{%- endcomment -%}
+        <div class="rt-grid-wrap">
+          <div class="rt-grid" aria-label="{{ 'collections.general.collection_label' | t | default: 'Products' }}">
+
+            {%- if collection.products.size > 0 -%}
+              {%- assign rt_editorial_shown = false -%}
+
+              {%- for product in collection.products -%}
+
+                {%- comment -%} MTO detection {%- endcomment -%}
+                {%- assign rt_avail = product.metafields.custom.availability | downcase -%}
+                {%- assign rt_is_mto = false -%}
+                {%- if rt_avail contains 'made to order' or rt_avail contains 'made-to-order' -%}
+                  {%- assign rt_is_mto = true -%}
+                {%- endif -%}
+                {%- unless rt_is_mto -%}
+                  {%- for tag in product.tags -%}
+                    {%- if tag == 'made-to-order' or tag == 'Made to Order' or tag == 'MTO' -%}
+                      {%- assign rt_is_mto = true -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endunless -%}
+
+                {%- comment -%} Sale detection {%- endcomment -%}
+                {%- assign rt_on_sale = false -%}
+                {%- if product.compare_at_price > product.price -%}
+                  {%- assign rt_on_sale = true -%}
+                {%- endif -%}
+
+                {%- comment -%} Sale percentage {%- endcomment -%}
+                {%- assign rt_sale_pct = 0 -%}
+                {%- if rt_on_sale -%}
+                  {%- assign rt_sale_pct = product.compare_at_price | minus: product.price -%}
+                  {%- assign rt_sale_pct = rt_sale_pct | times: 100 | divided_by: product.compare_at_price | round -%}
+                {%- endif -%}
+
+                {%- comment -%} Tag helpers {%- endcomment -%}
+                {%- assign rt_is_new  = false -%}
+                {%- assign rt_is_best = false -%}
+                {%- assign rt_is_low  = false -%}
+                {%- for tag in product.tags -%}
+                  {%- if tag == 'New' or tag == 'new-in' or tag == 'New In' -%}     {%- assign rt_is_new  = true -%}{%- endif -%}
+                  {%- if tag == 'Bestseller' or tag == 'bestseller' -%}             {%- assign rt_is_best = true -%}{%- endif -%}
+                  {%- if tag == 'low-stock' or tag == 'Low Stock' -%}               {%- assign rt_is_low  = true -%}{%- endif -%}
+                {%- endfor -%}
+
+                {%- comment -%} Swatch detection: find Color or Plating option {%- endcomment -%}
+                {%- assign rt_swatch_option_idx = nil -%}
+                {%- for option in product.options -%}
+                  {%- assign rt_opt_low = option | downcase -%}
+                  {%- if rt_opt_low == 'color' or rt_opt_low == 'colour' or rt_opt_low == 'plating' -%}
+                    {%- assign rt_swatch_option_idx = forloop.index0 -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- comment -%} Material + Style meta string from first variant title or product type {%- endcomment -%}
+                {%- assign rt_attr_string = product.product_type -%}
+
+                {%- comment -%}════════
+                  PRODUCT CARD
+                ════════{%- endcomment -%}
+                <a class="rt-card" href="{{ product.url }}">
+                  <div class="rt-card-img">
+
+                    {%- comment -%} Primary image {%- endcomment -%}
+                    {%- if product.featured_image -%}
+                      {%- assign rt_img_src = product.featured_image | image_url: width: 600 -%}
+                      {%- assign rt_img_src_2x = product.featured_image | image_url: width: 1200 -%}
+                      <img src="{{ rt_img_src }}"
+                           srcset="{{ rt_img_src }} 600w, {{ rt_img_src_2x }} 1200w"
+                           sizes="(max-width: 768px) 50vw, 25vw"
+                           alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                           class="rt-img-primary"
+                           loading="lazy"
+                           width="{{ product.featured_image.width }}"
+                           height="{{ product.featured_image.height }}">
+                    {%- else -%}
+                      <div class="rt-img-placeholder"></div>
+                    {%- endif -%}
+
+                    {%- comment -%} Hover image {%- endcomment -%}
+                    {%- if section.settings.enable_hover_image and product.images[1] -%}
+                      {%- assign rt_img2_src = product.images[1] | image_url: width: 600 -%}
+                      <img src="{{ rt_img2_src }}"
+                           alt="{{ product.images[1].alt | default: product.title | escape }}"
+                           class="rt-img-hover"
+                           loading="lazy"
+                           width="{{ product.images[1].width }}"
+                           height="{{ product.images[1].height }}">
+                    {%- endif -%}
+
+                    {%- comment -%} Badges {%- endcomment -%}
+                    <div class="rt-badges" aria-hidden="true">
+                      {%- if rt_is_new -%}
+                        <span class="rt-badge rt-badge--new">New</span>
+                      {%- endif -%}
+                      {%- if rt_on_sale -%}
+                        <span class="rt-badge rt-badge--sale">&#8722;{{ rt_sale_pct }}%</span>
+                      {%- endif -%}
+                      {%- if rt_is_best and rt_is_new == false -%}
+                        <span class="rt-badge rt-badge--best">Bestseller</span>
+                      {%- endif -%}
+                      {%- if rt_is_low -%}
+                        <span class="rt-badge rt-badge--low">Low stock</span>
+                      {%- endif -%}
+                      {%- unless product.available -%}
+                        <span class="rt-badge rt-badge--out">Sold out</span>
+                      {%- endunless -%}
+                      {%- if rt_is_mto -%}
+                        <span class="rt-badge rt-badge--mto">Made to Order</span>
+                      {%- endif -%}
+                    </div>
+
+                    {%- comment -%} Wishlist button {%- endcomment -%}
+                    <button type="button"
+                            class="rt-wishlist-btn"
+                            aria-label="{{ 'products.product.add_to_wishlist' | t | default: 'Add to wishlist' }}">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 21s-7-4.5-9.5-9.2C.7 8 2.5 4 6 4c2 0 3.5 1.3 4 2.5C10.5 5.3 12 4 14 4c3.5 0 5.3 4 3.5 7.8C19 16.5 12 21 12 21z"/>
+                      </svg>
+                    </button>
+
+                    {%- comment -%} Quick-add (not shown for sold-out) {%- endcomment -%}
+                    {%- if product.available -%}
+                      <button type="button"
+                              class="rt-quick-add"
+                              aria-label="{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}">
+                        Quick add &mdash; {{ product.price | money }}
+                      </button>
+                    {%- endif -%}
+
+                    {%- comment -%} SKU badge {%- endcomment -%}
+                    {%- if product.selected_or_first_available_variant.sku != blank -%}
+                      <span class="rt-sku-badge" aria-hidden="true">{{ product.selected_or_first_available_variant.sku | escape }}</span>
+                    {%- endif -%}
+
+                  </div>{%- comment -%} / .rt-card-img {%- endcomment -%}
+
+                  {%- comment -%} Card meta {%- endcomment -%}
+                  <div class="rt-card-meta">
+                    <div class="rt-card-row1">
+                      <p class="rt-card-name">{{ product.title }}</p>
+                      <div class="rt-card-prices">
+                        <span class="rt-price-cur">{{ product.price | money }}</span>
+                        {%- if rt_on_sale -%}
+                          <span class="rt-price-was">{{ product.compare_at_price | money }}</span>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                    <div class="rt-card-row2">
+                      <span class="rt-card-attrs">{{ rt_attr_string | escape }}</span>
+                      {%- comment -%} Swatches {%- endcomment -%}
+                      {%- if rt_swatch_option_idx != nil -%}
+                        <div class="rt-card-swatches" aria-hidden="true">
+                          {%- assign rt_shown_swatches = '' -%}
+                          {%- for variant in product.variants -%}
+                            {%- if rt_swatch_option_idx == 0 -%}      {%- assign rt_swatch_val = variant.option1 | downcase -%}
+                            {%- elsif rt_swatch_option_idx == 1 -%}   {%- assign rt_swatch_val = variant.option2 | downcase -%}
+                            {%- else -%}                              {%- assign rt_swatch_val = variant.option3 | downcase -%}
+                            {%- endif -%}
+
+                            {%- unless rt_shown_swatches contains rt_swatch_val -%}
+                              {%- assign rt_sw_color = '#c8c1b0' -%}
+                              {%- if rt_swatch_val contains 'gold' -%}         {%- assign rt_sw_color = '#c9a961' -%}
+                              {%- elsif rt_swatch_val contains 'silver' -%}    {%- assign rt_sw_color = '#cfcfcf' -%}
+                              {%- elsif rt_swatch_val contains 'rose' -%}      {%- assign rt_sw_color = '#d6a89a' -%}
+                              {%- elsif rt_swatch_val contains 'oxidis' -%}    {%- assign rt_sw_color = '#8a7260' -%}
+                              {%- elsif rt_swatch_val contains 'rhodium' -%}   {%- assign rt_sw_color = '#b0b4b8' -%}
+                              {%- elsif rt_swatch_val contains 'black' -%}     {%- assign rt_sw_color = '#1a1a1a' -%}
+                              {%- elsif rt_swatch_val contains 'white' -%}     {%- assign rt_sw_color = '#f0ece4' -%}
+                              {%- endif -%}
+                              <span class="rt-card-swatch" style="background:{{ rt_sw_color }}" title="{{ variant.option1 | escape }}"></span>
+                              {%- assign rt_shown_swatches = rt_shown_swatches | append: rt_swatch_val | append: '|' -%}
+                            {%- endunless -%}
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                </a>{%- comment -%} / .rt-card {%- endcomment -%}
+
+                {%- comment -%}── EDITORIAL TILE (inserted once at configured position) ──{%- endcomment -%}
+                {%- if section.settings.show_editorial_tile and rt_editorial_shown == false -%}
+                  {%- if forloop.index == section.settings.editorial_tile_at -%}
+                    {%- assign rt_editorial_shown = true -%}
+                    {%- assign rt_tile_url = section.settings.editorial_tile_cta_url | default: collection.url -%}
+                    <a href="{{ rt_tile_url }}" class="rt-editorial-tile">
+                      {%- comment -%} No image source configured — use dark placeholder {%- endcomment -%}
+                      <div class="rt-editorial-placeholder" aria-hidden="true"></div>
+                      <div class="rt-editorial-overlay" aria-hidden="true"></div>
+                      <span class="rt-editorial-badge" aria-hidden="true">Editorial</span>
+                      <div class="rt-editorial-content">
+                        <div>
+                          <h3 class="rt-editorial-title">
+                            {{ section.settings.editorial_tile_heading | default: 'The Bridal Edit.' | escape }}
+                          </h3>
+                          {%- if section.settings.editorial_tile_subhead != blank -%}
+                            <p class="rt-editorial-sub">{{ section.settings.editorial_tile_subhead | escape }}</p>
+                          {%- endif -%}
+                        </div>
+                        <span class="rt-editorial-cta" aria-hidden="true">
+                          <span class="rt-editorial-cta-label">{{ section.settings.editorial_tile_cta_label | default: 'Enter edit' | escape }}</span>
+                          <span>&#8594;</span>
+                        </span>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                {%- endif -%}
+
+              {%- endfor -%}
+
+            {%- else -%}
+              {%- comment -%}── EMPTY STATE ──{%- endcomment -%}
+              <div class="rt-empty">
+                <span class="rt-empty-deva" aria-hidden="true">रंगतारिणी</span>
+                <h2 class="rt-empty-title">Nothing here.</h2>
+                <p class="rt-empty-body">No pieces match these filters. Loosen one or two &mdash; or start over.</p>
+                <a href="{{ collection.url }}" class="rt-empty-btn">Clear all filters</a>
+              </div>
+            {%- endif -%}
+
+          </div>{%- comment -%} / .rt-grid {%- endcomment -%}
+
+
+          {%- comment -%}── PAGINATION ──{%- endcomment -%}
+          {%- if paginate.pages > 1 -%}
+            <nav class="rt-pagination" aria-label="{{ 'general.pagination.label' | t | default: 'Pagination' }}">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" class="rt-page-btn" aria-label="{{ 'general.pagination.previous' | t | default: 'Previous' }}">&larr;</a>
+              {%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}"
+                     class="rt-page-btn{% if part.title == paginate.current_page %} rt-page-btn--active{% endif %}"
+                     {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>
+                    {{ part.title }}
+                  </a>
+                {%- else -%}
+                  <span class="rt-page-btn{% if part.title == paginate.current_page %} rt-page-btn--active{% endif %}">
+                    {{ part.title }}
+                  </span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" class="rt-page-btn" aria-label="{{ 'general.pagination.next' | t | default: 'Next' }}">&rarr;</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+
+        </div>{%- comment -%} / .rt-grid-wrap {%- endcomment -%}
+      </div>{%- comment -%} / .rt-main {%- endcomment -%}
+
+    </div>{%- comment -%} / .rt-body {%- endcomment -%}
+  </form>{%- comment -%} / #rt-filter-form {%- endcomment -%}
+
 
   {%- comment -%}══════════════════════════════
-    ACTIVE FILTER CHIPS
+    04 · RELATED COLLECTIONS
   ══════════════════════════════{%- endcomment -%}
-  {%- assign rt_active_total = 0 -%}
-  {%- for filter in collection.filters -%}
-    {%- assign rt_active_total = rt_active_total | plus: filter.active_values.size -%}
-    {%- if filter.type == 'price_range' -%}
-      {%- if filter.min_value.value or filter.max_value.value -%}
-        {%- assign rt_active_total = rt_active_total | plus: 1 -%}
-      {%- endif -%}
-    {%- endif -%}
-  {%- endfor -%}
+  {%- assign rt_has_related = false -%}
+  {%- if section.settings.related_collection_1 != blank
+      or section.settings.related_collection_2 != blank
+      or section.settings.related_collection_3 != blank -%}
+    {%- assign rt_has_related = true -%}
+  {%- endif -%}
 
-  <div class="rt-chips-row" aria-live="polite">
-    {%- if rt_active_total == 0 -%}
-      <span class="rt-no-filter">No filters applied</span>
-    {%- else -%}
-      {%- for filter in collection.filters -%}
-        {%- for value in filter.active_values -%}
-          <a href="{{ value.url_to_remove }}"
-             class="rt-chip"
-             aria-label="Remove {{ value.label }} filter">
-            {{ value.label }}<span class="rt-chip-x" aria-hidden="true">&#215;</span>
-          </a>
-        {%- endfor -%}
-        {%- if filter.type == 'price_range' -%}
-          {%- if filter.min_value.value or filter.max_value.value -%}
-            <a href="{{ filter.url_to_remove }}" class="rt-chip">
-              &#8377;{%- if filter.min_value.value -%}{{ filter.min_value.value | divided_by: 100 | floor }}{%- else -%}0{%- endif -%}
-              &nbsp;&mdash;&nbsp;
-              &#8377;{%- if filter.max_value.value -%}{{ filter.max_value.value | divided_by: 100 | floor }}{%- else -%}{{ filter.range_max | divided_by: 100 }}{%- endif -%}
-              <span class="rt-chip-x" aria-hidden="true">&#215;</span>
+  {%- if rt_has_related -%}
+    {%- assign rt_related_cols = '' -%}
+    {%- if section.settings.related_collection_1 != blank -%}
+      {%- assign rt_related_cols = rt_related_cols | append: '1,' -%}
+    {%- endif -%}
+    {%- if section.settings.related_collection_2 != blank -%}
+      {%- assign rt_related_cols = rt_related_cols | append: '2,' -%}
+    {%- endif -%}
+    {%- if section.settings.related_collection_3 != blank -%}
+      {%- assign rt_related_cols = rt_related_cols | append: '3,' -%}
+    {%- endif -%}
+
+    <div class="rt-related">
+      <div class="rt-related-header">
+        <div>
+          <p class="rt-related-eyebrow">Browse on</p>
+          <h2 class="rt-related-title">The rest of<br>the catalog.</h2>
+        </div>
+        <a href="/collections" class="rt-related-nav">
+          <span class="rt-related-nav-label">All collections &#8594;</span>
+        </a>
+      </div>
+
+      <div class="rt-related-grid">
+        {%- assign rt_col_num = 0 -%}
+        {%- for i in (1..3) -%}
+          {%- assign rt_col_handle_key = 'related_collection_' | append: i -%}
+          {%- assign rt_col = section.settings[rt_col_handle_key] -%}
+          {%- if rt_col != blank -%}
+            {%- assign rt_col_num = rt_col_num | plus: 1 -%}
+            <a href="{{ rt_col.url }}" class="rt-related-card">
+              <div class="rt-related-img">
+                {%- if rt_col.image -%}
+                  {%- assign rt_rel_img = rt_col.image | image_url: width: 600 -%}
+                  <img src="{{ rt_rel_img }}"
+                       alt="{{ rt_col.image.alt | default: rt_col.title | escape }}"
+                       loading="lazy"
+                       width="{{ rt_col.image.width }}"
+                       height="{{ rt_col.image.height }}">
+                {%- else -%}
+                  <div class="rt-related-placeholder"></div>
+                {%- endif -%}
+                <span class="rt-related-img-badge" aria-hidden="true">0{{ rt_col_num }} / 06</span>
+              </div>
+              <div class="rt-related-card-footer">
+                <h3 class="rt-related-card-name">{{ rt_col.title | escape }}</h3>
+                <div class="rt-related-card-right">
+                  <span class="rt-related-card-count">{{ rt_col.products_count }} {{ rt_col.products_count | pluralize: 'piece', 'pieces' }}</span>
+                  <span class="rt-related-arrow" aria-hidden="true">&#8594;</span>
+                </div>
+              </div>
             </a>
           {%- endif -%}
-        {%- endif -%}
-      {%- endfor -%}
-      <a href="{{ collection.url }}" class="rt-clear-all">Clear all</a>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%}══════════════════════════════
-    RESULTS BAR
-  ══════════════════════════════{%- endcomment -%}
-  <div class="rt-results-bar">
-    {%- if collection.products_count == collection.all_products_count -%}
-      {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}
-    {%- else -%}
-      {{ collection.products_count }} {{ collection.products_count | pluralize: 'result', 'results' }}
-      <span class="rt-results-of">of {{ collection.all_products_count }}</span>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%}══════════════════════════════
-    PRODUCT GRID
-  ══════════════════════════════{%- endcomment -%}
-  <div class="rt-grid" aria-label="Products">
-    {%- if collection.products.size > 0 -%}
-      {%- for product in collection.products -%}
-
-        {%- assign rt_avail = product.metafields.custom.availability | downcase -%}
-        {%- assign rt_is_mto = false -%}
-        {%- if rt_avail contains 'made to order' or rt_avail contains 'made-to-order' -%}
-          {%- assign rt_is_mto = true -%}
-        {%- endif -%}
-        {%- unless rt_is_mto -%}
-          {%- for tag in product.tags -%}
-            {%- if tag == 'made-to-order' or tag == 'Made to Order' or tag == 'MTO' -%}
-              {%- assign rt_is_mto = true -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endunless -%}
-
-        {%- assign rt_on_sale = false -%}
-        {%- if product.compare_at_price > product.price -%}
-          {%- assign rt_on_sale = true -%}
-        {%- endif -%}
-
-        <a class="rt-card" href="{{ product.url }}">
-          <div class="rt-card-img">
-
-            {%- if product.featured_image -%}
-              {%- assign rt_img_src = product.featured_image | image_url: width: 600 -%}
-              {%- assign rt_img_alt = product.featured_image.alt | default: product.title | escape -%}
-              <img src="{{ rt_img_src }}"
-                   alt="{{ rt_img_alt }}"
-                   class="rt-img-primary"
-                   loading="lazy"
-                   width="{{ product.featured_image.width }}"
-                   height="{{ product.featured_image.height }}">
-            {%- else -%}
-              <div class="rt-img-placeholder"></div>
-            {%- endif -%}
-
-            {%- if section.settings.enable_hover_image and product.images[1] -%}
-              {%- assign rt_img2_src = product.images[1] | image_url: width: 600 -%}
-              {%- assign rt_img2_alt = product.images[1].alt | default: product.title | escape -%}
-              <img src="{{ rt_img2_src }}"
-                   alt="{{ rt_img2_alt }}"
-                   class="rt-img-hover"
-                   loading="lazy"
-                   width="{{ product.images[1].width }}"
-                   height="{{ product.images[1].height }}">
-            {%- endif -%}
-
-            {%- if rt_on_sale -%}<span class="rt-sale-tag">Sale</span>{%- endif -%}
-            {%- if rt_is_mto -%}<span class="rt-mto-tag">Made to Order</span>{%- endif -%}
-
-          </div>
-
-          <div class="rt-card-info">
-            <p class="rt-card-name">{{ product.title }}</p>
-            <div class="rt-card-price">
-              <span class="rt-price-cur">{{ product.price | money }}</span>
-              {%- if rt_on_sale -%}
-                <span class="rt-price-orig">{{ product.compare_at_price | money }}</span>
-              {%- endif -%}
-            </div>
-          </div>
-        </a>
-
-      {%- endfor -%}
-    {%- else -%}
-      <div class="rt-no-results">
-        <p>No products match your selection.</p>
-        <a href="{{ collection.url }}">Clear all filters</a>
+        {%- endfor -%}
       </div>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%}══════════════════════════════
-    PAGINATION
-  ══════════════════════════════{%- endcomment -%}
-  {%- if paginate.pages > 1 -%}
-    <nav class="rt-pagination" aria-label="Pagination">
-      {%- if paginate.previous -%}
-        <a href="{{ paginate.previous.url }}" class="rt-page-btn">&larr;</a>
-      {%- endif -%}
-      {%- for part in paginate.parts -%}
-        {%- if part.is_link -%}
-          <a href="{{ part.url }}"
-             class="rt-page-btn{% if part.title == paginate.current_page %} rt-page-active{% endif %}"
-             {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>
-            {{ part.title }}
-          </a>
-        {%- else -%}
-          <span class="rt-page-btn{% if part.title == paginate.current_page %} rt-page-active{% endif %}">
-            {{ part.title }}
-          </span>
-        {%- endif -%}
-      {%- endfor -%}
-      {%- if paginate.next -%}
-        <a href="{{ paginate.next.url }}" class="rt-page-btn">&rarr;</a>
-      {%- endif -%}
-    </nav>
+    </div>
   {%- endif -%}
 
 </section>
 
 {%- endpaginate -%}
+
+{%- comment -%} Mobile filter overlay backdrop {%- endcomment -%}
+<div class="rt-mobile-overlay" aria-hidden="true"></div>
 
 <script src="{{ 'rt-collection.js' | asset_url }}" defer></script>
 
@@ -472,6 +812,35 @@
   "tag": "section",
   "class": "section-rt-collection",
   "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Show collection hero",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_materials",
+      "label": "Stat — materials",
+      "placeholder": "04 Materials",
+      "info": "First word = large number, rest = label. E.g. \"04 Materials\""
+    },
+    {
+      "type": "text",
+      "id": "stat_from_price",
+      "label": "Stat — from price",
+      "placeholder": "₹3,500 From"
+    },
+    {
+      "type": "text",
+      "id": "stat_shipping",
+      "label": "Stat — shipping",
+      "placeholder": "48h Ships within"
+    },
     {
       "type": "header",
       "content": "Grid"
@@ -490,11 +859,11 @@
       "id": "columns_desktop",
       "label": "Desktop columns",
       "options": [
+        { "value": "2", "label": "2 columns" },
         { "value": "3", "label": "3 columns" },
-        { "value": "4", "label": "4 columns" },
-        { "value": "5", "label": "5 columns" }
+        { "value": "4", "label": "4 columns" }
       ],
-      "default": "4"
+      "default": "3"
     },
     {
       "type": "select",
@@ -507,14 +876,92 @@
       "default": "2"
     },
     {
-      "type": "header",
-      "content": "Product cards"
-    },
-    {
       "type": "checkbox",
       "id": "enable_hover_image",
       "label": "Show second image on hover",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Editorial Tile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_editorial_tile",
+      "label": "Show editorial tile in grid",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "editorial_tile_at",
+      "label": "Insert tile after product #",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "editorial_tile_heading",
+      "label": "Tile heading",
+      "default": "The Bridal Edit."
+    },
+    {
+      "type": "text",
+      "id": "editorial_tile_subhead",
+      "label": "Tile sub-caption",
+      "default": "Curated by the studio"
+    },
+    {
+      "type": "text",
+      "id": "editorial_tile_cta_label",
+      "label": "Tile CTA label",
+      "default": "Enter edit"
+    },
+    {
+      "type": "url",
+      "id": "editorial_tile_cta_url",
+      "label": "Tile CTA link"
+    },
+    {
+      "type": "header",
+      "content": "Related Collections"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection_1",
+      "label": "Related collection 1"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection_2",
+      "label": "Related collection 2"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection_3",
+      "label": "Related collection 3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "quick_pill",
+      "name": "Quick Filter Pill",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Pill label",
+          "placeholder": "New In"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Pill URL",
+          "info": "E.g. /collections/necklaces?sort_by=created-descending"
+        }
+      ]
     }
   ],
   "presets": [

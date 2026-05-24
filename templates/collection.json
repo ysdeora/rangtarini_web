@@ -1,1 +1,25 @@
-{"sections":{"rt_collection":{"type":"rt-collection-main","settings":{"products_per_page":20,"columns_desktop":"4","columns_mobile":"2","enable_hover_image":true}}},"order":["rt_collection"]}
+{
+  "sections": {
+    "rt_collection": {
+      "type": "rt-collection-main",
+      "settings": {
+        "show_hero": true,
+        "stat_materials": "",
+        "stat_from_price": "",
+        "stat_shipping": "",
+        "products_per_page": 24,
+        "columns_desktop": "3",
+        "columns_mobile": "2",
+        "enable_hover_image": true,
+        "show_editorial_tile": true,
+        "editorial_tile_at": 6,
+        "editorial_tile_heading": "The Bridal Edit.",
+        "editorial_tile_subhead": "Curated by the studio",
+        "editorial_tile_cta_label": "Enter edit",
+        "editorial_tile_cta_url": ""
+      },
+      "blocks": {}
+    }
+  },
+  "order": ["rt_collection"]
+}
