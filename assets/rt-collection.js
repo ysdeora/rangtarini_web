@@ -149,19 +149,7 @@
   });
 
 
-  /* ══════════════════════════════════════════════════════════
-     CHECKBOX FILTERS → submit form on change (80ms debounce)
-  ══════════════════════════════════════════════════════════ */
-  var submitTimer;
-  document.querySelectorAll('.rt-f-checkbox').forEach(function (cb) {
-    cb.addEventListener('change', function () {
-      clearTimeout(submitTimer);
-      submitTimer = setTimeout(function () {
-        var form = document.getElementById('rt-filter-form');
-        if (form) form.submit();
-      }, 80);
-    });
-  });
+  /* Checkboxes no longer auto-submit; user clicks Apply at sidebar bottom */
 
 
   /* ══════════════════════════════════════════════════════════
