@@ -91,10 +91,10 @@
               </div>
             {%- endif -%}
 
-            {%- comment -%} From price: auto from collection.price_min, fallback to schema setting {%- endcomment -%}
-            {%- if collection.price_min > 0 -%}
+            {%- comment -%} From price: min across current-page products, fallback to schema setting {%- endcomment -%}
+            {%- if rt_stat_price_min != nil and rt_stat_price_min > 0 -%}
               <div>
-                <div class="rt-hero-stat-n">{{ collection.price_min | money_without_trailing_zeros }}</div>
+                <div class="rt-hero-stat-n">{{ rt_stat_price_min | money_without_trailing_zeros }}</div>
                 <div class="rt-hero-stat-l">From</div>
               </div>
             {%- elsif section.settings.stat_from_price != blank -%}
