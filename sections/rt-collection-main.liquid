@@ -633,7 +633,7 @@
                       <button type="button"
                               class="rt-quick-add"
                               aria-label="{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}">
-                        Quick add &mdash; {{ product.price | money }}
+                        Quick add<span class="rt-quick-add-price"> &mdash; {{ product.price | money }}</span>
                       </button>
                     {%- endif -%}
 
