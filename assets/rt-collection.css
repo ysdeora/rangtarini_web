@@ -973,6 +973,11 @@
   background: conic-gradient(#C0392B 0deg 90deg, #E8A0B0 90deg 180deg, #4A7A3A 180deg 270deg, #4A7FB5 270deg 360deg);
   border-color: transparent;
 }
+.rt-card-swatch--img {
+  background-size: cover;
+  background-position: center;
+  border-color: transparent;
+}
 .rt-card-sizes {
   font-family: var(--font-mono);
   font-size: 9px;
