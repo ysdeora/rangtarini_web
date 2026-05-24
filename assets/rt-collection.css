@@ -1389,9 +1389,17 @@
    RESPONSIVE — Mobile ≤ 768px
 ════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* Hero: single column */
-  .rt-hero-inner { grid-template-columns: 1fr; }
-  .rt-hero-copy { border-right: 0; border-bottom: 1px solid var(--ink); padding: 32px 16px 28px; }
+  /* Hero: compact single column */
+  .rt-hero-inner { grid-template-columns: 1fr; min-height: 0; }
+  .rt-hero-copy {
+    border-right: 0;
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 16px 16px;
+    gap: 12px;
+  }
+  .rt-hero-deva { font-size: 18px; }
+  .rt-hero-title { font-size: clamp(32px, 9vw, 52px); }
+  .rt-hero-desc { font-size: 13px; margin: 6px 0 0; line-height: 1.55; }
   .rt-hero-image { display: none; }
 
   /* Stats: single scrollable row on mobile */
@@ -1401,22 +1409,18 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    gap: 20px;
+    gap: 18px;
     align-items: flex-end;
   }
   .rt-hero-stats::-webkit-scrollbar { display: none; }
-  .rt-hero-stat-n { font-size: 20px; }
+  .rt-hero-stat-n { font-size: 18px; }
+  .rt-hero-stat-l { margin-top: 3px; }
 
-  /* Pills: not sticky on mobile (saves vertical space) */
-  .rt-pills {
-    position: static;
-    padding: 12px 14px;
-    gap: 8px;
-  }
+  /* Pills: scroll normally */
+  .rt-pills { padding: 12px 14px; gap: 8px; }
 
-  /* Toolbar: stick right below header on mobile */
+  /* Toolbar: fixed below header on mobile */
   .rt-toolbar {
-    top: var(--rt-header-h, 56px);
     padding: 10px 16px;
     gap: 12px;
     grid-template-columns: auto 1fr auto;
@@ -1428,6 +1432,9 @@
   .rt-sidebar { display: none; }
   .rt-sidebar--mobile-open { display: block; }
   .rt-sidebar-close { display: flex; }
+
+  /* Editorial tile: hide on mobile (renders poorly) */
+  .rt-editorial-tile { display: none; }
 
   /* Grid */
   .rt-grid-wrap { padding: 18px 14px; }
