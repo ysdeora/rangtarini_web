@@ -233,18 +233,5 @@
   /* Price slider changes are applied via the global Apply button at sidebar bottom */
 
 
-  /* ══════════════════════════════════════════════════════════
-     WISHLIST TOGGLE (client-side only)
-  ══════════════════════════════════════════════════════════ */
-  document.querySelectorAll('.rt-wishlist-btn').forEach(function (btn) {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var wished = btn.classList.toggle('rt-wishlist-btn--wished');
-      var path = btn.querySelector('path');
-      if (path) path.setAttribute('fill', wished ? 'currentColor' : 'none');
-      btn.setAttribute('aria-label', wished ? 'Remove from wishlist' : 'Add to wishlist');
-    });
-  });
 
 })();
