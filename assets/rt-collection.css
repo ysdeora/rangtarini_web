@@ -215,9 +215,6 @@
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none;
-  position: sticky;
-  top: var(--rt-header-h, 56px);
-  z-index: 29;
 }
 .rt-pills::-webkit-scrollbar { display: none; }
 .rt-pills-label {
