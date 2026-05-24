@@ -228,12 +228,7 @@
 
   document.querySelectorAll('.rt-price-slider-wrap').forEach(initSlider);
 
-  document.querySelectorAll('.rt-price-apply-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var form = document.getElementById('rt-filter-form');
-      if (form) form.submit();
-    });
-  });
+  /* Price slider changes are applied via the global Apply button at sidebar bottom */
 
 
   /* ══════════════════════════════════════════════════════════
