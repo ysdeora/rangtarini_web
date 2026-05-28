@@ -1003,8 +1003,8 @@
 
         <!-- Stock + free shipping -->
         <div class="rt-stock-row">
-          <span class="rt-stock-dot {% if current_variant.available %}{% if current_variant.inventory_quantity <= 5 %}rt-stock-dot--low{% else %}rt-stock-dot--in{% endif %}{% else %}rt-stock-dot--out{% endif %}" id="rt-stock-{{ section.id }}">
-            {% if current_variant.available %}{% if current_variant.inventory_quantity <= 5 %}Low stock · {{ current_variant.inventory_quantity }} left{% else %}In stock · ready to ship{% endif %}{% else %}Sold out{% endif %}
+          <span class="rt-stock-dot {% if current_variant.available %}{% if current_variant.inventory_management == blank %}rt-stock-dot--in{% elsif current_variant.inventory_quantity <= 5 and current_variant.inventory_quantity > 0 %}rt-stock-dot--low{% else %}rt-stock-dot--in{% endif %}{% else %}rt-stock-dot--out{% endif %}" id="rt-stock-{{ section.id }}">
+            {% if current_variant.available %}{% if current_variant.inventory_management == blank %}In stock{% elsif current_variant.inventory_quantity <= 5 and current_variant.inventory_quantity > 0 %}Low stock · {{ current_variant.inventory_quantity }} left{% else %}In stock · ready to ship{% endif %}{% else %}Sold out{% endif %}
           </span>
           <span class="rt-ship-note">Free shipping · pan India</span>
         </div>
