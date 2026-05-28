@@ -1,22 +1,10 @@
 {% comment %}
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  rangtarini-pdp.liquid                                       ║
-  ║  Ultra-luxury product section for Rangtarini                 ║
-  ║  ─────────────────────────────────────────────────────────── ║
-  ║  Install: Shopify Admin → Online Store → Themes              ║
-  ║           → Edit code → sections/ → Add rangtarini-pdp.liquid║
-  ╚══════════════════════════════════════════════════════════════╝
-
-  Design principles:
-  ─ Full-viewport two-column sticky split (gallery | info)
-  ─ Custom thumbnail switcher (no Dawn gallery JS dependency)
-  ─ Custom price renderer (eliminates Dawn's double-render bug)
-  ─ Judge.me star rating via metafields with SVG stars
-  ─ No quantity selector (made-to-order luxury context)
-  ─ Mobile: stacked layout with sticky ATC bar at bottom
+  rangtarini-pdp.liquid
+  Brutalist editorial PDP — Rangtarini v3 (redesigned 2026-05)
+  Matches homepage / collection page aesthetic: Archivo + Devanagari,
+  paper/ink palette, hard 1px rules, no rounding.
 {% endcomment %}
 
-{% comment %} ── Dawn assets we still need ── {% endcomment %}
 {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 {% unless product.has_only_default_variant %}
   {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -27,1135 +15,1563 @@
 
 {%- style -%}
 /* ════════════════════════════════════════════════════════
-   RANGTARINI — LUXURY PDP
-   Balenciaga-inspired: vast space, minimal chrome,
-   editorial type, gold accent.
+   DESIGN TOKENS
    ════════════════════════════════════════════════════════ */
 :root {
-  --rt-gold:       #C9A84C;
-  --rt-gold-pale:  #EAD9A8;
-  --rt-ink:        #0A0A0A;
-  --rt-white:      #FFFFFF;
-  --rt-ash:        #F7F5F1;
-  --rt-rule:       #E3DFD8;
-  --rt-mute:       #97918A;
-  --rt-serif:      var(--font-heading-family, 'Cormorant Garamond', 'Playfair Display', Georgia, serif);
-  --rt-sans:       var(--font-body-family, 'Helvetica Neue', Arial, sans-serif);
+  --rt-paper:       #efece4;
+  --rt-paper-warm:  #e9e3d3;
+  --rt-ink:         #0a0a0a;
+  --rt-bone:        #cdc6b5;
+  --rt-gold:        #b59159;
+  --rt-emerald:     #2f5a3f;
+  --rt-ruby:        #8a2a2a;
+  --rt-font-grotesk: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --rt-font-deva:    "Noto Serif Devanagari", Georgia, serif;
+  --rt-font-mono:    ui-monospace, "SF Mono", Menlo, monospace;
+  --rt-font-serif:   "Cormorant Garamond", Georgia, serif;
 }
 
-/* ── Layout ── */
-.rt-pdp {
+/* Override page background */
+.rt-pdp-page { background: var(--rt-paper); }
+
+/* ── Breadcrumb ── */
+.rt-bc {
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--rt-ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--rt-paper);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.rt-bc__path { display: flex; align-items: center; gap: 10px; }
+.rt-bc a, .rt-bc span {
+  font-family: var(--rt-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rt-ink);
+  text-decoration: none;
+  opacity: 0.55;
+}
+.rt-bc a:hover { opacity: 1; }
+.rt-bc__current { opacity: 1 !important; }
+.rt-bc__sep { font-size: 11px; opacity: 0.3; }
+
+/* ── Hero PDP grid ── */
+.rt-hero-pdp {
   display: grid;
-  grid-template-columns: 55% 45%;
-  min-height: 100vh;
-  position: relative;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  padding: 32px 28px 48px;
+  border-bottom: 1px solid var(--rt-ink);
+  background: var(--rt-paper);
+  align-items: start;
 }
 
-@media (max-width: 989px) {
-  .rt-pdp {
-    grid-template-columns: 1fr;
-    min-height: unset;
-  }
+/* ── Gallery ── */
+.rt-gallery {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 14px;
+  align-items: start;
 }
-
-/* ════════════════════════════════════════════════════════
-   GALLERY
-   ════════════════════════════════════════════════════════ */
-.rt-gl {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+.rt-thumb-rail {
   display: flex;
   flex-direction: column;
-  background: var(--rt-ash);
-  overflow: hidden;
+  gap: 10px;
+  position: sticky;
+  top: 88px;
 }
-
-.rt-gl__hero {
-  flex: 1;
+.rt-thumb-btn {
+  width: 76px;
+  aspect-ratio: 1 / 1.15;
+  border: 1px solid rgba(10,10,10,0.18);
+  background: var(--rt-paper-warm);
+  padding: 0;
   overflow: hidden;
   position: relative;
-  cursor: zoom-in;
-}
-
-.rt-gl__hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  transition: transform 0.55s cubic-bezier(.25,.46,.45,.94);
-}
-
-.rt-gl__hero:hover img { transform: scale(1.04); }
-
-.rt-gl__hero video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-/* Zoom modal trigger label */
-.rt-gl__zoom-hint {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  font-family: var(--rt-sans);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--rt-mute);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.rt-gl__hero:hover .rt-gl__zoom-hint { opacity: 1; }
-
-/* Thumbnail strip */
-.rt-gl__strip {
-  display: flex;
-  gap: 4px;
-  padding: 10px 14px;
-  height: 86px;
-  background: var(--rt-ash);
-  overflow-x: auto;
-  scrollbar-width: none;
-  flex-shrink: 0;
-}
-.rt-gl__strip::-webkit-scrollbar { display: none; }
-
-.rt-thumb {
-  width: 66px;
-  height: 66px;
-  flex-shrink: 0;
-  border: 1.5px solid transparent;
-  overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.2s;
-  background: none;
-  padding: 0;
+  outline: none;
 }
-.rt-thumb:hover,
-.rt-thumb.is-active { border-color: var(--rt-gold); }
-.rt-thumb img {
+.rt-thumb-btn.is-active {
+  border-color: var(--rt-ink);
+  outline: 2px solid var(--rt-ink);
+  outline-offset: -3px;
+}
+.rt-thumb-btn img {
   width: 100%; height: 100%;
   object-fit: cover; display: block;
+  opacity: 0.78;
 }
-
-/* Video thumb indicator */
-.rt-thumb--video { position: relative; }
-.rt-thumb--video::after {
-  content: '';
+.rt-thumb-btn.is-active img { opacity: 1; }
+.rt-thumb-num {
   position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.22);
+  bottom: 4px; left: 4px;
+  font-family: var(--rt-font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  background: var(--rt-paper);
+  color: var(--rt-ink);
+  padding: 1px 4px;
 }
-.rt-thumb--video::before {
-  content: '▶';
+.rt-thumb-btn.is-active .rt-thumb-num { background: var(--rt-ink); color: var(--rt-paper); }
+
+/* ── Main image stage ── */
+.rt-main-stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.18;
+  border: 1px solid var(--rt-ink);
+  background:
+    radial-gradient(110% 80% at 50% 30%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 55%),
+    var(--rt-paper-warm);
+  cursor: zoom-in;
+}
+.rt-main-stage img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  will-change: transform;
+  transition: transform 300ms cubic-bezier(0.2,0.7,0.2,1);
+}
+.rt-main-stage.is-hovering img { transition: none; }
+.rt-stage-badge {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 12px;
-  z-index: 1;
-}
-
-@media (max-width: 989px) {
-  .rt-gl {
-    position: relative;
-    height: auto;
-  }
-  .rt-gl__hero {
-    height: 88vw;
-    max-height: 560px;
-    cursor: default;
-  }
-  .rt-gl__hero:hover img { transform: none; }
-  .rt-gl__zoom-hint { display: none; }
-}
-
-/* ════════════════════════════════════════════════════════
-   INFO COLUMN
-   ════════════════════════════════════════════════════════ */
-.rt-inf {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  scrollbar-width: none;
-  padding: 52px 56px 64px 52px;
-  display: flex;
-  flex-direction: column;
-  background: var(--rt-white);
-  border-left: 0.5px solid var(--rt-rule);
-}
-.rt-inf::-webkit-scrollbar { display: none; }
-
-@media (max-width: 1280px) { .rt-inf { padding: 40px 40px 56px 40px; } }
-@media (max-width: 1100px) { .rt-inf { padding: 36px 32px 52px 32px; } }
-@media (max-width: 989px) {
-  .rt-inf {
-    position: relative;
-    height: auto;
-    overflow-y: visible;
-    padding: 32px 20px 96px;
-    border-left: none;
-    border-top: 0.5px solid var(--rt-rule);
-  }
-}
-
-/* Brand */
-.rt-brand {
-  font-family: var(--rt-sans);
+  font-family: var(--rt-font-mono);
   font-size: 9px;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--rt-mute);
-  margin-bottom: 16px;
-  display: block;
+  padding: 4px 8px;
+  pointer-events: none;
+  line-height: 1;
+}
+.rt-stage-sku  { top: 14px; left: 14px; background: var(--rt-paper); color: var(--rt-ink); }
+.rt-stage-hint { top: 14px; right: 14px; background: var(--rt-paper); color: var(--rt-ink); border: 1px solid var(--rt-ink); transition: opacity 0.2s; }
+.rt-stage-counter {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 10px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(0deg, rgba(0,0,0,0.32), transparent);
+  pointer-events: none;
+}
+.rt-stage-counter span {
+  font-family: var(--rt-font-mono);
+  font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+}
+
+/* ── Buy Box ── */
+.rt-buybox { display: flex; flex-direction: column; gap: 0; }
+
+.rt-eyebrow {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 18px; gap: 12px;
+}
+.rt-eyebrow-meta {
+  font-family: var(--rt-font-mono);
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--rt-ink); opacity: 0.55; display: block;
+}
+.rt-eyebrow-vendor {
+  font-family: var(--rt-font-grotesk);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.65; display: block;
+  margin-top: 5px;
+}
+.rt-stars-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none; color: var(--rt-ink); white-space: nowrap;
+}
+.rt-stars-link .rt-stars-icons { color: var(--rt-gold); font-size: 13px; }
+.rt-stars-link .rt-stars-ct {
+  font-family: var(--rt-font-grotesk); font-size: 11px;
+  color: var(--rt-ink); opacity: 0.65;
 }
 
 /* Title */
-.rt-ttl {
-  font-family: var(--rt-serif);
-  font-size: clamp(2rem, 3vw, 2.9rem);
-  font-weight: 300;
-  line-height: 1.07;
-  letter-spacing: -0.015em;
-  color: var(--rt-ink);
-  margin: 0 0 20px;
+.rt-title-block { margin-bottom: 18px; }
+.rt-title {
+  font-family: var(--rt-font-grotesk);
+  font-size: clamp(48px, 6vw, 88px);
+  font-weight: 900; line-height: 0.92;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  color: var(--rt-ink); margin: 0;
+}
+.rt-title-sub {
+  display: flex; align-items: baseline; gap: 14px; margin-top: 12px;
+}
+.rt-deva {
+  font-family: var(--rt-font-deva);
+  font-size: 32px; font-weight: 500; line-height: 1.1;
+  color: var(--rt-gold);
+}
+.rt-title-rule { width: 28px; height: 1px; background: var(--rt-ink); opacity: 0.4; flex-shrink: 0; }
+.rt-tagline {
+  font-family: var(--rt-font-grotesk);
+  font-size: 13px; font-weight: 400; color: var(--rt-ink); opacity: 0.8; line-height: 1.4;
 }
 
-/* ── Stars ── */
-.rt-stars {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 28px;
-  text-decoration: none;
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
+/* Price */
+.rt-price-block {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 16px 0;
+  border-top: 1px solid var(--rt-ink); border-bottom: 1px solid var(--rt-ink);
+  margin-bottom: 18px; gap: 12px;
+}
+.rt-price-left { display: inline-flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.rt-price-main {
+  font-family: var(--rt-font-grotesk);
+  font-size: 36px; font-weight: 700; letter-spacing: -0.01em; color: var(--rt-ink);
+}
+.rt-price-was {
+  font-family: var(--rt-font-grotesk);
+  font-size: 18px; font-weight: 400; opacity: 0.45;
+  text-decoration: line-through; color: var(--rt-ink);
+}
+.rt-price-save {
+  font-family: var(--rt-font-grotesk);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
+  background: var(--rt-gold); color: var(--rt-ink); padding: 4px 8px;
+}
+.rt-price-tax {
+  font-family: var(--rt-font-mono);
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--rt-ink); opacity: 0.6; white-space: nowrap;
 }
 
-.rt-stars__icons {
-  display: flex;
-  gap: 3px;
+/* Availability badge */
+.rt-avail-badge {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border: 1px solid var(--rt-ink); margin-bottom: 18px;
+}
+.rt-avail-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  animation: rt-dot-pulse 2.4s ease-in-out infinite;
+}
+.rt-avail-dot--mto { background: var(--rt-gold); }
+.rt-avail-dot--rts { background: var(--rt-emerald); }
+@keyframes rt-dot-pulse { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+.rt-avail-copy { display: flex; flex-direction: column; gap: 3px; }
+.rt-avail-lbl {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--rt-ink);
+}
+.rt-avail-sub {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
 }
 
-.rt-stars__icons svg {
-  width: 12px;
-  height: 12px;
-  display: block;
+/* Variant buttons */
+.rt-variants { margin-bottom: 18px; }
+.rt-var-header {
+  display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;
 }
-
-.rt-stars__ct {
-  font-family: var(--rt-sans);
-  font-size: 10.5px;
-  color: var(--rt-mute);
-  letter-spacing: 0.06em;
-  transition: color 0.2s;
-}
-.rt-stars:hover .rt-stars__ct { color: var(--rt-gold); }
-
-/* Hide if no reviews — Judge.me badge fallback */
-.jdgm-prev-badge[data-average-rating="0"] { display: none !important; }
-.jdgm-prev-badge {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  margin-bottom: 28px !important;
-  text-decoration: none !important;
-}
-.jdgm-star, .jdgm-prev-badge__stars { color: var(--rt-gold) !important; font-size: 13px !important; }
-.jdgm-prev-badge__count { font-family: var(--rt-sans) !important; font-size: 10.5px !important; color: var(--rt-mute) !important; }
-
-/* ── Price ── */
-.rt-price-row {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 28px;
-  padding-bottom: 28px;
-  border-bottom: 0.5px solid var(--rt-rule);
-}
-
-.rt-p {
-  font-family: var(--rt-serif);
-  font-size: 1.75rem;
-  font-weight: 400;
-  color: var(--rt-ink);
-  letter-spacing: 0.01em;
-}
-
-.rt-p-was {
-  font-family: var(--rt-sans);
-  font-size: 0.82rem;
-  color: var(--rt-mute);
-  text-decoration: line-through;
-}
-
-.rt-p-save {
-  font-family: var(--rt-sans);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  background: var(--rt-gold);
-  color: #fff;
-  padding: 3px 9px;
-  white-space: nowrap;
-}
-
-/* ── Availability Badge ── */
-.rt-avail {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border: 0.5px solid var(--rt-gold);
-  margin-bottom: 28px;
-  background: transparent;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.rt-avail__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--rt-gold);
-  flex-shrink: 0;
-  animation: rt-pulse 2.5s ease-in-out infinite;
-}
-
-@keyframes rt-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.35; }
-}
-
-.rt-avail__copy {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.rt-avail__lbl {
-  font-family: var(--rt-sans);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--rt-ink);
-}
-
-.rt-avail__sub {
-  font-family: var(--rt-sans);
-  font-size: 9.5px;
-  color: var(--rt-mute);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* ── Variants ── */
-.rt-variants { margin-bottom: 22px; }
-
 .rt-var-label {
-  font-family: var(--rt-sans);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--rt-mute);
-  display: block;
-  margin-bottom: 8px;
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-ink);
+}
+.rt-var-btns { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+.rt-var-btn {
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+  border: 1px solid var(--rt-ink); background: transparent; color: var(--rt-ink);
+  cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s;
+}
+.rt-var-btn.is-active { background: var(--rt-ink); color: var(--rt-paper); }
+.rt-var-swatch {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.15);
+  box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.35);
+}
+.rt-var-btn.is-active .rt-var-swatch { border-color: rgba(255,255,255,0.4); }
+.rt-var-name {
+  font-family: var(--rt-font-grotesk); font-size: 12px; font-weight: 600;
+  display: block; line-height: 1;
+}
+.rt-var-stock {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; display: block; margin-top: 2px; opacity: 0.6;
+}
+.rt-var-select-hidden { display: none; }
+
+/* Spec grid — what's in the piece */
+.rt-spec-grid-wrap {
+  border: 1px solid var(--rt-ink); background: var(--rt-paper-warm); margin-bottom: 18px;
+}
+.rt-spec-grid-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; border-bottom: 1px solid var(--rt-ink);
+}
+.rt-spec-grid-head-l {
+  font-family: var(--rt-font-grotesk); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-ink);
+}
+.rt-spec-grid-head-r {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.5;
+}
+.rt-spec-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.rt-spec-cell {
+  padding: 11px 14px; display: flex; flex-direction: column; gap: 4px;
+}
+.rt-spec-cell:nth-child(odd)  { border-right: 1px solid var(--rt-ink); }
+.rt-spec-cell:nth-child(n+3)  { border-top: 1px solid var(--rt-ink); }
+.rt-spec-k {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
+}
+.rt-spec-v { font-family: var(--rt-font-grotesk); font-size: 13px; font-weight: 500; color: var(--rt-ink); }
+
+/* Qty + ATC */
+.rt-atc-row {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 8px;
+  align-items: stretch; margin-bottom: 10px;
+}
+.rt-qty { display: inline-flex; border: 1px solid var(--rt-ink); align-items: stretch; }
+.rt-qty-btn {
+  width: 44px; background: transparent; border: 0; font-size: 18px;
+  cursor: pointer; color: var(--rt-ink); display: flex; align-items: center; justify-content: center;
+}
+.rt-qty-sep { width: 1px; background: var(--rt-ink); flex-shrink: 0; }
+.rt-qty-num {
+  min-width: 44px; padding: 0 8px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--rt-font-mono); font-size: 14px; font-weight: 700; color: var(--rt-ink);
+}
+.rt-atc-main {
+  background: var(--rt-ink); color: var(--rt-paper); border: 1px solid var(--rt-ink);
+  padding: 0 20px;
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 800;
+  letter-spacing: 0.28em; text-transform: uppercase; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+}
+.rt-atc-main:disabled { background: var(--rt-bone); border-color: var(--rt-bone); color: var(--rt-ink); cursor: not-allowed; }
+.rt-wish-btn {
+  width: 52px; border: 1px solid var(--rt-ink); background: transparent; color: var(--rt-ink);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.rt-wish-btn.is-wished { background: var(--rt-ink); color: var(--rt-paper); }
+.rt-wish-btn svg { pointer-events: none; }
+
+/* Stock + shipping row */
+.rt-stock-row {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+}
+.rt-stock-dot {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--rt-font-grotesk); font-size: 12px; font-weight: 500; color: var(--rt-ink);
+}
+.rt-stock-dot::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.rt-stock-dot--in::before  { background: var(--rt-emerald); }
+.rt-stock-dot--low::before { background: var(--rt-gold); }
+.rt-stock-dot--out::before { background: var(--rt-ruby); }
+.rt-ship-note {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
 }
 
-.rt-var-select {
-  width: 100%;
-  padding: 11px 14px;
-  border: 0.5px solid var(--rt-rule);
-  border-radius: 0;
-  font-family: var(--rt-sans);
-  font-size: 12px;
-  color: var(--rt-ink);
-  background: var(--rt-white);
-  appearance: none;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.2s;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2397918A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
+/* WhatsApp CTA */
+.rt-wa-cta {
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 14px 20px; border: 1px solid var(--rt-ink); background: transparent;
+  color: var(--rt-ink); text-decoration: none;
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  transition: background 0.15s, color 0.15s; margin-bottom: 14px;
 }
-.rt-var-select:hover, .rt-var-select:focus { border-color: var(--rt-ink); }
-.rt-var-group { margin-bottom: 16px; }
+.rt-wa-cta:hover { background: var(--rt-ink); color: var(--rt-paper); }
 
-/* ── CTA Buttons ── */
-.rt-atc {
-  width: 100%;
-  background: var(--rt-ink);
-  color: var(--rt-white);
-  border: 1.5px solid var(--rt-ink);
-  font-family: var(--rt-sans);
-  font-size: 10px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  padding: 20px 24px;
-  cursor: pointer;
-  transition: background 0.3s, border-color 0.3s, color 0.3s;
-  display: block;
-  margin-bottom: 10px;
-  position: relative;
-  overflow: hidden;
+/* Trust grid */
+.rt-trust-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rt-ink);
 }
-
-.rt-atc::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--rt-gold);
-  transform: translateX(-101%);
-  transition: transform 0.35s cubic-bezier(.25,.46,.45,.94);
+.rt-trust-cell {
+  padding: 12px 10px; display: flex; flex-direction: column; gap: 3px;
+  border-right: 1px solid var(--rt-ink);
 }
+.rt-trust-cell:last-child { border-right: none; }
+.rt-trust-k { font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 700; color: var(--rt-ink); line-height: 1.25; }
+.rt-trust-v { font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rt-ink); opacity: 0.55; }
 
-.rt-atc:hover:not([disabled])::after { transform: translateX(0); }
-.rt-atc:hover:not([disabled]) { color: #fff; border-color: var(--rt-gold); }
-.rt-atc span { position: relative; z-index: 1; }
-
-.rt-atc[disabled] {
-  background: #d0cdc9;
-  border-color: #d0cdc9;
-  cursor: not-allowed;
+/* ══════════════════════════════════════════
+   SPEC TABS (Index 02)
+   ══════════════════════════════════════════ */
+#rt-spec-section {
+  border-bottom: 1px solid var(--rt-ink); background: var(--rt-paper);
 }
-.rt-atc[disabled]::after { display: none; }
-
-.rt-wa {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 15px 24px;
-  border: 0.5px solid var(--rt-rule);
-  background: transparent;
-  font-family: var(--rt-sans);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--rt-ink);
-  text-decoration: none;
-  transition: border-color 0.2s;
-  margin-bottom: 30px;
-  box-sizing: border-box;
+.rt-spec-hd {
+  padding: 20px 28px; border-bottom: 1px solid var(--rt-ink);
+  display: flex; justify-content: space-between; align-items: baseline;
 }
-.rt-wa:hover { border-color: var(--rt-ink); }
-.rt-wa svg { flex-shrink: 0; }
-
-/* ── Trust Strip ── */
-.rt-trust {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 0.5px solid var(--rt-rule);
-  margin-bottom: 36px;
+.rt-spec-hd-l {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
 }
-
-.rt-ti {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 14px 4px;
-  text-align: center;
-  border-right: 0.5px solid var(--rt-rule);
+.rt-spec-hd-r {
+  font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
 }
-.rt-ti:last-child { border-right: none; }
+.rt-spec-body { display: grid; grid-template-columns: 280px 1fr; }
+.rt-tab-sidebar {
+  border-right: 1px solid var(--rt-ink); display: flex; flex-direction: column;
+}
+.rt-tab-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 20px 24px; background: transparent; color: var(--rt-ink);
+  border: 0; border-bottom: 1px solid var(--rt-ink);
+  text-align: left; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.rt-tab-btn.is-active { background: var(--rt-ink); color: var(--rt-paper); }
+.rt-tab-btn-inner { display: inline-flex; align-items: baseline; gap: 10px; }
+.rt-tab-num {
+  font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.55;
+}
+.rt-tab-name { font-family: var(--rt-font-grotesk); font-size: 14px; font-weight: 500; }
+.rt-tab-btn.is-active .rt-tab-name { font-weight: 700; }
+.rt-tab-arrow { font-size: 16px; opacity: 0; }
+.rt-tab-btn.is-active .rt-tab-arrow { opacity: 1; }
 
-.rt-ti svg {
-  width: 18px; height: 18px;
-  stroke: var(--rt-gold);
-  fill: none;
-  stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  flex-shrink: 0;
+.rt-tab-panels { flex: 1; }
+.rt-tab-panel {
+  padding: 36px; min-height: 420px; display: none;
+}
+.rt-tab-panel.is-active { display: block; }
+
+/* Tab 0 — Description */
+.rt-desc-panel { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: start; }
+.rt-desc-lead {
+  font-family: var(--rt-font-grotesk); font-size: 22px; font-weight: 500;
+  line-height: 1.45; letter-spacing: -0.005em; color: var(--rt-ink); max-width: 30ch; margin: 0 0 16px;
+}
+.rt-desc-body { font-size: 15px; line-height: 1.7; color: var(--rt-ink); opacity: 0.75; margin: 0 0 10px; }
+.rt-worn-hd {
+  font-family: var(--rt-font-grotesk); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-ink); opacity: 0.65;
+  margin-bottom: 12px; display: block;
+}
+.rt-tags-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.rt-tag {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.04em; color: var(--rt-ink); border: 1px solid var(--rt-ink);
+  padding: 5px 9px; text-transform: capitalize;
 }
 
-.rt-ti-label {
-  font-family: var(--rt-sans);
-  font-size: 8px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--rt-mute);
-  line-height: 1.4;
+/* Tab 1 — Specifications */
+.rt-spec-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.rt-spec-section-hd {
+  font-family: var(--rt-font-grotesk); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-ink); opacity: 0.65;
+  margin-bottom: 14px; display: block;
+}
+.rt-spec-rows { list-style: none; margin: 0; padding: 0; }
+.rt-spec-row {
+  display: grid; grid-template-columns: 150px 1fr; gap: 20px;
+  padding: 13px 0; border-bottom: 1px solid rgba(10,10,10,0.15); align-items: center;
+}
+.rt-spec-row:first-child { border-top: 1px solid rgba(10,10,10,0.15); }
+.rt-spec-row-k {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
+}
+.rt-spec-row-v { font-family: var(--rt-font-grotesk); font-size: 14px; font-weight: 500; color: var(--rt-ink); }
+.rt-receives-box { border: 1px solid var(--rt-ink); padding: 20px; }
+.rt-receive-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding-bottom: 12px; border-bottom: 1px solid rgba(10,10,10,0.15); margin-bottom: 12px;
+}
+.rt-receive-row:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+.rt-receive-k { font-family: var(--rt-font-grotesk); font-size: 13px; font-weight: 700; color: var(--rt-ink); }
+.rt-receive-v { font-family: var(--rt-font-grotesk); font-size: 12px; opacity: 0.65; text-align: right; color: var(--rt-ink); }
+
+/* Tabs 2 & 3 — accordion content */
+.rt-acc-tab-section { margin-bottom: 28px; }
+.rt-acc-tab-section:last-child { margin-bottom: 0; }
+.rt-acc-tab-section-hd {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--rt-ink);
+  border-bottom: 1px solid var(--rt-ink); padding-bottom: 10px; margin-bottom: 14px;
+}
+.rt-acc-tab-body {
+  font-family: var(--rt-font-grotesk); font-size: 14px; line-height: 1.75;
+  color: var(--rt-ink); opacity: 0.8;
+}
+.rt-acc-tab-body p { margin: 0 0 10px; }
+.rt-acc-tab-body p:last-child { margin: 0; }
+.rt-acc-tab-body ul { padding-left: 20px; margin: 8px 0; }
+.rt-acc-tab-body li { margin-bottom: 5px; }
+.rt-acc-tab-body strong { font-weight: 600; color: var(--rt-ink); opacity: 1; }
+.rt-acc-tab-body a { color: var(--rt-ink); text-underline-offset: 3px; }
+
+/* ══════════════════════════════════════════
+   ALL ANGLES (Index 03)
+   ══════════════════════════════════════════ */
+#rt-all-angles {
+  background: var(--rt-paper-warm); padding: 60px 28px 64px;
+  border-bottom: 1px solid var(--rt-ink);
+}
+.rt-all-angles-hd {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+}
+.rt-index-eyebrow {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
+  display: block; margin-bottom: 10px;
+}
+.rt-display-hd {
+  font-family: var(--rt-font-grotesk); font-size: clamp(36px, 5vw, 72px); font-weight: 900;
+  line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; color: var(--rt-ink); margin: 0;
+}
+.rt-angles-desc {
+  font-family: var(--rt-font-grotesk); font-size: 14px; color: var(--rt-ink);
+  opacity: 0.75; max-width: 44ch; line-height: 1.55;
+}
+.rt-angles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.rt-angle-fig { margin: 0; }
+.rt-angle-img {
+  position: relative; aspect-ratio: 1 / 1.18;
+  border: 1px solid var(--rt-ink); overflow: hidden;
+  background:
+    radial-gradient(110% 80% at 50% 30%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 55%),
+    var(--rt-paper-warm);
+}
+.rt-angle-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rt-angle-badge {
+  position: absolute; left: 12px; top: 12px;
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; background: var(--rt-paper); color: var(--rt-ink); padding: 3px 7px;
+}
+.rt-angle-cap {
+  margin-top: 12px; display: flex; justify-content: space-between;
+  align-items: baseline; gap: 10px;
+}
+.rt-angle-cap-name { font-family: var(--rt-font-grotesk); font-size: 13px; font-weight: 600; color: var(--rt-ink); }
+.rt-angle-cap-meta {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55; text-align: right;
 }
 
-@media (max-width: 479px) {
-  .rt-trust { grid-template-columns: repeat(2, 1fr); }
-  .rt-ti:nth-child(2) { border-right: none; }
-  .rt-ti:nth-child(3) { border-top: 0.5px solid var(--rt-rule); border-right: 0.5px solid var(--rt-rule); }
-  .rt-ti:nth-child(4) { border-top: 0.5px solid var(--rt-rule); }
+/* ══════════════════════════════════════════
+   FROM THE KARKHANA (Index 04)
+   ══════════════════════════════════════════ */
+#rt-karkhana {
+  background: var(--rt-ink); color: var(--rt-paper); padding: 80px 28px;
+}
+.rt-karkhana-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.rt-karkhana-eyebrow {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-paper); opacity: 0.55;
+  display: block; margin-bottom: 16px;
+}
+.rt-karkhana-headline {
+  font-family: var(--rt-font-grotesk); font-size: clamp(52px, 7vw, 100px); font-weight: 900;
+  line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase;
+  color: var(--rt-paper); margin: 0 0 14px;
+}
+.rt-karkhana-headline .gold { color: var(--rt-gold); }
+.rt-karkhana-deva {
+  font-family: var(--rt-font-deva); font-size: 30px; font-weight: 500;
+  color: var(--rt-gold); display: inline-block; margin-bottom: 22px;
+}
+.rt-karkhana-copy {
+  font-size: 16px; line-height: 1.7; color: var(--rt-paper); opacity: 0.85;
+  max-width: 54ch; margin: 0 0 32px;
+}
+.rt-karkhana-stats { display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 32px; }
+.rt-stat-n {
+  font-family: var(--rt-font-grotesk); font-size: 30px; font-weight: 800;
+  letter-spacing: -0.02em; color: var(--rt-paper); line-height: 1; display: block;
+}
+.rt-stat-l {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-paper); opacity: 0.6;
+  display: block; margin-top: 5px;
+}
+.rt-karkhana-cta {
+  display: inline-flex; align-items: center; gap: 10px; color: var(--rt-paper);
+  text-decoration: none; border-bottom: 1px solid var(--rt-gold); padding-bottom: 5px;
+}
+.rt-karkhana-cta span {
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.28em; text-transform: uppercase;
+}
+.rt-karkhana-img {
+  border: 1px solid var(--rt-paper); position: relative;
+  aspect-ratio: 4 / 4.6; overflow: hidden;
+  background: #1c1c1c;
+  display: flex; align-items: center; justify-content: center;
+}
+.rt-karkhana-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rt-karkhana-img-lbl {
+  position: absolute; left: 14px; bottom: 14px;
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; background: var(--rt-ink); color: var(--rt-paper);
+  border: 1px solid rgba(239,236,228,0.4); padding: 3px 8px;
+}
+.rt-karkhana-ph {
+  font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(239,236,228,0.35); text-align: center; padding: 20px;
 }
 
-/* ── Description ── */
-.rt-desc {
-  margin-bottom: 32px;
-  padding-bottom: 32px;
-  border-bottom: 0.5px solid var(--rt-rule);
+/* ══════════════════════════════════════════
+   STICKY ATC BAR
+   ══════════════════════════════════════════ */
+.rt-sticky-atc {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  background: var(--rt-paper); border-top: 1px solid var(--rt-ink);
+  padding: 12px 28px;
+  display: grid; grid-template-columns: auto 1fr auto auto;
+  align-items: center; gap: 20px;
+  transform: translateY(110%);
+  transition: transform 320ms cubic-bezier(0.2,0.7,0.2,1);
+}
+.rt-sticky-atc.is-visible { transform: translateY(0); }
+.rt-sticky-thumb {
+  width: 48px; height: 56px; border: 1px solid var(--rt-ink);
+  overflow: hidden; flex-shrink: 0;
+  background:
+    radial-gradient(110% 80% at 50% 30%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 55%),
+    var(--rt-paper-warm);
+}
+.rt-sticky-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rt-sticky-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rt-sticky-name {
+  font-family: var(--rt-font-grotesk); font-size: 13px; font-weight: 700;
+  color: var(--rt-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.rt-sticky-sub {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-ink); opacity: 0.55;
+}
+.rt-sticky-price {
+  font-family: var(--rt-font-grotesk); font-size: 20px; font-weight: 800;
+  letter-spacing: -0.01em; color: var(--rt-ink); white-space: nowrap;
+}
+.rt-sticky-price s { font-size: 13px; font-weight: 400; opacity: 0.45; margin-left: 6px; text-decoration: line-through; }
+.rt-sticky-add {
+  background: var(--rt-ink); color: var(--rt-paper); border: 0;
+  padding: 14px 28px;
+  font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 800;
+  letter-spacing: 0.28em; text-transform: uppercase; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 12px; white-space: nowrap;
 }
 
-.rt-desc p {
-  font-family: var(--rt-serif);
-  font-size: 1.05rem;
-  color: var(--rt-ink);
-  line-height: 1.8;
-  font-weight: 300;
-  margin: 0 0 12px;
+/* ══════════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════════ */
+.rt-toast {
+  position: fixed; left: 28px; bottom: 88px; z-index: 70;
+  background: var(--rt-ink); color: var(--rt-paper);
+  padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+  max-width: 340px; pointer-events: none;
+  transform: translateY(20px); opacity: 0;
+  transition: transform 280ms, opacity 280ms;
+}
+.rt-toast.is-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.rt-toast-thumb {
+  width: 40px; height: 48px; flex-shrink: 0; overflow: hidden; background: var(--rt-paper-warm);
+}
+.rt-toast-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rt-toast-copy { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.rt-toast-title { font-family: var(--rt-font-grotesk); font-size: 12px; font-weight: 700; color: var(--rt-paper); }
+.rt-toast-sub {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rt-paper); opacity: 0.7;
+}
+.rt-toast-close {
+  background: transparent; border: 0; color: var(--rt-paper);
+  font-size: 16px; cursor: pointer; padding: 4px; line-height: 1; flex-shrink: 0;
 }
 
-.rt-desc em { font-style: italic; }
-
-.rt-desc strong {
-  font-family: var(--rt-sans);
-  font-weight: 500;
-  font-size: 0.78rem;
-}
-
-.rt-desc ul {
-  list-style: none;
-  padding: 0;
-  margin: 18px 0 0;
-  border-top: 0.5px solid var(--rt-rule);
-}
-
-.rt-desc li {
-  display: flex;
-  gap: 18px;
-  font-family: var(--rt-sans);
-  font-size: 11px;
-  color: var(--rt-mute);
-  padding: 8px 0;
-  border-bottom: 0.5px solid var(--rt-rule);
-  letter-spacing: 0.025em;
-  line-height: 1.5;
-}
-
-.rt-desc li strong {
-  color: var(--rt-ink);
-  font-weight: 500;
-  font-size: 11px;
-  min-width: 88px;
-  flex-shrink: 0;
-  letter-spacing: 0.04em;
-}
-
-/* ── Accordions ── */
-.rt-acc-group {
-  border-top: 0.5px solid var(--rt-rule);
-  margin-bottom: 28px;
-}
-
-.rt-acc {
-  border-bottom: 0.5px solid var(--rt-rule);
-}
-
-.rt-acc summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 17px 0;
-  cursor: pointer;
-  list-style: none;
-  gap: 16px;
-  user-select: none;
-}
-.rt-acc summary::-webkit-details-marker { display: none; }
-
-.rt-acc__h {
-  font-family: var(--rt-sans);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--rt-ink);
-  font-weight: 400;
-}
-
-.rt-acc__caret {
-  width: 13px; height: 13px;
-  stroke: var(--rt-mute);
-  stroke-width: 1.5;
-  fill: none;
-  flex-shrink: 0;
-  transition: transform 0.28s ease;
-}
-.rt-acc[open] .rt-acc__caret { transform: rotate(180deg); }
-
-.rt-acc__body {
-  padding-bottom: 22px;
-  font-family: var(--rt-sans);
-  font-size: 12px;
-  line-height: 1.9;
-  color: var(--rt-mute);
-}
-
-.rt-acc__body p { margin: 0 0 8px; }
-.rt-acc__body p:last-child { margin: 0; }
-.rt-acc__body a {
-  color: var(--rt-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.rt-acc__body ul, .rt-acc__body ol {
-  padding-left: 18px;
-  margin: 8px 0;
-}
-.rt-acc__body li { margin-bottom: 4px; }
-.rt-acc__body strong { color: var(--rt-ink); font-weight: 500; }
-
-/* ── Share ── */
-.rt-share-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--rt-sans);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--rt-mute);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: color 0.2s;
-  margin-top: 16px;
-}
-.rt-share-btn:hover { color: var(--rt-ink); }
-.rt-share-btn svg {
-  width: 12px; height: 12px;
-  stroke: currentColor; fill: none;
-  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
-}
-
-/* ── Mobile sticky ATC ── */
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
 @media (max-width: 989px) {
-  .rt-mobile-atc-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 12px 16px;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(8px);
-    border-top: 0.5px solid var(--rt-rule);
-    z-index: 100;
-    display: flex;
-    gap: 10px;
+  .rt-hero-pdp { grid-template-columns: 1fr; gap: 28px; padding: 20px 16px 40px; }
+  .rt-gallery { grid-template-columns: 1fr; }
+  .rt-thumb-rail {
+    position: static; flex-direction: row; overflow-x: auto;
+    gap: 8px; padding-bottom: 4px; order: 2; scrollbar-width: none;
   }
-
-  .rt-mobile-atc-bar .rt-atc {
-    margin: 0;
-    flex: 1;
-    padding: 16px 12px;
-  }
-
-  .rt-mobile-atc-bar .rt-wa {
-    margin: 0;
-    width: auto;
-    padding: 16px 14px;
-    flex-shrink: 0;
-  }
+  .rt-thumb-rail::-webkit-scrollbar { display: none; }
+  .rt-thumb-btn { width: 58px; }
+  .rt-main-stage { cursor: default; order: 1; }
+  .rt-title { font-size: clamp(40px, 10vw, 72px); }
+  .rt-spec-body { grid-template-columns: 1fr; }
+  .rt-tab-sidebar { display: none; }
+  .rt-tab-panel { display: block !important; padding: 20px 16px; border-bottom: 1px solid var(--rt-ink); min-height: unset; }
+  .rt-tab-panel:last-child { border-bottom: 0; }
+  .rt-spec-hd { padding: 16px; }
+  .rt-angles-grid { grid-template-columns: 1fr 1fr; }
+  .rt-karkhana-grid { grid-template-columns: 1fr; }
+  .rt-karkhana-img { display: none; }
+  .rt-sticky-atc { grid-template-columns: auto 1fr auto; padding: 10px 16px; }
+  .rt-sticky-price { display: none; }
+  .rt-bc { padding: 10px 16px; }
+  .rt-bc__path-right { display: none; }
+  .rt-trust-grid { grid-template-columns: repeat(2, 1fr); }
+  .rt-trust-cell:nth-child(2) { border-right: none; }
+  .rt-trust-cell:nth-child(3) { border-top: 1px solid var(--rt-ink); border-right: 1px solid var(--rt-ink); }
+  .rt-trust-cell:nth-child(4) { border-top: 1px solid var(--rt-ink); }
+  .rt-desc-panel { grid-template-columns: 1fr; gap: 24px; }
+  .rt-spec-two-col { grid-template-columns: 1fr; gap: 28px; }
+  #rt-all-angles { padding: 40px 16px 44px; }
+  #rt-karkhana { padding: 56px 16px; }
+  .rt-toast { left: 16px; bottom: 72px; max-width: calc(100vw - 32px); }
 }
-
-@media (min-width: 990px) {
-  .rt-mobile-atc-bar { display: none !important; }
+@media (max-width: 479px) {
+  .rt-angles-grid { grid-template-columns: 1fr; }
+  .rt-atc-row { grid-template-columns: auto 1fr; }
+  .rt-wish-btn { display: none; }
 }
 {%- endstyle -%}
 
-{%- assign current_variant  = product.selected_or_first_available_variant -%}
-{%- assign product_form_id  = 'rt-form-' | append: section.id -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'rt-form-' | append: section.id
+  assign wa_text = 'Hi, I am interested in ' | append: product.title | url_encode
+  assign wa_url = 'https://wa.me/' | append: section.settings.whatsapp_number | append: '?text=' | append: wa_text
 
-<section
-  class="rt-pdp"
-  data-rt-section="{{ section.id }}"
-  aria-label="{{ product.title | escape }} product page"
->
+  assign show_hallmark = false
+  for col in product.collections
+    if col.handle == 'pure-silver-925' or col.handle == 'gold-plated-silver'
+      assign show_hallmark = true
+    endif
+  endfor
 
-  {%- comment -%}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    GALLERY
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
-  <div class="rt-gl" aria-label="Product images">
+  assign availability = product.metafields.custom.availability
+  assign is_mto = false
+  if availability == 'Made to Order'
+    assign is_mto = true
+  endif
 
-    <div class="rt-gl__hero" id="rt-hero-{{ section.id }}">
-      {%- if product.featured_media -%}
-        {%- assign fm = product.featured_media -%}
-        {%- if fm.media_type == 'image' -%}
-          <img
-            id="rt-hero-img-{{ section.id }}"
-            src="{{ fm | image_url: width: 1600 }}"
-            srcset="
-              {{ fm | image_url: width: 800  }} 800w,
-              {{ fm | image_url: width: 1200 }} 1200w,
-              {{ fm | image_url: width: 1600 }} 1600w
-            "
-            sizes="55vw"
-            alt="{{ fm.alt | default: product.title | escape }}"
-            width="{{ fm.width }}"
-            height="{{ fm.height }}"
-            loading="eager"
-            fetchpriority="high"
-          >
-        {%- elsif fm.media_type == 'video' -%}
-          <video
-            id="rt-hero-vid-{{ section.id }}"
-            autoplay muted loop playsinline
-            style="width:100%;height:100%;object-fit:contain;"
-          >
-            {%- for source in fm.sources -%}
-              <source src="{{ source.url }}" type="{{ source.mime_type }}">
-            {%- endfor -%}
-          </video>
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag }}
-        {%- endif -%}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag }}
+  assign care_content = ''
+  assign shipping_content = ''
+  assign returns_content = ''
+  for block in section.blocks
+    if block.type == 'accordion'
+      assign bh = block.settings.heading | downcase
+      if bh contains 'care'
+        if block.settings.page != blank
+          assign care_content = block.settings.page.content
+        else
+          assign care_content = block.settings.content
+        endif
+      elsif bh contains 'ship' or bh contains 'deliver'
+        if block.settings.page != blank
+          assign shipping_content = block.settings.page.content
+        else
+          assign shipping_content = block.settings.content
+        endif
+      elsif bh contains 'return' or bh contains 'exchange'
+        if block.settings.page != blank
+          assign returns_content = block.settings.page.content
+        else
+          assign returns_content = block.settings.content
+        endif
+      endif
+    endif
+  endfor
+-%}
+
+<div class="rt-pdp-page" data-rt-section="{{ section.id }}">
+
+  <!-- ── [A] Breadcrumb ── -->
+  <nav class="rt-bc" aria-label="Breadcrumb">
+    <div class="rt-bc__path">
+      <a href="/">Rangtarini</a>
+      <span class="rt-bc__sep">/</span>
+      <a href="/collections/all">Shop</a>
+      {%- if collection -%}
+        <span class="rt-bc__sep">/</span>
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
       {%- endif -%}
-      <span class="rt-gl__zoom-hint">Click to zoom</span>
+      <span class="rt-bc__sep">/</span>
+      <span class="rt-bc__current">{{ product.title }}</span>
     </div>
+    <div class="rt-bc__path rt-bc__path-right">
+      <a href="/collections/all" style="opacity:0.45;">← Back to shop</a>
+    </div>
+  </nav>
 
-    {%- if product.media.size > 1 -%}
-      <div class="rt-gl__strip" role="list" aria-label="Product image thumbnails">
-        {%- for media in product.media limit: 12 -%}
-          {%- assign is_video = false -%}
-          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-            {%- assign is_video = true -%}
-          {%- endif -%}
+  <!-- ── [B] Hero PDP ── -->
+  <section class="rt-hero-pdp" aria-label="{{ product.title | escape }} product details">
+
+    <!-- [B1] Gallery -->
+    <div class="rt-gallery">
+      <!-- Thumbnail rail -->
+      <div class="rt-thumb-rail" role="list" aria-label="Product images">
+        {%- for media in product.media limit: 10 -%}
           <button
-            class="rt-thumb{% if forloop.first %} is-active{% endif %}{% if is_video %} rt-thumb--video{% endif %}"
+            class="rt-thumb-btn{% if forloop.first %} is-active{% endif %}"
             role="listitem"
-            aria-label="View media {{ forloop.index }}"
+            aria-label="View image {{ forloop.index }}"
             data-src="{{ media | image_url: width: 1600 }}"
+            data-srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w"
             data-alt="{{ media.alt | default: product.title | escape }}"
-            data-media-type="{{ media.media_type }}"
-            {%- if is_video -%}
-              data-video-src="{{ media.sources.last.url | default: media.sources.first.url }}"
-              data-preview="{{ media | image_url: width: 200 }}"
-            {%- endif -%}
-            onclick="rtMedia(this,'{{ section.id }}')"
+            data-idx="{{ forloop.index0 }}"
+            data-total="{{ product.media.size }}"
+            onclick="rtThumbClick(this,'{{ section.id }}')"
           >
-            {%- if is_video -%}
-              <img
-                src="{{ media | image_url: width: 200 }}"
-                alt="Video thumbnail"
-                width="66" height="66"
-                loading="lazy"
-              >
-            {%- else -%}
-              <img
-                src="{{ media | image_url: width: 200 }}"
-                alt="{{ media.alt | default: product.title | escape }}"
-                width="66" height="66"
-                loading="lazy"
-              >
-            {%- endif -%}
+            <img
+              src="{{ media | image_url: width: 200 }}"
+              alt="{{ media.alt | default: product.title | escape }}"
+              loading="{{ forloop.first | iif: 'eager', 'lazy' }}"
+              width="76" height="88"
+            >
+            <span class="rt-thumb-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
           </button>
         {%- endfor -%}
       </div>
-    {%- endif -%}
 
-  </div>{%- comment -%} /rt-gl {%- endcomment -%}
+      <!-- Main image stage -->
+      <div class="rt-main-stage"
+           id="rt-stage-{{ section.id }}"
+           aria-label="Product image"
+           onmousemove="rtZoomMove(event,'{{ section.id }}')"
+           onmouseenter="rtZoomEnter('{{ section.id }}')"
+           onmouseleave="rtZoomLeave('{{ section.id }}')">
+        {%- assign fm = product.featured_media -%}
+        {%- if fm -%}
+          <img
+            id="rt-hero-img-{{ section.id }}"
+            src="{{ fm | image_url: width: 1200 }}"
+            srcset="{{ fm | image_url: width: 800 }} 800w, {{ fm | image_url: width: 1200 }} 1200w, {{ fm | image_url: width: 1600 }} 1600w"
+            sizes="55vw"
+            alt="{{ fm.alt | default: product.title | escape }}"
+            width="{{ fm.width }}" height="{{ fm.height }}"
+            loading="eager" fetchpriority="high"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {%- endif -%}
 
-  {%- comment -%}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    PRODUCT INFO
-  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{%- endcomment -%}
-  <div class="rt-inf" id="rt-inf-{{ section.id }}">
-
-    {%- comment -%} Brand label {%- endcomment -%}
-    <span class="rt-brand">{{ shop.name }}</span>
-
-    {%- comment -%} Product title — single H1, no duplicate {%- endcomment -%}
-    <h1 class="rt-ttl">{{ product.title | escape }}</h1>
-
-    {%- comment -%}
-      Stars — reads Judge.me metafields (synced automatically)
-      Falls back to Judge.me badge widget if metafields not yet populated
-    {%- endcomment -%}
-    {%- assign rt_rating = product.metafields.reviews.rating.value -%}
-    {%- assign rt_count  = product.metafields.reviews.rating_count | plus: 0 -%}
-    {%- if rt_rating != blank and rt_count > 0 -%}
-      {%- assign rt_score = rt_rating.rating | round -%}
-      <a
-        href="#rt-reviews"
-        class="rt-stars"
-        aria-label="{{ rt_rating.rating | round: 1 }} out of 5 stars, {{ rt_count }} {{ rt_count | pluralize: 'review', 'reviews' }}"
-      >
-        <span class="rt-stars__icons">
-          {%- for i in (1..5) -%}
-            {%- if i <= rt_score -%}
-              <svg viewBox="0 0 24 24" fill="#C9A84C" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
-              </svg>
-            {%- else -%}
-              <svg viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/>
-              </svg>
-            {%- endif -%}
-          {%- endfor -%}
-        </span>
-        <span class="rt-stars__ct">{{ rt_count }} {{ rt_count | pluralize: 'review', 'reviews' }}</span>
-      </a>
-    {%- else -%}
-      {%- comment -%} Judge.me badge — renders when review count metafield not yet synced {%- endcomment -%}
-      <a href="#rt-reviews" class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
-        {{ product.metafields.judgeme.badge }}
-      </a>
-    {%- endif -%}
-
-    {%- comment -%}
-      Price — fully custom renderer
-      Eliminates Dawn's double "Regular price" bug entirely.
-    {%- endcomment -%}
-    <div class="rt-price-row" id="rt-price-{{ section.id }}" role="status" aria-live="polite">
-      {%- if current_variant.compare_at_price > current_variant.price -%}
-        <span class="rt-p">{{ current_variant.price | money }}</span>
-        <span class="rt-p-was" aria-label="Original price">{{ current_variant.compare_at_price | money }}</span>
-        {%- assign rt_savings = current_variant.compare_at_price | minus: current_variant.price -%}
-        <span class="rt-p-save" aria-label="You save {{ rt_savings | money }}">Save {{ rt_savings | money }}</span>
-      {%- else -%}
-        <span class="rt-p">{{ current_variant.price | money }}</span>
-      {%- endif -%}
-    </div>
-
-    {%- comment -%} Availability badge — configurable from theme editor {%- endcomment -%}
-    {%- if section.settings.shipping_badge != blank -%}
-      <div class="rt-avail" role="status" aria-label="{{ section.settings.availability_label }}: {{ section.settings.shipping_badge }}">
-        <span class="rt-avail__dot" aria-hidden="true"></span>
-        <div class="rt-avail__copy">
-          <span class="rt-avail__lbl">{{ section.settings.availability_label }}</span>
-          <span class="rt-avail__sub">{{ section.settings.shipping_badge }}</span>
+        <span class="rt-stage-badge rt-stage-sku">{{ product.variants.first.sku | default: product.type }}</span>
+        <span class="rt-stage-badge rt-stage-hint" id="rt-zoom-hint-{{ section.id }}">Hover to zoom</span>
+        <div class="rt-stage-counter">
+          <span id="rt-counter-{{ section.id }}">01 / {{ product.media.size | prepend: '0' | slice: -2, 2 }}</span>
+          <span>Studio · Daylight</span>
         </div>
       </div>
-    {%- endif -%}
-
-    {%- comment -%} Variant picker — only renders when product has variants {%- endcomment -%}
-    {%- unless product.has_only_default_variant -%}
-      <div class="rt-variants" id="rt-variants-{{ section.id }}">
-        {%- for option in product.options_with_values -%}
-          <div class="rt-var-group">
-            <label class="rt-var-label" for="rt-opt-{{ option.position }}-{{ section.id }}">
-              {{ option.name }}
-            </label>
-            <select
-              id="rt-opt-{{ option.position }}-{{ section.id }}"
-              name="options[{{ option.name | escape }}]"
-              class="rt-var-select"
-              data-option-position="{{ option.position }}"
-              onchange="rtUpdateVariant('{{ section.id }}')"
-              form="{{ product_form_id }}"
-            >
-              {%- for value in option.values -%}
-                <option
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}selected{% endif %}
-                >{{ value | escape }}</option>
-              {%- endfor -%}
-            </select>
-          </div>
-        {%- endfor -%}
-      </div>
-    {%- endunless -%}
-
-    {%- comment -%} Product form — Add to Cart {%- endcomment -%}
-    {%- form 'product', product, id: product_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-      <input type="hidden" name="id" value="{{ current_variant.id }}" id="rt-vid-{{ section.id }}">
-
-      <button
-        type="submit"
-        name="add"
-        class="rt-atc"
-        id="rt-atc-{{ section.id }}"
-        {% unless current_variant.available %}disabled{% endunless %}
-        aria-label="{% if current_variant.available %}Add {{ product.title | escape }} to cart{% else %}{{ product.title | escape }} is sold out{% endif %}"
-      >
-        <span>
-          {%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
-        </span>
-      </button>
-    {%- endform -%}
-
-    {%- comment -%} WhatsApp enquiry CTA {%- endcomment -%}
-    {%- if section.settings.whatsapp_number != blank -%}
-      {%- capture wa_text -%}Hi, I am interested in {{ product.title }}{%- endcapture -%}
-      <a
-        href="https://wa.me/{{ section.settings.whatsapp_number }}?text={{ wa_text | url_encode }}"
-        class="rt-wa"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp about {{ product.title | escape }}"
-      >
-        <svg width="15" height="15" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-          <path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.736 5.466 2.024 7.762L.057 31.887l8.312-2.18A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333A13.28 13.28 0 019.13 27.42l-.49-.294-5.09 1.337 1.36-4.965-.32-.51A13.28 13.28 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/>
-          <path d="M23.3 19.547c-.375-.188-2.219-1.094-2.563-1.219-.344-.125-.594-.188-.844.188-.25.375-.969 1.219-1.188 1.469-.219.25-.438.281-.813.094-.375-.188-1.583-.583-3.016-1.86-1.115-.993-1.867-2.219-2.086-2.594-.219-.375-.023-.578.164-.765.169-.168.375-.438.563-.657.188-.218.25-.374.375-.624.125-.25.063-.469-.031-.656-.094-.188-.844-2.032-1.157-2.782-.305-.732-.614-.631-.844-.643l-.718-.012a1.376 1.376 0 00-1 .469c-.344.375-1.313 1.281-1.313 3.125s1.344 3.625 1.531 3.875c.188.25 2.646 4.039 6.41 5.664.896.387 1.595.618 2.14.79.899.286 1.717.245 2.364.149.721-.108 2.219-.906 2.532-1.782.312-.875.312-1.625.219-1.781-.094-.156-.344-.25-.719-.438z"/>
-        </svg>
-        Enquire or Customise
-      </a>
-    {%- endif -%}
-
-    {%- comment -%} Trust strip — 4 icons {%- endcomment -%}
-    <div class="rt-trust" role="list" aria-label="Product guarantees">
-      <div class="rt-ti" role="listitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-        </svg>
-        <span class="rt-ti-label">Free<br>Shipping</span>
-      </div>
-      <div class="rt-ti" role="listitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
-        </svg>
-        <span class="rt-ti-label">1 Year<br>Warranty</span>
-      </div>
-      <div class="rt-ti" role="listitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/>
-        </svg>
-        <span class="rt-ti-label">
-          {%- if section.settings.show_hallmark -%}925 Hallmarked{%- else -%}Certified Quality{%- endif -%}
-        </span>
-      </div>
-      <div class="rt-ti" role="listitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.499 5.499 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
-        <span class="rt-ti-label">Handcrafted<br>in India</span>
-      </div>
     </div>
 
-    {%- comment -%} Product description {%- endcomment -%}
-    {%- if product.description != blank -%}
-      <div class="rt-desc">
-        {{ product.description }}
+    <!-- [B2] Buy Box -->
+    <div class="rt-buybox">
+
+      <!-- Eyebrow -->
+      <div class="rt-eyebrow">
+        <div>
+          <span class="rt-eyebrow-meta">{{ product.type | default: 'Jewellery' }} · {{ current_variant.sku | default: product.handle | upcase | truncate: 14, '' }}</span>
+          <span class="rt-eyebrow-vendor">By {{ product.vendor }}</span>
+        </div>
+        <a href="#rt-reviews" class="rt-stars-link" aria-label="View reviews">
+          <span class="rt-stars-icons">★★★★★</span>
+          <span class="rt-stars-ct jdgm-prev-badge" data-id="{{ product.id }}"></span>
+        </a>
       </div>
-    {%- endif -%}
 
-    {%- comment -%} Collapsible accordions — blocks ordered in theme editor {%- endcomment -%}
-    {%- assign has_acc = false -%}
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'accordion' -%}{%- assign has_acc = true -%}{%- break -%}{%- endif -%}
-    {%- endfor -%}
-
-    {%- if has_acc -%}
-      <div class="rt-acc-group">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'accordion' -%}
-            <details class="rt-acc" {{ block.shopify_attributes }}>
-              <summary>
-                <span class="rt-acc__h">{{ block.settings.heading }}</span>
-                <svg class="rt-acc__caret" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6"/>
-                </svg>
-              </summary>
-              <div class="rt-acc__body">
-                {%- if block.settings.content != blank -%}
-                  {{ block.settings.content }}
-                {%- endif -%}
-                {%- if block.settings.page != blank -%}
-                  {{ block.settings.page.content }}
-                {%- endif -%}
-              </div>
-            </details>
+      <!-- Title -->
+      <div class="rt-title-block">
+        <h1 class="rt-title">{{ product.title }}.</h1>
+        <div class="rt-title-sub">
+          <span class="rt-deva">रंगतारिणी</span>
+          <span class="rt-title-rule"></span>
+          {%- if section.settings.tagline != blank -%}
+            <span class="rt-tagline">{{ section.settings.tagline }}</span>
           {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Price -->
+      {%- form 'product', product, id: product_form_id, novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" id="rt-vid-{{ section.id }}">
+
+        <div class="rt-price-block">
+          <div class="rt-price-left" id="rt-price-{{ section.id }}">
+            <span class="rt-price-main">{{ current_variant.price | money }}</span>
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="rt-price-was">{{ current_variant.compare_at_price | money }}</span>
+              {%- assign saved_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price -%}
+              <span class="rt-price-save">−{{ saved_pct }}% off</span>
+            {%- endif -%}
+          </div>
+          <span class="rt-price-tax">Tax incl.</span>
+        </div>
+
+        <!-- Availability badge -->
+        {%- if availability != blank -%}
+          <div class="rt-avail-badge">
+            <span class="rt-avail-dot {% if is_mto %}rt-avail-dot--mto{% else %}rt-avail-dot--rts{% endif %}" aria-hidden="true"></span>
+            <div class="rt-avail-copy">
+              <span class="rt-avail-lbl">{% if is_mto %}Made to Order{% else %}Ready to Ship{% endif %}</span>
+              <span class="rt-avail-sub">{% if is_mto %}Ships in 2–3 weeks{% else %}Ships in 3–5 business days{% endif %}</span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <!-- Variant selector -->
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div class="rt-variants">
+              <div class="rt-var-header">
+                <span class="rt-var-label">{{ option.name }} · <span id="rt-opt-selected-{{ section.id }}-{{ forloop.index0 }}">{{ option.selected_value }}</span></span>
+              </div>
+              <div class="rt-var-btns" role="group" aria-label="{{ option.name }} options">
+                {%- for value in option.values -%}
+                  {%- assign is_selected = option.selected_value == value -%}
+                  {%- assign swatch_color = value | downcase | replace: ' ', '' -%}
+                  <button
+                    type="button"
+                    class="rt-var-btn{% if is_selected %} is-active{% endif %}"
+                    data-option-index="{{ forloop.parentloop.index0 }}"
+                    data-value="{{ value | escape }}"
+                    aria-pressed="{{ is_selected }}"
+                    onclick="rtVarClick(this,'{{ section.id }}')"
+                  >
+                    <span class="rt-var-swatch" style="background: {{ swatch_color }};"></span>
+                    <span>
+                      <span class="rt-var-name">{{ value }}</span>
+                      <span class="rt-var-stock">
+                        {%- assign matching = product.variants | where: 'title', value | first -%}
+                        {%- if matching.available -%}
+                          {%- if matching.inventory_quantity <= 5 -%}Low · {{ matching.inventory_quantity }} left{%- else -%}In stock{%- endif -%}
+                        {%- else -%}Sold out{%- endif -%}
+                      </span>
+                    </span>
+                  </button>
+                {%- endfor -%}
+              </div>
+              <select class="rt-var-select-hidden" name="options[{{ option.name | escape }}]" id="rt-sel-{{ section.id }}-{{ forloop.index0 }}" aria-label="{{ option.name }}">
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <!-- What's in the piece — populated by JS -->
+        <div class="rt-spec-grid-wrap" id="rt-witp-{{ section.id }}" style="display:none;">
+          <div class="rt-spec-grid-head">
+            <span class="rt-spec-grid-head-l">What's in the piece</span>
+            <span class="rt-spec-grid-head-r" id="rt-witp-ct-{{ section.id }}">—</span>
+          </div>
+          <div class="rt-spec-grid" id="rt-witp-grid-{{ section.id }}"></div>
+        </div>
+
+        <!-- Qty + ATC -->
+        <div class="rt-atc-row">
+          <div class="rt-qty" role="group" aria-label="Quantity">
+            <button type="button" class="rt-qty-btn" aria-label="Decrease" onclick="rtQtyChange(-1,'{{ section.id }}')">−</button>
+            <span class="rt-qty-sep"></span>
+            <span class="rt-qty-num" id="rt-qty-{{ section.id }}">1</span>
+            <span class="rt-qty-sep"></span>
+            <button type="button" class="rt-qty-btn" aria-label="Increase" onclick="rtQtyChange(1,'{{ section.id }}')">+</button>
+          </div>
+          <input type="hidden" name="quantity" id="rt-qty-input-{{ section.id }}" value="1">
+          <button
+            type="submit"
+            name="add"
+            id="rt-atc-{{ section.id }}"
+            class="rt-atc-main"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            <span id="rt-atc-label-{{ section.id }}">
+              {% if current_variant.available %}Add to bag <span style="font-size:14px;">→</span>{% else %}Sold out{% endif %}
+            </span>
+          </button>
+          <button
+            type="button"
+            class="rt-wish-btn"
+            id="rt-wish-{{ section.id }}"
+            aria-label="Add to wishlist"
+            onclick="rtToggleWish(this)"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <path d="M12 21s-7-4.5-9.5-9.2C.7 8 2.5 4 6 4c2 0 3.5 1.3 4 2.5C10.5 5.3 12 4 14 4c3.5 0 5.3 4 3.5 7.8C19 16.5 12 21 12 21z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Stock + free shipping -->
+        <div class="rt-stock-row">
+          <span class="rt-stock-dot {% if current_variant.available %}{% if current_variant.inventory_quantity <= 5 %}rt-stock-dot--low{% else %}rt-stock-dot--in{% endif %}{% else %}rt-stock-dot--out{% endif %}" id="rt-stock-{{ section.id }}">
+            {% if current_variant.available %}{% if current_variant.inventory_quantity <= 5 %}Low stock · {{ current_variant.inventory_quantity }} left{% else %}In stock · ready to ship{% endif %}{% else %}Sold out{% endif %}
+          </span>
+          <span class="rt-ship-note">Free shipping · pan India</span>
+        </div>
+
+        <!-- WhatsApp CTA -->
+        {%- if section.settings.whatsapp_number != blank -%}
+          <a href="{{ wa_url }}" class="rt-wa-cta" target="_blank" rel="noopener noreferrer">
+            <svg width="15" height="15" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+              <path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.736 5.466 2.024 7.762L.057 31.887l8.312-2.18A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333A13.28 13.28 0 019.13 27.42l-.49-.294-5.09 1.337 1.36-4.965-.32-.51A13.28 13.28 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/>
+              <path d="M23.3 19.547c-.375-.188-2.219-1.094-2.563-1.219-.344-.125-.594-.188-.844.188-.25.375-.969 1.219-1.188 1.469-.219.25-.438.281-.813.094-.375-.188-1.583-.583-3.016-1.86-1.115-.993-1.867-2.219-2.086-2.594-.219-.375-.023-.578.164-.765.169-.168.375-.438.563-.657.188-.218.25-.374.375-.624.125-.25.063-.469-.031-.656-.094-.188-.844-2.032-1.157-2.782-.305-.732-.614-.631-.844-.643l-.718-.012a1.376 1.376 0 00-1 .469c-.344.375-1.313 1.281-1.313 3.125s1.344 3.625 1.531 3.875c.188.25 2.646 4.039 6.41 5.664.896.387 1.595.618 2.14.79.899.286 1.717.245 2.364.149.721-.108 2.219-.906 2.532-1.782.312-.875.312-1.625.219-1.781-.094-.156-.344-.25-.719-.438z"/>
+            </svg>
+            Enquire or Customise
+          </a>
+        {%- endif -%}
+
+        <!-- Trust grid -->
+        <div class="rt-trust-grid" role="list" aria-label="Product guarantees">
+          <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-k">1 Year</span>
+            <span class="rt-trust-v">Warranty</span>
+          </div>
+          <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-k">{% if show_hallmark %}925{% else %}Certified{% endif %}</span>
+            <span class="rt-trust-v">{% if show_hallmark %}Hallmarked{% else %}Silver{% endif %}</span>
+          </div>
+          <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-k">Handcrafted</span>
+            <span class="rt-trust-v">Jaipur, India</span>
+          </div>
+          <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-k">Ships</span>
+            <span class="rt-trust-v">Worldwide</span>
+          </div>
+        </div>
+
+      {%- endform -%}
+    </div>
+  </section>
+
+  <!-- ── [C] Spec Tabs (Index 02) ── -->
+  <section id="rt-spec-section" aria-label="Product details">
+    <div class="rt-spec-hd">
+      <span class="rt-spec-hd-l">Index 02 — The piece, in detail</span>
+      <span class="rt-spec-hd-r">{{ product.variants.first.sku | default: '' }} · {{ product.type | default: 'Jewellery' }}</span>
+    </div>
+    <div class="rt-spec-body">
+      <!-- Tab sidebar -->
+      <div class="rt-tab-sidebar" role="tablist">
+        {%- assign tab_labels = 'Description,Specifications,Care guide,Shipping & returns' | split: ',' -%}
+        {%- for label in tab_labels -%}
+          <button
+            class="rt-tab-btn{% if forloop.first %} is-active{% endif %}"
+            role="tab"
+            aria-selected="{{ forloop.first }}"
+            aria-controls="rt-tab-panel-{{ section.id }}-{{ forloop.index0 }}"
+            onclick="rtTabClick(this,'{{ section.id }}')"
+            data-tab="{{ forloop.index0 }}"
+          >
+            <span class="rt-tab-btn-inner">
+              <span class="rt-tab-num">0{{ forloop.index }}</span>
+              <span class="rt-tab-name">{{ label }}</span>
+            </span>
+            <span class="rt-tab-arrow">→</span>
+          </button>
         {%- endfor -%}
       </div>
-    {%- endif -%}
 
-    {%- comment -%} App blocks — Judge.me inline widget, etc. {%- endcomment -%}
-    {%- for block in section.blocks -%}
-      {%- if block.type == '@app' -%}
-        {%- render block -%}
-      {%- endif -%}
-    {%- endfor -%}
+      <!-- Tab panels -->
+      <div class="rt-tab-panels">
 
-    {%- comment -%} Share {%- endcomment -%}
-    {%- assign share_url = product.url | prepend: request.origin -%}
-    <button
-      class="rt-share-btn"
-      aria-label="Share {{ product.title | escape }}"
-      onclick="
-        if(navigator.share){
-          navigator.share({title:'{{ product.title | escape }}', url:'{{ share_url }}'});
-        } else {
-          navigator.clipboard.writeText('{{ share_url }}');
-          this.querySelector('span').textContent='Link copied';
-          setTimeout(()=>this.querySelector('span').textContent='Share',2200);
-        }
-      "
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-        <polyline points="16 6 12 2 8 6"/>
-        <line x1="12" y1="2" x2="12" y2="15"/>
-      </svg>
-      <span>Share</span>
-    </button>
+        <!-- Tab 0: Description — populated by JS -->
+        <div class="rt-tab-panel is-active" id="rt-tab-panel-{{ section.id }}-0" role="tabpanel">
+          <div class="rt-desc-panel">
+            <div>
+              <p class="rt-desc-lead" id="rt-desc-lead-{{ section.id }}">{{ product.title }}.</p>
+              <div id="rt-desc-body-{{ section.id }}"></div>
+            </div>
+            <div>
+              <span class="rt-worn-hd">Worn for —</span>
+              <div class="rt-tags-wrap">
+                {%- for tag in product.tags limit: 12 -%}
+                  <span class="rt-tag">{{ tag }}</span>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
 
-  </div>{%- comment -%} /rt-inf {%- endcomment -%}
+        <!-- Tab 1: Specifications — spec rows populated by JS, static rows hardcoded -->
+        <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-1" role="tabpanel">
+          <div class="rt-spec-two-col">
+            <div>
+              <span class="rt-spec-section-hd">From the product</span>
+              <ul class="rt-spec-rows" id="rt-spec-rows-{{ section.id }}">
+                <!-- JS populates parsed highlights here -->
+                <li class="rt-spec-row">
+                  <span class="rt-spec-row-k">SKU</span>
+                  <span class="rt-spec-row-v">{{ product.variants.first.sku | default: '—' }}</span>
+                </li>
+                <li class="rt-spec-row">
+                  <span class="rt-spec-row-k">Hallmark</span>
+                  <span class="rt-spec-row-v">{% if show_hallmark %}BIS 925{% else %}Certified Silver{% endif %}</span>
+                </li>
+                <li class="rt-spec-row">
+                  <span class="rt-spec-row-k">Made in</span>
+                  <span class="rt-spec-row-v">Jaipur, India</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <span class="rt-spec-section-hd">What you'll receive</span>
+              <div class="rt-receives-box">
+                <div class="rt-receive-row">
+                  <span class="rt-receive-k">BIS Hallmark</span>
+                  <span class="rt-receive-v">Certificate · 925 silver, every piece</span>
+                </div>
+                <div class="rt-receive-row">
+                  <span class="rt-receive-k">Authenticity card</span>
+                  <span class="rt-receive-v">Handwritten, with karigar's signature</span>
+                </div>
+                <div class="rt-receive-row">
+                  <span class="rt-receive-k">Polish & care kit</span>
+                  <span class="rt-receive-v">Muslin cloth, anti-tarnish strip</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-</section>
+        <!-- Tab 2: Care guide -->
+        <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-2" role="tabpanel">
+          {%- if care_content != blank -%}
+            <div class="rt-acc-tab-body">{{ care_content }}</div>
+          {%- else -%}
+            <div class="rt-acc-tab-body">
+              <p>Remove jewelry before bathing, swimming, or exercising. Avoid contact with perfumes, lotions, and hairspray.</p>
+              <p>Store in the airtight pouch provided, away from direct sunlight. Gently wipe with a soft cloth after each wear. Keep pieces separately to prevent scratching.</p>
+              <p>Free re-polishing at the studio, for life. Chain resizing free for the first year.</p>
+            </div>
+          {%- endif -%}
+        </div>
 
-{%- comment -%} Mobile sticky ATC bar {%- endcomment -%}
-<div class="rt-mobile-atc-bar" id="rt-mob-bar-{{ section.id }}" aria-label="Quick add to cart">
-  {%- form 'product', product, id: 'rt-mob-form-' | append: section.id, novalidate: 'novalidate' -%}
-    <input type="hidden" name="id" value="{{ current_variant.id }}" id="rt-mob-vid-{{ section.id }}">
-    <button
-      type="submit"
-      name="add"
-      class="rt-atc"
-      id="rt-mob-atc-{{ section.id }}"
-      {% unless current_variant.available %}disabled{% endunless %}
-    >
-      <span>{%- if current_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}</span>
-    </button>
-  {%- endform -%}
+        <!-- Tab 3: Shipping & returns -->
+        <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-3" role="tabpanel">
+          {%- if shipping_content != blank or returns_content != blank -%}
+            {%- if shipping_content != blank -%}
+              <div class="rt-acc-tab-section">
+                <div class="rt-acc-tab-section-hd">Shipping & Delivery</div>
+                <div class="rt-acc-tab-body">{{ shipping_content }}</div>
+              </div>
+            {%- endif -%}
+            {%- if returns_content != blank -%}
+              <div class="rt-acc-tab-section">
+                <div class="rt-acc-tab-section-hd">Returns & Exchange</div>
+                <div class="rt-acc-tab-body">{{ returns_content }}</div>
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="rt-acc-tab-body">
+              <p><strong>India:</strong> Free shipping pan India. Delivered in 3–5 business days after dispatch.</p>
+              <p><strong>International:</strong> Standard shipping 8–12 days. Free on orders above ₹40,000. All international orders are DDU — import duties are the recipient's responsibility.</p>
+              <p>We accept exchanges within 7 days of delivery for unworn items in original packaging. Please contact us via WhatsApp or email to initiate.</p>
+            </div>
+          {%- endif -%}
+        </div>
 
-  {%- if section.settings.whatsapp_number != blank -%}
-    <a
-      href="https://wa.me/{{ section.settings.whatsapp_number }}?text={{ wa_text | url_encode }}"
-      class="rt-wa"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="WhatsApp enquiry"
-      style="padding:16px 14px;flex-shrink:0;width:auto;margin:0;"
-    >
-      <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-        <path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.736 5.466 2.024 7.762L.057 31.887l8.312-2.18A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333A13.28 13.28 0 019.13 27.42l-.49-.294-5.09 1.337 1.36-4.965-.32-.51A13.28 13.28 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333z"/>
-        <path d="M23.3 19.547c-.375-.188-2.219-1.094-2.563-1.219-.344-.125-.594-.188-.844.188-.25.375-.969 1.219-1.188 1.469-.219.25-.438.281-.813.094-.375-.188-1.583-.583-3.016-1.86-1.115-.993-1.867-2.219-2.086-2.594-.219-.375-.023-.578.164-.765.169-.168.375-.438.563-.657.188-.218.25-.374.375-.624.125-.25.063-.469-.031-.656-.094-.188-.844-2.032-1.157-2.782-.305-.732-.614-.631-.844-.643l-.718-.012a1.376 1.376 0 00-1 .469c-.344.375-1.313 1.281-1.313 3.125s1.344 3.625 1.531 3.875c.188.25 2.646 4.039 6.41 5.664.896.387 1.595.618 2.14.79.899.286 1.717.245 2.364.149.721-.108 2.219-.906 2.532-1.782.312-.875.312-1.625.219-1.781-.094-.156-.344-.25-.719-.438z"/>
-      </svg>
-    </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── [D] All Angles (Index 03) ── -->
+  {%- if product.media.size > 1 -%}
+    <section id="rt-all-angles" aria-label="All product angles">
+      <div class="rt-all-angles-hd">
+        <div>
+          <span class="rt-index-eyebrow">Index 03 — All angles</span>
+          <h2 class="rt-display-hd">The piece,<br>photographed.</h2>
+        </div>
+        <p class="rt-angles-desc">Every angle in the gallery, at full size. Real piece, real light.</p>
+      </div>
+      <div class="rt-angles-grid">
+        {%- assign angle_count = 0 -%}
+        {%- for media in product.media limit: 10 -%}
+          {%- if forloop.first -%}{%- continue -%}{%- endif -%}
+          {%- if angle_count >= 3 -%}{%- break -%}{%- endif -%}
+          {%- assign angle_count = angle_count | plus: 1 -%}
+          <figure class="rt-angle-fig">
+            <div class="rt-angle-img">
+              <img
+                src="{{ media | image_url: width: 900 }}"
+                srcset="{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 900 }} 900w"
+                sizes="(max-width:989px) 50vw, 30vw"
+                alt="{{ media.alt | default: product.title | escape }}"
+                loading="lazy" width="{{ media.width }}" height="{{ media.height }}"
+              >
+              <span class="rt-angle-badge">{{ forloop.index | prepend: '0' | slice: -2, 2 }} / {{ product.media.size | prepend: '0' | slice: -2, 2 }}</span>
+            </div>
+            <figcaption class="rt-angle-cap">
+              <span class="rt-angle-cap-name">{{ product.title }}</span>
+              <span class="rt-angle-cap-meta">{{ product.variants.first.sku | default: '' }} · img {{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            </figcaption>
+          </figure>
+        {%- endfor -%}
+      </div>
+    </section>
   {%- endif -%}
+
+  <!-- ── [E] From the Karkhana (Index 04) ── -->
+  <section id="rt-karkhana" aria-label="About our craft">
+    <div class="rt-karkhana-grid">
+      <div>
+        <span class="rt-karkhana-eyebrow">Index 04 — How we make everything</span>
+        <h2 class="rt-karkhana-headline">From the<br><span class="gold">karkhana.</span></h2>
+        <span class="rt-karkhana-deva">रंगतारिणी</span>
+        <p class="rt-karkhana-copy">
+          {%- if section.settings.karkhana_copy != blank -%}
+            {{ section.settings.karkhana_copy }}
+          {%- else -%}
+            Every Rangtarini piece is hand-set in our karkhana in Jaipur, where master karigars keep alive Rajasthani traditions of kundan, polki and meenakari that go back generations. We work in 925 silver, BIS-hallmarked — built to be polished, re-strung, and worn for decades.
+          {%- endif -%}
+        </p>
+        <div class="rt-karkhana-stats">
+          <div><span class="rt-stat-n">38</span><span class="rt-stat-l">Karigars</span></div>
+          <div><span class="rt-stat-n">6 gen</span><span class="rt-stat-l">Of craft</span></div>
+          <div><span class="rt-stat-n">22kt</span><span class="rt-stat-l">Gold plating</span></div>
+          <div><span class="rt-stat-n">BIS 925</span><span class="rt-stat-l">Hallmarked</span></div>
+        </div>
+        {%- if section.settings.karkhana_url != blank -%}
+          <a href="{{ section.settings.karkhana_url }}" class="rt-karkhana-cta">
+            <span>Visit the karkhana</span>
+            <span style="font-size:14px;">→</span>
+          </a>
+        {%- endif -%}
+      </div>
+      <div class="rt-karkhana-img">
+        {%- if section.settings.karkhana_image != blank -%}
+          <img
+            src="{{ section.settings.karkhana_image | image_url: width: 900 }}"
+            srcset="{{ section.settings.karkhana_image | image_url: width: 600 }} 600w, {{ section.settings.karkhana_image | image_url: width: 900 }} 900w"
+            sizes="45vw"
+            alt="Karkhana — karigar at work"
+            loading="lazy"
+          >
+          <span class="rt-karkhana-img-lbl">Karkhana · Jaipur</span>
+        {%- else -%}
+          <span class="rt-karkhana-ph">Karkhana · karigar at the bench<br>4:5 · Add a photo in theme settings</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  <!-- [F] Reviews anchor -->
+  <div id="rt-reviews" style="scroll-margin-top:0;"></div>
+
+  <!-- [G] App blocks (Judge.me reviews section rendered by template) -->
+  {%- for block in section.blocks -%}
+    {%- if block.type == '@app' -%}
+      {%- render block -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  <!-- Sticky ATC bar -->
+  <div class="rt-sticky-atc" id="rt-sticky-{{ section.id }}" aria-label="Quick add to cart" role="complementary">
+    <div class="rt-sticky-thumb">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title | escape }}" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="rt-sticky-info">
+      <span class="rt-sticky-name">{{ product.title }}</span>
+      <span class="rt-sticky-sub" id="rt-sticky-sub-{{ section.id }}">{{ current_variant.title | default: '' }}</span>
+    </div>
+    <div class="rt-sticky-price" id="rt-sticky-price-{{ section.id }}">
+      {{ current_variant.price | money }}
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <s>{{ current_variant.compare_at_price | money }}</s>
+      {%- endif -%}
+    </div>
+    <button class="rt-sticky-add" onclick="document.getElementById('rt-atc-{{ section.id }}').closest('form').requestSubmit()">
+      Add to bag <span style="font-size:14px;">→</span>
+    </button>
+  </div>
+
+  <!-- Toast -->
+  <div class="rt-toast" id="rt-toast-{{ section.id }}" role="status" aria-live="polite">
+    <div class="rt-toast-thumb">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 160 }}" alt="{{ product.title | escape }}" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="rt-toast-copy">
+      <span class="rt-toast-title">Added to bag.</span>
+      <span class="rt-toast-sub">{{ product.title }} · Free polish for life</span>
+    </div>
+    <button class="rt-toast-close" aria-label="Close" onclick="rtToastHide('{{ section.id }}')">✕</button>
+  </div>
+
 </div>
 
-{%- comment -%} Reviews anchor — target for star link + reviews section {%- endcomment -%}
-<div id="rt-reviews" style="scroll-margin-top:0;"></div>
-
-{%- comment -%} Structured data {%- endcomment -%}
 <script type="application/ld+json">{{ product | structured_data }}</script>
 
 <script>
 (function () {
   'use strict';
 
-  /* ─────────────────────────────────────────
-     THUMBNAIL / MEDIA SWITCHER
-  ───────────────────────────────────────── */
-  window.rtMedia = function (thumb, sectionId) {
-    var section = document.querySelector('[data-rt-section="' + sectionId + '"]');
-    if (!section) return;
+  var SEC = '{{ section.id }}';
+  var VARIANTS = {{ product.variants | json }};
+  var DESC_HTML = {{ product.description | json }};
+  var FIRST_IMG = {{ product.featured_image | image_url: width: 1600 | json }};
+  var qty = 1;
+  var wished = false;
 
-    section.querySelectorAll('.rt-thumb').forEach(function (t) {
-      t.classList.remove('is-active');
+  /* ─── parseDescription ───────────────────────────────── */
+  function parseDescription(html) {
+    var doc = new DOMParser().parseFromString(html || '', 'text/html');
+    var paragraphs = Array.from(doc.querySelectorAll('p'))
+      .map(function(p){ return p.textContent.trim(); }).filter(Boolean);
+    var highlights = Array.from(doc.querySelectorAll('ul li'))
+      .map(function(li){
+        var strong = li.querySelector('strong');
+        if (!strong) return null;
+        var k = strong.textContent.trim();
+        var clone = li.cloneNode(true);
+        var s = clone.querySelector('strong');
+        if (s) s.remove();
+        var v = clone.textContent.replace(/^\s*[—–\-:·]\s*/, '').trim();
+        return (k && v) ? {k: k, v: v} : null;
+      }).filter(Boolean);
+    return { paragraphs: paragraphs, highlights: highlights };
+  }
+
+  /* ─── Populate spec grid (buy box) ─────────────────────── */
+  function populateWITP(parsed) {
+    var wrap = document.getElementById('rt-witp-' + SEC);
+    var grid = document.getElementById('rt-witp-grid-' + SEC);
+    var ct   = document.getElementById('rt-witp-ct-' + SEC);
+    if (!wrap || !grid || !parsed.highlights.length) return;
+    ct.textContent = '0' + parsed.highlights.length + ' · From product spec';
+    var html = '';
+    parsed.highlights.forEach(function(h, i) {
+      html += '<div class="rt-spec-cell"><span class="rt-spec-k">' + h.k + '</span><span class="rt-spec-v">' + h.v + '</span></div>';
     });
-    thumb.classList.add('is-active');
+    grid.innerHTML = html;
+    wrap.style.display = '';
+  }
 
-    var hero = document.getElementById('rt-hero-' + sectionId);
-    if (!hero) return;
+  /* ─── Populate description tab ──────────────────────────── */
+  function populateDescTab(parsed) {
+    var lead = document.getElementById('rt-desc-lead-' + SEC);
+    var body = document.getElementById('rt-desc-body-' + SEC);
+    if (!lead || !body) return;
+    if (parsed.paragraphs.length) lead.textContent = parsed.paragraphs[0];
+    var html = '';
+    parsed.paragraphs.slice(1).forEach(function(p) {
+      html += '<p class="rt-desc-body">' + p + '</p>';
+    });
+    body.innerHTML = html;
+  }
 
-    var mediaType = thumb.dataset.mediaType;
+  /* ─── Populate spec rows (tab 1) ────────────────────────── */
+  function populateSpecRows(parsed) {
+    var list = document.getElementById('rt-spec-rows-' + SEC);
+    if (!list || !parsed.highlights.length) return;
+    var html = '';
+    parsed.highlights.forEach(function(h) {
+      html += '<li class="rt-spec-row"><span class="rt-spec-row-k">' + h.k + '</span><span class="rt-spec-row-v">' + h.v + '</span></li>';
+    });
+    list.insertAdjacentHTML('afterbegin', html);
+  }
 
-    if (mediaType === 'video') {
-      hero.innerHTML =
-        '<video autoplay muted loop playsinline style="width:100%;height:100%;object-fit:contain;">' +
-        '<source src="' + thumb.dataset.videoSrc + '">' +
-        '</video>';
-    } else {
-      var existing = document.getElementById('rt-hero-img-' + sectionId);
-      if (existing) {
-        existing.src = thumb.dataset.src;
-        existing.alt = thumb.dataset.alt;
-      } else {
-        hero.innerHTML =
-          '<img id="rt-hero-img-' + sectionId + '" src="' + thumb.dataset.src +
-          '" alt="' + thumb.dataset.alt +
-          '" style="width:100%;height:100%;object-fit:contain;" loading="eager">';
-      }
+  /* ─── Thumbnail switcher ─────────────────────────────────── */
+  window.rtThumbClick = function(btn, sid) {
+    document.querySelectorAll('[data-rt-section="' + sid + '"] .rt-thumb-btn').forEach(function(b){ b.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+    var img = document.getElementById('rt-hero-img-' + sid);
+    if (img) {
+      img.src = btn.dataset.src;
+      img.srcset = btn.dataset.srcset || '';
+      img.alt = btn.dataset.alt;
+    }
+    var counter = document.getElementById('rt-counter-' + sid);
+    if (counter) {
+      var idx = parseInt(btn.dataset.idx, 10) + 1;
+      var total = btn.dataset.total;
+      counter.textContent = ('0' + idx).slice(-2) + ' / ' + ('0' + total).slice(-2);
     }
   };
 
-  /* ─────────────────────────────────────────
-     VARIANT SWITCHER
-  ───────────────────────────────────────── */
-  window.rtUpdateVariant = function (sectionId) {
-    var variants = {{ product.variants | json }};
-    var selects  = document.querySelectorAll(
-      '[data-rt-section="' + sectionId + '"] .rt-var-select'
-    );
-    var chosen = Array.from(selects).map(function (s) { return s.value; });
+  /* Keep existing alias for backward compat */
+  window.rtMedia = window.rtThumbClick;
 
-    var match = variants.find(function (v) {
-      return v.options.every(function (o, i) { return o === chosen[i]; });
+  /* ─── Hover zoom ─────────────────────────────────────────── */
+  window.rtZoomEnter = function(sid) {
+    var stage = document.getElementById('rt-stage-' + sid);
+    var hint  = stage && stage.querySelector('.rt-stage-hint');
+    if (stage) stage.classList.add('is-hovering');
+    if (hint)  hint.textContent = 'Move to inspect';
+  };
+  window.rtZoomLeave = function(sid) {
+    var stage = document.getElementById('rt-stage-' + sid);
+    var img   = document.getElementById('rt-hero-img-' + sid);
+    var hint  = stage && stage.querySelector('.rt-stage-hint');
+    if (stage) stage.classList.remove('is-hovering');
+    if (img)   { img.style.transform = 'scale(1)'; img.style.transformOrigin = '50% 50%'; }
+    if (hint)  hint.textContent = 'Hover to zoom';
+  };
+  window.rtZoomMove = function(e, sid) {
+    var stage = document.getElementById('rt-stage-' + sid);
+    var img   = document.getElementById('rt-hero-img-' + sid);
+    if (!stage || !img) return;
+    var rect = stage.getBoundingClientRect();
+    var x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width)  * 100));
+    var y = Math.max(0, Math.min(100, ((e.clientY - rect.top)  / rect.height) * 100));
+    img.style.transformOrigin = x + '% ' + y + '%';
+    img.style.transform = 'scale(2.2)';
+  };
+
+  /* ─── Variant picker ─────────────────────────────────────── */
+  window.rtVarClick = function(btn, sid) {
+    var idx = btn.dataset.optionIndex;
+    /* update visual */
+    var group = btn.closest('.rt-var-btns');
+    if (group) group.querySelectorAll('.rt-var-btn').forEach(function(b){ b.classList.remove('is-active'); b.setAttribute('aria-pressed','false'); });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-pressed','true');
+    /* sync hidden select */
+    var sel = document.getElementById('rt-sel-' + sid + '-' + idx);
+    if (sel) { sel.value = btn.dataset.value; sel.dispatchEvent(new Event('change', {bubbles:true})); }
+    /* update selected label */
+    var lbl = document.getElementById('rt-opt-selected-' + sid + '-' + idx);
+    if (lbl) lbl.textContent = btn.dataset.value;
+    rtUpdateVariant(sid);
+  };
+
+  /* ─── Variant data sync ──────────────────────────────────── */
+  window.rtUpdateVariant = function(sid) {
+    var selects = document.querySelectorAll('[data-rt-section="' + sid + '"] .rt-var-select-hidden');
+    var chosen = Array.from(selects).map(function(s){ return s.value; });
+    var match = VARIANTS.find(function(v){
+      return v.options.every(function(o, i){ return o === chosen[i]; });
     });
     if (!match) return;
 
-    /* Update hidden inputs */
-    ['rt-vid-' + sectionId, 'rt-mob-vid-' + sectionId].forEach(function (id) {
+    /* variant id */
+    ['rt-vid-' + sid].forEach(function(id){
       var el = document.getElementById(id);
       if (el) el.value = match.id;
     });
 
-    /* Update buttons */
-    ['rt-atc-' + sectionId, 'rt-mob-atc-' + sectionId].forEach(function (id) {
-      var btn = document.getElementById(id);
-      if (!btn) return;
-      btn.disabled = !match.available;
-      btn.querySelector('span').textContent = match.available ? 'Add to Cart' : 'Sold Out';
-    });
-
-    /* Update price */
-    var fmt = function (cents) {
-      return 'Rs.\u202F' + (cents / 100).toLocaleString('en-IN', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+    /* price */
+    var priceEl = document.getElementById('rt-price-' + sid);
+    var stickyPrice = document.getElementById('rt-sticky-price-' + sid);
+    var fmtMoney = function(cents){
+      return '₹' + Number(cents / 100).toLocaleString('en-IN', {minimumFractionDigits: 0, maximumFractionDigits: 0});
     };
-    var priceEl = document.getElementById('rt-price-' + sectionId);
     if (priceEl) {
+      var html = '<span class="rt-price-main">' + fmtMoney(match.price) + '</span>';
       if (match.compare_at_price && match.compare_at_price > match.price) {
-        var saved = match.compare_at_price - match.price;
-        priceEl.innerHTML =
-          '<span class="rt-p">'     + fmt(match.price)             + '</span>' +
-          '<span class="rt-p-was">' + fmt(match.compare_at_price)  + '</span>' +
-          '<span class="rt-p-save">Save ' + fmt(saved) + '</span>';
-      } else {
-        priceEl.innerHTML = '<span class="rt-p">' + fmt(match.price) + '</span>';
+        var pct = Math.round((1 - match.price / match.compare_at_price) * 100);
+        html += '<span class="rt-price-was">' + fmtMoney(match.compare_at_price) + '</span>';
+        html += '<span class="rt-price-save">−' + pct + '% off</span>';
       }
+      priceEl.innerHTML = html;
+    }
+    if (stickyPrice) {
+      var sh = fmtMoney(match.price * qty);
+      if (match.compare_at_price && match.compare_at_price > match.price) sh += ' <s>' + fmtMoney(match.compare_at_price) + '</s>';
+      stickyPrice.innerHTML = sh;
     }
 
-    /* Update URL */
-    if (history.replaceState) {
-      history.replaceState(null, '', '?variant=' + match.id);
+    /* ATC button */
+    var atcBtn = document.getElementById('rt-atc-' + sid);
+    var atcLbl = document.getElementById('rt-atc-label-' + sid);
+    if (atcBtn) atcBtn.disabled = !match.available;
+    if (atcLbl) atcLbl.innerHTML = match.available ? 'Add to bag <span style="font-size:14px;">→</span>' : 'Sold out';
+
+    /* stock dot */
+    var stockEl = document.getElementById('rt-stock-' + sid);
+    if (stockEl) {
+      stockEl.className = 'rt-stock-dot ' + (!match.available ? 'rt-stock-dot--out' : match.inventory_quantity <= 5 ? 'rt-stock-dot--low' : 'rt-stock-dot--in');
+      stockEl.textContent = !match.available ? 'Sold out' : match.inventory_quantity <= 5 ? 'Low stock · ' + match.inventory_quantity + ' left' : 'In stock · ready to ship';
     }
 
-    /* Update gallery if variant has a featured image */
-    if (match.featured_image) {
-      var heroImg = document.getElementById('rt-hero-img-' + sectionId);
+    /* sticky sub */
+    var stickySub = document.getElementById('rt-sticky-sub-' + sid);
+    if (stickySub) stickySub.textContent = match.title !== 'Default Title' ? match.title : '';
+
+    /* gallery — variant image */
+    if (match.featured_image && match.featured_image.src) {
+      var heroImg = document.getElementById('rt-hero-img-' + sid);
       if (heroImg) heroImg.src = match.featured_image.src;
+    }
+
+    /* URL */
+    if (history.replaceState) history.replaceState(null, '', '?variant=' + match.id);
+  };
+
+  /* ─── Qty stepper ────────────────────────────────────────── */
+  window.rtQtyChange = function(delta, sid) {
+    qty = Math.max(1, qty + delta);
+    var numEl = document.getElementById('rt-qty-' + sid);
+    var inputEl = document.getElementById('rt-qty-input-' + sid);
+    if (numEl) numEl.textContent = qty;
+    if (inputEl) inputEl.value = qty;
+    /* update ATC label price */
+    var match = VARIANTS.find(function(v){ return String(v.id) === document.getElementById('rt-vid-' + sid).value; });
+    var atcLbl = document.getElementById('rt-atc-label-' + sid);
+    if (atcLbl && match && match.available) {
+      var fmtMoney = function(cents){ return '₹' + Number(cents / 100).toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:0}); };
+      atcLbl.innerHTML = 'Add to bag · ' + fmtMoney(match.price * qty) + ' <span style="font-size:14px;">→</span>';
     }
   };
 
-  /* ─────────────────────────────────────────
-     MOBILE STICKY BAR — hide when ATC visible
-  ───────────────────────────────────────── */
-  var atcBtn  = document.getElementById('rt-atc-{{ section.id }}');
-  var mobBar  = document.getElementById('rt-mob-bar-{{ section.id }}');
-  if (atcBtn && mobBar && window.IntersectionObserver) {
-    var io = new IntersectionObserver(function (entries) {
-      mobBar.style.display = entries[0].isIntersecting ? 'none' : '';
-    }, { threshold: 0.1 });
-    io.observe(atcBtn);
+  /* ─── Spec tabs ──────────────────────────────────────────── */
+  window.rtTabClick = function(btn, sid) {
+    var tabIdx = btn.dataset.tab;
+    var section = document.querySelector('[data-rt-section="' + sid + '"]');
+    if (!section) return;
+    section.querySelectorAll('.rt-tab-btn').forEach(function(b){ b.classList.remove('is-active'); b.setAttribute('aria-selected','false'); });
+    section.querySelectorAll('.rt-tab-panel').forEach(function(p){ p.classList.remove('is-active'); });
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-selected','true');
+    var panel = document.getElementById('rt-tab-panel-' + sid + '-' + tabIdx);
+    if (panel) panel.classList.add('is-active');
+  };
+
+  /* ─── Sticky bar ─────────────────────────────────────────── */
+  var stickyEl = document.getElementById('rt-sticky-' + SEC);
+  if (stickyEl) {
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function() {
+        stickyEl.classList.toggle('is-visible', window.scrollY > 700);
+        ticking = false;
+      });
+    }, { passive: true });
   }
+
+  /* ─── Toast ──────────────────────────────────────────────── */
+  window.rtToastHide = function(sid) {
+    var t = document.getElementById('rt-toast-' + sid);
+    if (t) t.classList.remove('is-visible');
+  };
+  var mainForm = document.getElementById('rt-form-' + SEC);
+  if (mainForm) {
+    mainForm.addEventListener('submit', function() {
+      var toast = document.getElementById('rt-toast-' + SEC);
+      if (!toast) return;
+      toast.classList.add('is-visible');
+      setTimeout(function(){ toast.classList.remove('is-visible'); }, 2800);
+    });
+  }
+
+  /* ─── Wishlist toggle ────────────────────────────────────── */
+  window.rtToggleWish = function(btn) {
+    wished = !wished;
+    btn.classList.toggle('is-wished', wished);
+    var svg = btn.querySelector('svg');
+    if (svg) svg.setAttribute('fill', wished ? 'currentColor' : 'none');
+  };
+
+  /* ─── Init on DOMContentLoaded ──────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function() {
+    var parsed = parseDescription(DESC_HTML);
+    populateWITP(parsed);
+    populateDescTab(parsed);
+    populateSpecRows(parsed);
+  });
 
 })();
 </script>
@@ -1166,91 +1582,30 @@
   "tag": "section",
   "class": "section",
   "blocks": [
-    {
-      "type": "@app"
-    },
+    { "type": "@app" },
     {
       "type": "accordion",
       "name": "Accordion tab",
       "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Tab heading",
-          "default": "Details"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Tab content (rich text)"
-        },
-        {
-          "type": "page",
-          "id": "page",
-          "label": "Or link to a page"
-        }
+        { "type": "text",     "id": "heading", "label": "Tab heading", "default": "Details" },
+        { "type": "richtext", "id": "content", "label": "Tab content (rich text)" },
+        { "type": "page",     "id": "page",    "label": "Or link to a page" }
       ]
     }
   ],
   "settings": [
-    {
-      "type": "header",
-      "content": "WhatsApp & Enquiry"
-    },
-    {
-      "type": "text",
-      "id": "whatsapp_number",
-      "label": "WhatsApp number",
-      "info": "Include country code, no + or spaces. E.g. 919251110762",
-      "default": "919251110762"
-    },
-    {
-      "type": "header",
-      "content": "Availability badge"
-    },
-    {
-      "type": "text",
-      "id": "availability_label",
-      "label": "Availability label",
-      "default": "Made to Order",
-      "info": "E.g. 'Made to Order' or 'Ready to Ship'"
-    },
-    {
-      "type": "text",
-      "id": "shipping_badge",
-      "label": "Shipping timeline",
-      "default": "Ships in 2–3 weeks",
-      "info": "Leave blank to hide the badge completely"
-    },
-    {
-      "type": "header",
-      "content": "Trust strip"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_hallmark",
-      "label": "Show '925 Hallmarked' badge",
-      "default": true,
-      "info": "Disable for non-silver products — shows 'Certified Quality' instead"
-    },
-    {
-      "type": "header",
-      "content": "Section padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0, "max": 100, "step": 4, "unit": "px",
-      "label": "Top padding",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0, "max": 100, "step": 4, "unit": "px",
-      "label": "Bottom padding",
-      "default": 0
-    }
-  ]
+    { "type": "header",   "content": "Product copy" },
+    { "type": "text",     "id": "tagline",    "label": "Product tagline (shown below title)" },
+    { "type": "header",   "content": "WhatsApp & Enquiry" },
+    { "type": "text",     "id": "whatsapp_number", "label": "WhatsApp number (no + or spaces)", "default": "919251110762" },
+    { "type": "header",   "content": "Karkhana section" },
+    { "type": "textarea", "id": "karkhana_copy",  "label": "Karkhana copy (leave blank for default)" },
+    { "type": "image_picker", "id": "karkhana_image", "label": "Karkhana photo (4:5 portrait recommended)" },
+    { "type": "url",      "id": "karkhana_url",   "label": "\"Visit the karkhana\" link (optional)" },
+    { "type": "header",   "content": "Section padding" },
+    { "type": "range",    "id": "padding_top",    "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding",    "default": 0 },
+    { "type": "range",    "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 0 }
+  ],
+  "presets": [{ "name": "Rangtarini PDP" }]
 }
 {% endschema %}
