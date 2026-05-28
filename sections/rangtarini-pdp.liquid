@@ -1321,7 +1321,6 @@
   var DESC_HTML = {{ product.description | json }};
   var FIRST_IMG = {{ product.featured_image | image_url: width: 1600 | json }};
   var qty = 1;
-  var wished = false;
 
   /* ─── parseDescription ───────────────────────────────── */
   function parseDescription(html) {
