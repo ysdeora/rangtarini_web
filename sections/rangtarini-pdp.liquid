@@ -871,7 +871,7 @@
           <span class="rt-eyebrow-meta">{{ product.type | default: 'Jewellery' }} · {{ current_variant.sku | default: product.handle | upcase | truncate: 14, '' }}</span>
           <span class="rt-eyebrow-vendor">By {{ product.vendor }}</span>
         </div>
-        {%- assign rt_rating = product.metafields.reviews.rating.value | plus: 0 -%}
+        {%- assign rt_rating = product.metafields.reviews.rating.value.rating | plus: 0 -%}
         {%- assign rt_count = product.metafields.reviews.rating_count | plus: 0 -%}
         {%- if rt_count > 0 -%}
           {%- assign rt_empty_pct = rt_rating | times: 20 | round | minus: 100 | abs -%}
