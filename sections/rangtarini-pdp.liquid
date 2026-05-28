@@ -870,9 +870,17 @@
           <span class="rt-eyebrow-meta">{{ product.type | default: 'Jewellery' }} · {{ current_variant.sku | default: product.handle | upcase | truncate: 14, '' }}</span>
           <span class="rt-eyebrow-vendor">By {{ product.vendor }}</span>
         </div>
-        <a href="#rt-reviews" class="rt-stars-link" aria-label="View reviews">
-          <span class="jdgm-prev-badge" data-id="{{ product.id }}"></span>
-        </a>
+        {%- assign rt_rating = product.metafields.reviews.rating.value | plus: 0 -%}
+        {%- assign rt_count = product.metafields.reviews.rating_count | plus: 0 -%}
+        {%- if rt_count > 0 -%}
+          <a href="#rt-reviews" class="rt-stars-link" aria-label="{{ rt_rating }} out of 5, {{ rt_count }} reviews">
+            <span class="rt-stars-wrap" aria-hidden="true">
+              <span class="rt-stars-bg">★★★★★</span>
+              <span class="rt-stars-fg" style="width: {{ rt_rating | times: 20 }}%">★★★★★</span>
+            </span>
+            <span class="rt-stars-count">({{ rt_count }})</span>
+          </a>
+        {%- endif -%}
       </div>
 
       <!-- Title -->
