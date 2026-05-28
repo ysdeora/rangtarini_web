@@ -307,7 +307,10 @@
 
   {%- if rt_count > 0 -%}
     <div class="rt-rev__head">
-      <h2 class="rt-rev__title">{{ section.settings.section_title }}</h2>
+      <div>
+        <span class="rt-rev__eyebrow">What our customers say</span>
+        <h2 class="rt-rev__title">{{ section.settings.section_title }}</h2>
+      </div>
 
       <div class="rt-rev__summary">
         <span class="rt-rev__avg-score">{{ rt_avg | default: '—' }}</span>
