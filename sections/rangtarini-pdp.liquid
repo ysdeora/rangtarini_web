@@ -822,7 +822,7 @@
             <img
               src="{{ media | image_url: width: 200 }}"
               alt="{{ media.alt | default: product.title | escape }}"
-              loading="{{ forloop.first | iif: 'eager', 'lazy' }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
               width="76" height="88"
             >
             <span class="rt-thumb-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
