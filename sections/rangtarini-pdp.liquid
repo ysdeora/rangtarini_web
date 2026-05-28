@@ -185,10 +185,13 @@
   display: inline-flex; align-items: center; gap: 6px;
   text-decoration: none; color: var(--rt-ink); white-space: nowrap;
 }
-.rt-stars-link .rt-stars-icons { color: var(--rt-gold); font-size: 13px; }
-.rt-stars-link .rt-stars-ct {
+/* Style Judge.me's rendered badge elements */
+.rt-stars-link .jdgm-prev-badge { display: inline-flex; align-items: center; gap: 5px; }
+.rt-stars-link .jdgm-prev-badge__stars { color: var(--rt-gold); font-size: 13px; letter-spacing: 1px; }
+.rt-stars-link .jdgm-prev-badge__count,
+.rt-stars-link .jdgm-prev-badge__count a {
   font-family: var(--rt-font-grotesk); font-size: 11px;
-  color: var(--rt-ink); opacity: 0.65;
+  color: var(--rt-ink); opacity: 0.65; text-decoration: none;
 }
 
 /* Title */
