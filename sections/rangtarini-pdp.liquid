@@ -929,14 +929,13 @@
               </div>
               <div class="rt-var-btns" role="group" aria-label="{{ option.name }} options">
                 {%- for value in option.values -%}
-                  {%- assign is_selected = option.selected_value == value -%}
                   {%- assign swatch_color = value | downcase | replace: ' ', '' -%}
                   <button
                     type="button"
-                    class="rt-var-btn{% if is_selected %} is-active{% endif %}"
+                    class="rt-var-btn{% if option.selected_value == value %} is-active{% endif %}"
                     data-option-index="{{ forloop.parentloop.index0 }}"
                     data-value="{{ value | escape }}"
-                    aria-pressed="{{ is_selected }}"
+                    aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}"
                     onclick="rtVarClick(this,'{{ section.id }}')"
                   >
                     <span class="rt-var-swatch" style="background: {{ swatch_color }};"></span>
