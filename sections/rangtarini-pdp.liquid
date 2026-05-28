@@ -1131,10 +1131,10 @@
               <span class="rt-spec-row-k">SKU</span>
               <span class="rt-spec-row-v">{{ product.variants.first.sku | default: '—' }}</span>
             </li>
-            {%- if show_silver -%}
+            {%- if show_hallmark -%}
             <li class="rt-spec-row">
               <span class="rt-spec-row-k">Hallmark</span>
-              <span class="rt-spec-row-v">{% if show_hallmark %}BIS 925{% else %}Certified Silver{% endif %}</span>
+              <span class="rt-spec-row-v">BIS 925</span>
             </li>
             {%- endif -%}
             <li class="rt-spec-row">
