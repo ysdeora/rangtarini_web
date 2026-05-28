@@ -942,7 +942,7 @@
                       <span class="rt-var-stock">
                         {%- assign matching = product.variants | where: 'title', value | first -%}
                         {%- if matching.available -%}
-                          {%- if matching.inventory_quantity <= 5 -%}Low · {{ matching.inventory_quantity }} left{%- else -%}In stock{%- endif -%}
+                          {%- if matching.inventory_management == blank -%}In stock{%- elsif matching.inventory_quantity <= 5 and matching.inventory_quantity > 0 -%}Low · {{ matching.inventory_quantity }} left{%- else -%}In stock{%- endif -%}
                         {%- else -%}Sold out{%- endif -%}
                       </span>
                     </span>
