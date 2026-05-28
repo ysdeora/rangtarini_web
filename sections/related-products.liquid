@@ -7,16 +7,66 @@
 {%- endif -%}
 
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  #shopify-section-{{ section.id }} {
+    background: var(--rt-paper, #efece4);
+    border-top: 1px solid var(--rt-ink, #0a0a0a);
   }
-
+  .section-{{ section.id }}-padding {
+    padding: 60px 28px 64px;
+  }
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+      padding: 60px 28px 64px;
     }
+  }
+  .related-products.page-width {
+    max-width: none;
+    padding: 0;
+  }
+  .related-products__eyebrow {
+    font-family: var(--rt-font-grotesk, "Archivo", sans-serif);
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--rt-ink, #0a0a0a); opacity: 0.55;
+    display: block; margin-bottom: 12px;
+  }
+  .related-products__heading {
+    font-family: var(--rt-font-grotesk, "Archivo", sans-serif) !important;
+    font-size: clamp(36px, 5vw, 72px) !important;
+    font-weight: 900 !important; line-height: 0.92 !important;
+    letter-spacing: -0.03em !important; text-transform: uppercase !important;
+    color: var(--rt-ink, #0a0a0a) !important; margin: 0 0 36px !important;
+  }
+  .related-products .card-wrapper {
+    background: var(--rt-paper, #efece4);
+  }
+  .related-products .card {
+    background: var(--rt-paper, #efece4) !important;
+    border: 1px solid var(--rt-ink, #0a0a0a) !important;
+    border-radius: 0 !important; box-shadow: none !important;
+  }
+  .related-products .card__inner,
+  .related-products .card__media { border-radius: 0 !important; }
+  .related-products .card__heading a {
+    font-family: var(--rt-font-grotesk, "Archivo", sans-serif) !important;
+    font-size: 13px !important; font-weight: 600 !important;
+    letter-spacing: 0.02em !important; color: var(--rt-ink, #0a0a0a) !important;
+  }
+  .related-products .card__information {
+    padding: 12px 14px 16px !important;
+    background: var(--rt-paper, #efece4) !important;
+  }
+  .related-products .price,
+  .related-products .price__container,
+  .related-products .price-item {
+    font-family: var(--rt-font-mono, ui-monospace, monospace) !important;
+    font-size: 12px !important; letter-spacing: 0.06em !important;
+    color: var(--rt-ink, #0a0a0a) !important;
+  }
+  .related-products .badge {
+    font-family: var(--rt-font-mono, ui-monospace, monospace) !important;
+    font-size: 9px !important; letter-spacing: 0.12em !important;
+    border-radius: 0 !important;
   }
 {%- endstyle -%}
 
