@@ -378,9 +378,9 @@
 }
 .rt-wa-cta:hover { background: var(--rt-ink); color: var(--rt-paper); }
 
-/* Trust grid */
+/* Trust grid — auto-fit handles 3 or 4 cells */
 .rt-trust-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
   border: 1px solid var(--rt-ink);
 }
 .rt-trust-cell {
