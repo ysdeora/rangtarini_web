@@ -877,8 +877,10 @@
       <div class="rt-title-block">
         <h1 class="rt-title">{{ product.title }}.</h1>
         <div class="rt-title-sub">
-          <span class="rt-deva">रंगतारिणी</span>
-          <span class="rt-title-rule"></span>
+          {%- if product.metafields.custom.title_devanagari != blank -%}
+            <span class="rt-deva">{{ product.metafields.custom.title_devanagari }}</span>
+            <span class="rt-title-rule"></span>
+          {%- endif -%}
           {%- if section.settings.tagline != blank -%}
             <span class="rt-tagline">{{ section.settings.tagline }}</span>
           {%- endif -%}
