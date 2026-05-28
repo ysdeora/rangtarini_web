@@ -1120,43 +1120,24 @@
 
         <!-- Tab 1: Specifications — spec rows populated by JS, static rows hardcoded -->
         <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-1" role="tabpanel">
-          <div class="rt-spec-two-col">
-            <div>
-              <span class="rt-spec-section-hd">From the product</span>
-              <ul class="rt-spec-rows" id="rt-spec-rows-{{ section.id }}">
-                <!-- JS populates parsed highlights here -->
-                <li class="rt-spec-row">
-                  <span class="rt-spec-row-k">SKU</span>
-                  <span class="rt-spec-row-v">{{ product.variants.first.sku | default: '—' }}</span>
-                </li>
-                <li class="rt-spec-row">
-                  <span class="rt-spec-row-k">Hallmark</span>
-                  <span class="rt-spec-row-v">{% if show_hallmark %}BIS 925{% else %}Certified Silver{% endif %}</span>
-                </li>
-                <li class="rt-spec-row">
-                  <span class="rt-spec-row-k">Made in</span>
-                  <span class="rt-spec-row-v">Jaipur, India</span>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <span class="rt-spec-section-hd">What you'll receive</span>
-              <div class="rt-receives-box">
-                <div class="rt-receive-row">
-                  <span class="rt-receive-k">BIS Hallmark</span>
-                  <span class="rt-receive-v">Certificate · 925 silver, every piece</span>
-                </div>
-                <div class="rt-receive-row">
-                  <span class="rt-receive-k">Authenticity card</span>
-                  <span class="rt-receive-v">Handwritten, with karigar's signature</span>
-                </div>
-                <div class="rt-receive-row">
-                  <span class="rt-receive-k">Polish & care kit</span>
-                  <span class="rt-receive-v">Muslin cloth, anti-tarnish strip</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <span class="rt-spec-section-hd">From the product</span>
+          <ul class="rt-spec-rows" id="rt-spec-rows-{{ section.id }}">
+            <!-- JS populates parsed highlights here -->
+            <li class="rt-spec-row">
+              <span class="rt-spec-row-k">SKU</span>
+              <span class="rt-spec-row-v">{{ product.variants.first.sku | default: '—' }}</span>
+            </li>
+            {%- if show_hallmark -%}
+            <li class="rt-spec-row">
+              <span class="rt-spec-row-k">Hallmark</span>
+              <span class="rt-spec-row-v">BIS 925</span>
+            </li>
+            {%- endif -%}
+            <li class="rt-spec-row">
+              <span class="rt-spec-row-k">Made in</span>
+              <span class="rt-spec-row-v">Jaipur, India</span>
+            </li>
+          </ul>
         </div>
 
         <!-- Tab 2: Care guide -->
