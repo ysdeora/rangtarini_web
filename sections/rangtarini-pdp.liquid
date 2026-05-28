@@ -868,7 +868,7 @@
           <span class="rt-eyebrow-vendor">By {{ product.vendor }}</span>
         </div>
         <a href="#rt-reviews" class="rt-stars-link" aria-label="View reviews">
-          <span class="jdgm-prev-badge" data-id="{{ product.id }}"></span>
+          {%- render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', concierge_install: true, product: product -%}
         </a>
       </div>
 
