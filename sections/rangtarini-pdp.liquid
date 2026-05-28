@@ -1565,13 +1565,6 @@
     });
   }
 
-  /* ─── Wishlist toggle ────────────────────────────────────── */
-  window.rtToggleWish = function(btn) {
-    wished = !wished;
-    btn.classList.toggle('is-wished', wished);
-    var svg = btn.querySelector('svg');
-    if (svg) svg.setAttribute('fill', wished ? 'currentColor' : 'none');
-  };
 
   /* ─── Init on DOMContentLoaded ──────────────────────────── */
   document.addEventListener('DOMContentLoaded', function() {
