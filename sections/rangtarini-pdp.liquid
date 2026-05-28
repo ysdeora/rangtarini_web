@@ -731,7 +731,11 @@
   assign wa_text = 'Hi, I am interested in ' | append: product.title | url_encode
   assign wa_url = 'https://wa.me/' | append: section.settings.whatsapp_number | append: '?text=' | append: wa_text
 
+  assign jewelry_material = product.metafields.custom.jewelry_material | downcase
   assign show_hallmark = false
+  if jewelry_material contains '925' or jewelry_material contains 'sterling' or jewelry_material contains 'hallmark'
+    assign show_hallmark = true
+  endif
   for col in product.collections
     if col.handle == 'pure-silver-925' or col.handle == 'gold-plated-silver'
       assign show_hallmark = true
