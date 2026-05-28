@@ -1012,18 +1012,53 @@
         <!-- Trust grid -->
         <div class="rt-trust-grid" role="list" aria-label="Product guarantees">
           <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2 4 6v6c0 5.25 3.5 9 8 10 4.5-1 8-4.75 8-10V6z"/>
+                <polyline points="9,12 11,14 15,10"/>
+              </svg>
+            </span>
             <span class="rt-trust-k">1 Year</span>
             <span class="rt-trust-v">Warranty</span>
           </div>
           <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-icon" aria-hidden="true">
+              {%- if show_hallmark -%}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12,2 19,6 19,18 12,22 5,18 5,6"/>
+                <text x="12" y="15.5" text-anchor="middle" font-size="5.5" font-weight="700" fill="currentColor" stroke="none" font-family="monospace">925</text>
+              </svg>
+              {%- else -%}
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="9,12 11,14 15,10"/>
+              </svg>
+              {%- endif -%}
+            </span>
             <span class="rt-trust-k">{% if show_hallmark %}925{% else %}Certified{% endif %}</span>
             <span class="rt-trust-v">{% if show_hallmark %}Hallmarked{% else %}Silver{% endif %}</span>
           </div>
           <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                <line x1="6" y1="1" x2="6" y2="4"/>
+                <line x1="10" y1="1" x2="10" y2="4"/>
+                <line x1="14" y1="1" x2="14" y2="4"/>
+              </svg>
+            </span>
             <span class="rt-trust-k">Handcrafted</span>
             <span class="rt-trust-v">Jaipur, India</span>
           </div>
           <div class="rt-trust-cell" role="listitem">
+            <span class="rt-trust-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </span>
             <span class="rt-trust-k">Ships</span>
             <span class="rt-trust-v">Worldwide</span>
           </div>
