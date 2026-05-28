@@ -874,10 +874,13 @@
         {%- assign rt_rating = product.metafields.reviews.rating.value | plus: 0 -%}
         {%- assign rt_count = product.metafields.reviews.rating_count | plus: 0 -%}
         {%- if rt_count > 0 -%}
-          <a href="#rt-reviews" class="rt-stars-link" aria-label="{{ rt_rating }} out of 5, {{ rt_count }} reviews">
+          {%- assign rt_empty_pct = rt_rating | times: 20 | round | minus: 100 | abs -%}
+          <a href="#rt-reviews" class="rt-stars-link"
+            aria-label="{{ rt_rating }} out of 5, {{ rt_count }} reviews"
+            onclick="event.preventDefault();var t=document.getElementById('rt-reviews');if(t)t.scrollIntoView({behavior:'smooth'});">
             <span class="rt-stars-wrap" aria-hidden="true">
               <span class="rt-stars-bg">★★★★★</span>
-              <span class="rt-stars-fg" style="width: {{ rt_rating | times: 20 }}%">★★★★★</span>
+              <span class="rt-stars-fg" style="clip-path:inset(0 {{ rt_empty_pct }}% 0 0)">★★★★★</span>
             </span>
             <span class="rt-stars-count">({{ rt_count }})</span>
           </a>
