@@ -1490,8 +1490,9 @@
     /* stock dot */
     var stockEl = document.getElementById('rt-stock-' + sid);
     if (stockEl) {
-      stockEl.className = 'rt-stock-dot ' + (!match.available ? 'rt-stock-dot--out' : match.inventory_quantity <= 5 ? 'rt-stock-dot--low' : 'rt-stock-dot--in');
-      stockEl.textContent = !match.available ? 'Sold out' : match.inventory_quantity <= 5 ? 'Low stock · ' + match.inventory_quantity + ' left' : 'In stock · ready to ship';
+      var isUntracked = !match.inventory_management;
+      stockEl.className = 'rt-stock-dot ' + (!match.available ? 'rt-stock-dot--out' : (isUntracked || match.inventory_quantity > 5 ? 'rt-stock-dot--in' : 'rt-stock-dot--low'));
+      stockEl.textContent = !match.available ? 'Sold out' : (isUntracked ? 'In stock' : match.inventory_quantity <= 5 && match.inventory_quantity > 0 ? 'Low stock · ' + match.inventory_quantity + ' left' : 'In stock · ready to ship');
     }
 
     /* sticky sub */
