@@ -1,112 +1,140 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'section-related-products.css' | asset_url | stylesheet_tag }}
-
-{% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
+{{ 'rt-collection.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   #shopify-section-{{ section.id }} {
     background: var(--rt-paper, #efece4);
     border-top: 1px solid var(--rt-ink, #0a0a0a);
+    border-bottom: 1px solid var(--rt-ink, #0a0a0a);
   }
   .section-{{ section.id }}-padding {
     padding: 60px 28px 64px;
-  }
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding: 60px 28px 64px;
-    }
   }
   .related-products.page-width {
     max-width: none;
     padding: 0;
   }
-  .related-products__eyebrow {
+  .rt-rel-eyebrow {
     font-family: var(--rt-font-grotesk, "Archivo", sans-serif);
     font-size: 11px; font-weight: 500;
     letter-spacing: 0.28em; text-transform: uppercase;
     color: var(--rt-ink, #0a0a0a); opacity: 0.55;
     display: block; margin-bottom: 12px;
   }
-  .related-products__heading {
-    font-family: var(--rt-font-grotesk, "Archivo", sans-serif) !important;
-    font-size: clamp(36px, 5vw, 72px) !important;
-    font-weight: 900 !important; line-height: 0.92 !important;
-    letter-spacing: -0.03em !important; text-transform: uppercase !important;
-    color: var(--rt-ink, #0a0a0a) !important; margin: 0 0 36px !important;
+  .rt-rel-heading {
+    font-family: var(--rt-font-grotesk, "Archivo", sans-serif);
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 900; line-height: 0.92;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: var(--rt-ink, #0a0a0a); margin: 0 0 40px;
   }
-  .related-products .card-wrapper {
-    background: var(--rt-paper, #efece4);
+  .rt-rel-grid {
+    --ink:        var(--rt-ink, #0a0a0a);
+    --paper:      var(--rt-paper, #efece4);
+    --paper-soft: var(--rt-paper-warm, #e9e3d3);
+    --gold-cool:  var(--rt-gold, #b59159);
+    --font-grotesk: var(--rt-font-grotesk, "Archivo", "Helvetica Neue", sans-serif);
+    --font-mono:  var(--rt-font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: 22px;
+    row-gap: 44px;
   }
-  .related-products .card {
-    background: var(--rt-paper, #efece4) !important;
-    border: 1px solid var(--rt-ink, #0a0a0a) !important;
-    border-radius: 0 !important; box-shadow: none !important;
-  }
-  .related-products .card__inner,
-  .related-products .card__media { border-radius: 0 !important; }
-  .related-products .card__heading a {
-    font-family: var(--rt-font-grotesk, "Archivo", sans-serif) !important;
-    font-size: 13px !important; font-weight: 600 !important;
-    letter-spacing: 0.02em !important; color: var(--rt-ink, #0a0a0a) !important;
-  }
-  .related-products .card__information {
-    padding: 12px 14px 16px !important;
-    background: var(--rt-paper, #efece4) !important;
-  }
-  .related-products .price,
-  .related-products .price__container,
-  .related-products .price-item {
-    font-family: var(--rt-font-mono, ui-monospace, monospace) !important;
-    font-size: 12px !important; letter-spacing: 0.06em !important;
-    color: var(--rt-ink, #0a0a0a) !important;
-  }
-  .related-products .badge {
-    font-family: var(--rt-font-mono, ui-monospace, monospace) !important;
-    font-size: 9px !important; letter-spacing: 0.12em !important;
-    border-radius: 0 !important;
+  @media (max-width: 749px) {
+    .section-{{ section.id }}-padding { padding: 40px 16px 52px; }
+    .rt-rel-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; row-gap: 32px; }
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
+<div class="color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding">
   <product-recommendations
-    class="related-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+    class="related-products page-width isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
     data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}"
     data-section-id="{{ section.id }}"
     data-product-id="{{ product.id }}"
   >
     {% if recommendations.performed and recommendations.products_count > 0 %}
-      <span class="related-products__eyebrow">More from Rangtarini</span>
-      <h2 class="related-products__heading inline-richtext">
-        {{ section.settings.heading }}
-      </h2>
-      <ul
-        class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-        role="list"
-      >
-        {% assign skip_card_product_styles = false %}
+      <span class="rt-rel-eyebrow">More from Rangtarini</span>
+      <h2 class="rt-rel-heading">{{ section.settings.heading }}</h2>
+      <div class="rt-rel-grid" aria-label="Related products">
         {% for recommendation in recommendations.products %}
-          <li class="grid__item">
-            {% render 'card-product',
-              card_product: recommendation,
-              media_aspect_ratio: section.settings.image_ratio,
-              image_shape: section.settings.image_shape,
-              show_secondary_image: section.settings.show_secondary_image,
-              show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating,
-              skip_styles: skip_card_product_styles
-            %}
-          </li>
-          {%- assign skip_card_product_styles = true -%}
+          {%- assign rt_on_sale = false -%}
+          {%- if recommendation.compare_at_price > recommendation.price -%}
+            {%- assign rt_on_sale = true -%}
+          {%- endif -%}
+          {%- assign rt_sale_pct = 0 -%}
+          {%- if rt_on_sale -%}
+            {%- assign rt_sale_pct = recommendation.compare_at_price | minus: recommendation.price | times: 100 | divided_by: recommendation.compare_at_price | round -%}
+          {%- endif -%}
+          {%- assign rt_avail_m = recommendation.metafields.custom.availability | downcase -%}
+          {%- assign rt_is_mto = false -%}
+          {%- if rt_avail_m contains 'made to order' or rt_avail_m contains 'made-to-order' -%}
+            {%- assign rt_is_mto = true -%}
+          {%- endif -%}
+          {%- unless rt_is_mto -%}
+            {%- for tag in recommendation.tags -%}
+              {%- if tag == 'made-to-order' or tag == 'Made to Order' or tag == 'MTO' -%}
+                {%- assign rt_is_mto = true -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <a class="rt-card" href="{{ recommendation.url }}">
+            <div class="rt-card-img">
+              {%- if recommendation.featured_image -%}
+                <img src="{{ recommendation.featured_image | image_url: width: 600 }}"
+                     srcset="{{ recommendation.featured_image | image_url: width: 600 }} 600w, {{ recommendation.featured_image | image_url: width: 1200 }} 1200w"
+                     sizes="(max-width: 749px) 50vw, 25vw"
+                     alt="{{ recommendation.featured_image.alt | default: recommendation.title | escape }}"
+                     class="rt-img-primary" loading="lazy"
+                     width="{{ recommendation.featured_image.width }}"
+                     height="{{ recommendation.featured_image.height }}">
+                {%- if section.settings.show_secondary_image and recommendation.images[1] -%}
+                  <img src="{{ recommendation.images[1] | image_url: width: 600 }}"
+                       alt="{{ recommendation.images[1].alt | default: recommendation.title | escape }}"
+                       class="rt-img-hover" loading="lazy"
+                       width="{{ recommendation.images[1].width }}"
+                       height="{{ recommendation.images[1].height }}">
+                {%- endif -%}
+              {%- else -%}
+                <div class="rt-img-placeholder"></div>
+              {%- endif -%}
+
+              <div class="rt-badges" aria-hidden="true">
+                {%- if rt_on_sale -%}
+                  <span class="rt-badge rt-badge--sale">&#8722;{{ rt_sale_pct }}%</span>
+                {%- endif -%}
+                {%- unless recommendation.available -%}
+                  <span class="rt-badge rt-badge--out">Sold out</span>
+                {%- endunless -%}
+                {%- if rt_is_mto -%}
+                  <span class="rt-badge rt-badge--mto">Made to Order</span>
+                {%- endif -%}
+              </div>
+
+              {%- if recommendation.selected_or_first_available_variant.sku != blank -%}
+                <span class="rt-sku-badge" aria-hidden="true">{{ recommendation.selected_or_first_available_variant.sku | escape }}</span>
+              {%- endif -%}
+            </div>
+
+            <div class="rt-card-meta">
+              <div class="rt-card-row1">
+                <p class="rt-card-name">{{ recommendation.title }}</p>
+                <div class="rt-card-prices">
+                  <span class="rt-price-cur">{{ recommendation.price | money }}</span>
+                  {%- if rt_on_sale -%}
+                    <span class="rt-price-was">{{ recommendation.compare_at_price | money }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+              <div class="rt-card-row2">
+                <span class="rt-card-attrs">{{ recommendation.product_type | escape }}</span>
+              </div>
+            </div>
+          </a>
         {% endfor %}
-      </ul>
+      </div>
     {% endif %}
   </product-recommendations>
-  {% if section.settings.image_shape == 'arch' %}
-    {{ 'mask-arch.svg' | inline_asset_content }}
-  {%- endif -%}
 </div>
 
 {% schema %}
@@ -185,7 +213,7 @@
           "value": "2",
           "label": "t:sections.related-products.settings.columns_mobile.options__2.label"
         }
-      ]    
+      ]
     },
     {
       "type": "color_scheme",
