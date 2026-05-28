@@ -889,7 +889,11 @@
       </div>
 
       <!-- Price -->
-      {%- form 'product', product, id: product_form_id, novalidate: 'novalidate' -%}
+      <product-form data-section-id="{{ section.id }}" data-product-url="{{ product.url }}">
+      <div class="product-form__error-message-wrapper" role="alert" hidden>
+        <span class="product-form__error-message"></span>
+      </div>
+      {%- form 'product', product, id: product_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
         <input type="hidden" name="id" value="{{ current_variant.id }}" id="rt-vid-{{ section.id }}">
 
         <div class="rt-price-block">
