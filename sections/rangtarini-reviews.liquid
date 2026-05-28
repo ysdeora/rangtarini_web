@@ -23,22 +23,23 @@
 <style>
 /* ════════════════════════════════════════════════════════
    RANGTARINI — REVIEWS SECTION
-   Warm, editorial, luxury. Judge.me widget overrides.
+   Editorial brutalist — PDP v3 token sync.
    ════════════════════════════════════════════════════════ */
 :root {
-  --rt-gold:  #C9A84C;
-  --rt-ink:   #0A0A0A;
-  --rt-ash:   #F7F5F1;
-  --rt-rule:  #E3DFD8;
-  --rt-mute:  #97918A;
-  --rt-serif: var(--font-heading-family, 'Cormorant Garamond', 'Playfair Display', Georgia, serif);
-  --rt-sans:  var(--font-body-family, 'Helvetica Neue', Arial, sans-serif);
+  --rt-paper:        #efece4;
+  --rt-paper-warm:   #e9e3d3;
+  --rt-ink:          #0a0a0a;
+  --rt-bone:         #cdc6b5;
+  --rt-gold:         #b59159;
+  --rt-font-grotesk: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --rt-font-mono:    ui-monospace, "SF Mono", Menlo, monospace;
+  --rt-font-serif:   "Cormorant Garamond", Georgia, serif;
 }
 
 .rt-rev {
-  background: var(--rt-ash);
-  border-top: 0.5px solid var(--rt-rule);
-  padding: 80px 64px 96px;
+  background: var(--rt-paper);
+  border-top: 1px solid var(--rt-ink);
+  padding: 80px 28px 96px;
 }
 
 /* ── Header ── */
@@ -50,17 +51,26 @@
   gap: 20px;
   margin-bottom: 56px;
   padding-bottom: 32px;
-  border-bottom: 0.5px solid var(--rt-rule);
+  border-bottom: 1px solid var(--rt-ink);
+}
+
+.rt-rev__eyebrow {
+  font-family: var(--rt-font-grotesk);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--rt-ink); opacity: 0.55;
+  display: block; margin-bottom: 12px;
 }
 
 .rt-rev__title {
-  font-family: var(--rt-serif);
-  font-size: clamp(2rem, 3.5vw, 3rem);
-  font-weight: 300;
+  font-family: var(--rt-font-grotesk);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
   color: var(--rt-ink);
-  letter-spacing: -0.015em;
   margin: 0;
-  line-height: 1;
 }
 
 .rt-rev__summary {
@@ -71,42 +81,36 @@
 }
 
 .rt-rev__avg-score {
-  font-family: var(--rt-serif);
+  font-family: var(--rt-font-serif);
   font-size: 3rem;
   font-weight: 300;
   color: var(--rt-ink);
   line-height: 1;
 }
 
-.rt-rev__avg-stars {
-  display: flex;
-  gap: 3px;
-}
-.rt-rev__avg-stars svg {
-  width: 13px; height: 13px;
-}
+.rt-rev__avg-stars { display: flex; gap: 3px; }
+.rt-rev__avg-stars svg { width: 14px; height: 14px; }
 
 .rt-rev__avg-ct {
-  font-family: var(--rt-sans);
+  font-family: var(--rt-font-mono);
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--rt-mute);
+  color: var(--rt-ink);
+  opacity: 0.5;
 }
 
 /* ── Judge.me global overrides ── */
 .rt-rev .jdgm-widget {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-grotesk) !important;
   background: transparent !important;
 }
 
-/* Stars everywhere */
 .rt-rev .jdgm-star,
 .rt-rev [class*='jdgm-'] .jdgm-star,
 .rt-rev .jdgm-rev__stars span,
 .rt-rev .jdgm-summary__stars span { color: var(--rt-gold) !important; }
 
-/* Summary / aggregate block */
 .rt-rev .jdgm-summary {
   background: transparent !important;
   border: none !important;
@@ -115,7 +119,7 @@
 }
 
 .rt-rev .jdgm-summary__avg-score {
-  font-family: var(--rt-serif) !important;
+  font-family: var(--rt-font-serif) !important;
   font-size: 3.5rem !important;
   font-weight: 300 !important;
   color: var(--rt-ink) !important;
@@ -128,9 +132,8 @@
   gap: 6px !important;
 }
 
-/* Histogram bars */
 .rt-rev .jdgm-histogram__bar {
-  background: var(--rt-rule) !important;
+  background: var(--rt-bone) !important;
   border-radius: 0 !important;
   height: 2px !important;
 }
@@ -141,27 +144,27 @@
 }
 
 .rt-rev .jdgm-histogram__item-label {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-mono) !important;
   font-size: 10px !important;
-  color: var(--rt-mute) !important;
+  color: var(--rt-ink) !important;
+  opacity: 0.5 !important;
   letter-spacing: 0.05em !important;
 }
 
 .rt-rev .jdgm-histogram__item-count {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-mono) !important;
   font-size: 10px !important;
-  color: var(--rt-mute) !important;
+  color: var(--rt-ink) !important;
+  opacity: 0.5 !important;
 }
 
-/* Hide histogram when fewer than 3 reviews — not meaningful */
 .rt-rev[data-count="1"] .jdgm-histogram,
 .rt-rev[data-count="2"] .jdgm-histogram { display: none !important; }
 
-/* Individual review cards */
 .rt-rev .jdgm-rev {
   background: transparent !important;
   border: none !important;
-  border-bottom: 0.5px solid var(--rt-rule) !important;
+  border-bottom: 1px solid var(--rt-bone) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   padding: 32px 0 !important;
@@ -170,40 +173,37 @@
 
 .rt-rev .jdgm-rev:last-child { border-bottom: none !important; }
 
-/* Reviewer name */
 .rt-rev .jdgm-rev__author {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-grotesk) !important;
   font-size: 12px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   letter-spacing: 0.08em !important;
   color: var(--rt-ink) !important;
   text-transform: none !important;
 }
 
-/* Verified badge */
 .rt-rev .jdgm-rev__buyer-badge {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-mono) !important;
   font-size: 9px !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
   color: var(--rt-gold) !important;
   background: transparent !important;
-  border: 0.5px solid var(--rt-gold) !important;
+  border: 1px solid var(--rt-gold) !important;
   border-radius: 0 !important;
   padding: 2px 7px !important;
 }
 
-/* Timestamp */
 .rt-rev .jdgm-rev__timestamp {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-mono) !important;
   font-size: 10px !important;
-  color: var(--rt-mute) !important;
+  color: var(--rt-ink) !important;
+  opacity: 0.5 !important;
   letter-spacing: 0.06em !important;
 }
 
-/* Review body text — editorial serif, italic */
 .rt-rev .jdgm-rev__body {
-  font-family: var(--rt-serif) !important;
+  font-family: var(--rt-font-serif) !important;
   font-size: 1.05rem !important;
   line-height: 1.8 !important;
   font-weight: 300 !important;
@@ -212,17 +212,15 @@
   margin-top: 12px !important;
 }
 
-/* Review title */
 .rt-rev .jdgm-rev__title {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-grotesk) !important;
   font-size: 12px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   letter-spacing: 0.06em !important;
   color: var(--rt-ink) !important;
   margin-bottom: 4px !important;
 }
 
-/* Review photos — larger, no radius */
 .rt-rev .jdgm-rev__pics {
   display: flex !important;
   flex-wrap: wrap !important;
@@ -235,16 +233,15 @@
   height: 110px !important;
   object-fit: cover !important;
   border-radius: 0 !important;
-  border: 0.5px solid var(--rt-rule) !important;
+  border: 1px solid var(--rt-bone) !important;
   cursor: pointer !important;
   transition: transform 0.3s !important;
 }
 .rt-rev .jdgm-rev__pics img:hover { transform: scale(1.03) !important; }
 
-/* "Write a review" link */
 .rt-rev .jdgm-write-rev-link,
 .rt-rev .jdgm-write-rev-link a {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-mono) !important;
   font-size: 10px !important;
   letter-spacing: 0.2em !important;
   text-transform: uppercase !important;
@@ -257,7 +254,6 @@
   padding: 0 !important;
 }
 
-/* Pagination */
 .rt-rev .jdgm-paginate {
   display: flex !important;
   gap: 4px !important;
@@ -266,11 +262,11 @@
 
 .rt-rev .jdgm-paginate a,
 .rt-rev .jdgm-paginate span {
-  font-family: var(--rt-sans) !important;
+  font-family: var(--rt-font-mono) !important;
   font-size: 10px !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
-  border: 0.5px solid var(--rt-rule) !important;
+  border: 1px solid var(--rt-bone) !important;
   border-radius: 0 !important;
   color: var(--rt-ink) !important;
   padding: 8px 14px !important;
@@ -281,18 +277,17 @@
 
 .rt-rev .jdgm-paginate a:hover {
   background: var(--rt-ink) !important;
-  color: #fff !important;
+  color: var(--rt-paper) !important;
   border-color: var(--rt-ink) !important;
 }
 
 .rt-rev .jdgm-paginate .jdgm-paginate__current-page {
   background: var(--rt-gold) !important;
   border-color: var(--rt-gold) !important;
-  color: #fff !important;
+  color: var(--rt-paper) !important;
 }
 
-/* "Powered by Judge.me" — hide on paid plan; shown on free */
-.rt-rev .jdgm-branding { opacity: 0.4 !important; }
+.rt-rev .jdgm-branding { opacity: 0.3 !important; }
 
 @media (max-width: 749px) {
   .rt-rev { padding: 52px 20px 72px; }
