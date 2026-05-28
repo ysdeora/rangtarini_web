@@ -1028,23 +1028,26 @@
             <span class="rt-trust-k">1 Year</span>
             <span class="rt-trust-v">Warranty</span>
           </div>
+          {%- if show_silver -%}
           <div class="rt-trust-cell" role="listitem">
             <span class="rt-trust-icon" aria-hidden="true">
               {%- if show_hallmark -%}
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12,2 19,6 19,18 12,22 5,18 5,6"/>
-                <text x="12" y="15.5" text-anchor="middle" font-size="5.5" font-weight="700" fill="currentColor" stroke="none" font-family="monospace">925</text>
+              <svg width="22" height="22" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+                <polygon points="30,6 50,17 50,43 30,54 10,43 10,17"/>
+                <polygon points="30,14 44,21.5 44,38.5 30,46 16,38.5 16,21.5" stroke-width="1" stroke-dasharray="2 2"/>
+                <text x="30" y="33" text-anchor="middle" font-size="11" font-weight="600" font-family="monospace" fill="currentColor" stroke="none" letter-spacing="0.5">925</text>
               </svg>
               {%- else -%}
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="9,12 11,14 15,10"/>
+              <svg width="22" height="22" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+                <path d="M30 4C32 4 33.5 5.2 35.2 5.6C37 6 39 5.2 40.6 6C42.2 6.9 42.8 9 44.2 10.2C45.6 11.4 47.8 11.6 48.8 13.2C49.8 14.8 49.2 17 49.8 18.8C50.4 20.6 52 22 52 24C52 26 50.4 27.4 49.8 29.2C49.2 31 49.8 33.2 48.8 34.8C47.8 36.4 45.6 36.6 44.2 37.8C42.8 39 42.2 41.1 40.6 42C39 42.8 37 42 35.2 42.4C33.5 42.8 32 44 30 44C28 44 26.5 42.8 24.8 42.4C23 42 21 42.8 19.4 42C17.8 41.1 17.2 39 15.8 37.8C14.4 36.6 12.2 36.4 11.2 34.8C10.2 33.2 10.8 31 10.2 29.2C9.6 27.4 8 26 8 24C8 22 9.6 20.6 10.2 18.8C10.8 17 10.2 14.8 11.2 13.2C12.2 11.6 14.4 11.4 15.8 10.2C17.2 9 17.8 6.9 19.4 6C21 5.2 23 6 24.8 5.6C26.5 5.2 28 4 30 4Z" stroke-linecap="round"/>
+                <polyline points="20,24 27,31 40,17" stroke-width="2" stroke-linecap="round"/>
               </svg>
               {%- endif -%}
             </span>
             <span class="rt-trust-k">{% if show_hallmark %}925{% else %}Certified{% endif %}</span>
             <span class="rt-trust-v">{% if show_hallmark %}Hallmarked{% else %}Silver{% endif %}</span>
           </div>
+          {%- endif -%}
           <div class="rt-trust-cell" role="listitem">
             <span class="rt-trust-icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
