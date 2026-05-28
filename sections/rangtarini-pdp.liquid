@@ -732,22 +732,12 @@
 
   assign jewelry_material = product.metafields.custom.jewelry_material | downcase
   assign show_hallmark = false
-  assign show_silver = false
-  if jewelry_material contains '925' or jewelry_material contains 'sterling' or jewelry_material contains 'hallmark'
+  assign show_service = false
+  if jewelry_material contains 'silver' or jewelry_material contains '925' or jewelry_material contains 'gold-plated silver'
     assign show_hallmark = true
-    assign show_silver = true
-  elsif jewelry_material contains 'silver' or jewelry_material contains 'alloy' or jewelry_material contains 'gold plated'
-    assign show_silver = true
+  elsif jewelry_material contains 'alloy'
+    assign show_service = true
   endif
-  for col in product.collections
-    if col.handle == 'pure-silver-925' or col.handle == 'gold-plated-silver'
-      assign show_hallmark = true
-      assign show_silver = true
-    endif
-    if col.handle == 'gold-plated-silver-alloy'
-      assign show_silver = true
-    endif
-  endfor
 
   assign availability = product.metafields.custom.availability
   assign is_mto = false
