@@ -1215,15 +1215,21 @@
 
         <!-- Tab 2: Care guide -->
         <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-2" role="tabpanel">
-          {%- if care_content != blank -%}
-            <div class="rt-acc-tab-body">{{ care_content }}</div>
-          {%- else -%}
-            <div class="rt-acc-tab-body">
-              <p>Remove jewelry before bathing, swimming, or exercising. Avoid contact with perfumes, lotions, and hairspray.</p>
-              <p>Store in the airtight pouch provided, away from direct sunlight. Gently wipe with a soft cloth after each wear. Keep pieces separately to prevent scratching.</p>
-              <p>Free re-polishing at the studio, for life. Chain resizing free for the first year.</p>
-            </div>
-          {%- endif -%}
+          <button class="rt-mob-acc-btn" aria-expanded="false" onclick="rtAccToggle(this)">
+            <span class="rt-mob-acc-left"><span class="rt-mob-acc-num">03</span>Care Guide</span>
+            <span class="rt-mob-acc-icon">+</span>
+          </button>
+          <div class="rt-acc-content">
+            {%- if care_content != blank -%}
+              <div class="rt-acc-tab-body">{{ care_content }}</div>
+            {%- else -%}
+              <div class="rt-acc-tab-body">
+                <p>Remove jewelry before bathing, swimming, or exercising. Avoid contact with perfumes, lotions, and hairspray.</p>
+                <p>Store in the airtight pouch provided, away from direct sunlight. Gently wipe with a soft cloth after each wear. Keep pieces separately to prevent scratching.</p>
+                <p>Free re-polishing at the studio, for life. Chain resizing free for the first year.</p>
+              </div>
+            {%- endif -%}
+          </div>
         </div>
 
         <!-- Tab 3: Shipping & returns -->
