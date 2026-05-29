@@ -1056,7 +1056,6 @@
                     </div>
 
                     <div class="rt-citem__price-col">
-                      {%- render 'loading-spinner' -%}
                       <div>
                         {%- if item.original_line_price != item.final_line_price -%}
                           <span class="rt-citem__total--old">{{ item.original_line_price | money }}</span>
