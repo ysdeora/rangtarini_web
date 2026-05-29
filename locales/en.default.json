@@ -28,6 +28,9 @@
         "tiktok": "TikTok"
       }
     },
+    "navigation": {
+      "shop": "Shop"
+    },
     "continue_shopping": "Continue shopping",
     "pagination": {
       "label": "Pagination",
