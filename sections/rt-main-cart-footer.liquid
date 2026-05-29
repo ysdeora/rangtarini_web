@@ -5,8 +5,10 @@
     padding: 0 28px 80px;
   }
 
-  /* Hide entire footer when cart is empty */
-  cart-items.is-empty ~ .rt-cart-ft-wrap { display: none; }
+  /* Hide footer when cart is empty — initial SSR state */
+  #main-cart-footer.rt-cart-ft-empty { display: none; }
+  /* Hide footer when cart is dynamically emptied via AJAX */
+  body:has(cart-items.is-empty) #main-cart-footer { display: none; }
 
   /* ── Inner layout: two-col on desktop ── */
   .rt-cart-ft__inner {
