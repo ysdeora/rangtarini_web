@@ -541,6 +541,9 @@
 
   {%- comment %} Inline search panel — slides in below header {%- endcomment %}
   <div class="rt-hd__search-panel" id="rt-search-panel" role="search" aria-label="Site search">
+    {%- if settings.predictive_search_enabled -%}
+      <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
+    {%- endif -%}
     <form action="{{ routes.search_url }}" method="get" class="rt-hd__search-form">
       <input type="hidden" name="type" value="product">
       <input type="search"
@@ -549,7 +552,19 @@
              class="rt-hd__search-input"
              placeholder="Search jewellery, collections…"
              autocomplete="off"
-             aria-label="Search products">
+             autocorrect="off"
+             autocapitalize="off"
+             spellcheck="false"
+             aria-label="Search products"
+             {%- if settings.predictive_search_enabled -%}
+               role="combobox"
+               aria-expanded="false"
+               aria-owns="predictive-search-results"
+               aria-controls="predictive-search-results"
+               aria-haspopup="listbox"
+               aria-autocomplete="list"
+             {%- endif -%}>
+      <button type="reset" class="hidden" aria-label="{{ 'general.search.reset' | t }}"></button>
       <div class="rt-hd__search-sep" aria-hidden="true"></div>
       <button type="submit" class="rt-hd__search-btn" aria-label="Submit search">
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -562,7 +577,16 @@
           <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
         </svg>
       </button>
+      {%- if settings.predictive_search_enabled -%}
+        <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+          {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+        </div>
+        <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+      {%- endif -%}
     </form>
+    {%- if settings.predictive_search_enabled -%}
+      </predictive-search>
+    {%- endif -%}
   </div>
 
   {%- comment %} Mobile nav drawer {%- endcomment %}
