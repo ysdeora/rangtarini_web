@@ -891,7 +891,7 @@
     visible.forEach(function (c) { c.hidden = false; grid.appendChild(c); });
 
     /* empty state */
-    if (emptyEl) emptyEl.hidden = visible.length > 0;
+    if (emptyEl) emptyEl.classList.toggle('is-visible', visible.length === 0);
 
     /* count */
     if (countEl) {
