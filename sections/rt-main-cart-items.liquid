@@ -2,6 +2,18 @@
   <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 {%- endunless -%}
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script>
+  customElements.whenDefined('cart-items').then(function() {
+    var el = document.querySelector('cart-items');
+    if (!el) return;
+    el.getSectionsToRender = function() {
+      return [
+        { id: 'main-cart-items', section: document.getElementById('main-cart-items').dataset.id, selector: '.js-contents' },
+        { id: 'main-cart-footer', section: document.getElementById('main-cart-footer').dataset.id, selector: '.js-contents' }
+      ];
+    };
+  });
+</script>
 
 <style>
   /* ── Shell ── */
