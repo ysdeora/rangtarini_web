@@ -740,6 +740,10 @@
   .rt-tab-panel.is-open .rt-acc-content { display: block; }
   .rt-spec-hd { padding: 16px; }
   .rt-spec-grid { grid-template-columns: 1fr; }
+  .rt-spec-cell { flex-direction: row; align-items: baseline; gap: 12px; padding: 8px 12px; }
+  .rt-spec-cell:nth-child(n) { border-right: none; }
+  .rt-spec-cell:nth-child(n+2) { border-top: 1px solid var(--rt-ink); }
+  .rt-spec-k { min-width: 82px; flex-shrink: 0; }
   .rt-angles-grid { grid-template-columns: 1fr 1fr; }
   .rt-karkhana-grid { grid-template-columns: 1fr; }
   .rt-karkhana-img { display: none; }
