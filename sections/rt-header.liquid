@@ -426,8 +426,9 @@
       transform: translateX(-50%);
       pointer-events: auto;
     }
-    .rt-hd__menu-btn { display: flex; justify-self: start; }
-    .rt-hd__actions { justify-self: end; }
+    .rt-hd__menu-btn { display: flex; grid-column: 1; justify-self: start; }
+    /* Logo is out of grid flow (absolute), so actions must be pinned to col 3 explicitly */
+    .rt-hd__actions { grid-column: 3; justify-self: end; }
     /* Account icon hidden on mobile — login link is in the drawer */
     .rt-hd__icon--acct { display: none; }
     .rt-hd__search-panel { padding: 0 16px; }
