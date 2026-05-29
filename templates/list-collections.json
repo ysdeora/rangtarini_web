@@ -1,13 +1,11 @@
 {
   "sections": {
     "main": {
-      "type": "main-list-collections",
+      "type": "rt-collections-list",
       "settings": {
-        "title": "Collections",
-        "sort": "alphabetical",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "columns_mobile": "2"
+        "eyebrow": "— All Collections",
+        "heading": "The archive.",
+        "sort": "alphabetical"
       }
     }
   },
