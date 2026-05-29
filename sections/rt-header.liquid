@@ -676,7 +676,7 @@
       </button>
       {%- if shop.customer_accounts_enabled -%}
         <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-           class="rt-hd__icon"
+           class="rt-hd__icon rt-hd__icon--acct"
            aria-label="{%- if customer -%}{{ 'customer.account.title' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
