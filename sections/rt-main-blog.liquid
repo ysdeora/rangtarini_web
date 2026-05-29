@@ -890,8 +890,8 @@
     }
 
     /* apply visibility + reorder */
-    allCards.forEach(function (c) { c.hidden = true; });
-    visible.forEach(function (c) { c.hidden = false; grid.appendChild(c); });
+    allCards.forEach(function (c) { c.classList.add('is-hidden'); });
+    visible.forEach(function (c) { c.classList.remove('is-hidden'); grid.appendChild(c); });
 
     /* empty state */
     if (emptyEl) emptyEl.classList.toggle('is-visible', visible.length === 0);
