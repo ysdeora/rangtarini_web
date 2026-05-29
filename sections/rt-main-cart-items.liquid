@@ -755,7 +755,7 @@
   }
   .rt-cart__upsell-img--alt { opacity: 0; }
   @media screen and (min-width: 750px) {
-    .rt-cart__upsell-img-link:hover .rt-cart__upsell-img:not(.rt-cart__upsell-img--alt) { opacity: 0; }
+    .rt-cart__upsell-img-link:hover .rt-cart__upsell-img:first-child:not(:only-child) { opacity: 0; }
     .rt-cart__upsell-img-link:hover .rt-cart__upsell-img--alt { opacity: 1; transform: scale(1.03); }
   }
   .rt-cart__upsell-info {
