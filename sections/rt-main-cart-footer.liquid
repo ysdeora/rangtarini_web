@@ -1,8 +1,13 @@
 {%- comment -%}
-  Content moved to rt-main-cart-items.liquid.
-  Both #main-cart-items and #main-cart-footer now live in that section
-  so cart.js AJAX updates both from a single section render.
+  This section exists solely so cart.js can find #main-cart-footer in the DOM
+  (getSectionsToRender reads its data-id at runtime). All visible cart page
+  content lives in rt-main-cart-items.liquid inside #main-cart-items .js-contents.
+  The empty .js-contents here satisfies getSectionInnerHTML without throwing.
 {%- endcomment -%}
+
+<div id="main-cart-footer" data-id="{{ section.id }}" class="{% if cart == empty %}is-empty{% endif %}">
+  <div class="js-contents"></div>
+</div>
 
 {% schema %}
 {
