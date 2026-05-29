@@ -1234,26 +1234,32 @@
 
         <!-- Tab 3: Shipping & returns -->
         <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-3" role="tabpanel">
-          {%- if shipping_content != blank or returns_content != blank -%}
-            {%- if shipping_content != blank -%}
-              <div class="rt-acc-tab-section">
-                <div class="rt-acc-tab-section-hd">Shipping & Delivery</div>
-                <div class="rt-acc-tab-body">{{ shipping_content }}</div>
+          <button class="rt-mob-acc-btn" aria-expanded="false" onclick="rtAccToggle(this)">
+            <span class="rt-mob-acc-left"><span class="rt-mob-acc-num">04</span>Shipping & Returns</span>
+            <span class="rt-mob-acc-icon">+</span>
+          </button>
+          <div class="rt-acc-content">
+            {%- if shipping_content != blank or returns_content != blank -%}
+              {%- if shipping_content != blank -%}
+                <div class="rt-acc-tab-section">
+                  <div class="rt-acc-tab-section-hd">Shipping & Delivery</div>
+                  <div class="rt-acc-tab-body">{{ shipping_content }}</div>
+                </div>
+              {%- endif -%}
+              {%- if returns_content != blank -%}
+                <div class="rt-acc-tab-section">
+                  <div class="rt-acc-tab-section-hd">Returns & Exchange</div>
+                  <div class="rt-acc-tab-body">{{ returns_content }}</div>
+                </div>
+              {%- endif -%}
+            {%- else -%}
+              <div class="rt-acc-tab-body">
+                <p><strong>India:</strong> Free shipping pan India. Delivered in 3–5 business days after dispatch.</p>
+                <p><strong>International:</strong> Standard shipping 8–12 days. Free on orders above ₹40,000. All international orders are DDU — import duties are the recipient's responsibility.</p>
+                <p>We accept exchanges within 7 days of delivery for unworn items in original packaging. Please contact us via WhatsApp or email to initiate.</p>
               </div>
             {%- endif -%}
-            {%- if returns_content != blank -%}
-              <div class="rt-acc-tab-section">
-                <div class="rt-acc-tab-section-hd">Returns & Exchange</div>
-                <div class="rt-acc-tab-body">{{ returns_content }}</div>
-              </div>
-            {%- endif -%}
-          {%- else -%}
-            <div class="rt-acc-tab-body">
-              <p><strong>India:</strong> Free shipping pan India. Delivered in 3–5 business days after dispatch.</p>
-              <p><strong>International:</strong> Standard shipping 8–12 days. Free on orders above ₹40,000. All international orders are DDU — import duties are the recipient's responsibility.</p>
-              <p>We accept exchanges within 7 days of delivery for unworn items in original packaging. Please contact us via WhatsApp or email to initiate.</p>
-            </div>
-          {%- endif -%}
+          </div>
         </div>
 
       </div>
