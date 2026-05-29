@@ -205,7 +205,7 @@
   }
 </style>
 
-<div class="rt-cart-ft-wrap" id="main-cart-footer" data-id="{{ section.id }}">
+<div class="rt-cart-ft-wrap{% if cart == empty %} rt-cart-ft-empty{% endif %}" id="main-cart-footer" data-id="{{ section.id }}">
   <div class="rt-cart-ft{% if cart == empty %} is-empty{% endif %}">
     <div class="rt-cart-ft__inner js-contents">
 
