@@ -515,6 +515,10 @@
       "expired": "Expired"
     }
   },
+  "collections": {
+    "one": "collection",
+    "other": "collections"
+  },
   "recipient": {
     "form": {
       "checkbox": "I want to send this as a gift",
