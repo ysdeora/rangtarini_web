@@ -13,6 +13,17 @@
       ];
     };
   });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
+      if (!event || !event.cartData) return;
+      var count = event.cartData.item_count;
+      var numEl = document.querySelector('.rt-cart__count-num');
+      var labelEl = document.querySelector('.rt-cart__count-label');
+      if (numEl) numEl.textContent = (count < 10 ? '0' : '') + count;
+      if (labelEl) labelEl.textContent = count === 1 ? 'Piece' : 'Pieces';
+    });
+  });
 </script>
 
 <style>
