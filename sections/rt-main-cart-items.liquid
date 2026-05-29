@@ -7,12 +7,56 @@
   /* ── Shell ── */
   .rt-cart {
     background: var(--rt-paper);
-    border-bottom: 1px solid var(--rt-ink);
   }
 
-  /* ── Header ── */
+  /* ── Sub-bar ── */
+  .rt-cart__subbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 28px 14px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-cart__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .rt-cart__bc-item {
+    font-family: var(--rt-font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.55;
+  }
+  .rt-cart__bc-sep {
+    font-family: var(--rt-font-mono);
+    font-size: 10px;
+    color: var(--rt-ink);
+    opacity: 0.3;
+  }
+  .rt-cart__bc-current {
+    opacity: 1;
+  }
+  .rt-cart__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: opacity 160ms;
+  }
+  .rt-cart__back:hover { opacity: 0.5; }
+
+  /* ── Hero ── */
   .rt-cart__hd {
-    padding: 64px 28px 36px;
+    padding: 34px 28px 28px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -31,75 +75,121 @@
     display: block;
     margin: 0 0 12px;
   }
+  .rt-cart__title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
   .rt-cart__title {
     font-family: var(--rt-font-grotesk);
-    font-size: clamp(48px, 6vw, 88px);
+    font-size: clamp(52px, 7vw, 96px);
     font-weight: 900;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
     text-transform: uppercase;
     line-height: 0.92;
     color: var(--rt-ink);
     margin: 0;
   }
-  .rt-cart__piece-count {
+  .rt-cart__title-deva {
+    font-family: var(--rt-font-deva);
+    font-size: 34px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--rt-gold);
+  }
+  .rt-cart__count-wrap {
+    text-align: right;
+  }
+  .rt-cart__count-num {
     font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.22em;
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    display: block;
+  }
+  .rt-cart__count-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     font-weight: 500;
     color: var(--rt-ink);
-    opacity: 0.6;
-    align-self: flex-end;
-    padding-bottom: 6px;
+    opacity: 0.55;
+    display: block;
+    margin-top: 4px;
   }
 
   /* ── Empty state ── */
   .rt-cart__empty {
-    padding: 80px 28px 100px;
-    text-align: center;
+    border-bottom: 1px solid var(--rt-ink);
   }
-  .rt-cart__empty-label {
+  .rt-cart__empty-hero {
+    padding: 96px 28px 88px;
+    border-bottom: 1px solid var(--rt-ink);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .rt-cart__empty-eyebrow {
     font-family: var(--rt-font-grotesk);
     font-size: 11px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
     font-weight: 500;
     color: var(--rt-ink);
-    opacity: 0.45;
-    display: block;
-    margin: 0 0 20px;
+    opacity: 0.55;
   }
   .rt-cart__empty-display {
     font-family: var(--rt-font-grotesk);
-    font-size: clamp(56px, 9vw, 112px);
+    font-size: clamp(48px, 7vw, 104px);
     font-weight: 900;
     letter-spacing: -0.04em;
     text-transform: uppercase;
-    line-height: 0.88;
+    line-height: 0.92;
     color: var(--rt-ink);
-    margin: 0 0 52px;
+    margin: 0;
+  }
+  .rt-cart__empty-deva {
+    font-family: var(--rt-font-deva);
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--rt-gold);
+  }
+  .rt-cart__empty-body {
+    font-family: var(--rt-font-grotesk);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--rt-ink);
+    opacity: 0.8;
+    max-width: 42ch;
+    line-height: 1.6;
+    margin: 4px 0 0;
   }
   .rt-cart__empty-cta {
+    margin-top: 12px;
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    text-decoration: none;
+    padding: 16px 30px;
     font-family: var(--rt-font-grotesk);
     font-size: 11px;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    font-weight: 600;
-    color: var(--rt-ink);
-    text-decoration: none;
+    font-weight: 800;
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 13px 0;
-    border-top: 1px solid var(--rt-ink);
-    border-bottom: 1px solid var(--rt-ink);
-    width: 240px;
-    transition: opacity 200ms;
+    gap: 14px;
+    transition: opacity 180ms;
   }
-  .rt-cart__empty-cta:hover { opacity: 0.5; }
+  .rt-cart__empty-cta:hover { opacity: 0.75; }
   .rt-cart__login-note {
-    margin-top: 28px;
+    margin-top: 12px;
     font-family: var(--rt-font-grotesk);
     font-size: 13px;
     color: var(--rt-ink);
@@ -107,41 +197,62 @@
     line-height: 1.6;
   }
 
-  /* ── Column headers ── */
-  .rt-cart__col-heads {
+  /* ── Empty bestsellers grid ── */
+  .rt-cart__empty-suggest {
+    padding: 48px 28px 56px;
+  }
+  .rt-cart__suggest-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    display: block;
+    margin-bottom: 24px;
+  }
+  .rt-cart__suggest-grid {
     display: grid;
-    grid-template-columns: 80px 1fr 128px 100px 72px;
-    padding: 12px 28px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+
+  /* ── Main body (two-column) ── */
+  .rt-cart__body {
+    display: grid;
+    grid-template-columns: 1.55fr 0.85fr;
+    gap: 56px;
+    align-items: start;
+    padding: 36px 28px 48px;
     border-bottom: 1px solid var(--rt-ink);
   }
-  .rt-cart__col-head {
-    font-family: var(--rt-font-grotesk);
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--rt-ink);
-    opacity: 0.38;
-  }
-  .rt-cart__col-head--center { text-align: center; }
-  .rt-cart__col-head--right  { text-align: right; }
 
-  /* ── Item row ── */
+  /* ── LEFT column ── */
+  .rt-cart__left {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ── Line item ── */
   .rt-citem {
     display: grid;
-    grid-template-columns: 80px 1fr 128px 100px 72px;
-    align-items: start;
-    padding: 28px 28px;
-    border-bottom: 1px solid var(--rt-ink);
+    grid-template-columns: 96px 1fr auto;
+    gap: 22px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(10,10,10,0.18);
+    align-items: stretch;
     position: relative;
   }
+  .rt-citem:last-child { border-bottom: none; }
 
-  /* Image */
   .rt-citem__img-link {
     display: block;
+    width: 96px;
+    aspect-ratio: 1 / 1.18;
     overflow: hidden;
-    aspect-ratio: 3 / 4;
-    width: 68px;
+    border: 1px solid var(--rt-ink);
     flex-shrink: 0;
   }
   .rt-citem__img {
@@ -151,74 +262,113 @@
     display: block;
   }
 
-  /* Details */
   .rt-citem__details {
-    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
   }
   .rt-citem__name {
     font-family: var(--rt-font-grotesk);
-    font-size: clamp(13px, 1.1vw, 16px);
+    font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.01em;
-    text-transform: uppercase;
     color: var(--rt-ink);
     text-decoration: none;
     display: block;
-    margin: 0 0 7px;
-    line-height: 1.15;
+    line-height: 1.2;
     transition: opacity 160ms;
   }
   .rt-citem__name:hover { opacity: 0.55; }
-  .rt-citem__variant {
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
+  .rt-citem__name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .rt-citem__deva {
+    font-family: var(--rt-font-deva);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--rt-gold);
+    line-height: 1.1;
+  }
+  .rt-citem__sku {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--rt-ink);
-    opacity: 0.45;
-    margin: 0 0 3px;
-  }
-  .rt-citem__unit {
-    font-family: var(--rt-font-grotesk);
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    color: var(--rt-ink);
     opacity: 0.55;
-    margin-top: 10px;
   }
-  .rt-citem__unit s {
-    opacity: 0.5;
-    margin-right: 5px;
-    text-decoration: line-through;
-  }
-  .rt-citem__discounts {
-    list-style: none;
-    padding: 0;
-    margin: 8px 0 0;
-  }
-  .rt-citem__discounts li {
+  .rt-citem__variant {
     font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.14em;
+    font-size: 11px;
+    letter-spacing: 0;
+    color: var(--rt-ink);
+    opacity: 0.75;
+    margin: 0;
+  }
+  .rt-citem__stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .rt-citem__stock-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2f5a3f;
+    flex-shrink: 0;
+  }
+  .rt-citem__stock-label {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--rt-ink);
     opacity: 0.6;
   }
+  .rt-citem__actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: auto;
+    flex-wrap: wrap;
+  }
+  .rt-citem__remove-btn {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.7;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 160ms;
+  }
+  .rt-citem__remove-btn:hover { opacity: 1; }
 
   /* Qty stepper */
-  .rt-citem__qty-col {
-    display: flex;
-    justify-content: center;
-    padding-top: 2px;
+  .rt-citem__qty-wrap {
+    display: inline-flex;
+    border: 1px solid var(--rt-ink);
+    align-items: stretch;
   }
   quantity-input.rt-cart-qty {
     display: inline-flex;
     align-items: center;
     border: 1px solid var(--rt-ink);
-    height: 34px;
+    height: 36px;
   }
   .rt-cart-qty .quantity__button {
-    width: 28px;
+    width: 36px;
     height: 100%;
     background: none;
     border: none;
@@ -234,7 +384,7 @@
   .rt-cart-qty .quantity__button svg { width: 10px; height: 10px; }
   .rt-cart-qty .quantity__button:hover { opacity: 0.35; }
   .rt-cart-qty .quantity__input {
-    width: 38px;
+    width: 40px;
     text-align: center;
     border: none;
     border-left: 1px solid var(--rt-ink);
@@ -242,7 +392,7 @@
     background: none;
     font-family: var(--rt-font-grotesk);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.04em;
     color: var(--rt-ink);
     height: 100%;
@@ -253,20 +403,55 @@
   .rt-cart-qty .quantity__input::-webkit-outer-spin-button,
   .rt-cart-qty .quantity__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
+  /* Price col */
+  .rt-citem__price-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    min-width: 110px;
+    text-align: right;
+  }
+  .rt-citem__total {
+    font-family: var(--rt-font-grotesk);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-citem__total--old {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--rt-ink);
+    opacity: 0.45;
+    text-decoration: line-through;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .rt-citem__unit {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.5;
+    margin-top: 8px;
+  }
+
+  /* Error */
   .rt-citem__error {
     grid-column: 2 / -1;
     font-family: var(--rt-font-grotesk);
     font-size: 11px;
     color: #b91c1c;
-    margin-top: 10px;
     letter-spacing: 0.05em;
   }
   .rt-citem__error:empty { display: none; }
 
   /* Loading overlay */
-  .rt-citem .loading-overlay__spinner {
-    display: none;
-  }
+  .rt-citem .loading-overlay__spinner { display: none; }
   .rt-citem.loading .loading-overlay__spinner {
     display: flex;
     position: absolute;
@@ -277,272 +462,854 @@
     z-index: 5;
   }
 
-  /* Line total */
-  .rt-citem__total-col {
-    text-align: right;
-    padding-top: 4px;
+  /* Cart-level discounts */
+  .rt-cart__discounts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 16px;
   }
-  .rt-citem__total {
+  .rt-cart__discount-item {
     font-family: var(--rt-font-grotesk);
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
+    font-size: 13px;
     color: var(--rt-ink);
-    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .rt-citem__total--old {
-    font-weight: 400;
-    font-size: 12px;
-    opacity: 0.4;
-    text-decoration: line-through;
-    display: block;
-    margin-bottom: 2px;
+  .rt-cart__discount-item svg { width: 14px; height: 14px; opacity: 0.5; }
+
+  /* Continue shopping */
+  .rt-cart__continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: opacity 160ms;
+  }
+  .rt-cart__continue:hover { opacity: 0.5; }
+
+  /* ── RIGHT column ── */
+  .rt-cart__right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  /* Remove */
-  .rt-citem__remove-col {
-    text-align: right;
-    padding-top: 4px;
+  /* ── Order summary box ── */
+  .rt-cart__summary {
+    border: 1px solid var(--rt-ink);
   }
-  .rt-citem__remove-btn {
+  .rt-cart__summary-hd {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rt-ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .rt-cart__summary-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--rt-ink);
+  }
+  .rt-cart__summary-count {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.55;
+  }
+  .rt-cart__summary-rows {
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .rt-cart__summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 9px 0;
+  }
+  .rt-cart__summary-row-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.8;
+  }
+  .rt-cart__summary-row-val {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rt-ink);
+  }
+  .rt-cart__summary-row-val--accent {
+    color: #7a5e2c;
+  }
+  .rt-cart__summary-divider {
+    height: 1px;
+    background: var(--rt-ink);
+    margin: 10px 0;
+  }
+  .rt-cart__summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 4px 0;
+  }
+  .rt-cart__summary-total-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--rt-ink);
+    text-transform: uppercase;
+  }
+  .rt-cart__summary-total-amount {
+    font-family: var(--rt-font-grotesk);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--rt-ink);
+  }
+  .rt-cart__summary-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    padding-bottom: 4px;
+  }
+  .rt-cart__summary-tax {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.5;
+  }
+  .rt-cart__summary-saved {
     font-family: var(--rt-font-grotesk);
     font-size: 9px;
-    letter-spacing: 0.26em;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #7a5e2c;
+  }
+  .rt-cart__summary-actions {
+    padding: 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rt-cart__checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    border: 1px solid var(--rt-ink);
+    padding: 16px 22px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity 180ms;
+    text-align: center;
+  }
+  .rt-cart__checkout:hover { opacity: 0.75; }
+  .rt-cart__checkout[disabled] { opacity: 0.35; cursor: default; }
+  .rt-cart__payment-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     font-weight: 600;
     color: var(--rt-ink);
-    opacity: 0.3;
+    opacity: 0.65;
+  }
+  .rt-cart__payment-dot {
+    opacity: 0.4;
+  }
+  .rt-cart__secure-note {
+    text-align: center;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    line-height: 1.5;
+  }
+  #cart-errors {
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    color: #b91c1c;
+    letter-spacing: 0.04em;
+  }
+  #cart-errors:empty { display: none; }
+
+  /* Dynamic checkout */
+  .rt-cart__dynamic { margin-top: 4px; }
+
+  /* ── Trust badges ── */
+  .rt-cart__trust {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--rt-ink);
+  }
+  .rt-cart__trust-cell {
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .rt-cart__trust-cell:nth-child(odd)  { border-right: 1px solid var(--rt-ink); }
+  .rt-cart__trust-cell:nth-child(n+3)  { border-top: 1px solid var(--rt-ink); }
+  .rt-cart__trust-check {
+    color: var(--rt-gold);
+    font-size: 13px;
+    line-height: 1.2;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .rt-cart__trust-key {
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--rt-ink);
+    line-height: 1.25;
+    display: block;
+  }
+  .rt-cart__trust-sub {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    display: block;
+    margin-top: 3px;
+  }
+
+  /* ── Upsell ── */
+  .rt-cart__upsell {
+    border-bottom: 1px solid var(--rt-ink);
+    padding: 56px 28px 52px;
+    background: var(--rt-paper-warm);
+  }
+  .rt-cart__upsell-hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .rt-cart__upsell-eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .rt-cart__upsell-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(34px, 4.4vw, 60px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-cart__upsell-sub {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--rt-ink);
+    opacity: 0.7;
+    max-width: 40ch;
+    line-height: 1.5;
+  }
+  .rt-cart__upsell-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .rt-cart__upsell-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .rt-cart__upsell-img-link {
+    display: block;
+    aspect-ratio: 1 / 1.18;
+    overflow: hidden;
+    border: 1px solid var(--rt-ink);
+  }
+  .rt-cart__upsell-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 320ms;
+  }
+  .rt-cart__upsell-img-link:hover .rt-cart__upsell-img { transform: scale(1.04); }
+  .rt-cart__upsell-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 12px;
+    gap: 10px;
+  }
+  .rt-cart__upsell-name {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--rt-ink);
     text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
     transition: opacity 160ms;
+  }
+  .rt-cart__upsell-name:hover { opacity: 0.55; }
+  .rt-cart__upsell-price {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--rt-ink);
     white-space: nowrap;
   }
-  .rt-citem__remove-btn:hover { opacity: 0.85; }
+  .rt-cart__upsell-variant {
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    margin-top: 4px;
+  }
+  .rt-cart__upsell-btn {
+    margin-top: 14px;
+    background: transparent;
+    color: var(--rt-ink);
+    border: 1px solid var(--rt-ink);
+    padding: 11px 14px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: background 160ms, color 160ms;
+  }
+  .rt-cart__upsell-btn:hover {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+  }
 
   /* ── Show / hide by empty state ── */
-  cart-items.is-empty .rt-cart__hd         { border-bottom: none; }
-  cart-items.is-empty .rt-cart__piece-count { display: none; }
-  cart-items.is-empty .rt-cart__content    { display: none; }
-  cart-items:not(.is-empty) .rt-cart__empty { display: none; }
+  cart-items.is-empty .rt-cart__hd              { border-bottom: none; }
+  cart-items.is-empty .rt-cart__count-wrap       { display: none; }
+  cart-items.is-empty .rt-cart__main            { display: none; }
+  cart-items:not(.is-empty) .rt-cart__empty     { display: none; }
 
   /* ── Responsive ── */
   @media (max-width: 990px) {
-    .rt-cart__col-heads { grid-template-columns: 72px 1fr 110px 90px 60px; padding: 12px 20px; }
-    .rt-citem           { grid-template-columns: 72px 1fr 110px 90px 60px; padding: 24px 20px; }
+    .rt-cart__body { gap: 36px; }
+    .rt-cart__upsell-grid { grid-template-columns: repeat(2, 1fr); }
+    .rt-cart__suggest-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 749px) {
-    .rt-cart__hd { padding: 40px 16px 24px; }
+    .rt-cart__subbar { padding: 12px 16px; }
+    .rt-cart__hd { padding: 28px 16px 22px; }
     .rt-cart__title { font-size: 40px; }
-    .rt-cart__col-heads { display: none; }
+    .rt-cart__title-deva { font-size: 24px; }
+
+    .rt-cart__body {
+      grid-template-columns: 1fr;
+      padding: 24px 16px 40px;
+      gap: 40px;
+    }
 
     .rt-citem {
-      grid-template-columns: 72px 1fr;
+      grid-template-columns: 80px 1fr;
       grid-template-rows: auto auto auto;
       gap: 10px 14px;
-      padding: 20px 16px;
     }
-    /* row 1: image + details */
-    .rt-citem__img-col   { grid-column: 1; grid-row: 1; }
-    .rt-citem__details   { grid-column: 2; grid-row: 1; padding: 0; }
-    /* row 2: qty + total */
-    .rt-citem__qty-col   { grid-column: 1; grid-row: 2; justify-content: flex-start; padding-top: 0; }
-    .rt-citem__total-col { grid-column: 2; grid-row: 2; text-align: left; padding-top: 6px; }
-    /* row 3: remove full-width */
-    .rt-citem__remove-col {
-      grid-column: 1 / span 2;
-      grid-row: 3;
-      text-align: left;
-      padding: 10px 0 0;
-      border-top: 1px solid rgba(10,10,10,0.1);
-    }
-    /* error spans full width */
-    .rt-citem__error { grid-column: 1 / span 2; }
+    .rt-citem__img-link   { grid-column: 1; grid-row: 1; width: 80px; }
+    .rt-citem__details    { grid-column: 2; grid-row: 1; }
+    .rt-citem__actions    { grid-column: 1 / span 2; grid-row: 2; }
+    .rt-citem__price-col  { grid-column: 1 / span 2; grid-row: 3; flex-direction: row; justify-content: space-between; align-items: baseline; text-align: left; min-width: 0; }
+    .rt-citem__error      { grid-column: 1 / span 2; }
 
-    .rt-cart__empty { padding: 48px 16px 72px; }
-    .rt-cart__empty-display { font-size: 56px; }
+    .rt-cart__empty-hero { padding: 56px 16px 56px; }
+    .rt-cart__empty-suggest { padding: 36px 16px 48px; }
+    .rt-cart__suggest-grid  { grid-template-columns: repeat(2, 1fr); }
+
+    .rt-cart__upsell { padding: 40px 16px 40px; }
+    .rt-cart__upsell-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
 <cart-items class="rt-cart{% if cart == empty %} is-empty{% endif %}">
 
-  <div class="rt-cart__hd">
-    <div>
-      <span class="rt-cart__eyebrow">— {{ 'sections.cart.title' | t }}</span>
-      <h1 class="rt-cart__title">The cart.</h1>
+  {%- comment -%} Sub-bar {%- endcomment -%}
+  <div class="rt-cart__subbar">
+    <div class="rt-cart__breadcrumb">
+      <span class="rt-cart__bc-item">{{ shop.name | escape }}</span>
+      <span class="rt-cart__bc-sep">/</span>
+      <span class="rt-cart__bc-item">{{ 'general.navigation.shop' | t | default: 'Shop' }}</span>
+      <span class="rt-cart__bc-sep">/</span>
+      <span class="rt-cart__bc-item rt-cart__bc-current">Your bag</span>
     </div>
-    <span class="rt-cart__piece-count">
-      {{- cart.item_count -}}
-      {%- if cart.item_count == 1 %} piece{%- else %} pieces{%- endif -%}
-    </span>
+    <a href="{{ routes.all_products_collection_url }}" class="rt-cart__back">
+      <span style="font-size:14px;">←</span>
+      {{ 'general.continue_shopping' | t }}
+    </a>
   </div>
 
+  {%- comment -%} Hero {%- endcomment -%}
+  <div class="rt-cart__hd">
+    <div>
+      <span class="rt-cart__eyebrow">Index 01 — Review your order</span>
+      <div class="rt-cart__title-row">
+        <h1 class="rt-cart__title">Your bag.</h1>
+        <span class="rt-cart__title-deva">झोला</span>
+      </div>
+    </div>
+    <div class="rt-cart__count-wrap">
+      <span class="rt-cart__count-num">{{ cart.item_count | prepend: '0' | slice: -2, 2 }}</span>
+      <span class="rt-cart__count-label">
+        {%- if cart.item_count == 1 -%}Piece{%- else -%}Pieces{%- endif -%}
+      </span>
+    </div>
+  </div>
+
+  {%- comment -%} Empty state {%- endcomment -%}
   <div class="rt-cart__empty">
-    <span class="rt-cart__empty-label">Your cart is empty</span>
-    <p class="rt-cart__empty-display">Nothing yet.</p>
-    <a href="{{ routes.all_products_collection_url }}" class="rt-cart__empty-cta">
-      {{ 'general.continue_shopping' | t }}
-      <span>→</span>
-    </a>
-    {%- if shop.customer_accounts_enabled and customer == null -%}
-      <p class="rt-cart__login-note">
-        {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
-      </p>
+    <div class="rt-cart__empty-hero">
+      <span class="rt-cart__empty-eyebrow">Index 01 — Nothing here yet</span>
+      <p class="rt-cart__empty-display">Your bag<br>is empty.</p>
+      <span class="rt-cart__empty-deva">रंगतारिणी</span>
+      <p class="rt-cart__empty-body">Heirloom-grade pieces, hand-set in Jaipur. Start with a piece below — or browse the full edit.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="rt-cart__empty-cta">
+        {{ 'general.continue_shopping' | t }} <span style="font-size:14px;">→</span>
+      </a>
+      {%- if shop.customer_accounts_enabled and customer == null -%}
+        <p class="rt-cart__login-note">
+          {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.upsell_collection != blank -%}
+      {%- assign upsell_coll = collections[section.settings.upsell_collection] -%}
+      {%- if upsell_coll != blank -%}
+        <div class="rt-cart__empty-suggest">
+          <span class="rt-cart__suggest-label">Bestsellers to begin with</span>
+          <div class="rt-cart__suggest-grid">
+            {%- for product in upsell_coll.products limit: 4 -%}
+              <div class="rt-cart__upsell-card">
+                <a href="{{ product.url }}" class="rt-cart__upsell-img-link">
+                  {%- if product.featured_image -%}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 600 }}"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      loading="lazy"
+                      width="300"
+                      height="{{ 300 | divided_by: product.featured_image.aspect_ratio | ceil }}"
+                      class="rt-cart__upsell-img">
+                  {%- endif -%}
+                </a>
+                <div class="rt-cart__upsell-info">
+                  <a href="{{ product.url }}" class="rt-cart__upsell-name">{{ product.title | escape }}</a>
+                  <span class="rt-cart__upsell-price">{{ product.price | money }}</span>
+                </div>
+                {%- if product.variants.first.sku != blank -%}
+                  <span class="rt-cart__upsell-variant">{{ product.variants.first.sku }}</span>
+                {%- endif -%}
+                <a href="{{ product.url }}" class="rt-cart__upsell-btn">
+                  View piece <span style="font-size:13px;">→</span>
+                </a>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
     {%- endif -%}
   </div>
 
-  <form action="{{ routes.cart_url }}" class="rt-cart__content critical-hidden" method="post" id="cart">
-    <div class="rt-cart__items" id="main-cart-items" data-id="{{ section.id }}">
-      <div class="js-contents">
-        {%- if cart != empty -%}
+  {%- comment -%} Main content (non-empty) {%- endcomment -%}
+  <div class="rt-cart__main">
 
-          <div class="rt-cart__col-heads" aria-hidden="true">
-            <span></span>
-            <span class="rt-cart__col-head" style="padding-left:16px">{{ 'sections.cart.headings.product' | t }}</span>
-            <span class="rt-cart__col-head rt-cart__col-head--center">Qty</span>
-            <span class="rt-cart__col-head rt-cart__col-head--right">{{ 'sections.cart.headings.total' | t }}</span>
-            <span></span>
+    <div class="rt-cart__body">
+
+      {%- comment -%} LEFT — items + form {%- endcomment -%}
+      <div class="rt-cart__left">
+
+        <form action="{{ routes.cart_url }}" class="rt-cart__form critical-hidden" method="post" id="cart">
+          <div id="main-cart-items" data-id="{{ section.id }}">
+            <div class="js-contents">
+              {%- if cart != empty -%}
+                {%- for item in cart.items -%}
+
+                  <div class="rt-citem" id="CartItem-{{ item.index | plus: 1 }}">
+
+                    <div class="rt-citem__img-col">
+                      {%- if item.image -%}
+                        <a href="{{ item.url }}" class="rt-citem__img-link" aria-hidden="true" tabindex="-1">
+                          <img
+                            src="{{ item.image | image_url: width: 300 }}"
+                            alt="{{ item.image.alt | escape }}"
+                            loading="lazy"
+                            width="150"
+                            height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
+                            class="rt-citem__img">
+                        </a>
+                      {%- endif -%}
+                    </div>
+
+                    <div class="rt-citem__details">
+                      <div class="rt-citem__name-row">
+                        <a href="{{ item.url }}" class="rt-citem__name">{{ item.product.title | escape }}</a>
+                        {%- assign deva = item.product.metafields.custom.deva_name -%}
+                        {%- if deva != blank -%}
+                          <span class="rt-citem__deva">{{ deva }}</span>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if item.sku != blank -%}
+                        <span class="rt-citem__sku">{{ item.sku | escape }}</span>
+                      {%- endif -%}
+
+                      {%- if item.product.has_only_default_variant == false -%}
+                        {%- for option in item.options_with_values -%}
+                          <p class="rt-citem__variant">{{ option.name }}: {{ option.value }}</p>
+                        {%- endfor -%}
+                      {%- endif -%}
+
+                      {%- for property in item.properties -%}
+                        {%- assign property_first_char = property.first | slice: 0 -%}
+                        {%- if property.last != blank and property_first_char != '_' -%}
+                          <p class="rt-citem__variant">{{ property.first }}: {{ property.last }}</p>
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- if item.variant.available -%}
+                        <div class="rt-citem__stock">
+                          <span class="rt-citem__stock-dot"></span>
+                          <span class="rt-citem__stock-label">In stock · ships in 48h</span>
+                        </div>
+                      {%- endif -%}
+
+                      <div class="rt-citem__actions">
+                        {%- liquid
+                          assign has_qty_rules = false
+                          if item.variant.quantity_rule.increment > 1 or item.variant.quantity_rule.min > 1 or item.variant.quantity_rule.max != null
+                            assign has_qty_rules = true
+                          endif
+                        -%}
+                        <quantity-popover>
+                          <div class="quantity-popover-container">
+                            <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
+                              {{ 'products.product.quantity.label' | t }}
+                            </label>
+                            <quantity-input class="quantity cart-quantity rt-cart-qty">
+                              <button class="quantity__button" name="minus" type="button">
+                                <span class="visually-hidden">{{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}</span>
+                                <span class="svg-wrapper">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+                              </button>
+                              <input
+                                class="quantity__input"
+                                data-quantity-variant-id="{{ item.variant.id }}"
+                                type="number"
+                                name="updates[]"
+                                value="{{ item.quantity }}"
+                                {% # theme-check-disable %}
+                                data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
+                                min="0"
+                                data-min="{{ item.variant.quantity_rule.min }}"
+                                {% if item.variant.quantity_rule.max != null %}max="{{ item.variant.quantity_rule.max }}"{% endif %}
+                                step="{{ item.variant.quantity_rule.increment }}"
+                                {% # theme-check-enable %}
+                                aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
+                                id="Quantity-{{ item.index | plus: 1 }}"
+                                data-index="{{ item.index | plus: 1 }}">
+                              <button class="quantity__button" name="plus" type="button">
+                                <span class="visually-hidden">{{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}</span>
+                                <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+                              </button>
+                            </quantity-input>
+                          </div>
+                          <div class="rt-citem__error" id="Line-item-error-{{ item.index | plus: 1 }}" role="alert">
+                            <small class="cart-item__error-text"></small>
+                          </div>
+                        </quantity-popover>
+
+                        {%- assign can_remove = item.instructions.can_remove | default: true -%}
+                        {%- if can_remove -%}
+                          <cart-remove-button id="Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
+                            <a
+                              href="{{ item.url_to_remove }}"
+                              class="rt-citem__remove-btn"
+                              aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}">
+                              {{ 'sections.cart.remove' | t | default: 'Remove' }}
+                            </a>
+                          </cart-remove-button>
+                        {%- endif -%}
+                      </div>
+                    </div>
+
+                    <div class="rt-citem__price-col">
+                      {%- render 'loading-spinner' -%}
+                      <div>
+                        {%- if item.original_line_price != item.final_line_price -%}
+                          <span class="rt-citem__total--old">{{ item.original_line_price | money }}</span>
+                          <p class="rt-citem__total">{{ item.final_line_price | money }}</p>
+                        {%- else -%}
+                          <p class="rt-citem__total">{{ item.original_line_price | money }}</p>
+                        {%- endif -%}
+                      </div>
+                      {%- if item.quantity > 1 -%}
+                        <span class="rt-citem__unit">{{ item.final_price | money }} ea</span>
+                      {%- endif -%}
+                    </div>
+
+                  </div>
+
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
           </div>
 
-          {%- for item in cart.items -%}
-            <div class="rt-citem" id="CartItem-{{ item.index | plus: 1 }}">
+          <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
+          <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">
+            {{ 'accessibility.loading' | t }}
+          </p>
+        </form>
 
-              <div class="rt-citem__img-col">
-                {%- if item.image -%}
-                  <a href="{{ item.url }}" class="rt-citem__img-link" aria-hidden="true" tabindex="-1">
-                    <img
-                      src="{{ item.image | image_url: width: 300 }}"
-                      alt="{{ item.image.alt | escape }}"
-                      loading="lazy"
-                      width="150"
-                      height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
-                      class="rt-citem__img">
-                  </a>
-                {%- endif -%}
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <div class="rt-cart__discounts">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <p class="rt-cart__discount-item">
+                {{- 'icon-discount.svg' | inline_asset_content -}}
+                {{ discount.title | escape }}
+                <span>(−{{ discount.total_allocated_amount | money }})</span>
+              </p>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <a href="{{ routes.all_products_collection_url }}" class="rt-cart__continue">
+          <span style="font-size:14px;">←</span>
+          {{ 'general.continue_shopping' | t }}
+        </a>
+
+      </div>
+
+      {%- comment -%} RIGHT — order summary + trust {%- endcomment -%}
+      <div class="rt-cart__right">
+
+        <div id="main-cart-footer" data-id="{{ section.id }}" class="{% if cart == empty %}is-empty{% endif %}">
+          <div class="js-contents">
+
+            {%- liquid
+              assign mrp_total = 0
+              for item in cart.items
+                assign mrp_total = mrp_total | plus: item.original_line_price
+              endfor
+              assign savings = mrp_total | minus: cart.total_price
+              assign free_ship_threshold = 350000
+              assign shipping_free = false
+              if cart.total_price >= free_ship_threshold
+                assign shipping_free = true
+              endif
+            -%}
+
+            <div class="rt-cart__summary">
+              <div class="rt-cart__summary-hd">
+                <span class="rt-cart__summary-title">Order summary</span>
+                <span class="rt-cart__summary-count">{{ cart.item_count }} {%- if cart.item_count == 1 %} line{%- else %} lines{%- endif -%}</span>
               </div>
 
-              <div class="rt-citem__details">
-                <a href="{{ item.url }}" class="rt-citem__name">{{ item.product.title | escape }}</a>
+              <div class="rt-cart__summary-rows">
+                <div class="rt-cart__summary-row">
+                  <span class="rt-cart__summary-row-label">Subtotal (MRP)</span>
+                  <span class="rt-cart__summary-row-val">{{ mrp_total | money }}</span>
+                </div>
 
-                {%- if item.product.has_only_default_variant == false -%}
-                  {%- for option in item.options_with_values -%}
-                    <p class="rt-citem__variant">{{ option.name }}: {{ option.value }}</p>
-                  {%- endfor -%}
+                {%- if savings > 0 -%}
+                  <div class="rt-cart__summary-row">
+                    <span class="rt-cart__summary-row-label">Catalog savings</span>
+                    <span class="rt-cart__summary-row-val rt-cart__summary-row-val--accent">− {{ savings | money }}</span>
+                  </div>
                 {%- endif -%}
 
-                {%- for property in item.properties -%}
-                  {%- assign property_first_char = property.first | slice: 0 -%}
-                  {%- if property.last != blank and property_first_char != '_' -%}
-                    <p class="rt-citem__variant">{{ property.first }}: {{ property.last }}</p>
-                  {%- endif -%}
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <div class="rt-cart__summary-row">
+                    <span class="rt-cart__summary-row-label">{{ discount.title | escape }}</span>
+                    <span class="rt-cart__summary-row-val rt-cart__summary-row-val--accent">− {{ discount.total_allocated_amount | money }}</span>
+                  </div>
                 {%- endfor -%}
 
-                <p class="rt-citem__unit">
-                  {%- if item.original_price != item.final_price -%}
-                    <s>{{ item.original_price | money }}</s>{{ item.final_price | money }}
-                  {%- else -%}
-                    {{ item.original_price | money }}
+                <div class="rt-cart__summary-row">
+                  <span class="rt-cart__summary-row-label">Shipping</span>
+                  <span class="rt-cart__summary-row-val">
+                    {%- if shipping_free -%}Free{%- else -%}Calculated at checkout{%- endif -%}
+                  </span>
+                </div>
+
+                <div class="rt-cart__summary-divider"></div>
+
+                <div class="rt-cart__summary-total-row">
+                  <span class="rt-cart__summary-total-label">Total</span>
+                  <span class="rt-cart__summary-total-amount">{{ cart.total_price | money_with_currency }}</span>
+                </div>
+
+                <div class="rt-cart__summary-footer">
+                  <span class="rt-cart__summary-tax">Incl. of all taxes</span>
+                  {%- if savings > 0 -%}
+                    <span class="rt-cart__summary-saved">You save {{ savings | money }}</span>
                   {%- endif -%}
-                </p>
-
-                {%- if item.line_level_discount_allocations.size > 0 -%}
-                  <ul class="rt-citem__discounts">
-                    {%- for discount in item.line_level_discount_allocations -%}
-                      <li>{{ discount.discount_application.title | escape }}</li>
-                    {%- endfor -%}
-                  </ul>
-                {%- endif -%}
+                </div>
               </div>
 
-              <div class="rt-citem__qty-col">
-                {%- liquid
-                  assign has_qty_rules = false
-                  if item.variant.quantity_rule.increment > 1 or item.variant.quantity_rule.min > 1 or item.variant.quantity_rule.max != null
-                    assign has_qty_rules = true
-                  endif
-                  assign has_vol_pricing = false
-                  if item.variant.quantity_price_breaks.size > 0
-                    assign has_vol_pricing = true
-                  endif
-                -%}
-                <quantity-popover>
-                  <div class="quantity-popover-container">
-                    <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
-                      {{ 'products.product.quantity.label' | t }}
-                    </label>
-                    <quantity-input class="quantity cart-quantity rt-cart-qty">
-                      <button class="quantity__button" name="minus" type="button">
-                        <span class="visually-hidden">{{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}</span>
-                        <span class="svg-wrapper">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
-                      </button>
-                      <input
-                        class="quantity__input"
-                        data-quantity-variant-id="{{ item.variant.id }}"
-                        type="number"
-                        name="updates[]"
-                        value="{{ item.quantity }}"
-                        {% # theme-check-disable %}
-                        data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
-                        min="0"
-                        data-min="{{ item.variant.quantity_rule.min }}"
-                        {% if item.variant.quantity_rule.max != null %}max="{{ item.variant.quantity_rule.max }}"{% endif %}
-                        step="{{ item.variant.quantity_rule.increment }}"
-                        {% # theme-check-enable %}
-                        aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
-                        id="Quantity-{{ item.index | plus: 1 }}"
-                        data-index="{{ item.index | plus: 1 }}">
-                      <button class="quantity__button" name="plus" type="button">
-                        <span class="visually-hidden">{{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}</span>
-                        <span class="svg-wrapper">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
-                      </button>
-                    </quantity-input>
+              <div class="rt-cart__summary-actions">
+                <button
+                  type="submit"
+                  id="checkout"
+                  class="rt-cart__checkout"
+                  name="checkout"
+                  {% if cart == empty %}disabled{% endif %}
+                  form="cart">
+                  {{ 'sections.cart.checkout' | t }} <span style="font-size:15px;">→</span>
+                </button>
+
+                {%- if additional_checkout_buttons -%}
+                  <div class="rt-cart__dynamic additional-checkout-buttons">
+                    {{ content_for_additional_checkout_buttons }}
                   </div>
-                  <div class="rt-citem__error" id="Line-item-error-{{ item.index | plus: 1 }}" role="alert">
-                    <small class="cart-item__error-text"></small>
-                  </div>
-                </quantity-popover>
-              </div>
-
-              <div class="rt-citem__total-col">
-                {%- render 'loading-spinner' -%}
-                {%- if item.original_line_price != item.final_line_price -%}
-                  <p class="rt-citem__total">
-                    <span class="rt-citem__total--old">{{ item.original_line_price | money }}</span>
-                    {{ item.final_line_price | money }}
-                  </p>
-                {%- else -%}
-                  <p class="rt-citem__total">{{ item.original_line_price | money }}</p>
                 {%- endif -%}
-              </div>
 
-              <div class="rt-citem__remove-col">
-                {%- assign can_remove = item.instructions.can_remove | default: true -%}
-                {%- if can_remove -%}
-                  <cart-remove-button id="Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
-                    <a
-                      href="{{ item.url_to_remove }}"
-                      class="rt-citem__remove-btn"
-                      aria-label="{{ 'sections.cart.remove_title' | t: title: item.title | escape }}">
-                      Remove
-                    </a>
-                  </cart-remove-button>
-                {%- endif -%}
-              </div>
+                <div class="rt-cart__payment-strip">
+                  <span>UPI</span>
+                  <span class="rt-cart__payment-dot">·</span>
+                  <span>Cards</span>
+                  <span class="rt-cart__payment-dot">·</span>
+                  <span>Banking</span>
+                </div>
 
+                <p class="rt-cart__secure-note">Secure checkout · 7-day exchange</p>
+
+                <div id="cart-errors"></div>
+              </div>
             </div>
-          {%- endfor -%}
 
-        {%- endif -%}
+          </div>
+        </div>
+
+        <div class="rt-cart__trust">
+          <div class="rt-cart__trust-cell">
+            <span class="rt-cart__trust-check">✓</span>
+            <div>
+              <span class="rt-cart__trust-key">Easy 7-Day Exchange</span>
+              <span class="rt-cart__trust-sub">Unworn · tag intact</span>
+            </div>
+          </div>
+          <div class="rt-cart__trust-cell">
+            <span class="rt-cart__trust-check">✓</span>
+            <div>
+              <span class="rt-cart__trust-key">Secure Checkout</span>
+              <span class="rt-cart__trust-sub">256-bit encrypted</span>
+            </div>
+          </div>
+          <div class="rt-cart__trust-cell">
+            <span class="rt-cart__trust-check">✓</span>
+            <div>
+              <span class="rt-cart__trust-key">Trusted by 1000+</span>
+              <span class="rt-cart__trust-sub">Verified buyers</span>
+            </div>
+          </div>
+          <div class="rt-cart__trust-cell">
+            <span class="rt-cart__trust-check">✓</span>
+            <div>
+              <span class="rt-cart__trust-key">BIS 925 Hallmarked</span>
+              <span class="rt-cart__trust-sub">Certified silver</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
-    <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">
-      {{ 'accessibility.loading' | t }}
-    </p>
-  </form>
+    {%- comment -%} Upsell row {%- endcomment -%}
+    {%- if section.settings.show_upsell and section.settings.upsell_collection != blank -%}
+      {%- assign upsell_coll = collections[section.settings.upsell_collection] -%}
+      {%- if upsell_coll != blank and upsell_coll.products.size > 0 -%}
+        <div class="rt-cart__upsell">
+          <div class="rt-cart__upsell-hd">
+            <div>
+              <span class="rt-cart__upsell-eyebrow">Index 02 — Complete the set</span>
+              <h2 class="rt-cart__upsell-title">You might also<br>pair with.</h2>
+            </div>
+            <p class="rt-cart__upsell-sub">Hand-set in the same Jaipur karkhana. Layer, stack, gift.</p>
+          </div>
+          <div class="rt-cart__upsell-grid">
+            {%- for product in upsell_coll.products limit: 4 -%}
+              <div class="rt-cart__upsell-card">
+                <a href="{{ product.url }}" class="rt-cart__upsell-img-link">
+                  {%- if product.featured_image -%}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 600 }}"
+                      alt="{{ product.featured_image.alt | escape }}"
+                      loading="lazy"
+                      width="300"
+                      height="{{ 300 | divided_by: product.featured_image.aspect_ratio | ceil }}"
+                      class="rt-cart__upsell-img">
+                  {%- endif -%}
+                </a>
+                <div class="rt-cart__upsell-info">
+                  <a href="{{ product.url }}" class="rt-cart__upsell-name">{{ product.title | escape }}</a>
+                  <span class="rt-cart__upsell-price">{{ product.price | money }}</span>
+                </div>
+                {%- if product.variants.first.sku != blank -%}
+                  <span class="rt-cart__upsell-variant">{{ product.variants.first.sku }}</span>
+                {%- endif -%}
+                <a href="{{ product.url }}" class="rt-cart__upsell-btn">
+                  View piece <span style="font-size:13px;">→</span>
+                </a>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
 
 </cart-items>
 
@@ -550,6 +1317,22 @@
 {
   "name": "RT Cart Items",
   "class": "rt-cart-section",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Upsell section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_upsell",
+      "label": "Show 'pair with' upsell",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "upsell_collection",
+      "label": "Upsell collection (shows first 4 products)"
+    }
+  ]
 }
 {% endschema %}
