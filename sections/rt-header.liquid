@@ -514,7 +514,7 @@
       {{ section.settings.logo_text | default: 'RANGTARINI' }}
     </a>
 
-    {%- comment %} Right — search + cart {%- endcomment %}
+    {%- comment %} Right — search + account + cart {%- endcomment %}
     <div class="rt-hd__actions">
       <button class="rt-hd__icon rt-hd__icon--search"
               aria-label="Search"
@@ -525,6 +525,16 @@
           <path d="m21 21-4.35-4.35"/>
         </svg>
       </button>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+           class="rt-hd__icon"
+           aria-label="{%- if customer -%}{{ 'customer.account.title' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+      {%- endif -%}
       <a href="{{ routes.cart_url }}" class="rt-hd__icon" aria-label="Cart, {{ cart.item_count }} items">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
