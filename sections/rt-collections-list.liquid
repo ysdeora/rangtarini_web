@@ -209,7 +209,7 @@
   </div>
 
   <div class="rt-cl__grid">
-    {%- for collection in sorted_collections -%}
+    {%- for collection in collections -%}
       {%- assign idx = forloop.index | plus: paginate.current_offset -%}
       <a href="{{ collection.url }}" class="rt-cl__tile">
 
