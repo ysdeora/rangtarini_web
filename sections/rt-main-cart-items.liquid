@@ -440,9 +440,10 @@
   .rt-citem__error:empty { display: none; }
 
   /* Loading overlay */
-  .rt-citem .loading-overlay__spinner { display: none; }
-  .rt-citem.loading .loading-overlay__spinner {
-    display: flex;
+  #main-cart-items.cart__items--disabled { opacity: 0.45; pointer-events: none; transition: opacity 150ms; }
+  .rt-citem { position: relative; }
+  .rt-citem .loading__spinner {
+    display: none;
     position: absolute;
     inset: 0;
     align-items: center;
@@ -450,6 +451,7 @@
     background: rgba(239,236,228,0.72);
     z-index: 5;
   }
+  .rt-citem .loading__spinner:not(.hidden) { display: flex; }
 
   /* Cart-level discounts */
   .rt-cart__discounts { display: flex; flex-direction: column; gap: 8px; }
