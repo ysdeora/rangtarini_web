@@ -910,15 +910,21 @@
                       width="300"
                       height="{{ 300 | divided_by: product.featured_image.aspect_ratio | ceil }}"
                       class="rt-cart__upsell-img">
+                    {%- if product.media[1] -%}
+                      <img
+                        src="{{ product.media[1] | image_url: width: 600 }}"
+                        alt="{{ product.media[1].alt | escape }}"
+                        loading="lazy"
+                        width="300"
+                        height="{{ 300 | divided_by: product.media[1].aspect_ratio | ceil }}"
+                        class="rt-cart__upsell-img rt-cart__upsell-img--alt">
+                    {%- endif -%}
                   {%- endif -%}
                 </a>
                 <div class="rt-cart__upsell-info">
                   <a href="{{ product.url }}" class="rt-cart__upsell-name">{{ product.title | escape }}</a>
                   <span class="rt-cart__upsell-price">{{ product.price | money }}</span>
                 </div>
-                <a href="{{ product.url }}" class="rt-cart__upsell-btn">
-                  View piece <span aria-hidden="true" style="font-size:13px;">→</span>
-                </a>
               </div>
             {%- endfor -%}
           </div>
