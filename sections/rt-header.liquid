@@ -417,11 +417,19 @@
   }
 
   @media (max-width: 749px) {
-    .rt-hd { grid-template-columns: 1fr auto 1fr; padding: 0 16px; }
+    .rt-hd { grid-template-columns: 1fr auto 1fr; padding: 0 16px; position: relative; }
     .rt-hd__nav { display: none; }
-    .rt-hd__logo { justify-content: center; }
+    /* Absolutely center logo so it's pixel-perfect regardless of icon count on either side */
+    .rt-hd__logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: auto;
+    }
     .rt-hd__menu-btn { display: flex; justify-self: start; }
     .rt-hd__actions { justify-self: end; }
+    /* Account icon hidden on mobile — login link is in the drawer */
+    .rt-hd__icon--acct { display: none; }
     .rt-hd__search-panel { padding: 0 16px; }
   }
 
