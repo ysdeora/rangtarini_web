@@ -1,0 +1,771 @@
+<style>
+  /* ══════════════════════════════════════════
+     RT Article — shell & hero
+  ══════════════════════════════════════════ */
+  .rt-art {
+    background: var(--rt-paper);
+  }
+
+  /* ── Hero image ── */
+  .rt-art__hero {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 21 / 9;
+    background: rgba(10,10,10,0.06);
+  }
+  .rt-art__hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .rt-art__hero-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: var(--rt-paper);
+    border-top: 1px solid var(--rt-ink);
+    gap: 16px;
+  }
+  .rt-art__hero-blog {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    opacity: 0.5;
+    text-decoration: none;
+    transition: opacity 160ms;
+  }
+  .rt-art__hero-blog:hover { opacity: 1; }
+  .rt-art__hero-date {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.4;
+  }
+
+  /* ── Article header ── */
+  .rt-art__header {
+    padding: 56px 28px 40px;
+    max-width: 800px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-art__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    opacity: 0.38;
+    text-decoration: none;
+    margin-bottom: 28px;
+    transition: opacity 160ms;
+    display: block;
+  }
+  .rt-art__back:hover { opacity: 0.85; }
+  .rt-art__eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.45;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .rt-art__title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--rt-ink);
+    margin: 0 0 24px;
+  }
+  .rt-art__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.45;
+  }
+  .rt-art__meta-sep { opacity: 0.4; }
+
+  /* ── Article body ── */
+  .rt-art__body {
+    max-width: 720px;
+    padding: 56px 28px 72px;
+    border-bottom: 1px solid var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+  }
+
+  /* Reset inherited styles so RTE content is controlled */
+  .rt-art__body * { box-sizing: border-box; }
+
+  .rt-art__body h1,
+  .rt-art__body h2,
+  .rt-art__body h3,
+  .rt-art__body h4,
+  .rt-art__body h5,
+  .rt-art__body h6 {
+    font-family: var(--rt-font-grotesk);
+    color: var(--rt-ink);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    margin: 2.25em 0 0.65em;
+  }
+  .rt-art__body h1 { font-size: 2.1rem; }
+  .rt-art__body h2 { font-size: 1.7rem; }
+  .rt-art__body h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.015em; }
+  .rt-art__body h4 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; }
+  .rt-art__body h5,
+  .rt-art__body h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  /* Remove top margin on first heading */
+  .rt-art__body > *:first-child { margin-top: 0; }
+
+  .rt-art__body p {
+    font-size: 1.0625rem;
+    line-height: 1.82;
+    color: var(--rt-ink);
+    opacity: 0.86;
+    margin: 0 0 1.5em;
+  }
+
+  .rt-art__body ul,
+  .rt-art__body ol {
+    margin: 0 0 1.5em;
+    padding-left: 1.6em;
+  }
+  .rt-art__body li {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    opacity: 0.86;
+    color: var(--rt-ink);
+    margin-bottom: 0.45em;
+  }
+
+  .rt-art__body blockquote {
+    margin: 2.5em 0;
+    padding: 0 0 0 24px;
+    border-left: 3px solid var(--rt-ink);
+  }
+  .rt-art__body blockquote p {
+    font-size: 1.2rem;
+    line-height: 1.65;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    opacity: 0.7;
+    margin-bottom: 0;
+  }
+
+  .rt-art__body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2.5em auto;
+  }
+  .rt-art__body figure { margin: 2.5em 0; }
+  .rt-art__body figcaption {
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.42;
+    text-align: center;
+    margin-top: 0.8em;
+  }
+
+  .rt-art__body a {
+    color: var(--rt-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    opacity: 0.72;
+    transition: opacity 150ms;
+  }
+  .rt-art__body a:hover { opacity: 1; }
+
+  .rt-art__body strong,
+  .rt-art__body b { font-weight: 700; color: var(--rt-ink); opacity: 1; }
+
+  .rt-art__body em,
+  .rt-art__body i { font-style: italic; }
+
+  .rt-art__body hr {
+    border: none;
+    border-top: 1px solid var(--rt-ink);
+    opacity: 0.18;
+    margin: 3em 0;
+  }
+
+  .rt-art__body code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    background: rgba(10,10,10,0.07);
+    padding: 2px 6px;
+  }
+  .rt-art__body pre {
+    background: rgba(10,10,10,0.07);
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 1.75em 0;
+  }
+  .rt-art__body pre code { background: none; padding: 0; }
+
+  .rt-art__body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    font-size: 0.9375rem;
+  }
+  .rt-art__body th,
+  .rt-art__body td {
+    padding: 10px 14px;
+    border: 1px solid rgba(10,10,10,0.15);
+    text-align: left;
+  }
+  .rt-art__body th {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  /* ── Share bar ── */
+  .rt-art__share {
+    padding: 28px 28px;
+    border-bottom: 1px solid var(--rt-ink);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .rt-art__share-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    opacity: 0.4;
+  }
+
+  /* ── Back link ── */
+  .rt-art__footer-back {
+    padding: 28px 28px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-art__footer-back a {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    text-decoration: none;
+    opacity: 0.45;
+    transition: opacity 160ms;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rt-art__footer-back a:hover { opacity: 1; }
+
+  /* ── Related articles ── */
+  .rt-art__related {
+    padding: 0 28px 80px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-art__related-hd {
+    padding: 48px 0 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .rt-art__related-eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.45;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .rt-art__related-display {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(36px, 4vw, 60px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-art__related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  /* ── Comments ── */
+  .rt-art__comments {
+    padding: 48px 28px 72px;
+    max-width: 720px;
+  }
+  .rt-art__comments-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    margin: 0 0 32px;
+  }
+  .rt-art__comment {
+    padding: 24px 0;
+    border-top: 1px solid var(--rt-ink);
+  }
+  .rt-art__comment p {
+    font-family: var(--rt-font-grotesk);
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--rt-ink);
+    opacity: 0.8;
+    margin: 0 0 10px;
+  }
+  .rt-art__comment-author {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.45;
+  }
+  .rt-art__comment-form-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(20px, 2.5vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    margin: 48px 0 28px;
+  }
+  .rt-art__field {
+    margin-bottom: 16px;
+  }
+  .rt-art__field label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    opacity: 0.5;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .rt-art__field input,
+  .rt-art__field textarea {
+    width: 100%;
+    border: 1px solid var(--rt-ink);
+    background: none;
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    color: var(--rt-ink);
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 160ms;
+    -webkit-appearance: none;
+  }
+  .rt-art__field textarea { resize: vertical; min-height: 120px; }
+  .rt-art__field input::placeholder,
+  .rt-art__field textarea::placeholder { opacity: 0.35; }
+  .rt-art__field .rt-art__field-error {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    color: #b91c1c;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+  .rt-art__comment-submit {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    border: none;
+    padding: 16px 32px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 180ms;
+    margin-top: 8px;
+  }
+  .rt-art__comment-submit:hover { opacity: 0.75; }
+  .rt-art__form-fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .rt-art__form-message {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    color: var(--rt-ink);
+    opacity: 0.65;
+    padding: 12px 0;
+    letter-spacing: 0.04em;
+  }
+  .rt-art__form-message--success { color: #166534; opacity: 1; }
+  .rt-art__form-message--error { color: #b91c1c; opacity: 1; }
+
+  /* ── Responsive ── */
+  @media (max-width: 990px) {
+    .rt-art__related-grid { grid-template-columns: repeat(2, 1fr); }
+    .rt-art__form-fields-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 749px) {
+    .rt-art__hero { aspect-ratio: 16 / 9; }
+    .rt-art__hero-bar { padding: 12px 16px; }
+    .rt-art__header { padding: 32px 16px 28px; }
+    .rt-art__title { font-size: 28px; }
+    .rt-art__body { padding: 36px 16px 56px; }
+    .rt-art__body p,
+    .rt-art__body li { font-size: 1rem; }
+    .rt-art__share { padding: 20px 16px; }
+    .rt-art__footer-back { padding: 20px 16px; }
+    .rt-art__related { padding: 0 16px 56px; }
+    .rt-art__related-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .rt-art__related-display { font-size: 32px; }
+    .rt-art__comments { padding: 36px 16px 56px; }
+    .rt-art__form-fields-row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<article class="rt-art">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+
+      {%- when '@app' -%}
+        <div style="max-width:720px;padding:0 28px;">{% render block %}</div>
+
+      {%- when 'featured_image' -%}
+        {%- if article.image -%}
+          <div class="rt-art__hero" {{ block.shopify_attributes }}>
+            <img
+              srcset="{%- if article.image.width >= 750 -%}{{ article.image | image_url: width: 750 }} 750w,{%- endif -%}
+                      {%- if article.image.width >= 1200 -%}{{ article.image | image_url: width: 1200 }} 1200w,{%- endif -%}
+                      {%- if article.image.width >= 1800 -%}{{ article.image | image_url: width: 1800 }} 1800w,{%- endif -%}
+                      {%- if article.image.width >= 2400 -%}{{ article.image | image_url: width: 2400 }} 2400w,{%- endif -%}
+                      {{ article.image | image_url }} {{ article.image.width }}w"
+              src="{{ article.image | image_url: width: 1600 }}"
+              sizes="100vw"
+              alt="{{ article.image.alt | escape }}"
+              class="rt-art__hero-img"
+              loading="eager"
+              fetchpriority="high"
+              width="{{ article.image.width }}"
+              height="{{ article.image.height }}">
+            <div class="rt-art__hero-bar">
+              <a href="{{ blog.url }}" class="rt-art__hero-blog">{{ blog.title | escape }}</a>
+              <time class="rt-art__hero-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                {{ article.published_at | date: '%B %-d, %Y' }}
+              </time>
+            </div>
+          </div>
+        {%- endif -%}
+
+      {%- when 'title' -%}
+        <header class="rt-art__header" {{ block.shopify_attributes }}>
+          <a href="{{ blog.url }}" class="rt-art__back">← {{ blog.title | escape }}</a>
+          {%- if article.tags.size > 0 -%}
+            <span class="rt-art__eyebrow">{{ article.tags | join: ' · ' }}</span>
+          {%- endif -%}
+          <h1 class="rt-art__title">{{ article.title | escape }}</h1>
+          <div class="rt-art__meta">
+            {%- if block.settings.blog_show_date -%}
+              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                {{- article.published_at | date: '%B %-d, %Y' -}}
+              </time>
+            {%- endif -%}
+            {%- if block.settings.blog_show_author and article.author != blank -%}
+              <span class="rt-art__meta-sep">·</span>
+              <span>{{ article.author }}</span>
+            {%- endif -%}
+          </div>
+        </header>
+
+      {%- when 'content' -%}
+        <div class="rt-art__body" {{ block.shopify_attributes }}>
+          {{ article.content }}
+        </div>
+
+      {%- when 'share' -%}
+        <div class="rt-art__share" {{ block.shopify_attributes }}>
+          <span class="rt-art__share-label">{{ block.settings.share_label | default: 'Share' }}</span>
+          {%- assign share_url = request.origin | append: article.url -%}
+          {%- render 'share-button', block: block, share_link: share_url -%}
+        </div>
+
+    {%- endcase -%}
+  {%- endfor -%}
+
+  <div class="rt-art__footer-back">
+    <a href="{{ blog.url }}">← Back to {{ blog.title | escape }}</a>
+  </div>
+
+  {%- comment -%} Related articles ─ up to 3 from the same blog, skip current {%- endcomment -%}
+  {%- assign related_count = 0 -%}
+  {%- assign has_related = false -%}
+  {%- for rel in blog.articles -%}
+    {%- if rel.url != article.url and related_count < 3 -%}
+      {%- assign related_count = related_count | plus: 1 -%}
+      {%- assign has_related = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_related -%}
+    <div class="rt-art__related">
+      <div class="rt-art__related-hd">
+        <div>
+          <span class="rt-art__related-eyebrow">— Related Reading</span>
+          <h2 class="rt-art__related-display">More from the journal.</h2>
+        </div>
+      </div>
+      <div class="rt-art__related-grid">
+        {%- assign shown = 0 -%}
+        {%- for rel in blog.articles -%}
+          {%- if rel.url != article.url and shown < 3 -%}
+            {%- assign shown = shown | plus: 1 -%}
+            <a href="{{ rel.url }}" class="rt-blog__tile">
+              <div class="rt-blog__tile-media">
+                {%- if rel.image -%}
+                  <img
+                    src="{{ rel.image | image_url: width: 600 }}"
+                    alt="{{ rel.image.alt | escape }}"
+                    class="rt-blog__tile-img"
+                    loading="lazy"
+                    decoding="async"
+                    width="{{ rel.image.width }}"
+                    height="{{ rel.image.height }}">
+                {%- else -%}
+                  <div class="rt-blog__tile-placeholder">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                      <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
+                    </svg>
+                  </div>
+                {%- endif -%}
+              </div>
+              <div class="rt-blog__tile-info">
+                <h3 class="rt-blog__tile-title">{{ rel.title | escape }}</h3>
+                <div class="rt-blog__tile-foot">
+                  <time class="rt-blog__tile-date" datetime="{{ rel.published_at | date: '%Y-%m-%d' }}">
+                    {{ rel.published_at | date: '%b %-d, %Y' }}
+                  </time>
+                  <span class="rt-blog__tile-arrow">→</span>
+                </div>
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if blog.comments_enabled? -%}
+    <div class="rt-art__comments" id="comments">
+
+      {%- if article.comments_count > 0 -%}
+        <h2 class="rt-art__comments-title" id="Comments-{{ article.id }}" tabindex="-1">
+          {{ article.comments_count }} {{ article.comments_count | pluralize: 'Comment', 'Comments' }}
+        </h2>
+        {%- paginate article.comments by 5 -%}
+          {%- if comment.status == 'pending' and comment.content -%}
+            <div class="rt-art__comment">
+              <p>{{ comment.content }}</p>
+              <span class="rt-art__comment-author">{{ comment.author }}</span>
+            </div>
+          {%- endif -%}
+          {%- for comment in article.comments -%}
+            <div class="rt-art__comment" id="{{ comment.id }}">
+              <p>{{ comment.content }}</p>
+              <span class="rt-art__comment-author">
+                {{ comment.author }}
+                <span style="opacity:0.4;margin-left:8px;">{{ comment.created_at | time_tag: format: 'date' }}</span>
+              </span>
+            </div>
+          {%- endfor -%}
+          {%- if paginate.pages > 1 -%}
+            {%- render 'pagination', paginate: paginate, anchor: '#Comments-' | append: article.id -%}
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- endif -%}
+
+      {%- form 'new_comment', article -%}
+        {%- liquid
+          assign post_message = 'blogs.article.success'
+          if blog.moderated? and comment.status == 'unapproved'
+            assign post_message = 'blogs.article.success_moderated'
+          endif
+        -%}
+
+        <h2 class="rt-art__comment-form-title">{{ 'blogs.article.comment_form_title' | t }}</h2>
+
+        {%- if form.posted_successfully? -%}
+          <p class="rt-art__form-message rt-art__form-message--success">{{ post_message | t }}</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="rt-art__form-message rt-art__form-message--error">{{ 'templates.contact.form.error_heading' | t }}</p>
+        {%- endif -%}
+
+        <div class="rt-art__form-fields-row">
+          <div class="rt-art__field">
+            <label for="CommentForm-author">{{ 'blogs.article.name' | t }} *</label>
+            <input
+              type="text"
+              name="comment[author]"
+              id="CommentForm-author"
+              value="{{ form.author }}"
+              autocomplete="name"
+              required
+              aria-required="true"
+              {% if form.errors contains 'author' %}aria-invalid="true"{% endif %}
+              placeholder="{{ 'blogs.article.name' | t }}">
+            {%- if form.errors contains 'author' -%}
+              <p class="rt-art__field-error">{{ form.errors.messages.author }}</p>
+            {%- endif -%}
+          </div>
+          <div class="rt-art__field">
+            <label for="CommentForm-email">{{ 'blogs.article.email' | t }} *</label>
+            <input
+              type="email"
+              name="comment[email]"
+              id="CommentForm-email"
+              value="{{ form.email }}"
+              autocomplete="email"
+              required
+              aria-required="true"
+              {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+              placeholder="{{ 'blogs.article.email' | t }}">
+            {%- if form.errors contains 'email' -%}
+              <p class="rt-art__field-error">{{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="rt-art__field">
+          <label for="CommentForm-body">{{ 'blogs.article.message' | t }} *</label>
+          <textarea
+            name="comment[body]"
+            id="CommentForm-body"
+            rows="5"
+            required
+            aria-required="true"
+            {% if form.errors contains 'body' %}aria-invalid="true"{% endif %}
+            placeholder="{{ 'blogs.article.message' | t }}">{{ form.body }}</textarea>
+          {%- if form.errors contains 'body' -%}
+            <p class="rt-art__field-error">{{ form.errors.messages.body }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if blog.moderated? -%}
+          <p class="rt-art__form-message">{{ 'blogs.article.moderated' | t }}</p>
+        {%- endif -%}
+
+        <button type="submit" class="rt-art__comment-submit">{{ 'blogs.article.post' | t }} →</button>
+      {%- endform -%}
+
+    </div>
+  {%- endif -%}
+
+</article>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "RT Article",
+  "tag": "section",
+  "class": "rt-art-section",
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "featured_image",
+      "name": "Featured image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "The hero image spans the full page width with a cinematic 21:9 crop."
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title & meta",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "label": "Show date",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "label": "Show author",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "Article body",
+      "limit": 1
+    },
+    {
+      "type": "share",
+      "name": "Share",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "Share label",
+          "default": "Share"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
