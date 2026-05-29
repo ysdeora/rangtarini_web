@@ -196,28 +196,7 @@
   }
 </style>
 
-{%- liquid
-  case section.settings.sort
-    when 'products_high', 'products_low'
-      assign sorted_collections = collections | sort: 'all_products_count'
-    when 'date', 'date_reversed'
-      assign sorted_collections = collections | sort: 'published_at'
-    else
-      assign sorted_collections = collections
-  endcase
-
-  if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
-    assign sorted_collections = sorted_collections | reverse
-  endif
-
-  assign paginate_by = 30
-  assign mod_check = 28 | modulo: 3
-  if mod_check == 0
-    assign paginate_by = 28
-  endif
--%}
-
-{%- paginate sorted_collections by paginate_by -%}
+{%- paginate collections by 24 -%}
 
 <section class="rt-cl">
 
