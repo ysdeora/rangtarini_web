@@ -1634,6 +1634,36 @@
     }, { passive: true });
   }
 
+  /* ─── Mobile accordion ───────────────────────────────────── */
+  window.rtAccToggle = function(btn) {
+    var panel = btn.closest('.rt-tab-panel');
+    var willOpen = !panel.classList.contains('is-open');
+    panel.classList.toggle('is-open', willOpen);
+    btn.setAttribute('aria-expanded', String(willOpen));
+  };
+
+  /* ─── Image lightbox (mobile tap-to-expand) ──────────────── */
+  var lb = document.getElementById('rt-lightbox-' + SEC);
+  if (lb) {
+    var lbImg = lb.querySelector('.rt-lightbox-img');
+    var lbStage = document.getElementById('rt-stage-' + SEC);
+    if (lbStage) {
+      lbStage.addEventListener('click', function() {
+        if (window.innerWidth >= 990) return;
+        var hi = document.getElementById('rt-hero-img-' + SEC);
+        if (!hi) return;
+        lbImg.src = hi.currentSrc || hi.src;
+        lbImg.alt = hi.alt;
+        lb.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+    function closeLb() { lb.classList.remove('is-open'); document.body.style.overflow = ''; }
+    lb.querySelector('.rt-lightbox-close').addEventListener('click', closeLb);
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
+  }
+
   /* ─── Toast ──────────────────────────────────────────────── */
   window.rtToastHide = function(sid) {
     var t = document.getElementById('rt-toast-' + sid);
