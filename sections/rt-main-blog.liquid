@@ -596,8 +596,16 @@
     .rt-jnl__sort-wrap { justify-self: start; }
     .rt-jnl__grid-wrap { padding: 28px 16px 48px; }
     .rt-jnl__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; row-gap: 32px; }
-    /* Tag badge: tighter tracking so multi-word tags don't wrap */
-    .rt-jnl__card-tag-badge { letter-spacing: 0.1em; padding: 3px 7px; }
+    /* Tag badge: single line, clip with ellipsis on narrow cards */
+    .rt-jnl__card-tag-badge {
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      padding: 3px 7px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: calc(100% - 24px);
+    }
     .rt-jnl__feat-badges .rt-jnl__badge-gold,
     .rt-jnl__feat-badges .rt-jnl__badge-cat { letter-spacing: 0.15em; }
     .rt-jnl__card-title { font-size: 16px; }
