@@ -1018,9 +1018,21 @@
                       {%- endfor -%}
 
                       {%- if item.variant.available -%}
-                        <div class="rt-citem__stock">
+                        {%- assign citem_avail = item.product.metafields.custom.availability | downcase -%}
+                        {%- assign citem_mto = false -%}
+                        {%- if citem_avail contains 'made to order' or citem_avail contains 'made-to-order' -%}
+                          {%- assign citem_mto = true -%}
+                        {%- endif -%}
+                        {%- unless citem_mto -%}
+                          {%- for tag in item.product.tags -%}
+                            {%- if tag == 'made-to-order' or tag == 'Made to Order' or tag == 'MTO' -%}
+                              {%- assign citem_mto = true -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endunless -%}
+                        <div class="rt-citem__stock{% if citem_mto %} rt-citem__stock--mto{% endif %}">
                           <span class="rt-citem__stock-dot" aria-hidden="true"></span>
-                          <span class="rt-citem__stock-label">In stock</span>
+                          <span class="rt-citem__stock-label">{% if citem_mto %}Made to Order{% else %}In stock{% endif %}</span>
                         </div>
                       {%- endif -%}
 
