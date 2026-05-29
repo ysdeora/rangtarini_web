@@ -1308,9 +1308,9 @@
   <section id="rt-karkhana" aria-label="About our craft">
     <div class="rt-karkhana-grid">
       <div>
-        <span class="rt-karkhana-eyebrow">Index 04 — How we make everything</span>
-        <h2 class="rt-karkhana-headline">From the<br><span class="gold">karkhana.</span></h2>
-        <span class="rt-karkhana-deva">रंगतारिणी</span>
+        <span class="rt-karkhana-eyebrow">{{ section.settings.karkhana_eyebrow | default: 'Index 04 — How we make everything' }}</span>
+        <h2 class="rt-karkhana-headline">{{ section.settings.karkhana_headline_1 | default: 'From the' }}<br><span class="gold">{{ section.settings.karkhana_headline_2 | default: 'karkhana.' }}</span></h2>
+        <span class="rt-karkhana-deva">{{ section.settings.karkhana_deva | default: 'रंगतारिणी' }}</span>
         <p class="rt-karkhana-copy">
           {%- if section.settings.karkhana_copy != blank -%}
             {{ section.settings.karkhana_copy }}
@@ -1319,14 +1319,22 @@
           {%- endif -%}
         </p>
         <div class="rt-karkhana-stats">
-          <div><span class="rt-stat-n">38</span><span class="rt-stat-l">Karigars</span></div>
-          <div><span class="rt-stat-n">6 gen</span><span class="rt-stat-l">Of craft</span></div>
-          <div><span class="rt-stat-n">22kt</span><span class="rt-stat-l">Gold plating</span></div>
-          <div><span class="rt-stat-n">BIS 925</span><span class="rt-stat-l">Hallmarked</span></div>
+          {%- if section.settings.karkhana_stat1_num != blank or section.settings.karkhana_stat1_lbl != blank -%}
+            <div><span class="rt-stat-n">{{ section.settings.karkhana_stat1_num | default: '38' }}</span><span class="rt-stat-l">{{ section.settings.karkhana_stat1_lbl | default: 'Karigars' }}</span></div>
+          {%- endif -%}
+          {%- if section.settings.karkhana_stat2_num != blank or section.settings.karkhana_stat2_lbl != blank -%}
+            <div><span class="rt-stat-n">{{ section.settings.karkhana_stat2_num | default: '6 gen' }}</span><span class="rt-stat-l">{{ section.settings.karkhana_stat2_lbl | default: 'Of craft' }}</span></div>
+          {%- endif -%}
+          {%- if section.settings.karkhana_stat3_num != blank or section.settings.karkhana_stat3_lbl != blank -%}
+            <div><span class="rt-stat-n">{{ section.settings.karkhana_stat3_num | default: '22kt' }}</span><span class="rt-stat-l">{{ section.settings.karkhana_stat3_lbl | default: 'Gold plating' }}</span></div>
+          {%- endif -%}
+          {%- if section.settings.karkhana_stat4_num != blank or section.settings.karkhana_stat4_lbl != blank -%}
+            <div><span class="rt-stat-n">{{ section.settings.karkhana_stat4_num | default: 'BIS 925' }}</span><span class="rt-stat-l">{{ section.settings.karkhana_stat4_lbl | default: 'Hallmarked' }}</span></div>
+          {%- endif -%}
         </div>
         {%- if section.settings.karkhana_url != blank -%}
           <a href="{{ section.settings.karkhana_url }}" class="rt-karkhana-cta">
-            <span>Visit the karkhana</span>
+            <span>{{ section.settings.karkhana_cta_label | default: 'Visit the karkhana' }}</span>
             <span style="font-size:14px;">→</span>
           </a>
         {%- endif -%}
