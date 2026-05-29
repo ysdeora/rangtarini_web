@@ -815,7 +815,17 @@
     {%- endif -%}
   </nav>
 
+  {%- if settings.cart_type == 'notification' -%}
+    <div class="rt-hd__notif-anchor">
+      {%- render 'cart-notification' -%}
+    </div>
+  {%- endif -%}
+
 </div>
+
+{%- if settings.cart_type == 'notification' -%}
+  <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 <script>
 (function () {
