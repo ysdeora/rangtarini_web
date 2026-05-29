@@ -1,36 +1,528 @@
 {%- paginate blog.articles by section.settings.articles_per_page -%}
 
 <style>
-  /* ── Shell ── */
-  .rt-blog {
-    background: var(--rt-paper);
+  /* ── Breadcrumb ── */
+  .rt-jnl__bc {
+    padding: 15px 28px 13px;
     border-bottom: 1px solid var(--rt-ink);
-  }
-
-  /* ── Header ── */
-  .rt-blog__hd {
-    padding: 64px 28px 36px;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    border-bottom: 1px solid var(--rt-ink);
-    flex-wrap: wrap;
-    gap: 16px;
+    gap: 14px;
+    align-items: center;
+    background: var(--rt-paper);
   }
-  .rt-blog__eyebrow {
+  .rt-jnl__bc a,
+  .rt-jnl__bc span {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    text-decoration: none;
+    opacity: 0.6;
+  }
+  .rt-jnl__bc a:hover { opacity: 1; }
+  .rt-jnl__bc-sep { opacity: 0.35; font-size: 12px; }
+  .rt-jnl__bc-current { opacity: 1; font-weight: 700; }
+
+  /* ── Masthead ── */
+  .rt-jnl__mast {
+    border-bottom: 1px solid var(--rt-ink);
+    background: var(--rt-paper);
+  }
+  .rt-jnl__mast-inner {
+    padding: 34px 28px 30px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items: flex-end;
+  }
+  .rt-jnl__eyebrow {
     font-family: var(--rt-font-grotesk);
     font-size: 11px;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
     font-weight: 500;
     color: var(--rt-ink);
     opacity: 0.55;
     display: block;
+    margin-bottom: 12px;
+  }
+  .rt-jnl__display {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(56px, 8vw, 132px);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-jnl__mast-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 8px;
+  }
+  .rt-jnl__deva {
+    font-family: var(--rt-font-deva);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--rt-gold, #b59159);
+    line-height: 1.1;
+  }
+  .rt-jnl__desc {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--rt-ink);
+    opacity: 0.82;
+    margin: 0;
+    max-width: 42ch;
+  }
+  .rt-jnl__stats {
+    display: flex;
+    gap: 24px;
+  }
+  .rt-jnl__stat-n {
+    font-family: var(--rt-font-grotesk);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    display: block;
+    color: var(--rt-ink);
+  }
+  .rt-jnl__stat-l {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    display: block;
+    margin-top: 5px;
+  }
+
+  /* ── Featured article ── */
+  .rt-jnl__feat {
+    display: grid;
+    grid-template-columns: 1.18fr 1fr;
+    min-height: 540px;
+    border-bottom: 1px solid var(--rt-ink);
+    text-decoration: none;
+    color: var(--rt-ink);
+    background: var(--rt-paper);
+  }
+  .rt-jnl__feat-media {
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid var(--rt-ink);
+  }
+  .rt-jnl__feat-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .rt-jnl__feat:hover .rt-jnl__feat-img { transform: scale(1.03); }
+  .rt-jnl__feat-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 540px;
+    background: rgba(10,10,10,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rt-jnl__feat-placeholder svg { opacity: 0.15; }
+  .rt-jnl__feat-badges {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    display: flex;
+    gap: 8px;
+  }
+  .rt-jnl__badge-gold {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--rt-gold, #b59159);
+    color: var(--rt-ink);
+    padding: 4px 9px;
+  }
+  .rt-jnl__badge-cat {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+    padding: 4px 9px;
+  }
+  .rt-jnl__feat-copy {
+    padding: 56px 48px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .rt-jnl__feat-kicker {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    display: block;
+    margin-bottom: 22px;
+  }
+  .rt-jnl__feat-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(40px, 4.4vw, 68px);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    color: var(--rt-ink);
+    margin: 0 0 26px;
+  }
+  .rt-jnl__feat-dek {
+    font-family: var(--rt-font-grotesk);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--rt-ink);
+    opacity: 0.82;
+    margin: 0;
+    max-width: 46ch;
+  }
+  .rt-jnl__feat-meta {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid rgba(10,10,10,0.16);
+    flex-wrap: wrap;
+  }
+  .rt-jnl__meta-mono {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.6;
+  }
+  .rt-jnl__meta-dot { opacity: 0.3; }
+  .rt-jnl__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-width: 260px;
+    padding: 14px 0;
+    border-top: 1px solid var(--rt-ink);
+    border-bottom: 1px solid var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--rt-ink);
+  }
+  .rt-jnl__cta-arrow {
+    font-size: 16px;
+    transition: transform 240ms;
+  }
+  .rt-jnl__feat:hover .rt-jnl__cta-arrow { transform: translateX(4px); }
+
+  /* ── Filter bar ── */
+  .rt-jnl__filter {
+    position: sticky;
+    top: var(--rt-header-h, 61px);
+    z-index: 30;
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  /* Category pills row */
+  .rt-jnl__cats {
+    padding: 15px 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(10,10,10,0.14);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .rt-jnl__cats::-webkit-scrollbar { display: none; }
+  .rt-jnl__cats-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.6;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  .rt-jnl__pill {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    background: transparent;
+    border: 1px solid var(--rt-ink);
+    padding: 7px 13px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 160ms, color 160ms;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .rt-jnl__pill:hover { background: rgba(10,10,10,0.07); }
+  .rt-jnl__pill.is-active {
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    font-weight: 700;
+  }
+  /* Count / search / sort row */
+  .rt-jnl__filter-bar {
+    padding: 11px 28px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+  }
+  .rt-jnl__count {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    white-space: nowrap;
+  }
+  .rt-jnl__search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--rt-ink);
+    padding: 8px 13px;
+    max-width: 340px;
+    width: 100%;
+    cursor: text;
+  }
+  .rt-jnl__search-wrap svg { opacity: 0.5; flex-shrink: 0; }
+  .rt-jnl__search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--rt-ink);
+    min-width: 0;
+  }
+  .rt-jnl__search-input::placeholder { color: var(--rt-ink); opacity: 0.38; }
+  .rt-jnl__search-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    display: none;
+    flex-shrink: 0;
+  }
+  .rt-jnl__search-clear:hover { opacity: 1; }
+  .rt-jnl__sort-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-self: end;
+  }
+  .rt-jnl__sort-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.6;
+    white-space: nowrap;
+  }
+  .rt-jnl__sort-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 1px solid var(--rt-ink);
+    padding: 8px 32px 8px 13px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--rt-ink);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%230a0a0a'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+
+  /* ── Grid section ── */
+  .rt-jnl__grid-wrap {
+    padding: 44px 28px 64px;
+    background: var(--rt-paper);
+  }
+  .rt-jnl__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    row-gap: 56px;
+  }
+
+  /* ── Article card ── */
+  .rt-jnl__card {
+    display: flex;
+    flex-direction: column;
+  }
+  .rt-jnl__card-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-decoration: none;
+    color: var(--rt-ink);
+  }
+  .rt-jnl__card-media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+    background: rgba(10,10,10,0.06);
+    flex-shrink: 0;
+  }
+  .rt-jnl__card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .rt-jnl__card-link:hover .rt-jnl__card-img { transform: scale(1.04); }
+  .rt-jnl__card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rt-jnl__card-placeholder svg { opacity: 0.15; }
+  .rt-jnl__card-tag-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+    padding: 4px 9px;
+    z-index: 2;
+  }
+  .rt-jnl__card-body {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .rt-jnl__card-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    color: var(--rt-ink);
     margin: 0 0 12px;
   }
-  .rt-blog__display {
+  .rt-jnl__card-dek {
     font-family: var(--rt-font-grotesk);
-    font-size: clamp(48px, 6vw, 88px);
+    font-size: 14px;
+    line-height: 1.62;
+    color: var(--rt-ink);
+    opacity: 0.74;
+    margin: 0 0 20px;
+  }
+  .rt-jnl__card-foot {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(10,10,10,0.16);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .rt-jnl__card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rt-jnl__card-date,
+  .rt-jnl__card-read {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.6;
+  }
+  .rt-jnl__card-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+  }
+  .rt-jnl__card-arrow-icon {
+    font-size: 13px;
+    transition: transform 220ms;
+  }
+  .rt-jnl__card-link:hover .rt-jnl__card-arrow-icon { transform: translateX(3px); }
+
+  /* ── Empty state ── */
+  .rt-jnl__empty {
+    padding: 100px 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .rt-jnl__empty-deva {
+    font-family: var(--rt-font-deva);
+    font-size: 44px;
+    color: var(--rt-gold, #b59159);
+    line-height: 1;
+  }
+  .rt-jnl__empty-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(44px, 6vw, 84px);
     font-weight: 900;
     letter-spacing: -0.03em;
     text-transform: uppercase;
@@ -38,284 +530,26 @@
     color: var(--rt-ink);
     margin: 0;
   }
-  .rt-blog__count {
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--rt-ink);
-    opacity: 0.6;
-    align-self: flex-end;
-    padding-bottom: 6px;
-  }
-
-  /* ── Featured article (page 1) ── */
-  .rt-blog__featured {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    text-decoration: none;
-    color: var(--rt-ink);
-    border-bottom: 1px solid var(--rt-ink);
-  }
-  .rt-blog__featured-media {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 16 / 10;
-  }
-  .rt-blog__featured-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 600ms ease;
-  }
-  .rt-blog__featured:hover .rt-blog__featured-img { transform: scale(1.03); }
-  .rt-blog__featured-placeholder {
-    width: 100%;
-    height: 100%;
-    background: rgba(10,10,10,0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .rt-blog__featured-placeholder svg { opacity: 0.15; }
-  .rt-blog__featured-badge {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    background: var(--rt-paper);
-    font-family: var(--rt-font-grotesk);
-    font-size: 9px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 4px 9px;
-    color: var(--rt-ink);
-  }
-  .rt-blog__featured-copy {
-    padding: 56px 52px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0;
-    border-left: 1px solid var(--rt-ink);
-  }
-  .rt-blog__tag {
-    font-family: var(--rt-font-grotesk);
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--rt-ink);
-    opacity: 0.45;
-    display: block;
-    margin-bottom: 18px;
-  }
-  .rt-blog__featured-title {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(22px, 2.5vw, 36px);
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
-    color: var(--rt-ink);
-    margin: 0 0 18px;
-  }
-  .rt-blog__featured-excerpt {
+  .rt-jnl__empty-msg {
     font-family: var(--rt-font-grotesk);
     font-size: 14px;
-    line-height: 1.75;
-    color: var(--rt-ink);
-    opacity: 0.6;
-    margin: 0 0 22px;
-  }
-  .rt-blog__featured-meta {
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--rt-ink);
-    opacity: 0.45;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-  .rt-blog__meta-sep { opacity: 0.5; }
-  .rt-blog__cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    width: 200px;
-    padding: 12px 0;
-    border-top: 1px solid var(--rt-ink);
-    border-bottom: 1px solid var(--rt-ink);
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--rt-ink);
-    transition: opacity 200ms;
-  }
-  .rt-blog__cta span { transition: transform 200ms; }
-  .rt-blog__featured:hover .rt-blog__cta span { transform: translateX(4px); }
-  .rt-blog__featured:hover .rt-blog__cta { opacity: 0.65; }
-
-  /* ── Grid wrapper ── */
-  .rt-blog__grid-wrap {
-    padding: 0 28px;
-  }
-  .rt-blog__grid-hd {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 28px 0 20px;
-    border-bottom: 1px solid var(--rt-ink);
-    margin-bottom: 28px;
-  }
-  .rt-blog__grid-label {
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--rt-ink);
-    opacity: 0.55;
-  }
-  .rt-blog__grid-count {
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--rt-ink);
-    opacity: 0.38;
-  }
-
-  /* ── Grid ── */
-  .rt-blog__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    padding-bottom: 60px;
-  }
-
-  /* ── Tile ── */
-  .rt-blog__tile {
-    display: block;
-    text-decoration: none;
-    color: var(--rt-ink);
-  }
-  .rt-blog__tile-media {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 3 / 2;
-    background: rgba(10,10,10,0.05);
-  }
-  .rt-blog__tile-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 520ms ease;
-  }
-  .rt-blog__tile:hover .rt-blog__tile-img { transform: scale(1.04); }
-  .rt-blog__tile-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .rt-blog__tile-placeholder svg { opacity: 0.15; }
-  .rt-blog__tile-badge {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: var(--rt-paper);
-    font-family: var(--rt-font-grotesk);
-    font-size: 9px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 3px 7px;
-    color: var(--rt-ink);
-    z-index: 2;
-  }
-  .rt-blog__tile-info {
-    padding-top: 16px;
-    border-top: 1px solid var(--rt-ink);
-    margin-top: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .rt-blog__tile-tag {
-    font-family: var(--rt-font-grotesk);
-    font-size: 9px;
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--rt-ink);
-    opacity: 0.4;
-    display: block;
-    margin-bottom: 4px;
-  }
-  .rt-blog__tile-title {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(14px, 1.3vw, 18px);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    line-height: 1.25;
-    color: var(--rt-ink);
-    margin: 0 0 8px;
-  }
-  .rt-blog__tile-excerpt {
-    font-family: var(--rt-font-grotesk);
-    font-size: 13px;
     line-height: 1.65;
     color: var(--rt-ink);
-    opacity: 0.55;
-    margin: 0 0 4px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    opacity: 0.7;
+    max-width: 380px;
+    margin: 0;
   }
-  .rt-blog__tile-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid rgba(10,10,10,0.12);
-    margin-top: auto;
-  }
-  .rt-blog__tile-date {
-    font-family: var(--rt-font-grotesk);
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--rt-ink);
-    opacity: 0.38;
-  }
-  .rt-blog__tile-arrow {
-    font-size: 14px;
-    transition: transform 200ms;
-    opacity: 0.6;
-  }
-  .rt-blog__tile:hover .rt-blog__tile-arrow { transform: translateX(4px); opacity: 1; }
 
   /* ── Pagination ── */
-  .rt-blog__pag {
-    padding: 0 28px 60px;
+  .rt-jnl__pag {
+    padding: 28px 28px 60px;
     border-top: 1px solid var(--rt-ink);
-    padding-top: 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: var(--rt-paper);
   }
-  .rt-blog__pag-link {
+  .rt-jnl__pag-link {
     font-family: var(--rt-font-grotesk);
     font-size: 11px;
     letter-spacing: 0.28em;
@@ -326,8 +560,8 @@
     opacity: 0.55;
     transition: opacity 180ms;
   }
-  .rt-blog__pag-link:hover { opacity: 1; }
-  .rt-blog__pag-info {
+  .rt-jnl__pag-link:hover { opacity: 1; }
+  .rt-jnl__pag-info {
     font-family: var(--rt-font-grotesk);
     font-size: 10px;
     letter-spacing: 0.18em;
@@ -338,179 +572,349 @@
 
   /* ── Responsive ── */
   @media (max-width: 990px) {
-    .rt-blog__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .rt-blog__featured-copy { padding: 40px 36px; }
-    .rt-blog__grid-wrap { padding: 0 20px; }
-    .rt-blog__pag { padding: 28px 20px 48px; }
+    .rt-jnl__mast-inner { grid-template-columns: 1fr; gap: 24px; }
+    .rt-jnl__feat { grid-template-columns: 1fr; min-height: auto; }
+    .rt-jnl__feat-media { border-right: none; border-bottom: 1px solid var(--rt-ink); min-height: 380px; }
+    .rt-jnl__feat-copy { padding: 40px 36px; gap: 24px; }
+    .rt-jnl__grid { grid-template-columns: repeat(2, 1fr); gap: 28px; row-gap: 40px; }
+    .rt-jnl__filter-bar { grid-template-columns: auto 1fr; }
+    .rt-jnl__sort-wrap { grid-column: 1 / -1; justify-self: start; }
   }
   @media (max-width: 749px) {
-    .rt-blog__hd { padding: 40px 16px 24px; }
-    .rt-blog__display { font-size: 40px; }
-    .rt-blog__featured { grid-template-columns: 1fr; }
-    .rt-blog__featured-media { aspect-ratio: 16 / 9; }
-    .rt-blog__featured-copy { padding: 28px 16px 32px; border-left: none; border-top: 1px solid var(--rt-ink); gap: 14px; }
-    .rt-blog__featured-title { font-size: 22px; }
-    .rt-blog__grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-    .rt-blog__tile-excerpt { display: none; }
-    .rt-blog__grid-wrap { padding: 0 16px; }
-    .rt-blog__pag { padding: 24px 16px 48px; }
+    .rt-jnl__bc { padding: 12px 16px; }
+    .rt-jnl__mast-inner { padding: 28px 16px 22px; }
+    .rt-jnl__display { font-size: clamp(44px, 12vw, 80px); }
+    .rt-jnl__feat-copy { padding: 28px 16px 32px; }
+    .rt-jnl__feat-title { font-size: clamp(28px, 6vw, 44px); }
+    .rt-jnl__cats { padding: 12px 16px; }
+    .rt-jnl__filter-bar { padding: 10px 16px; grid-template-columns: 1fr; gap: 10px; }
+    .rt-jnl__count { display: none; }
+    .rt-jnl__sort-wrap { justify-self: start; }
+    .rt-jnl__grid-wrap { padding: 28px 16px 48px; }
+    .rt-jnl__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; row-gap: 32px; }
+    .rt-jnl__card-title { font-size: 16px; }
+    .rt-jnl__card-dek { display: none; }
+    .rt-jnl__pag { padding: 24px 16px 48px; }
   }
 </style>
 
-<section class="rt-blog">
+{%- comment %} Breadcrumb {%- endcomment %}
+<div class="rt-jnl__bc">
+  <a href="{{ routes.root_url }}" class="rt-jnl__bc-home">Rangtarini</a>
+  <span class="rt-jnl__bc-sep">/</span>
+  <span class="rt-jnl__bc-current">{{ blog.title | escape }}</span>
+</div>
 
-  <div class="rt-blog__hd">
+{%- comment %} Masthead {%- endcomment %}
+<section class="rt-jnl__mast">
+  <div class="rt-jnl__mast-inner">
     <div>
-      <span class="rt-blog__eyebrow">{{ section.settings.eyebrow | escape }}</span>
-      <h1 class="rt-blog__display">{{ blog.title | upcase }}.</h1>
+      <span class="rt-jnl__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h1 class="rt-jnl__display">{{ blog.title | upcase }}.</h1>
     </div>
-    <span class="rt-blog__count">{{ blog.articles_count }} articles</span>
+    <div class="rt-jnl__mast-right">
+      <span class="rt-jnl__deva">रंगतारिणी</span>
+      {%- if section.settings.description != blank -%}
+        <p class="rt-jnl__desc">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
+      <div class="rt-jnl__stats">
+        <div>
+          <span class="rt-jnl__stat-n">{{ blog.articles_count | prepend: '00' | slice: -2, 2 }}</span>
+          <span class="rt-jnl__stat-l">Entries</span>
+        </div>
+        <div>
+          <span class="rt-jnl__stat-n">{{ blog.all_tags.size | prepend: '00' | slice: -2, 2 }}</span>
+          <span class="rt-jnl__stat-l">Topics</span>
+        </div>
+        <div>
+          <span class="rt-jnl__stat-n">{{ section.settings.since_year | default: '2026' }}</span>
+          <span class="rt-jnl__stat-l">Since</span>
+        </div>
+      </div>
+    </div>
   </div>
-
-  {%- if paginate.current_page == 1 -%}
-    {%- for article in blog.articles limit: 1 -%}
-      <a href="{{ article.url }}" class="rt-blog__featured">
-
-        <div class="rt-blog__featured-media">
-          {%- if article.image -%}
-            <img
-              src="{{ article.image | image_url: width: 1200 }}"
-              srcset="{{ article.image | image_url: width: 600 }} 600w,
-                      {{ article.image | image_url: width: 1000 }} 1000w,
-                      {{ article.image | image_url: width: 1400 }} 1400w"
-              sizes="(max-width: 749px) 100vw, 50vw"
-              alt="{{ article.image.alt | escape }}"
-              class="rt-blog__featured-img"
-              loading="eager"
-              fetchpriority="high"
-              width="{{ article.image.width }}"
-              height="{{ article.image.height }}">
-          {%- else -%}
-            <div class="rt-blog__featured-placeholder">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
-              </svg>
-            </div>
-          {%- endif -%}
-          <span class="rt-blog__featured-badge">Featured · 01 / {{ blog.articles_count | prepend: '0' | slice: -2, 2 }}</span>
-        </div>
-
-        <div class="rt-blog__featured-copy">
-          {%- if article.tags.size > 0 -%}
-            <span class="rt-blog__tag">{{ article.tags.first | escape }}</span>
-          {%- endif -%}
-          <h2 class="rt-blog__featured-title">{{ article.title | escape }}</h2>
-          {%- assign feat_excerpt = article.excerpt | default: article.content -%}
-          {%- if feat_excerpt != blank -%}
-            <p class="rt-blog__featured-excerpt">{{ feat_excerpt | strip_html | truncate: 200 }}</p>
-          {%- endif -%}
-          <div class="rt-blog__featured-meta">
-            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %-d, %Y' }}</time>
-            {%- if section.settings.show_author and article.author != blank -%}
-              <span class="rt-blog__meta-sep">·</span>
-              <span>{{ article.author }}</span>
-            {%- endif -%}
-          </div>
-          <span class="rt-blog__cta">Read Article <span>→</span></span>
-        </div>
-
-      </a>
-    {%- endfor -%}
-  {%- endif -%}
-
-  {%- assign show_grid = false -%}
-  {%- if paginate.current_page == 1 and blog.articles_count > 1 -%}
-    {%- assign show_grid = true -%}
-  {%- elsif paginate.current_page > 1 -%}
-    {%- assign show_grid = true -%}
-  {%- endif -%}
-
-  {%- if show_grid -%}
-    <div class="rt-blog__grid-wrap">
-      <div class="rt-blog__grid-hd">
-        {%- if paginate.current_page == 1 -%}
-          <span class="rt-blog__grid-label">More from the journal</span>
-          <span class="rt-blog__grid-count">{{ blog.articles_count | minus: 1 }} more</span>
-        {%- else -%}
-          <span class="rt-blog__grid-label">{{ blog.title | upcase }}</span>
-          <span class="rt-blog__grid-count">Page {{ paginate.current_page }} / {{ paginate.pages }}</span>
-        {%- endif -%}
-      </div>
-
-      <div class="rt-blog__grid">
-        {%- for article in blog.articles -%}
-          {%- unless forloop.first and paginate.current_page == 1 -%}
-            {%- assign art_num = paginate.current_offset | plus: forloop.index -%}
-            <a href="{{ article.url }}" class="rt-blog__tile">
-
-              <div class="rt-blog__tile-media">
-                {%- if article.image -%}
-                  <img
-                    src="{{ article.image | image_url: width: 700 }}"
-                    srcset="{{ article.image | image_url: width: 400 }} 400w,
-                            {{ article.image | image_url: width: 700 }} 700w"
-                    sizes="(max-width: 749px) 50vw, 33vw"
-                    alt="{{ article.image.alt | escape }}"
-                    class="rt-blog__tile-img"
-                    loading="lazy"
-                    decoding="async"
-                    width="{{ article.image.width }}"
-                    height="{{ article.image.height }}">
-                {%- else -%}
-                  <div class="rt-blog__tile-placeholder">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                      <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
-                    </svg>
-                  </div>
-                {%- endif -%}
-                <span class="rt-blog__tile-badge">{{ art_num | prepend: '0' | slice: -2, 2 }} / {{ blog.articles_count | prepend: '0' | slice: -2, 2 }}</span>
-              </div>
-
-              <div class="rt-blog__tile-info">
-                {%- if article.tags.size > 0 -%}
-                  <span class="rt-blog__tile-tag">{{ article.tags.first | escape }}</span>
-                {%- endif -%}
-                <h2 class="rt-blog__tile-title">{{ article.title | escape }}</h2>
-                {%- if section.settings.show_excerpt -%}
-                  {%- assign tile_excerpt = article.excerpt | default: article.content -%}
-                  {%- if tile_excerpt != blank -%}
-                    <p class="rt-blog__tile-excerpt">{{ tile_excerpt | strip_html | truncate: 110 }}</p>
-                  {%- endif -%}
-                {%- endif -%}
-                <div class="rt-blog__tile-foot">
-                  <time class="rt-blog__tile-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-                    {{ article.published_at | date: '%b %-d, %Y' }}
-                  </time>
-                  <span class="rt-blog__tile-arrow">→</span>
-                </div>
-              </div>
-
-            </a>
-          {%- endunless -%}
-        {%- endfor -%}
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- if paginate.pages > 1 -%}
-    <div class="rt-blog__pag">
-      {%- if paginate.previous -%}
-        <a href="{{ paginate.previous.url }}" class="rt-blog__pag-link">← Previous</a>
-      {%- else -%}
-        <span></span>
-      {%- endif -%}
-      <span class="rt-blog__pag-info">{{ paginate.current_page }} / {{ paginate.pages }}</span>
-      {%- if paginate.next -%}
-        <a href="{{ paginate.next.url }}" class="rt-blog__pag-link">Next →</a>
-      {%- else -%}
-        <span></span>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
-
 </section>
 
+{%- comment %} Featured article — page 1 only {%- endcomment %}
+{%- if paginate.current_page == 1 -%}
+  {%- for article in blog.articles limit: 1 -%}
+    {%- assign feat_words = article.content | strip_html | split: ' ' | size -%}
+    {%- assign feat_read = feat_words | divided_by: 200 | at_least: 1 -%}
+    <a href="{{ article.url }}" class="rt-jnl__feat">
+
+      <div class="rt-jnl__feat-media">
+        {%- if article.image -%}
+          <img
+            src="{{ article.image | image_url: width: 1200 }}"
+            srcset="{{ article.image | image_url: width: 600 }} 600w,
+                    {{ article.image | image_url: width: 1000 }} 1000w,
+                    {{ article.image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 749px) 100vw, 55vw"
+            alt="{{ article.image.alt | escape }}"
+            class="rt-jnl__feat-img"
+            loading="eager"
+            fetchpriority="high"
+            width="{{ article.image.width }}"
+            height="{{ article.image.height }}">
+        {%- else -%}
+          <div class="rt-jnl__feat-placeholder">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
+            </svg>
+          </div>
+        {%- endif -%}
+        <div class="rt-jnl__feat-badges">
+          <span class="rt-jnl__badge-gold">Featured</span>
+          {%- if article.tags.size > 0 -%}
+            <span class="rt-jnl__badge-cat">{{ article.tags.first | escape }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="rt-jnl__feat-copy">
+        <div>
+          <span class="rt-jnl__feat-kicker">Latest entry — Read first</span>
+          <h2 class="rt-jnl__feat-title">{{ article.title | escape }}</h2>
+          {%- assign feat_excerpt = article.excerpt | default: article.content -%}
+          {%- if feat_excerpt != blank -%}
+            <p class="rt-jnl__feat-dek">{{ feat_excerpt | strip_html | truncate: 220 }}</p>
+          {%- endif -%}
+        </div>
+        <div>
+          <div class="rt-jnl__feat-meta">
+            <span class="rt-jnl__meta-mono">
+              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %-d, %Y' }}</time>
+            </span>
+            {%- if section.settings.show_author and article.author != blank -%}
+              <span class="rt-jnl__meta-dot">·</span>
+              <span class="rt-jnl__meta-mono">{{ article.author | escape }}</span>
+            {%- endif -%}
+            <span class="rt-jnl__meta-dot">·</span>
+            <span class="rt-jnl__meta-mono">{{ feat_read }} min read</span>
+          </div>
+          <span class="rt-jnl__cta">
+            Read the guide
+            <span class="rt-jnl__cta-arrow">→</span>
+          </span>
+        </div>
+      </div>
+
+    </a>
+  {%- endfor -%}
+{%- endif -%}
+
+{%- comment %} Filter bar {%- endcomment %}
+<div class="rt-jnl__filter" id="rt-jnl-filter" aria-label="Filter articles">
+
+  {%- comment %} Topic pills — native Shopify tag filtering {%- endcomment %}
+  <div class="rt-jnl__cats" role="navigation" aria-label="Filter by topic">
+    <span class="rt-jnl__cats-label">Topics</span>
+    <a href="{{ blog.url }}"
+       class="rt-jnl__pill{%- unless current_tags.size > 0 %} is-active{%- endunless -%}">
+      All
+    </a>
+    {%- for tag in blog.all_tags -%}
+      <a href="{{ blog.url }}/tagged/{{ tag | handle }}"
+         class="rt-jnl__pill{%- if current_tags contains tag %} is-active{%- endif -%}">
+        {{ tag | escape }}
+      </a>
+    {%- endfor -%}
+  </div>
+
+  {%- comment %} Count / search / sort row {%- endcomment %}
+  <div class="rt-jnl__filter-bar">
+    <span class="rt-jnl__count" id="rt-jnl-count">{{ paginate.items }} {{ paginate.items | pluralize: 'entry', 'entries' }}</span>
+
+    <label class="rt-jnl__search-wrap" for="rt-jnl-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text"
+             id="rt-jnl-search"
+             class="rt-jnl__search-input"
+             placeholder="Search the journal"
+             autocomplete="off"
+             aria-label="Search articles">
+      <button type="button" id="rt-jnl-search-clear" class="rt-jnl__search-clear" aria-label="Clear search">✕</button>
+    </label>
+
+    <div class="rt-jnl__sort-wrap">
+      <span class="rt-jnl__sort-label">Sort</span>
+      <select id="rt-jnl-sort" class="rt-jnl__sort-select" aria-label="Sort articles">
+        <option value="new">Newest</option>
+        <option value="read-asc">Quickest read</option>
+        <option value="read-desc">Longest read</option>
+      </select>
+    </div>
+  </div>
+
+</div>
+
+{%- comment %} Article grid {%- endcomment %}
+<div class="rt-jnl__grid-wrap">
+  <div class="rt-jnl__grid" id="rt-jnl-grid">
+
+    {%- for article in blog.articles -%}
+      {%- unless forloop.first and paginate.current_page == 1 -%}
+        {%- assign words = article.content | strip_html | split: ' ' | size -%}
+        {%- assign read_min = words | divided_by: 200 | at_least: 1 -%}
+        {%- assign first_tag = article.tags.first | default: '' -%}
+
+        <article class="rt-jnl__card"
+                 data-title="{{ article.title | downcase | escape }}"
+                 data-dek="{{ article.excerpt | default: article.content | strip_html | truncate: 300 | downcase | escape }}"
+                 data-author="{{ article.author | downcase | escape }}"
+                 data-tags="{{ article.tags | join: ',' | downcase | escape }}"
+                 data-readtime="{{ read_min }}">
+          <a href="{{ article.url }}" class="rt-jnl__card-link">
+
+            <div class="rt-jnl__card-media">
+              {%- if article.image -%}
+                <img
+                  src="{{ article.image | image_url: width: 700 }}"
+                  srcset="{{ article.image | image_url: width: 400 }} 400w,
+                          {{ article.image | image_url: width: 700 }} 700w"
+                  sizes="(max-width: 749px) 50vw, 33vw"
+                  alt="{{ article.image.alt | escape }}"
+                  class="rt-jnl__card-img"
+                  loading="lazy"
+                  decoding="async"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}">
+              {%- else -%}
+                <div class="rt-jnl__card-placeholder">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
+                  </svg>
+                </div>
+              {%- endif -%}
+              {%- if first_tag != '' -%}
+                <span class="rt-jnl__card-tag-badge">{{ first_tag | escape }}</span>
+              {%- endif -%}
+            </div>
+
+            <div class="rt-jnl__card-body">
+              <h2 class="rt-jnl__card-title">{{ article.title | escape }}</h2>
+              {%- if section.settings.show_excerpt -%}
+                {%- assign card_excerpt = article.excerpt | default: article.content -%}
+                {%- if card_excerpt != blank -%}
+                  <p class="rt-jnl__card-dek">{{ card_excerpt | strip_html | truncate: 140 }}</p>
+                {%- endif -%}
+              {%- endif -%}
+              <div class="rt-jnl__card-foot">
+                <div class="rt-jnl__card-meta">
+                  <time class="rt-jnl__card-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    {{ article.published_at | date: '%b %-d, %Y' }}
+                  </time>
+                  <span class="rt-jnl__meta-dot">·</span>
+                  <span class="rt-jnl__card-read">{{ read_min }} min</span>
+                </div>
+                <span class="rt-jnl__card-arrow">
+                  Read <span class="rt-jnl__card-arrow-icon">→</span>
+                </span>
+              </div>
+            </div>
+
+          </a>
+        </article>
+
+      {%- endunless -%}
+    {%- endfor -%}
+
+  </div>
+
+  {%- comment %} Empty state (shown by JS when search finds nothing) {%- endcomment %}
+  <div class="rt-jnl__empty" id="rt-jnl-empty" hidden>
+    <span class="rt-jnl__empty-deva">रंगतारिणी</span>
+    <p class="rt-jnl__empty-title">Nothing filed here.</p>
+    <p class="rt-jnl__empty-msg">No entries match this search. Clear it to read the full journal.</p>
+  </div>
+
+</div>
+
+{%- comment %} Pagination {%- endcomment %}
+{%- if paginate.pages > 1 -%}
+  <div class="rt-jnl__pag">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" class="rt-jnl__pag-link">← Previous</a>
+    {%- else -%}
+      <span></span>
+    {%- endif -%}
+    <span class="rt-jnl__pag-info">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" class="rt-jnl__pag-link">Next →</a>
+    {%- else -%}
+      <span></span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
 {%- endpaginate -%}
+
+<script>
+(function () {
+  var grid      = document.getElementById('rt-jnl-grid');
+  var emptyEl   = document.getElementById('rt-jnl-empty');
+  var searchIn  = document.getElementById('rt-jnl-search');
+  var clearBtn  = document.getElementById('rt-jnl-search-clear');
+  var sortSel   = document.getElementById('rt-jnl-sort');
+  var countEl   = document.getElementById('rt-jnl-count');
+
+  if (!grid || !searchIn) return;
+
+  var allCards = Array.from(grid.querySelectorAll('.rt-jnl__card'));
+
+  function applyFilters() {
+    var q = searchIn.value.trim().toLowerCase();
+
+    /* filter */
+    var visible = allCards.filter(function (c) {
+      if (!q) return true;
+      return (
+        (c.dataset.title  || '').indexOf(q) !== -1 ||
+        (c.dataset.dek    || '').indexOf(q) !== -1 ||
+        (c.dataset.author || '').indexOf(q) !== -1 ||
+        (c.dataset.tags   || '').indexOf(q) !== -1
+      );
+    });
+
+    /* sort */
+    var sortVal = sortSel ? sortSel.value : 'new';
+    if (sortVal === 'read-asc') {
+      visible = visible.slice().sort(function (a, b) { return +a.dataset.readtime - +b.dataset.readtime; });
+    } else if (sortVal === 'read-desc') {
+      visible = visible.slice().sort(function (a, b) { return +b.dataset.readtime - +a.dataset.readtime; });
+    }
+
+    /* apply visibility + reorder */
+    allCards.forEach(function (c) { c.hidden = true; });
+    visible.forEach(function (c) { c.hidden = false; grid.appendChild(c); });
+
+    /* empty state */
+    if (emptyEl) emptyEl.hidden = visible.length > 0;
+
+    /* count */
+    if (countEl) {
+      countEl.textContent = visible.length + ' ' + (visible.length === 1 ? 'entry' : 'entries');
+    }
+
+    /* clear button */
+    if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+  }
+
+  searchIn.addEventListener('input', applyFilters);
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      searchIn.value = '';
+      applyFilters();
+      searchIn.focus();
+    });
+  }
+
+  if (sortSel) sortSel.addEventListener('change', applyFilters);
+}());
+</script>
 
 {% schema %}
 {
@@ -522,16 +926,28 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow label",
-      "default": "— The Journal"
+      "default": "Stories & Guides"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Journal intro copy",
+      "default": "Notes from the karkhana — what we make, how we make it, and how to wear and keep it. Catalog-plain writing on craft, materials and the festive calendar."
+    },
+    {
+      "type": "text",
+      "id": "since_year",
+      "label": "Since year",
+      "default": "2026"
     },
     {
       "type": "range",
       "id": "articles_per_page",
       "label": "Articles per page",
       "min": 6,
-      "max": 18,
+      "max": 24,
       "step": 3,
-      "default": 9
+      "default": 12
     },
     {
       "type": "checkbox",
@@ -542,7 +958,7 @@
     {
       "type": "checkbox",
       "id": "show_excerpt",
-      "label": "Show excerpt on tiles",
+      "label": "Show excerpt on cards",
       "default": true
     }
   ]
