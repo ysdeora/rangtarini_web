@@ -1187,24 +1187,30 @@
 
         <!-- Tab 1: Specifications — spec rows populated by JS, static rows hardcoded -->
         <div class="rt-tab-panel" id="rt-tab-panel-{{ section.id }}-1" role="tabpanel">
-          <span class="rt-spec-section-hd">From the product</span>
-          <ul class="rt-spec-rows" id="rt-spec-rows-{{ section.id }}">
-            <!-- JS populates parsed highlights here -->
-            <li class="rt-spec-row">
-              <span class="rt-spec-row-k">SKU</span>
-              <span class="rt-spec-row-v">{{ product.variants.first.sku | default: '—' }}</span>
-            </li>
-            {%- if show_hallmark -%}
-            <li class="rt-spec-row">
-              <span class="rt-spec-row-k">Hallmark</span>
-              <span class="rt-spec-row-v">BIS 925</span>
-            </li>
-            {%- endif -%}
-            <li class="rt-spec-row">
-              <span class="rt-spec-row-k">Made in</span>
-              <span class="rt-spec-row-v">Jaipur, India</span>
-            </li>
-          </ul>
+          <button class="rt-mob-acc-btn" aria-expanded="false" onclick="rtAccToggle(this)">
+            <span class="rt-mob-acc-left"><span class="rt-mob-acc-num">02</span>Specifications</span>
+            <span class="rt-mob-acc-icon">+</span>
+          </button>
+          <div class="rt-acc-content">
+            <span class="rt-spec-section-hd">From the product</span>
+            <ul class="rt-spec-rows" id="rt-spec-rows-{{ section.id }}">
+              <!-- JS populates parsed highlights here -->
+              <li class="rt-spec-row">
+                <span class="rt-spec-row-k">SKU</span>
+                <span class="rt-spec-row-v">{{ product.variants.first.sku | default: '—' }}</span>
+              </li>
+              {%- if show_hallmark -%}
+              <li class="rt-spec-row">
+                <span class="rt-spec-row-k">Hallmark</span>
+                <span class="rt-spec-row-v">BIS 925</span>
+              </li>
+              {%- endif -%}
+              <li class="rt-spec-row">
+                <span class="rt-spec-row-k">Made in</span>
+                <span class="rt-spec-row-v">Jaipur, India</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- Tab 2: Care guide -->
