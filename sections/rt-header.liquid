@@ -814,14 +814,12 @@
       </div>
 
     {%- endfor -%}
-    {%- if shop.customer_accounts_enabled -%}
-      <div class="rt-hd__mobile-item">
-        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-           class="rt-hd__mobile-link">
-          {%- if customer -%}{{ 'customer.account.title' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}
-        </a>
-      </div>
-    {%- endif -%}
+    <div class="rt-hd__mobile-item">
+      <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+         class="rt-hd__mobile-link">
+        {%- if customer -%}{{ 'customer.account.title' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}
+      </a>
+    </div>
   </nav>
 
   {%- if settings.cart_type == 'notification' -%}
