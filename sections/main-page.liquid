@@ -1,37 +1,230 @@
-{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  main-page.liquid — Rangtarini editorial page template
+{%- endcomment -%}
 
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+/* ── Design tokens (self-contained) ── */
+:root {
+  --rt-paper:        #efece4;
+  --rt-paper-warm:   #e9e3d3;
+  --rt-ink:          #0a0a0a;
+  --rt-bone:         #cdc6b5;
+  --rt-gold:         #b59159;
+  --rt-font-grotesk: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --rt-font-serif:   "Cormorant Garamond", Georgia, serif;
+  --rt-font-mono:    ui-monospace, "SF Mono", Menlo, monospace;
+}
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
+body { background-color: var(--rt-paper); }
+
+/* ── Page wrapper ── */
+.rt-page-wrap { background: var(--rt-paper); }
+
+/* ── Masthead bar ── */
+.rt-page-masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 28px;
+  border-bottom: 1px solid var(--rt-ink);
+}
+.rt-page-masthead-label {
+  font-family: var(--rt-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rt-ink);
+  opacity: 0.5;
+}
+
+/* ── Title block ── */
+.rt-page-title-block {
+  padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 28px {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  border-bottom: 1px solid var(--rt-ink);
+}
+@media screen and (min-width: 750px) {
+  .rt-page-title-block {
+    padding: {{ section.settings.padding_top }}px 28px {{ section.settings.padding_bottom }}px;
   }
+}
+.rt-page-title {
+  font-family: var(--rt-font-grotesk);
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--rt-ink);
+  margin: 0;
+}
+
+/* ── Body layout ── */
+.rt-page-body-wrap {
+  padding: 56px 28px 96px;
+}
+.rt-page-body {
+  max-width: 680px;
+}
+
+/* ── RTE typography ── */
+.rt-page-body p {
+  font-family: var(--rt-font-grotesk);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--rt-ink);
+  margin: 0 0 1.5em;
+}
+.rt-page-body h2 {
+  font-family: var(--rt-font-grotesk);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--rt-ink);
+  margin: 3.2em 0 1.2em;
+  padding-top: 2.8em;
+  border-top: 1px solid var(--rt-ink);
+}
+.rt-page-body h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+.rt-page-body h3 {
+  font-family: var(--rt-font-grotesk);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--rt-ink);
+  margin: 2.4em 0 0.6em;
+}
+.rt-page-body h4 {
+  font-family: var(--rt-font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rt-ink);
+  opacity: 0.6;
+  margin: 2em 0 0.6em;
+}
+.rt-page-body a {
+  color: var(--rt-ink);
+  text-decoration-color: var(--rt-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+.rt-page-body a:hover { color: var(--rt-gold); }
+.rt-page-body strong { font-weight: 700; }
+.rt-page-body em { font-style: italic; }
+.rt-page-body blockquote {
+  border-left: 3px solid var(--rt-gold);
+  margin: 2.4em 0;
+  padding: 4px 0 4px 24px;
+  font-family: var(--rt-font-serif);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--rt-ink);
+}
+.rt-page-body ul,
+.rt-page-body ol {
+  font-family: var(--rt-font-grotesk);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--rt-ink);
+  margin: 0 0 1.5em;
+  padding: 0;
+  list-style: none;
+}
+.rt-page-body ul li,
+.rt-page-body ol li { margin-bottom: 0.5em; padding-left: 1.6em; position: relative; }
+.rt-page-body ul li::before {
+  content: "—";
+  position: absolute; left: 0;
+  color: var(--rt-gold);
+  font-family: var(--rt-font-mono);
+  font-size: 11px;
+}
+.rt-page-body ol { counter-reset: rt-ol; }
+.rt-page-body ol li::before {
+  counter-increment: rt-ol;
+  content: counter(rt-ol, decimal-leading-zero);
+  position: absolute; left: 0;
+  font-family: var(--rt-font-mono);
+  font-size: 10px;
+  color: var(--rt-gold);
+  top: 4px;
+}
+.rt-page-body hr {
+  border: none;
+  border-top: 1px solid var(--rt-ink);
+  margin: 3.2em 0;
+}
+.rt-page-body img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2.4em 0;
+}
+.rt-page-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--rt-font-grotesk);
+  font-size: 14px;
+  color: var(--rt-ink);
+  margin: 2.4em 0;
+}
+.rt-page-body th,
+.rt-page-body td {
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rt-bone);
+}
+.rt-page-body th {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--rt-ink);
+  padding-top: 0;
+}
+.rt-page-body td:first-child,
+.rt-page-body th:first-child { padding-left: 0; }
+
+/* ── Mobile ── */
+@media (max-width: 749px) {
+  .rt-page-masthead { padding: 12px 16px; }
+  .rt-page-title-block { padding-left: 16px; padding-right: 16px; }
+  .rt-page-title { font-size: clamp(32px, 8vw, 48px); }
+  .rt-page-body-wrap { padding: 40px 16px 72px; }
+}
 {%- endstyle -%}
 
-<div class="page-width page-width--narrow section-{{ section.id }}-padding">
-  <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-    {{ page.title | escape }}
-  </h1>
-  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    {{ page.content }}
+<div class="rt-page-wrap">
+
+  <div class="rt-page-masthead">
+    <span class="rt-page-masthead-label">— Page</span>
+    <span class="rt-page-masthead-label">{{ page.handle | replace: '-', ' ' }}</span>
   </div>
+
+  <div class="rt-page-title-block">
+    <h1 class="rt-page-title">{{ page.title | escape }}</h1>
+  </div>
+
+  <div class="rt-page-body-wrap">
+    <div class="rt-page-body rte">
+      {{ page.content }}
+    </div>
+  </div>
+
 </div>
 
 {% schema %}
 {
-  "name": "t:sections.main-page.name",
+  "name": "Page",
   "tag": "section",
   "class": "section",
   "settings": [
     {
       "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
+      "content": "Title block padding"
     },
     {
       "type": "range",
@@ -40,7 +233,7 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
+      "label": "Top padding",
       "default": 36
     },
     {
@@ -50,7 +243,7 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
+      "label": "Bottom padding",
       "default": 36
     }
   ]
