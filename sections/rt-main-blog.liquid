@@ -1,0 +1,550 @@
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+
+<style>
+  /* ── Shell ── */
+  .rt-blog {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+
+  /* ── Header ── */
+  .rt-blog__hd {
+    padding: 64px 28px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--rt-ink);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .rt-blog__eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    display: block;
+    margin: 0 0 12px;
+  }
+  .rt-blog__display {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: var(--rt-ink);
+    margin: 0;
+  }
+  .rt-blog__count {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--rt-ink);
+    opacity: 0.6;
+    align-self: flex-end;
+    padding-bottom: 6px;
+  }
+
+  /* ── Featured article (page 1) ── */
+  .rt-blog__featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-decoration: none;
+    color: var(--rt-ink);
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-blog__featured-media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+  }
+  .rt-blog__featured-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 600ms ease;
+  }
+  .rt-blog__featured:hover .rt-blog__featured-img { transform: scale(1.03); }
+  .rt-blog__featured-placeholder {
+    width: 100%;
+    height: 100%;
+    background: rgba(10,10,10,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rt-blog__featured-placeholder svg { opacity: 0.15; }
+  .rt-blog__featured-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: var(--rt-paper);
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 4px 9px;
+    color: var(--rt-ink);
+  }
+  .rt-blog__featured-copy {
+    padding: 56px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    border-left: 1px solid var(--rt-ink);
+  }
+  .rt-blog__tag {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--rt-ink);
+    opacity: 0.45;
+    display: block;
+    margin-bottom: 18px;
+  }
+  .rt-blog__featured-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(22px, 2.5vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--rt-ink);
+    margin: 0 0 18px;
+  }
+  .rt-blog__featured-excerpt {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--rt-ink);
+    opacity: 0.6;
+    margin: 0 0 22px;
+  }
+  .rt-blog__featured-meta {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.45;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .rt-blog__meta-sep { opacity: 0.5; }
+  .rt-blog__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 200px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rt-ink);
+    border-bottom: 1px solid var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    transition: opacity 200ms;
+  }
+  .rt-blog__cta span { transition: transform 200ms; }
+  .rt-blog__featured:hover .rt-blog__cta span { transform: translateX(4px); }
+  .rt-blog__featured:hover .rt-blog__cta { opacity: 0.65; }
+
+  /* ── Grid wrapper ── */
+  .rt-blog__grid-wrap {
+    padding: 0 28px;
+  }
+  .rt-blog__grid-hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--rt-ink);
+    margin-bottom: 28px;
+  }
+  .rt-blog__grid-label {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    opacity: 0.55;
+  }
+  .rt-blog__grid-count {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.38;
+  }
+
+  /* ── Grid ── */
+  .rt-blog__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    padding-bottom: 60px;
+  }
+
+  /* ── Tile ── */
+  .rt-blog__tile {
+    display: block;
+    text-decoration: none;
+    color: var(--rt-ink);
+  }
+  .rt-blog__tile-media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+    background: rgba(10,10,10,0.05);
+  }
+  .rt-blog__tile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 520ms ease;
+  }
+  .rt-blog__tile:hover .rt-blog__tile-img { transform: scale(1.04); }
+  .rt-blog__tile-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rt-blog__tile-placeholder svg { opacity: 0.15; }
+  .rt-blog__tile-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--rt-paper);
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 7px;
+    color: var(--rt-ink);
+    z-index: 2;
+  }
+  .rt-blog__tile-info {
+    padding-top: 16px;
+    border-top: 1px solid var(--rt-ink);
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rt-blog__tile-tag {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .rt-blog__tile-title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(14px, 1.3vw, 18px);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--rt-ink);
+    margin: 0 0 8px;
+  }
+  .rt-blog__tile-excerpt {
+    font-family: var(--rt-font-grotesk);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--rt-ink);
+    opacity: 0.55;
+    margin: 0 0 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .rt-blog__tile-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(10,10,10,0.12);
+    margin-top: auto;
+  }
+  .rt-blog__tile-date {
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.38;
+  }
+  .rt-blog__tile-arrow {
+    font-size: 14px;
+    transition: transform 200ms;
+    opacity: 0.6;
+  }
+  .rt-blog__tile:hover .rt-blog__tile-arrow { transform: translateX(4px); opacity: 1; }
+
+  /* ── Pagination ── */
+  .rt-blog__pag {
+    padding: 0 28px 60px;
+    border-top: 1px solid var(--rt-ink);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rt-blog__pag-link {
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rt-ink);
+    text-decoration: none;
+    opacity: 0.55;
+    transition: opacity 180ms;
+  }
+  .rt-blog__pag-link:hover { opacity: 1; }
+  .rt-blog__pag-info {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+    opacity: 0.38;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 990px) {
+    .rt-blog__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .rt-blog__featured-copy { padding: 40px 36px; }
+    .rt-blog__grid-wrap { padding: 0 20px; }
+    .rt-blog__pag { padding: 28px 20px 48px; }
+  }
+  @media (max-width: 749px) {
+    .rt-blog__hd { padding: 40px 16px 24px; }
+    .rt-blog__display { font-size: 40px; }
+    .rt-blog__featured { grid-template-columns: 1fr; }
+    .rt-blog__featured-media { aspect-ratio: 16 / 9; }
+    .rt-blog__featured-copy { padding: 28px 16px 32px; border-left: none; border-top: 1px solid var(--rt-ink); gap: 14px; }
+    .rt-blog__featured-title { font-size: 22px; }
+    .rt-blog__grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .rt-blog__tile-excerpt { display: none; }
+    .rt-blog__grid-wrap { padding: 0 16px; }
+    .rt-blog__pag { padding: 24px 16px 48px; }
+  }
+</style>
+
+<section class="rt-blog">
+
+  <div class="rt-blog__hd">
+    <div>
+      <span class="rt-blog__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      <h1 class="rt-blog__display">{{ blog.title | upcase }}.</h1>
+    </div>
+    <span class="rt-blog__count">{{ blog.articles_count }} articles</span>
+  </div>
+
+  {%- if paginate.current_page == 1 -%}
+    {%- for article in blog.articles limit: 1 -%}
+      <a href="{{ article.url }}" class="rt-blog__featured">
+
+        <div class="rt-blog__featured-media">
+          {%- if article.image -%}
+            <img
+              src="{{ article.image | image_url: width: 1200 }}"
+              srcset="{{ article.image | image_url: width: 600 }} 600w,
+                      {{ article.image | image_url: width: 1000 }} 1000w,
+                      {{ article.image | image_url: width: 1400 }} 1400w"
+              sizes="(max-width: 749px) 100vw, 50vw"
+              alt="{{ article.image.alt | escape }}"
+              class="rt-blog__featured-img"
+              loading="eager"
+              fetchpriority="high"
+              width="{{ article.image.width }}"
+              height="{{ article.image.height }}">
+          {%- else -%}
+            <div class="rt-blog__featured-placeholder">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
+              </svg>
+            </div>
+          {%- endif -%}
+          <span class="rt-blog__featured-badge">Featured · 01 / {{ blog.articles_count | prepend: '0' | slice: -2, 2 }}</span>
+        </div>
+
+        <div class="rt-blog__featured-copy">
+          {%- if article.tags.size > 0 -%}
+            <span class="rt-blog__tag">{{ article.tags.first | escape }}</span>
+          {%- endif -%}
+          <h2 class="rt-blog__featured-title">{{ article.title | escape }}</h2>
+          {%- assign feat_excerpt = article.excerpt | default: article.content -%}
+          {%- if feat_excerpt != blank -%}
+            <p class="rt-blog__featured-excerpt">{{ feat_excerpt | strip_html | truncate: 200 }}</p>
+          {%- endif -%}
+          <div class="rt-blog__featured-meta">
+            <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %-d, %Y' }}</time>
+            {%- if section.settings.show_author and article.author != blank -%}
+              <span class="rt-blog__meta-sep">·</span>
+              <span>{{ article.author }}</span>
+            {%- endif -%}
+          </div>
+          <span class="rt-blog__cta">Read Article <span>→</span></span>
+        </div>
+
+      </a>
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- assign show_grid = false -%}
+  {%- if paginate.current_page == 1 and blog.articles_count > 1 -%}
+    {%- assign show_grid = true -%}
+  {%- elsif paginate.current_page > 1 -%}
+    {%- assign show_grid = true -%}
+  {%- endif -%}
+
+  {%- if show_grid -%}
+    <div class="rt-blog__grid-wrap">
+      <div class="rt-blog__grid-hd">
+        {%- if paginate.current_page == 1 -%}
+          <span class="rt-blog__grid-label">More from the journal</span>
+          <span class="rt-blog__grid-count">{{ blog.articles_count | minus: 1 }} more</span>
+        {%- else -%}
+          <span class="rt-blog__grid-label">{{ blog.title | upcase }}</span>
+          <span class="rt-blog__grid-count">Page {{ paginate.current_page }} / {{ paginate.pages }}</span>
+        {%- endif -%}
+      </div>
+
+      <div class="rt-blog__grid">
+        {%- for article in blog.articles -%}
+          {%- unless forloop.first and paginate.current_page == 1 -%}
+            {%- assign art_num = paginate.current_offset | plus: forloop.index -%}
+            <a href="{{ article.url }}" class="rt-blog__tile">
+
+              <div class="rt-blog__tile-media">
+                {%- if article.image -%}
+                  <img
+                    src="{{ article.image | image_url: width: 700 }}"
+                    srcset="{{ article.image | image_url: width: 400 }} 400w,
+                            {{ article.image | image_url: width: 700 }} 700w"
+                    sizes="(max-width: 749px) 50vw, 33vw"
+                    alt="{{ article.image.alt | escape }}"
+                    class="rt-blog__tile-img"
+                    loading="lazy"
+                    decoding="async"
+                    width="{{ article.image.width }}"
+                    height="{{ article.image.height }}">
+                {%- else -%}
+                  <div class="rt-blog__tile-placeholder">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                      <rect x="3" y="3" width="18" height="18"/><path d="M3 9l4-4 4 4 4-4 4 4"/><circle cx="8" cy="14" r="2"/>
+                    </svg>
+                  </div>
+                {%- endif -%}
+                <span class="rt-blog__tile-badge">{{ art_num | prepend: '0' | slice: -2, 2 }} / {{ blog.articles_count | prepend: '0' | slice: -2, 2 }}</span>
+              </div>
+
+              <div class="rt-blog__tile-info">
+                {%- if article.tags.size > 0 -%}
+                  <span class="rt-blog__tile-tag">{{ article.tags.first | escape }}</span>
+                {%- endif -%}
+                <h2 class="rt-blog__tile-title">{{ article.title | escape }}</h2>
+                {%- if section.settings.show_excerpt -%}
+                  {%- assign tile_excerpt = article.excerpt | default: article.content -%}
+                  {%- if tile_excerpt != blank -%}
+                    <p class="rt-blog__tile-excerpt">{{ tile_excerpt | strip_html | truncate: 110 }}</p>
+                  {%- endif -%}
+                {%- endif -%}
+                <div class="rt-blog__tile-foot">
+                  <time class="rt-blog__tile-date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    {{ article.published_at | date: '%b %-d, %Y' }}
+                  </time>
+                  <span class="rt-blog__tile-arrow">→</span>
+                </div>
+              </div>
+
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if paginate.pages > 1 -%}
+    <div class="rt-blog__pag">
+      {%- if paginate.previous -%}
+        <a href="{{ paginate.previous.url }}" class="rt-blog__pag-link">← Previous</a>
+      {%- else -%}
+        <span></span>
+      {%- endif -%}
+      <span class="rt-blog__pag-info">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="rt-blog__pag-link">Next →</a>
+      {%- else -%}
+        <span></span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+</section>
+
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "RT Blog",
+  "class": "rt-blog-section",
+  "presets": [{ "name": "RT Blog" }],
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "— The Journal"
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 6,
+      "max": 18,
+      "step": 3,
+      "default": 9
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt on tiles",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
