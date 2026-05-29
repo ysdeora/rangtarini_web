@@ -1365,7 +1365,7 @@
     </div>
     <div class="rt-sticky-info">
       <span class="rt-sticky-name">{{ product.title }}</span>
-      <span class="rt-sticky-sub" id="rt-sticky-sub-{{ section.id }}">{{ current_variant.title | default: '' }}</span>
+      <span class="rt-sticky-sub" id="rt-sticky-sub-{{ section.id }}">{% unless current_variant.title == 'Default Title' %}{{ current_variant.title }}{% endunless %}</span>
     </div>
     <div class="rt-sticky-price" id="rt-sticky-price-{{ section.id }}">
       {{ current_variant.price | money }}
