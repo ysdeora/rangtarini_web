@@ -1162,18 +1162,24 @@
       <div class="rt-tab-panels">
 
         <!-- Tab 0: Description — populated by JS -->
-        <div class="rt-tab-panel is-active" id="rt-tab-panel-{{ section.id }}-0" role="tabpanel">
-          <div class="rt-desc-panel">
-            <div>
-              <p class="rt-desc-lead" id="rt-desc-lead-{{ section.id }}">{{ product.title }}.</p>
-              <div id="rt-desc-body-{{ section.id }}"></div>
-            </div>
-            <div>
-              <span class="rt-worn-hd">Worn for —</span>
-              <div class="rt-tags-wrap">
-                {%- for tag in product.tags limit: 12 -%}
-                  <span class="rt-tag">{{ tag }}</span>
-                {%- endfor -%}
+        <div class="rt-tab-panel is-active is-open" id="rt-tab-panel-{{ section.id }}-0" role="tabpanel">
+          <button class="rt-mob-acc-btn" aria-expanded="true" onclick="rtAccToggle(this)">
+            <span class="rt-mob-acc-left"><span class="rt-mob-acc-num">01</span>Description</span>
+            <span class="rt-mob-acc-icon">+</span>
+          </button>
+          <div class="rt-acc-content">
+            <div class="rt-desc-panel">
+              <div>
+                <p class="rt-desc-lead" id="rt-desc-lead-{{ section.id }}">{{ product.title }}.</p>
+                <div id="rt-desc-body-{{ section.id }}"></div>
+              </div>
+              <div>
+                <span class="rt-worn-hd">Worn for —</span>
+                <div class="rt-tags-wrap">
+                  {%- for tag in product.tags limit: 12 -%}
+                    <span class="rt-tag">{{ tag }}</span>
+                  {%- endfor -%}
+                </div>
               </div>
             </div>
           </div>
