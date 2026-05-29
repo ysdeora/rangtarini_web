@@ -3,8 +3,10 @@
     "main": {
       "type": "rt-main-blog",
       "settings": {
-        "eyebrow": "— The Journal",
-        "articles_per_page": 9,
+        "eyebrow": "Stories & Guides",
+        "description": "Notes from the karkhana — what we make, how we make it, and how to wear and keep it. Catalog-plain writing on craft, materials and the festive calendar.",
+        "since_year": "2026",
+        "articles_per_page": 12,
         "show_author": false,
         "show_excerpt": true
       }
