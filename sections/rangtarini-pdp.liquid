@@ -1628,7 +1628,7 @@
     window.addEventListener('scroll', function() {
       if (ticking) return; ticking = true;
       requestAnimationFrame(function() {
-        stickyEl.classList.toggle('is-visible', window.scrollY > 700);
+        stickyEl.classList.toggle('is-visible', window.scrollY > Math.min(700, window.innerHeight - 150));
         ticking = false;
       });
     }, { passive: true });
