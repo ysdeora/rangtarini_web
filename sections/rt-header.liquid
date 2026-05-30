@@ -510,7 +510,26 @@
   }
 
   /* Product row (populated by AJAX section rendering) */
-  .cart-notification-product { min-height: 0; padding: 0; }
+  /* High specificity (1,1,0) required — component-cart-notification.css loads after this block and overrides equal-specificity rules */
+  #cart-notification .cart-notification-product { padding: 0; display: block; }
+
+  /* Skeleton shown while AJAX is in-flight */
+  #cart-notification[data-loading] #cart-notification-product {
+    min-height: 110px;
+    position: relative;
+  }
+  #cart-notification[data-loading] #cart-notification-product::after {
+    content: '';
+    position: absolute;
+    inset: 10px 16px;
+    background: var(--rt-ink);
+    opacity: 0.06;
+    animation: rt-cn-pulse 1s ease-in-out infinite;
+  }
+  @keyframes rt-cn-pulse {
+    0%, 100% { opacity: 0.06; }
+    50%       { opacity: 0.02; }
+  }
   .rt-cn-product {
     display: grid;
     grid-template-columns: 72px 1fr;
