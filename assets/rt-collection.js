@@ -233,5 +233,63 @@
   /* Price slider changes are applied via the global Apply button at sidebar bottom */
 
 
+  /* ══════════════════════════════════════════════════════════
+     QUICK ADD
+     Single-variant: POST /cart/add.js, publish PUB_SUB_EVENTS.cartUpdate.
+     Multi-variant: navigate to PDP (let the parent <a> handle it).
+  ══════════════════════════════════════════════════════════ */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.rt-quick-add');
+    if (!btn) return;
+
+    var isSingle = btn.dataset.singleVariant === 'true';
+
+    if (!isSingle) {
+      /* Multi-variant: let the parent <a> navigate naturally — do nothing */
+      return;
+    }
+
+    /* Single-variant: intercept the anchor and add directly to cart */
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (btn.disabled) return;
+
+    var variantId = btn.dataset.variantId;
+    var originalHTML = btn.innerHTML;
+
+    btn.disabled = true;
+    btn.textContent = 'Adding…';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.status) {
+        /* Shopify returned an error (e.g. out of stock race) */
+        btn.textContent = data.description || 'Unavailable';
+        setTimeout(function () { btn.innerHTML = originalHTML; btn.disabled = false; }, 2200);
+        return;
+      }
+      btn.textContent = 'Added ✓';
+      /* Fetch updated cart state and publish to Dawn's pub/sub so the header badge updates */
+      fetch('/cart.js')
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          if (typeof publish !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+            publish(PUB_SUB_EVENTS.cartUpdate, { cartData: cart, source: 'rt-quick-add' });
+          }
+        });
+      setTimeout(function () { btn.innerHTML = originalHTML; btn.disabled = false; }, 1800);
+    })
+    .catch(function () {
+      btn.textContent = 'Error';
+      setTimeout(function () { btn.innerHTML = originalHTML; btn.disabled = false; }, 2200);
+    });
+  });
+
 
 })();
