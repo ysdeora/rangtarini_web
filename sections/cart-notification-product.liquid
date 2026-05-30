@@ -4,7 +4,7 @@
       {%- if item.image -%}
         <a href="{{ item.url }}" class="rt-cn-product__img-link" aria-hidden="true" tabindex="-1">
           <img
-            src="{{ item.image | image_url: width: 200 }}"
+            src="{{ item.image | image_url: width: 144 }}"
             alt="{{ item.image.alt | escape }}"
             width="72"
             height="{{ 72 | divided_by: item.image.aspect_ratio | ceil }}"
