@@ -632,6 +632,9 @@
                     {%- if product.available -%}
                       <button type="button"
                               class="rt-quick-add"
+                              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                              data-single-variant="{{ product.has_only_default_variant }}"
+                              data-product-url="{{ product.url }}"
                               aria-label="{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}">
                         Quick add<span class="rt-quick-add-price"> &mdash; {{ product.price | money }}</span>
                       </button>
