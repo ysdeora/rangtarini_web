@@ -1026,8 +1026,11 @@
     });
   }
 
-  /* ── Hide on scroll down, reveal on scroll up ── */
+  /* ── Hide on scroll down, reveal on scroll up ──
+     The sticky element is the section wrapper (grid item), so toggle the
+     class there — not on .rt-hd-wrap, which can't stick on its own. */
   var hdWrap = document.querySelector('.rt-hd-wrap');
+  var hdSection = hdWrap ? hdWrap.closest('.shopify-section') : null;
   var lastScrollY = window.scrollY;
   var scrollTicking = false;
   var HD_THRESHOLD = 80;
@@ -1040,11 +1043,11 @@
       var isSearchOpen = searchPanel && searchPanel.classList.contains('is-open');
       var isMobileOpen = mobileNav && !mobileNav.hidden;
 
-      if (hdWrap && !isSearchOpen && !isMobileOpen) {
+      if (hdSection && !isSearchOpen && !isMobileOpen) {
         if (y > lastScrollY && y > HD_THRESHOLD) {
-          hdWrap.classList.add('rt-hd--hidden');
+          hdSection.classList.add('rt-hd--hidden');
         } else {
-          hdWrap.classList.remove('rt-hd--hidden');
+          hdSection.classList.remove('rt-hd--hidden');
         }
       }
 
