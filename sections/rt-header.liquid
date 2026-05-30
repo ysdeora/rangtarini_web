@@ -994,6 +994,26 @@
 }());
 </script>
 
+<script>
+/* Update the cart notification subtotal row whenever a cart add fires */
+document.addEventListener('DOMContentLoaded', function() {
+  subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
+    if (!event || !event.cartData) return;
+    var data = event.cartData;
+    var subtotalEl = document.querySelector('.rt-cn-subtotal');
+    if (!subtotalEl) return;
+    var count = data.item_count || 0;
+    var paise = data.total_price || 0;
+    var label = subtotalEl.querySelector('.rt-cn-subtotal__label');
+    var price = subtotalEl.querySelector('.rt-cn-subtotal__price');
+    if (label) label.textContent = 'Bag subtotal — ' + count + ' ' + (count === 1 ? 'item' : 'items');
+    if (price) price.textContent = Shopify && Shopify.formatMoney
+      ? Shopify.formatMoney(paise, window.Shopify.money_format || 'Rs. {{amount}}')
+      : 'Rs. ' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  });
+});
+</script>
+
 {% schema %}
 {
   "name": "Header",
