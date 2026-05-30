@@ -1248,6 +1248,19 @@
                   </div>
                 </div>
 
+                {%- if settings.show_cart_note -%}
+                  <cart-note class="rt-cart__note">
+                    <label for="Cart-note" class="rt-cart__note-label">{{ 'sections.cart.note' | t }}</label>
+                    <textarea
+                      class="rt-cart__note-input"
+                      name="note"
+                      form="cart"
+                      id="Cart-note"
+                      placeholder="{{ 'sections.cart.note' | t }}"
+                    >{{ cart.note }}</textarea>
+                  </cart-note>
+                {%- endif -%}
+
                 <div class="rt-cart__summary-actions">
                   <button
                     type="submit"
