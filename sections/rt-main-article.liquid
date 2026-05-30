@@ -574,7 +574,7 @@
               {{ article.content }}
             </div>
 
-            {%- if article.author != blank -%}
+            {%- if article.author != blank and block.settings.show_author -%}
               <div class="rt-art__author">
                 <div class="rt-art__author-ava" aria-hidden="true">
                   {{- article.author | split: ' ' | first | slice: 0, 1 | upcase -}}{{- article.author | split: ' ' | last | slice: 0, 1 | upcase -}}
