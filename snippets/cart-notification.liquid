@@ -10,51 +10,64 @@
 {% endcomment %}
 
 <cart-notification>
-  <div class="cart-notification-wrapper{% if desktop_menu_type != 'drawer' %} page-width{% endif %}">
+  <div class="cart-notification-wrapper">
     <div
       id="cart-notification"
-      class="cart-notification focus-inset{% if color_scheme %} color-{{ color_scheme }} gradient{% endif %}"
+      class="cart-notification focus-inset"
       aria-modal="true"
       aria-label="{{ 'general.cart.item_added' | t }}"
       role="dialog"
       tabindex="-1"
     >
+      {{- 'component-cart-notification.css' | asset_url | stylesheet_tag -}}
+
+      {%- comment -%} Header row: circle checkmark + "Added to your bag" + close × {%- endcomment -%}
       <div class="cart-notification__header">
-        <h2 class="cart-notification__heading caption-large text-body">
-          {{- 'icon-checkmark.svg' | inline_asset_content -}}
+        <span class="cart-notification__heading">
+          <span class="rt-cn__check-circle" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
           {{ 'general.cart.item_added' | t }}
-        </h2>
+        </span>
         <button
           type="button"
-          class="cart-notification__close modal__close-button link link--text focus-inset"
+          class="cart-notification__close"
           aria-label="{{ 'accessibility.close' | t }}"
         >
-          <span class="svg-wrapper">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </span>
+          <span class="svg-wrapper">{{- 'icon-close.svg' | inline_asset_content -}}</span>
         </button>
       </div>
+
+      {%- comment -%} Product row — AJAX-updated by cart-notification.js {%- endcomment -%}
       <div id="cart-notification-product" class="cart-notification-product"></div>
+
+      {%- comment -%} Subtotal row — updated via cartUpdate PubSub subscriber {%- endcomment -%}
+      <div class="rt-cn-subtotal">
+        <span class="rt-cn-subtotal__label">{{ 'general.cart.view_empty_cart' | t }}</span>
+        <span class="rt-cn-subtotal__price">{{ cart.total_price | money }}</span>
+      </div>
+
+      {%- comment -%} Actions {%- endcomment -%}
       <div class="cart-notification__links">
         <a
           href="{{ routes.cart_url }}"
           id="cart-notification-button"
-          class="button button--secondary button--full-width"
+          class="rt-cn-btn rt-cn-btn--outline"
         >
-          {{- 'general.cart.view_empty_cart' | t -}}
+          {{- 'general.cart.view_bag' | t: count: cart.item_count -}}
         </a>
         <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form">
-          <button class="button button--primary button--full-width" name="checkout">
-            {{ 'sections.cart.checkout' | t }}
+          <button class="rt-cn-btn rt-cn-btn--solid" name="checkout">
+            {{ 'sections.cart.checkout' | t }} →
           </button>
         </form>
-        <button type="button" class="link button-label">{{ 'general.continue_shopping' | t }}</button>
+        <button type="button" class="rt-cn-btn rt-cn-btn--ghost">{{ 'general.continue_shopping' | t }}</button>
       </div>
     </div>
   </div>
 </cart-notification>
 {% style %}
-  .cart-notification {
-    display: none;
-  }
+  .cart-notification { display: none; }
 {% endstyle %}
