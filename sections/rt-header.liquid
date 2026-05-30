@@ -998,21 +998,41 @@
 </script>
 
 <script>
-/* Update the cart notification subtotal row whenever a cart add fires */
+/* Update cart notification subtotal and header cart count badge on cart change */
 document.addEventListener('DOMContentLoaded', function() {
   subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
     if (!event || !event.cartData) return;
     var data = event.cartData;
-    var subtotalEl = document.querySelector('.rt-cn-subtotal');
-    if (!subtotalEl) return;
     var count = data.item_count || 0;
     var paise = data.total_price || 0;
-    var label = subtotalEl.querySelector('.rt-cn-subtotal__label');
-    var price = subtotalEl.querySelector('.rt-cn-subtotal__price');
-    if (label) label.textContent = 'Bag subtotal — ' + count + ' ' + (count === 1 ? 'item' : 'items');
-    if (price) price.textContent = Shopify && Shopify.formatMoney
-      ? Shopify.formatMoney(paise, window.Shopify.money_format || 'Rs. {{amount}}')
-      : 'Rs. ' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    /* Subtotal row inside notification */
+    var subtotalEl = document.querySelector('.rt-cn-subtotal');
+    if (subtotalEl) {
+      var label = subtotalEl.querySelector('.rt-cn-subtotal__label');
+      var price = subtotalEl.querySelector('.rt-cn-subtotal__price');
+      if (label) label.textContent = 'Bag subtotal — ' + count + ' ' + (count === 1 ? 'item' : 'items');
+      if (price) price.textContent = Shopify && Shopify.formatMoney
+        ? Shopify.formatMoney(paise, window.Shopify.money_format || 'Rs. {{amount}}')
+        : 'Rs. ' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    /* Header cart count badge */
+    var cartIcon = document.querySelector('.rt-hd__icon--cart');
+    if (cartIcon) {
+      var badge = cartIcon.querySelector('.rt-hd__cart-count');
+      if (count > 0) {
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'rt-hd__cart-count';
+          badge.setAttribute('aria-hidden', 'true');
+          cartIcon.appendChild(badge);
+        }
+        badge.textContent = count;
+      } else if (badge) {
+        badge.remove();
+      }
+    }
   });
 });
 </script>
