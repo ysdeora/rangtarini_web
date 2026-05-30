@@ -27,6 +27,12 @@ class CartNotification extends HTMLElement {
     document.body.addEventListener('click', this.onBodyClick);
   }
 
+  openPending() {
+    this.notification.setAttribute('data-loading', '');
+    this.notification.classList.add('animate', 'active');
+    document.body.addEventListener('click', this.onBodyClick);
+  }
+
   close() {
     this.notification.classList.remove('active');
     document.body.removeEventListener('click', this.onBodyClick);
