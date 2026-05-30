@@ -1,6 +1,6 @@
 {%- if cart != empty -%}
   {%- for item in cart.items -%}
-    <div id="cart-notification-product-{{ item.key }}" class="cart-item rt-cn-product">
+    <div id="cart-notification-product-{{ item.key }}" class="rt-cn-product">
       {%- if item.image -%}
         <a href="{{ item.url }}" class="rt-cn-product__img-link" aria-hidden="true" tabindex="-1">
           <img
