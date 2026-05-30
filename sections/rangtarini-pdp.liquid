@@ -1635,20 +1635,6 @@
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLb(); });
   }
 
-  /* ─── Toast ──────────────────────────────────────────────── */
-  window.rtToastHide = function(sid) {
-    var t = document.getElementById('rt-toast-' + sid);
-    if (t) t.classList.remove('is-visible');
-  };
-  var mainForm = document.getElementById('rt-form-' + SEC);
-  if (mainForm) {
-    mainForm.addEventListener('submit', function() {
-      var toast = document.getElementById('rt-toast-' + SEC);
-      if (!toast) return;
-      toast.classList.add('is-visible');
-      setTimeout(function(){ toast.classList.remove('is-visible'); }, 2800);
-    });
-  }
 
 
   /* ─── Init on DOMContentLoaded ──────────────────────────── */
