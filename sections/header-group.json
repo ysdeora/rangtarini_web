@@ -4,7 +4,48 @@
   "sections": {
     "rt_ticker_hd": {
       "type": "rt-ticker",
-      "settings": {}
+      "blocks": {
+        "ticker_text_1": {
+          "type": "text",
+          "settings": { "text": "Free Shipping — Pan-India" }
+        },
+        "ticker_deva_1": {
+          "type": "deva",
+          "settings": { "text": "रंगतारिणी" }
+        },
+        "ticker_text_2": {
+          "type": "text",
+          "settings": { "text": "BIS Hallmarked — 925 Silver" }
+        },
+        "ticker_text_3": {
+          "type": "text",
+          "settings": { "text": "7-Day Exchange" }
+        },
+        "ticker_deva_2": {
+          "type": "deva",
+          "settings": { "text": "रंगतारिणी" }
+        },
+        "ticker_text_4": {
+          "type": "text",
+          "settings": { "text": "Lifetime Polish & Resizing" }
+        },
+        "ticker_deva_3": {
+          "type": "deva",
+          "settings": { "text": "रंगतारिणी" }
+        }
+      },
+      "block_order": [
+        "ticker_text_1",
+        "ticker_deva_1",
+        "ticker_text_2",
+        "ticker_text_3",
+        "ticker_deva_2",
+        "ticker_text_4",
+        "ticker_deva_3"
+      ],
+      "settings": {
+        "speed": 60
+      }
     },
     "rt_header": {
       "type": "rt-header",
