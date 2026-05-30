@@ -58,6 +58,7 @@ class CartNotification extends HTMLElement {
       },
       {
         id: 'cart-notification-subtotal',
+        selector: '.rt-cn-subtotal',
       },
       {
         id: 'cart-icon-bubble',
