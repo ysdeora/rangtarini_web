@@ -523,7 +523,14 @@
 
   /* Product row (populated by AJAX section rendering) */
   /* High specificity (1,1,0) required — component-cart-notification.css loads after this block and overrides equal-specificity rules */
-  #cart-notification .cart-notification-product { padding: 0; display: block; }
+  /* Grid + padding live on the persistent container (#cart-notification-product), not
+     .rt-cn-product — cart-notification.js injects the wrapper's innerHTML, stripping .rt-cn-product. */
+  #cart-notification .cart-notification-product {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 16px;
+    padding: 20px;
+  }
 
   /* Skeleton shown while AJAX is in-flight */
   #cart-notification[data-loading] #cart-notification-product {
