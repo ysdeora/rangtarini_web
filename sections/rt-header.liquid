@@ -1,14 +1,21 @@
 <style>
-  .rt-hd-wrap {
-    background: var(--rt-paper);
-    border-bottom: 1px solid var(--rt-ink);
+  /* Sticky lives on the section wrapper (grid item), not .rt-hd-wrap.
+     The <body> is a CSS grid, so each section's grid-item wrapper is the
+     containing block for sticky — only it has room to stick across the page. */
+  #shopify-section-{{ section.id }} {
     position: sticky;
     top: 0;
     z-index: 100;
-    transition: top 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .rt-hd-wrap.rt-hd--hidden {
-    top: -61px;
+  #shopify-section-{{ section.id }}.rt-hd--hidden {
+    transform: translateY(-100%);
+  }
+  .rt-hd-wrap {
+    background: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-ink);
+    position: relative;
+    z-index: 100;
   }
 
   /* 3-col grid */
