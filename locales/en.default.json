@@ -45,6 +45,7 @@
     "cart": {
       "view": "View cart ({{ count }})",
       "view_empty_cart": "View cart",
+      "view_bag": "View bag ({{ count }})",
       "item_added": "Item added to your cart"
     },
     "share": {
