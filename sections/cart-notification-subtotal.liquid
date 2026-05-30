@@ -1,1 +1,4 @@
-{{ cart.total_price | money }}
+<div class="rt-cn-subtotal">
+  <span class="rt-cn-subtotal__label">{{ 'general.cart.bag_subtotal' | t: count: cart.item_count }}</span>
+  <span class="rt-cn-subtotal__price">{{ cart.total_price | money }}</span>
+</div>
