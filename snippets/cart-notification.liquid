@@ -44,9 +44,9 @@
       <div id="cart-notification-product" class="cart-notification-product"></div>
 
       {%- comment -%} Subtotal row — updated via cartUpdate PubSub subscriber {%- endcomment -%}
-      <div class="rt-cn-subtotal">
-        <span class="rt-cn-subtotal__label">{{ 'sections.cart.subtotal' | t }}</span>
-        <span id="cart-notification-subtotal" class="rt-cn-subtotal__price">{{ cart.total_price | money }}</span>
+      <div id="cart-notification-subtotal" class="rt-cn-subtotal">
+        <span class="rt-cn-subtotal__label">{{ 'general.cart.bag_subtotal' | t: count: cart.item_count }}</span>
+        <span class="rt-cn-subtotal__price">{{ cart.total_price | money }}</span>
       </div>
 
       {%- comment -%} Actions {%- endcomment -%}
