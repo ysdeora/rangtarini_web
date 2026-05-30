@@ -907,6 +907,9 @@
     </div>
   {%- endif -%}
 
+  {%- comment -%} Required by cart-notification.js — absorbs section render without affecting UI {%- endcomment -%}
+  <span id="cart-icon-bubble" aria-hidden="true" style="display:none"></span>
+
 </div>
 
 {%- if settings.cart_type == 'notification' -%}
