@@ -578,6 +578,35 @@
     font-weight: 700;
     color: #7a5e2c;
   }
+  .rt-cart__note {
+    padding: 12px 20px;
+    border-top: 1px solid var(--rt-ink);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .rt-cart__note-label {
+    font-family: var(--rt-font-mono, monospace);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--rt-ink);
+    opacity: 0.65;
+  }
+  .rt-cart__note-input {
+    font-family: var(--rt-font-grotesk, sans-serif);
+    font-size: 13px;
+    background: var(--rt-paper, #efece4);
+    color: var(--rt-ink, #0a0a0a);
+    border: 1px solid var(--rt-ink, #0a0a0a);
+    padding: 10px 12px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .rt-cart__note-input:focus { outline: 2px solid var(--rt-ink); }
   .rt-cart__summary-actions {
     padding: 0 20px 20px;
     display: flex;
