@@ -1362,19 +1362,6 @@
     </button>
   </div>
 
-  <!-- Toast -->
-  <div class="rt-toast" id="rt-toast-{{ section.id }}" role="status" aria-live="polite">
-    <div class="rt-toast-thumb">
-      {%- if product.featured_image -%}
-        <img src="{{ product.featured_image | image_url: width: 160 }}" alt="{{ product.title | escape }}" loading="lazy">
-      {%- endif -%}
-    </div>
-    <div class="rt-toast-copy">
-      <span class="rt-toast-title">Added to bag.</span>
-      <span class="rt-toast-sub">{{ product.title }} · Free polish for life</span>
-    </div>
-    <button class="rt-toast-close" aria-label="Close" onclick="rtToastHide('{{ section.id }}')">✕</button>
-  </div>
 
 </div>
 
