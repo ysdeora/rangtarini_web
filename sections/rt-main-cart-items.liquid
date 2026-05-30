@@ -23,6 +23,14 @@
       if (numEl) numEl.textContent = (count < 10 ? '0' : '') + count;
       if (labelEl) labelEl.textContent = count === 1 ? 'Piece' : 'Pieces';
     });
+
+    /* Prevent the cart-note textarea's change event from bubbling to <cart-items>,
+       which would trigger validateQuantity on a non-quantity input and show
+       "you can only add in increments of undefined". */
+    var cartNote = document.querySelector('cart-note');
+    if (cartNote) {
+      cartNote.addEventListener('change', function(e) { e.stopPropagation(); });
+    }
   });
 </script>
 
