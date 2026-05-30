@@ -662,32 +662,6 @@
   display: inline-flex; align-items: center; gap: 12px; white-space: nowrap;
 }
 
-/* ══════════════════════════════════════════
-   TOAST
-   ══════════════════════════════════════════ */
-.rt-toast {
-  position: fixed; left: 28px; bottom: 88px; z-index: 70;
-  background: var(--rt-ink); color: var(--rt-paper);
-  padding: 14px 18px; display: flex; align-items: center; gap: 14px;
-  max-width: 340px; pointer-events: none;
-  transform: translateY(20px); opacity: 0;
-  transition: transform 280ms, opacity 280ms;
-}
-.rt-toast.is-visible { transform: translateY(0); opacity: 1; pointer-events: auto; }
-.rt-toast-thumb {
-  width: 40px; height: 48px; flex-shrink: 0; overflow: hidden; background: var(--rt-paper-warm);
-}
-.rt-toast-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.rt-toast-copy { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.rt-toast-title { font-family: var(--rt-font-grotesk); font-size: 12px; font-weight: 700; color: var(--rt-paper); }
-.rt-toast-sub {
-  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--rt-paper); opacity: 0.7;
-}
-.rt-toast-close {
-  background: transparent; border: 0; color: var(--rt-paper);
-  font-size: 16px; cursor: pointer; padding: 4px; line-height: 1; flex-shrink: 0;
-}
 
 /* ── Mobile accordion toggle (hidden on desktop) ── */
 .rt-mob-acc-btn { display: none; }
