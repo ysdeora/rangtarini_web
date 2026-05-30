@@ -1019,6 +1019,33 @@
     });
   }
 
+  /* ── Hide on scroll down, reveal on scroll up ── */
+  var hdWrap = document.querySelector('.rt-hd-wrap');
+  var lastScrollY = window.scrollY;
+  var scrollTicking = false;
+  var HD_THRESHOLD = 80;
+
+  window.addEventListener('scroll', function () {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(function () {
+      var y = window.scrollY;
+      var isSearchOpen = searchPanel && searchPanel.classList.contains('is-open');
+      var isMobileOpen = mobileNav && !mobileNav.hidden;
+
+      if (hdWrap && !isSearchOpen && !isMobileOpen) {
+        if (y > lastScrollY && y > HD_THRESHOLD) {
+          hdWrap.classList.add('rt-hd--hidden');
+        } else {
+          hdWrap.classList.remove('rt-hd--hidden');
+        }
+      }
+
+      lastScrollY = y;
+      scrollTicking = false;
+    });
+  }, { passive: true });
+
 }());
 </script>
 
