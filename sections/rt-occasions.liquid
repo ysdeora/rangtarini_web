@@ -134,6 +134,8 @@
     transition: opacity 220ms;
   }
   .rt-occ__enter:hover { opacity: 0.6; }
+  .rt-occ__enter span { transition: transform 220ms ease; }
+  .rt-occ__enter:hover span { transform: translateX(5px); }
 
   /* odd rows: image left; even rows: image right */
   .rt-occ__row--right .rt-occ__img-wrap { order: 2; }
