@@ -16,8 +16,9 @@
   transform: none;
 }
 
-/* ---- Heading "unmask" — text rises from behind a clip ---- */
-.rt-mask { overflow: hidden; }
+/* ---- Heading "unmask" — text rises from behind a clip ----
+   padding-bottom keeps descenders (e.g. the "g" in "catalog.") from being clipped. */
+.rt-mask { overflow: hidden; padding-bottom: 0.12em; }
 .js .rt-mask > span {
   display: inline-block;
   transform: translateY(110%);
