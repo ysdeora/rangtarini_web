@@ -154,7 +154,7 @@
     {%- for block in section.blocks -%}
       {%- assign num = forloop.index -%}
       {%- assign total = total_count -%}
-      <a href="{{ block.settings.url }}" class="rt-cat__tile" {{ block.shopify_attributes }}>
+      <a href="{{ block.settings.url }}" class="rt-cat__tile" data-rt-reveal style="--rt-reveal-delay: {{ forloop.index0 | times: 70 }}ms" {{ block.shopify_attributes }}>
         <div class="rt-cat__media">
           {%- if block.settings.image != blank -%}
             <img
