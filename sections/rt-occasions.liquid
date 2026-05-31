@@ -209,7 +209,7 @@
   <div class="rt-occ__rows">
     {%- for block in section.blocks -%}
       {%- assign is_right = forloop.index | modulo: 2 -%}
-      <div class="rt-occ__row {% if is_right == 0 %}rt-occ__row--right{% endif %}" {{ block.shopify_attributes }}>
+      <div class="rt-occ__row {% if is_right == 0 %}rt-occ__row--right{% endif %}" data-rt-reveal style="--rt-reveal-delay: {{ forloop.index0 | times: 90 }}ms" {{ block.shopify_attributes }}>
 
         <div class="rt-occ__img-wrap">
           {%- if block.settings.image != blank -%}
