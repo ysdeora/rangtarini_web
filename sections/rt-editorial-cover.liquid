@@ -64,6 +64,22 @@
     display: block;
   }
 
+  /* Subtle scroll parallax — zero-JS, progressive enhancement */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) and (min-width: 750px) {
+      .rt-cover__img {
+        animation: rt-cover-parallax linear both;
+        animation-timeline: view();
+        animation-range: cover 0% cover 100%;
+        will-change: transform;
+      }
+      @keyframes rt-cover-parallax {
+        from { transform: translateY(-7%) scale(1.14); }
+        to   { transform: translateY(7%) scale(1.14); }
+      }
+    }
+  }
+
   /* Footer bar */
   .rt-cover__footer {
     display: grid;
