@@ -2,13 +2,20 @@
   "sections": {
     "rt_hero": {
       "type": "rt-hero-triptych",
-      "name": "Hero Triptych",
+      "name": "Hero — Gold & Silver",
       "settings": {
-        "meta_top": "SS26 / Look 01",
-        "caption_title": "Heirlooms, remade.",
-        "caption_sub": "The Bridal Edit",
-        "cta_label": "Enter the Collection",
-        "cta_url": "/collections/all"
+        "brand_deva": "रंगतारिणी",
+        "value_line": "Handcrafted · BIS-Hallmarked · Jaipur",
+        "gold_collection": "gold-plated-silver-alloy",
+        "gold_kicker": "01 — In gold",
+        "gold_label": "Gold Plated",
+        "gold_tagline": "22k gold over 925 sterling silver — heirloom warmth, everyday wear.",
+        "gold_cta_label": "Shop Gold",
+        "silver_collection": "pure-silver-925",
+        "silver_kicker": "02 — In silver",
+        "silver_label": "Silver 925",
+        "silver_tagline": "Hallmarked 925 sterling — pure, hypoallergenic, made to last.",
+        "silver_cta_label": "Shop Silver"
       }
     },
     "rt_marquee": {
