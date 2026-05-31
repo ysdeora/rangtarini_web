@@ -136,7 +136,7 @@
         "subheading": "The latest additions to our collection — handcrafted, just for you.",
         "days_new": 30,
         "cta_label": "View all",
-        "cta_url": ""
+        "cta_url": "/collections/all?sort_by=created-descending"
       }
     },
     "rt_craft": {
