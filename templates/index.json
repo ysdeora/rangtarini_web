@@ -16,18 +16,6 @@
         "silver_cta_label": "Shop Silver"
       }
     },
-    "rt_trust": {
-      "type": "rt-trust-strip",
-      "name": "Trust Strip",
-      "blocks": {
-        "trust_1": {"type": "item", "settings": {"icon": "shield", "text": "BIS Hallmarked · 925 Silver"}},
-        "trust_2": {"type": "item", "settings": {"icon": "shipping", "text": "Free Shipping · Pan-India"}},
-        "trust_3": {"type": "item", "settings": {"icon": "exchange", "text": "7-Day Easy Exchange"}},
-        "trust_4": {"type": "item", "settings": {"icon": "polish", "text": "Lifetime Polish & Resizing"}}
-      },
-      "block_order": ["trust_1", "trust_2", "trust_3", "trust_4"],
-      "settings": {}
-    },
     "rt_marquee": {
       "type": "rt-wordmark-marquee",
       "name": "Wordmark Marquee",
