@@ -1,291 +1,458 @@
+{%- liquid
+  assign gold_col = section.settings.gold_collection
+  assign silver_col = section.settings.silver_collection
+  assign gold_link = gold_col.url | default: '/collections/gold-plated-silver-alloy'
+  assign silver_link = silver_col.url | default: '/collections/pure-silver-925'
+-%}
+
 <style>
   .rt-hero {
-    background: var(--rt-paper);
+    --rt-hero-h: clamp(560px, 88vh, 900px);
+    background: var(--rt-ink);
     border-bottom: 1px solid var(--rt-ink);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    height: 85vh;
-    min-height: 520px;
+    grid-template-columns: 1fr 1fr;
+    height: var(--rt-hero-h);
+    position: relative;
     overflow: hidden;
+    transition: grid-template-columns 700ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   .rt-hero__panel {
     position: relative;
     overflow: hidden;
     border-right: 1px solid var(--rt-ink);
   }
-  .rt-hero__panel:last-child { border-right: none; }
-  .rt-hero__img {
+  .rt-hero__panel:last-of-type { border-right: none; }
+
+  .rt-hero__link {
+    position: absolute;
+    inset: 0;
+    display: block;
+    text-decoration: none;
+    color: var(--rt-paper);
+  }
+  .rt-hero__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .rt-hero__media img,
+  .rt-hero__media video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 600ms ease;
+    transform: scale(1.06);
+    animation: rt-hero-kenburns 16s ease-out forwards;
   }
-  .rt-hero__panel:hover .rt-hero__img { transform: scale(1.03); }
+  .rt-hero__link:hover .rt-hero__media img,
+  .rt-hero__link:hover .rt-hero__media video { transform: scale(1.1); }
 
-  .rt-hero__meta-tl {
+  .rt-hero__scrim {
     position: absolute;
-    left: 22px;
-    top: 20px;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.12) 0%, rgba(10,10,10,0) 32%, rgba(10,10,10,0.55) 100%);
+    z-index: 1;
+  }
+  /* Curtain that wipes away to reveal the (already-painted) image — keeps LCP fast */
+  .rt-hero__curtain {
+    position: absolute;
+    inset: 0;
+    background: var(--rt-paper);
+    transform-origin: top;
+    z-index: 2;
+    animation: rt-hero-curtain 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .rt-hero__panel--silver .rt-hero__curtain { animation-delay: 130ms; }
+
+  .rt-hero__content {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    padding: clamp(20px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .rt-hero__kicker,
+  .rt-hero__label,
+  .rt-hero__tagline,
+  .rt-hero__cta {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rt-hero-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .rt-hero__kicker {
     font-family: var(--rt-font-grotesk);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     font-weight: 600;
     color: var(--rt-paper);
+    opacity: 0;
     background: var(--rt-ink);
-    padding: 4px 9px;
-    z-index: 2;
+    padding: 5px 10px;
+    margin-bottom: 14px;
+    animation-delay: 500ms;
   }
-  .rt-hero__deva-tr {
-    position: absolute;
-    right: 22px;
-    top: 20px;
-    text-align: right;
-    z-index: 2;
-  }
-  .rt-hero__deva-tr span {
-    font-family: var(--rt-font-deva);
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: var(--rt-gold);
-    display: block;
-  }
-  .rt-hero__deva-tr small {
+  .rt-hero__label {
     font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.3em;
+    font-size: clamp(30px, 4.4vw, 64px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
     text-transform: uppercase;
-    font-weight: 500;
     color: var(--rt-paper);
-    opacity: 0.7;
-    display: block;
-    margin-top: 6px;
+    margin: 0 0 8px;
+    animation-delay: 580ms;
   }
-
-  .rt-hero__cta-bar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 28px;
-    background: linear-gradient(180deg, transparent 0%, rgba(10,10,10,0.65) 100%);
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    z-index: 2;
-  }
-  .rt-hero__caption-title {
+  .rt-hero__tagline {
     font-family: var(--rt-font-grotesk);
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: 0.01em;
     color: var(--rt-paper);
-    display: block;
-    margin-bottom: 4px;
+    opacity: 0.85;
+    max-width: 30ch;
+    margin: 0 0 20px;
+    animation-delay: 660ms;
   }
-  .rt-hero__caption-sub {
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--rt-paper);
-    opacity: 0.55;
-    display: block;
-    margin-bottom: 16px;
-  }
-  .rt-hero__enter {
+  .rt-hero__cta {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 0;
-    border-top: 1px solid var(--rt-paper);
-    border-bottom: 1px solid var(--rt-paper);
+    min-height: 46px;
+    padding: 13px 22px;
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border: 1px solid var(--rt-paper);
+    transition: background 240ms ease, color 240ms ease, gap 240ms ease;
+    animation-delay: 740ms;
+  }
+  .rt-hero__cta span { transition: transform 240ms ease; }
+  .rt-hero__link:hover .rt-hero__cta {
+    background: transparent;
     color: var(--rt-paper);
-    text-decoration: none;
+  }
+  .rt-hero__link:hover .rt-hero__cta span { transform: translateX(5px); }
+
+  /* Centre brand seam badge */
+  .rt-hero__seam {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    pointer-events: none;
+    text-align: center;
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    padding: 14px 26px;
+    border: 1px solid var(--rt-gold);
+    opacity: 0;
+    animation: rt-hero-rise 800ms cubic-bezier(0.16, 1, 0.3, 1) 900ms forwards;
+  }
+  .rt-hero__seam-deva {
+    font-family: var(--rt-font-deva);
+    font-size: clamp(22px, 2.4vw, 34px);
+    font-weight: 600;
+    color: var(--rt-gold);
+    display: block;
+    line-height: 1;
+  }
+  .rt-hero__seam-value {
     font-family: var(--rt-font-grotesk);
     font-size: 10px;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: opacity 220ms;
-    width: fit-content;
+    font-weight: 500;
+    color: var(--rt-paper);
+    opacity: 0.8;
+    display: block;
+    margin-top: 8px;
   }
-  .rt-hero__enter:hover { opacity: 0.75; }
 
+  @keyframes rt-hero-kenburns {
+    from { transform: scale(1.12); }
+    to   { transform: scale(1.0); }
+  }
+  @keyframes rt-hero-curtain {
+    from { transform: scaleY(1); }
+    to   { transform: scaleY(0); }
+  }
+  @keyframes rt-hero-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* the kicker should settle at 1, label/tagline too — opacity handled by animation 'to' */
+
+  /* Desktop focus interaction — pointer devices only */
+  @media (hover: hover) and (pointer: fine) {
+    .rt-hero:has(.rt-hero__panel--gold .rt-hero__link:hover) { grid-template-columns: 1.22fr 0.78fr; }
+    .rt-hero:has(.rt-hero__panel--silver .rt-hero__link:hover) { grid-template-columns: 0.78fr 1.22fr; }
+    .rt-hero:has(.rt-hero__panel--gold .rt-hero__link:hover) .rt-hero__panel--silver .rt-hero__media,
+    .rt-hero:has(.rt-hero__panel--silver .rt-hero__link:hover) .rt-hero__panel--gold .rt-hero__media {
+      filter: grayscale(0.45) brightness(0.78);
+      transition: filter 600ms ease;
+    }
+  }
+  .rt-hero__media { transition: filter 600ms ease; }
+
+  /* Tablet / iPad */
+  @media (min-width: 750px) and (max-width: 1024px) {
+    .rt-hero { --rt-hero-h: clamp(480px, 72vh, 760px); }
+    .rt-hero__label { font-size: clamp(28px, 5vw, 46px); }
+  }
+
+  /* Mobile — stack into two stacked panels */
   @media (max-width: 749px) {
     .rt-hero {
       grid-template-columns: 1fr;
+      grid-auto-rows: 52vh;
       height: auto;
-      min-height: unset;
     }
     .rt-hero__panel {
       border-right: none;
       border-bottom: 1px solid var(--rt-ink);
-      height: 65vw;
+      min-height: 340px;
     }
-    .rt-hero__panel:last-child {
-      border-bottom: none;
-      height: 80vw;
+    .rt-hero__panel:last-of-type { border-bottom: none; }
+    .rt-hero__label { font-size: clamp(30px, 9vw, 46px); }
+    .rt-hero__tagline { font-size: 13px; }
+    .rt-hero__seam { padding: 11px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rt-hero,
+    .rt-hero__media img,
+    .rt-hero__media video,
+    .rt-hero__curtain,
+    .rt-hero__kicker,
+    .rt-hero__label,
+    .rt-hero__tagline,
+    .rt-hero__cta,
+    .rt-hero__seam {
+      animation: none !important;
+      transition: none !important;
     }
+    .rt-hero__media img,
+    .rt-hero__media video { transform: none; }
+    .rt-hero__curtain { display: none; }
+    .rt-hero__kicker,
+    .rt-hero__label,
+    .rt-hero__tagline,
+    .rt-hero__cta,
+    .rt-hero__seam { opacity: 1; transform: none; }
   }
 </style>
 
 <section class="rt-hero">
-  <!-- Panel 1 — left -->
-  <div class="rt-hero__panel">
-    {%- if section.settings.image_top_left != blank -%}
-      <img
-        src="{{ section.settings.image_top_left | image_url: width: 800 }}"
-        srcset="{{ section.settings.image_top_left | image_url: width: 400 }} 400w,
-                {{ section.settings.image_top_left | image_url: width: 800 }} 800w,
-                {{ section.settings.image_top_left | image_url: width: 1200 }} 1200w"
-        sizes="(max-width: 749px) 100vw, 33vw"
-        alt="{{ section.settings.image_top_left_alt | default: 'Rangtarini jewelry' | escape }}"
-        class="rt-hero__img"
-        fetchpriority="high"
-        loading="eager"
-        width="{{ section.settings.image_top_left.width }}"
-        height="{{ section.settings.image_top_left.height }}">
-    {%- else -%}
-      <img
-        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Earrings_category_image.jpg?v=1777315473"
-        alt="Rangtarini Earrings"
-        class="rt-hero__img"
-        fetchpriority="high"
-        loading="eager">
-    {%- endif -%}
-    <div class="rt-hero__meta-tl">{{ section.settings.meta_top | default: 'SS26 / Look 01' }}</div>
+  <!-- Panel 1 — Gold Plated -->
+  <div class="rt-hero__panel rt-hero__panel--gold">
+    <a class="rt-hero__link" href="{{ gold_link }}" aria-label="{{ section.settings.gold_label | default: 'Gold Plated' | escape }} — {{ section.settings.gold_tagline | escape }}">
+      <div class="rt-hero__media">
+        {%- if section.settings.gold_video != blank -%}
+          {{ section.settings.gold_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+        {%- elsif section.settings.gold_image != blank -%}
+          <img
+            src="{{ section.settings.gold_image | image_url: width: 1000 }}"
+            srcset="{{ section.settings.gold_image | image_url: width: 600 }} 600w,
+                    {{ section.settings.gold_image | image_url: width: 1000 }} 1000w,
+                    {{ section.settings.gold_image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 749px) 100vw, 50vw"
+            alt="{{ section.settings.gold_image_alt | default: 'Gold plated jewellery' | escape }}"
+            fetchpriority="high" loading="eager"
+            width="{{ section.settings.gold_image.width }}" height="{{ section.settings.gold_image.height }}">
+        {%- elsif gold_col.image != blank -%}
+          <img
+            src="{{ gold_col.image | image_url: width: 1000 }}"
+            srcset="{{ gold_col.image | image_url: width: 600 }} 600w, {{ gold_col.image | image_url: width: 1000 }} 1000w, {{ gold_col.image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 749px) 100vw, 50vw"
+            alt="{{ gold_col.title | default: 'Gold plated jewellery' | escape }}"
+            fetchpriority="high" loading="eager">
+        {%- else -%}
+          <img src="https://cdn.shopify.com/s/files/1/0955/2301/2971/collections/Gold-Plated_Silver_Alloy_collection.jpg?v=1772997361"
+               alt="Gold plated jewellery" fetchpriority="high" loading="eager">
+        {%- endif -%}
+      </div>
+      <div class="rt-hero__scrim"></div>
+      <div class="rt-hero__curtain"></div>
+      <div class="rt-hero__content">
+        <span class="rt-hero__kicker">{{ section.settings.gold_kicker | default: '01 — In gold' }}</span>
+        <span class="rt-hero__label">{{ section.settings.gold_label | default: 'Gold Plated' }}</span>
+        <span class="rt-hero__tagline">{{ section.settings.gold_tagline | default: '22k gold over 925 sterling silver — heirloom warmth, everyday wear.' }}</span>
+        <span class="rt-hero__cta">{{ section.settings.gold_cta_label | default: 'Shop Gold' }} <span aria-hidden="true">→</span></span>
+      </div>
+    </a>
   </div>
 
-  <!-- Panel 2 — center -->
-  <div class="rt-hero__panel">
-    {%- if section.settings.image_bottom_left != blank -%}
-      <img
-        src="{{ section.settings.image_bottom_left | image_url: width: 800 }}"
-        srcset="{{ section.settings.image_bottom_left | image_url: width: 400 }} 400w,
-                {{ section.settings.image_bottom_left | image_url: width: 800 }} 800w"
-        sizes="(max-width: 749px) 100vw, 33vw"
-        alt="{{ section.settings.image_bottom_left_alt | default: 'Rangtarini jewelry detail' | escape }}"
-        class="rt-hero__img"
-        loading="eager"
-        width="{{ section.settings.image_bottom_left.width }}"
-        height="{{ section.settings.image_bottom_left.height }}">
-    {%- else -%}
-      <img
-        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Rakhdi_Category_image.jpg?v=1777315707"
-        alt="Rangtarini Maang Tikka"
-        class="rt-hero__img"
-        loading="eager">
-    {%- endif -%}
-    <div class="rt-hero__deva-tr">
-      <span>रंगतारिणी</span>
-      <small>SS26</small>
-    </div>
+  <!-- Panel 2 — Silver 925 -->
+  <div class="rt-hero__panel rt-hero__panel--silver">
+    <a class="rt-hero__link" href="{{ silver_link }}" aria-label="{{ section.settings.silver_label | default: 'Silver 925' | escape }} — {{ section.settings.silver_tagline | escape }}">
+      <div class="rt-hero__media">
+        {%- if section.settings.silver_video != blank -%}
+          {{ section.settings.silver_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
+        {%- elsif section.settings.silver_image != blank -%}
+          <img
+            src="{{ section.settings.silver_image | image_url: width: 1000 }}"
+            srcset="{{ section.settings.silver_image | image_url: width: 600 }} 600w,
+                    {{ section.settings.silver_image | image_url: width: 1000 }} 1000w,
+                    {{ section.settings.silver_image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 749px) 100vw, 50vw"
+            alt="{{ section.settings.silver_image_alt | default: 'Pure silver 925 jewellery' | escape }}"
+            loading="eager"
+            width="{{ section.settings.silver_image.width }}" height="{{ section.settings.silver_image.height }}">
+        {%- elsif silver_col.image != blank -%}
+          <img
+            src="{{ silver_col.image | image_url: width: 1000 }}"
+            srcset="{{ silver_col.image | image_url: width: 600 }} 600w, {{ silver_col.image | image_url: width: 1000 }} 1000w, {{ silver_col.image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 749px) 100vw, 50vw"
+            alt="{{ silver_col.title | default: 'Pure silver 925 jewellery' | escape }}"
+            loading="eager">
+        {%- else -%}
+          <img src="https://cdn.shopify.com/s/files/1/0955/2301/2971/collections/Silver_Collection_final.jpg?v=1772998935"
+               alt="Pure silver 925 jewellery" loading="eager">
+        {%- endif -%}
+      </div>
+      <div class="rt-hero__scrim"></div>
+      <div class="rt-hero__curtain"></div>
+      <div class="rt-hero__content">
+        <span class="rt-hero__kicker">{{ section.settings.silver_kicker | default: '02 — In silver' }}</span>
+        <span class="rt-hero__label">{{ section.settings.silver_label | default: 'Silver 925' }}</span>
+        <span class="rt-hero__tagline">{{ section.settings.silver_tagline | default: 'Hallmarked 925 sterling — pure, hypoallergenic, made to last.' }}</span>
+        <span class="rt-hero__cta">{{ section.settings.silver_cta_label | default: 'Shop Silver' }} <span aria-hidden="true">→</span></span>
+      </div>
+    </a>
   </div>
 
-  <!-- Panel 3 — right with CTA -->
-  <div class="rt-hero__panel">
-    {%- if section.settings.image_right != blank -%}
-      <img
-        src="{{ section.settings.image_right | image_url: width: 1000 }}"
-        srcset="{{ section.settings.image_right | image_url: width: 600 }} 600w,
-                {{ section.settings.image_right | image_url: width: 1000 }} 1000w"
-        sizes="(max-width: 749px) 100vw, 33vw"
-        alt="{{ section.settings.image_right_alt | default: 'Rangtarini collection' | escape }}"
-        class="rt-hero__img"
-        fetchpriority="high"
-        loading="eager"
-        width="{{ section.settings.image_right.width }}"
-        height="{{ section.settings.image_right.height }}">
-    {%- else -%}
-      <img
-        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Necklace_category_image.jpg?v=1777315165"
-        alt="Rangtarini Necklaces"
-        class="rt-hero__img"
-        fetchpriority="high"
-        loading="eager">
-    {%- endif -%}
-
-    <div class="rt-hero__cta-bar">
-      <span class="rt-hero__caption-title">{{ section.settings.caption_title | default: 'Heirlooms, remade.' }}</span>
-      <span class="rt-hero__caption-sub">{{ section.settings.caption_sub | default: 'The Bridal Edit' }}</span>
-      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="rt-hero__enter">
-        {{ section.settings.cta_label | default: 'Enter the Collection' }}
-        <span>→</span>
-      </a>
-    </div>
+  <div class="rt-hero__seam" aria-hidden="true">
+    <span class="rt-hero__seam-deva">{{ section.settings.brand_deva | default: 'रंगतारिणी' }}</span>
+    <span class="rt-hero__seam-value">{{ section.settings.value_line | default: 'Handcrafted · BIS-Hallmarked · Jaipur' }}</span>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Hero Triptych",
+  "name": "Hero — Gold & Silver",
   "class": "rt-hero-section",
-  "presets": [{"name": "Hero Triptych"}],
+  "presets": [{"name": "Hero — Gold & Silver"}],
   "settings": [
     {
+      "type": "header",
+      "content": "Brand seam (centre badge)"
+    },
+    {
+      "type": "text",
+      "id": "brand_deva",
+      "label": "Devanagari wordmark",
+      "default": "रंगतारिणी"
+    },
+    {
+      "type": "text",
+      "id": "value_line",
+      "label": "Value line",
+      "default": "Handcrafted · BIS-Hallmarked · Jaipur"
+    },
+    {
+      "type": "header",
+      "content": "Left panel — Gold Plated"
+    },
+    {
+      "type": "collection",
+      "id": "gold_collection",
+      "label": "Gold collection (sets link + fallback image)"
+    },
+    {
       "type": "image_picker",
-      "id": "image_top_left",
-      "label": "Left panel image"
+      "id": "gold_image",
+      "label": "Image (overrides collection image)"
     },
     {
       "type": "text",
-      "id": "image_top_left_alt",
-      "label": "Left panel alt text"
+      "id": "gold_image_alt",
+      "label": "Image alt text"
+    },
+    {
+      "type": "video",
+      "id": "gold_video",
+      "label": "Background video (optional, overrides image)"
+    },
+    {
+      "type": "text",
+      "id": "gold_kicker",
+      "label": "Kicker",
+      "default": "01 — In gold"
+    },
+    {
+      "type": "text",
+      "id": "gold_label",
+      "label": "Label",
+      "default": "Gold Plated"
+    },
+    {
+      "type": "text",
+      "id": "gold_tagline",
+      "label": "Tagline",
+      "default": "22k gold over 925 sterling silver — heirloom warmth, everyday wear."
+    },
+    {
+      "type": "text",
+      "id": "gold_cta_label",
+      "label": "Button label",
+      "default": "Shop Gold"
+    },
+    {
+      "type": "header",
+      "content": "Right panel — Silver 925"
+    },
+    {
+      "type": "collection",
+      "id": "silver_collection",
+      "label": "Silver collection (sets link + fallback image)"
     },
     {
       "type": "image_picker",
-      "id": "image_bottom_left",
-      "label": "Centre panel image"
+      "id": "silver_image",
+      "label": "Image (overrides collection image)"
     },
     {
       "type": "text",
-      "id": "image_bottom_left_alt",
-      "label": "Centre panel alt text"
+      "id": "silver_image_alt",
+      "label": "Image alt text"
     },
     {
-      "type": "image_picker",
-      "id": "image_right",
-      "label": "Right panel image"
-    },
-    {
-      "type": "text",
-      "id": "image_right_alt",
-      "label": "Right panel alt text"
+      "type": "video",
+      "id": "silver_video",
+      "label": "Background video (optional, overrides image)"
     },
     {
       "type": "text",
-      "id": "meta_top",
-      "label": "Top-left meta label",
-      "default": "SS26 / Look 01"
+      "id": "silver_kicker",
+      "label": "Kicker",
+      "default": "02 — In silver"
     },
     {
       "type": "text",
-      "id": "caption_title",
-      "label": "CTA caption",
-      "default": "Heirlooms, remade."
+      "id": "silver_label",
+      "label": "Label",
+      "default": "Silver 925"
     },
     {
       "type": "text",
-      "id": "caption_sub",
-      "label": "CTA sub-caption",
-      "default": "The Bridal Edit"
+      "id": "silver_tagline",
+      "label": "Tagline",
+      "default": "Hallmarked 925 sterling — pure, hypoallergenic, made to last."
     },
     {
       "type": "text",
-      "id": "cta_label",
-      "label": "CTA button label",
-      "default": "Enter the Collection"
-    },
-    {
-      "type": "url",
-      "id": "cta_url",
-      "label": "CTA link",
-      "default": "/collections/all"
+      "id": "silver_cta_label",
+      "label": "Button label",
+      "default": "Shop Silver"
     }
   ]
 }
