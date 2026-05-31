@@ -225,7 +225,6 @@
   },
   "order": [
     "rt_hero",
-    "rt_trust",
     "rt_marquee",
     "rt_cover",
     "rt_categories",
