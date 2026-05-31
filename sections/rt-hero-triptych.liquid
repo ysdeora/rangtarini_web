@@ -191,7 +191,25 @@
     .rt-hero__panel:last-of-type { border-bottom: none; }
     .rt-hero__label { font-size: clamp(30px, 9vw, 46px); }
     .rt-hero__tagline { font-size: 13px; }
-    .rt-hero__seam { padding: 11px 20px; }
+
+    /* No entrance animation on mobile — it glitches as the panels stack */
+    .rt-hero,
+    .rt-hero__media img,
+    .rt-hero__media video,
+    .rt-hero__curtain,
+    .rt-hero__kicker,
+    .rt-hero__label,
+    .rt-hero__tagline,
+    .rt-hero__cta {
+      animation: none !important;
+    }
+    .rt-hero__media img,
+    .rt-hero__media video { transform: none; }
+    .rt-hero__curtain { display: none; }
+    .rt-hero__kicker,
+    .rt-hero__label,
+    .rt-hero__tagline,
+    .rt-hero__cta { opacity: 1; transform: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
