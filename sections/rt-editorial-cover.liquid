@@ -176,7 +176,7 @@
     <span class="rt-cover__credit">{{ section.settings.credit | default: 'Photography · Rangtarini Studio' }}</span>
     <span class="rt-cover__line">{{ section.settings.editorial_line | default: 'A study of weight, light, and inheritance.' }}</span>
     <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="rt-cover__cta">
-      {{ section.settings.cta_label | default: 'View campaign' }} →
+      {{ section.settings.cta_label | default: 'View campaign' }} <span aria-hidden="true">→</span>
     </a>
   </div>
 </section>
