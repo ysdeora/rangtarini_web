@@ -215,7 +215,7 @@
   <div class="na-hd">
     <div>
       <p class="na-eyebrow">{{ section.settings.eyebrow | default: 'Latest drop · This season' }}</p>
-      <h2 class="na-heading" id="na-heading">{{ section.settings.heading | default: 'New in.' }}</h2>
+      <h2 class="na-heading rt-mask" id="na-heading"><span>{{ section.settings.heading | default: 'New in.' }}</span></h2>
     </div>
     <a
       href="{{ section.settings.cta_url | default: '/collections/all?sort_by=created-descending' }}"
