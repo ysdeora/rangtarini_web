@@ -276,7 +276,7 @@
 
   <!-- Panel 2 — Silver 925 -->
   <div class="rt-hero__panel rt-hero__panel--silver">
-    <a class="rt-hero__link" href="{{ silver_link }}" aria-label="{{ section.settings.silver_label | default: 'Silver 925' | escape }} — {{ section.settings.silver_tagline | escape }}">
+    <a class="rt-hero__link" href="{{ silver_link }}">
       <div class="rt-hero__media">
         {%- if section.settings.silver_video != blank -%}
           {{ section.settings.silver_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
