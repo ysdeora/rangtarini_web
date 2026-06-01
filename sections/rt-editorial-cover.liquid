@@ -169,10 +169,17 @@
         height="{{ section.settings.image.height }}">
     {%- else -%}
       <img
-        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/hero_desktop_poster.jpg?v=1776532899"
+        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/hero_desktop_poster.jpg?v=1776532899&width=1200"
+        srcset="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/hero_desktop_poster.jpg?v=1776532899&width=800 800w,
+                https://cdn.shopify.com/s/files/1/0955/2301/2971/files/hero_desktop_poster.jpg?v=1776532899&width=1200 1200w,
+                https://cdn.shopify.com/s/files/1/0955/2301/2971/files/hero_desktop_poster.jpg?v=1776532899&width=1600 1600w"
+        sizes="100vw"
         alt="Rangtarini campaign"
         class="rt-cover__img"
-        loading="lazy">
+        loading="lazy"
+        decoding="async"
+        width="1441"
+        height="1080">
     {%- endif -%}
   </div>
 
