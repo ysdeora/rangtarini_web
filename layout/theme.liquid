@@ -274,6 +274,10 @@
       {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
+    {%- if settings.cart_type == 'notification' -%}
+      {{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
