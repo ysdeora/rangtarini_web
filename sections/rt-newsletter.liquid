@@ -159,9 +159,9 @@
 
   <div class="rt-nl__copy">
     <p class="rt-nl__eyebrow">{{ section.settings.eyebrow | default: 'The Rangtarini Circle' }}</p>
-    <h2 class="rt-nl__display">{{ section.settings.heading | default: 'Subscribe.' }}</h2>
+    <h2 class="rt-nl__display rt-mask"><span>{{ section.settings.heading | default: 'Subscribe.' }}</span></h2>
     <span class="rt-nl__deva">रंगतारिणी</span>
-    <p class="rt-nl__body">{{ section.settings.body | default: 'One thoughtful email a fortnight — drops, the journal from the karkhana, and members-only edits. ₹500 off your first order over ₹3,500.' }}</p>
+    <p class="rt-nl__body" data-rt-reveal>{{ section.settings.body | default: 'One thoughtful email a fortnight — drops, the journal from the karkhana, and members-only edits. ₹500 off your first order over ₹3,500.' }}</p>
 
     {%- form 'customer', id: 'rt-nl-form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
