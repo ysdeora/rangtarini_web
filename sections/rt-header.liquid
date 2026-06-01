@@ -1120,11 +1120,23 @@
 <script>
 /* Update cart notification subtotal and header cart count badge on cart change */
 document.addEventListener('DOMContentLoaded', function() {
+
+  /* The /cart/add response has no item_count — read the true count from the
+     freshly-rendered cart-icon-bubble section that ships in the same payload. */
+  function countFromBubbleSection(sections) {
+    if (!sections || !sections['cart-icon-bubble']) return null;
+    var text = new DOMParser()
+      .parseFromString(sections['cart-icon-bubble'], 'text/html')
+      .body.textContent || '';
+    var m = text.match(/\d+/);
+    return m ? parseInt(m[0], 10) : 0; /* empty bubble => empty cart */
+  }
+
   subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
     if (!event || !event.cartData) return;
     var data = event.cartData;
-    var count = data.item_count || 0;
-    var paise = data.total_price || 0;
+    var count = (typeof data.item_count === 'number') ? data.item_count : countFromBubbleSection(data.sections);
+    var paise = data.total_price;
 
     /* Subtotal row inside notification */
     var subtotalEl = document.querySelector('.rt-cn-subtotal');
