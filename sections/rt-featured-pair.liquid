@@ -169,6 +169,8 @@
   <a
     href="{{ prod2.url | default: section.settings.link_2 | default: '/collections/earrings' }}"
     class="rt-pair__frame rt-pair__frame--light"
+    data-rt-reveal
+    style="--rt-reveal-delay: 120ms"
   >
     {%- if section.settings.image_2 != blank -%}
       <img
