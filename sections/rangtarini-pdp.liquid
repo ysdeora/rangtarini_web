@@ -1281,7 +1281,8 @@
 
   <!-- ── [E] From the Karkhana (Index 04) ── -->
   <section id="rt-karkhana" aria-label="About our craft">
-    <div class="rt-karkhana-grid">
+    {%- assign has_karkhana_img = section.settings.karkhana_image != blank -%}
+    <div class="rt-karkhana-grid{% unless has_karkhana_img or request.design_mode %} rt-karkhana-grid--solo{% endunless %}">
       <div>
         <span class="rt-karkhana-eyebrow">{{ section.settings.karkhana_eyebrow | default: 'Index 04 — How we make everything' }}</span>
         <h2 class="rt-karkhana-headline">{{ section.settings.karkhana_headline_1 | default: 'From the' }}<br><span class="gold">{{ section.settings.karkhana_headline_2 | default: 'karkhana.' }}</span></h2>
