@@ -1315,8 +1315,9 @@
           </a>
         {%- endif -%}
       </div>
+      {%- if has_karkhana_img or request.design_mode -%}
       <div class="rt-karkhana-img">
-        {%- if section.settings.karkhana_image != blank -%}
+        {%- if has_karkhana_img -%}
           <img
             src="{{ section.settings.karkhana_image | image_url: width: 900 }}"
             srcset="{{ section.settings.karkhana_image | image_url: width: 600 }} 600w, {{ section.settings.karkhana_image | image_url: width: 900 }} 900w"
