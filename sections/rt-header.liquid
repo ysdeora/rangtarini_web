@@ -1149,7 +1149,8 @@ document.addEventListener('DOMContentLoaded', function() {
         : 'Rs. ' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    /* Header cart count badge */
+    /* Header cart count badge — never blow it away when the count is unknown */
+    if (count === null) return;
     var cartIcon = document.querySelector('.rt-hd__icon--cart');
     if (cartIcon) {
       var badge = cartIcon.querySelector('.rt-hd__cart-count');
