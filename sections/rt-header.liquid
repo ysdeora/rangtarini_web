@@ -1140,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     /* Subtotal row inside notification */
     var subtotalEl = document.querySelector('.rt-cn-subtotal');
-    if (subtotalEl) {
+    if (subtotalEl && typeof paise === 'number' && count !== null) {
       var label = subtotalEl.querySelector('.rt-cn-subtotal__label');
       var price = subtotalEl.querySelector('.rt-cn-subtotal__price');
       if (label) label.textContent = 'Bag subtotal — ' + count + ' ' + (count === 1 ? 'item' : 'items');
