@@ -1097,6 +1097,10 @@
       var isSearchOpen = searchPanel && searchPanel.classList.contains('is-open');
       var isMobileOpen = mobileNav && !mobileNav.hidden;
 
+      if (hdSection) {
+        hdSection.classList.toggle('rt-hd--scrolled', y > HD_THRESHOLD);
+      }
+
       if (hdSection && !isSearchOpen && !isMobileOpen) {
         if (y > lastScrollY && y > HD_THRESHOLD) {
           hdSection.classList.add('rt-hd--hidden');
