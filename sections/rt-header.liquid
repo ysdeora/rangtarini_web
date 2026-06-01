@@ -16,6 +16,14 @@
     border-bottom: 1px solid var(--rt-ink);
     position: relative;
     z-index: 100;
+    transition: background-color 320ms ease, box-shadow 320ms ease, backdrop-filter 320ms ease;
+  }
+  /* Frosted translucency once scrolled past the hero threshold */
+  #shopify-section-{{ section.id }}.rt-hd--scrolled .rt-hd-wrap {
+    background: color-mix(in srgb, var(--rt-paper) 80%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+    box-shadow: 0 1px 0 rgba(10,10,10,0.06);
   }
 
   /* 3-col grid */
