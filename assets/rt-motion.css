@@ -58,5 +58,6 @@
     transform: none !important;
     transition: none !important;
   }
+  .rt-link-sweep::after { transition: none; }
   @view-transition { navigation: none; }
 }
