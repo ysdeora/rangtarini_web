@@ -243,6 +243,17 @@
     top: -6px; right: -8px;
     line-height: 1;
   }
+  .rt-hd__cart-count--pulse {
+    animation: rt-cart-pulse 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes rt-cart-pulse {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-hd__cart-count--pulse { animation: none; }
+  }
 
   /* ── Inline search panel ── */
   .rt-hd__search-panel predictive-search { position: relative; display: block; }
