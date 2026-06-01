@@ -227,6 +227,9 @@
     <div>
       <p class="na-eyebrow">{{ section.settings.eyebrow | default: 'Latest drop · This season' }}</p>
       <h2 class="na-heading rt-mask" id="na-heading"><span>{{ section.settings.heading | default: 'New in.' }}</span></h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="na-subhead">{{ section.settings.subheading }}</p>
+      {%- endif -%}
     </div>
     <a
       href="{{ section.settings.cta_url | default: '/collections/all?sort_by=created-descending' }}"
