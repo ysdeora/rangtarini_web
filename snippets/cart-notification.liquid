@@ -70,4 +70,15 @@
 </cart-notification>
 {% style %}
   .cart-notification { display: none; }
+  /* Instant feedback while the add-to-cart request is in flight */
+  #cart-notification[data-loading] #cart-notification-product {
+    min-height: 88px;
+    background: linear-gradient(90deg, rgba(10,10,10,0.05) 25%, rgba(10,10,10,0.10) 37%, rgba(10,10,10,0.05) 63%);
+    background-size: 400% 100%;
+    animation: rt-cn-shimmer 1.2s ease infinite;
+  }
+  @keyframes rt-cn-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    #cart-notification[data-loading] #cart-notification-product { animation: none; }
+  }
 {% endstyle %}
