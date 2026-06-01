@@ -227,12 +227,18 @@
               decoding="async"
               width="{{ block.settings.image.width }}"
               height="{{ block.settings.image.height }}">
-          {%- else -%}
+          {%- elsif block.settings.fallback_url != blank -%}
+            {%- assign fb = block.settings.fallback_url -%}
             <img
-              src="{{ block.settings.fallback_url }}"
+              src="{{ fb }}&width=900"
+              srcset="{{ fb }}&width=600 600w,
+                      {{ fb }}&width=900 900w,
+                      {{ fb }}&width=1200 1200w"
+              sizes="(max-width: 749px) 100vw, 50vw"
               alt="{{ block.settings.name | escape }}"
               class="rt-occ__img"
-              loading="lazy">
+              loading="lazy"
+              decoding="async">
           {%- endif -%}
           <span class="rt-occ__img-tag">{{ block.settings.name }}</span>
         </div>
