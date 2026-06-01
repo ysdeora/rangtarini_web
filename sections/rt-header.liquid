@@ -971,16 +971,50 @@
 <script>
 (function () {
 
-  /* ── Mobile hamburger ── */
+  /* ── Mobile hamburger (with Escape + focus trap) ── */
   var menuBtn = document.querySelector('.rt-hd__menu-btn');
   var mobileNav = document.getElementById('rt-mobile-nav');
   if (menuBtn && mobileNav) {
+    function drawerFocusables() {
+      return mobileNav.querySelectorAll('a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])');
+    }
+    function openDrawer() {
+      menuBtn.setAttribute('aria-expanded', 'true');
+      menuBtn.setAttribute('aria-label', 'Close menu');
+      mobileNav.hidden = false;
+      mobileNav.classList.add('is-open');
+      var f = drawerFocusables();
+      if (f.length) setTimeout(function () { f[0].focus(); }, 30);
+    }
+    function closeDrawer() {
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.setAttribute('aria-label', 'Open menu');
+      mobileNav.classList.remove('is-open');
+      mobileNav.hidden = true;
+      menuBtn.focus();
+    }
     menuBtn.addEventListener('click', function () {
-      var open = menuBtn.getAttribute('aria-expanded') === 'true';
-      menuBtn.setAttribute('aria-expanded', String(!open));
-      menuBtn.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
-      mobileNav.hidden = open;
-      mobileNav.classList.toggle('is-open', !open);
+      (menuBtn.getAttribute('aria-expanded') === 'true') ? closeDrawer() : openDrawer();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (mobileNav.hidden) return;
+      if (e.key === 'Escape') {
+        closeDrawer();
+        return;
+      }
+      if (e.key === 'Tab') {
+        var f = drawerFocusables();
+        if (!f.length) return;
+        var first = f[0];
+        var last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     });
   }
 
