@@ -19,7 +19,7 @@
       role="dialog"
       tabindex="-1"
     >
-      {{- 'component-cart-notification.css' | asset_url | stylesheet_tag -}}
+      {%- comment -%} CSS is loaded eagerly in <head> (layout/theme.liquid) for the notification cart type {%- endcomment -%}
 
       {%- comment -%} Header row: circle checkmark + "Added to your bag" + close × {%- endcomment -%}
       <div class="cart-notification__header">
