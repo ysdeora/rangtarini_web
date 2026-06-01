@@ -169,12 +169,18 @@
               decoding="async"
               width="{{ block.settings.image.width }}"
               height="{{ block.settings.image.height }}">
-          {%- else -%}
+          {%- elsif block.settings.fallback_image_url != blank -%}
+            {%- assign fb = block.settings.fallback_image_url -%}
             <img
-              src="{{ block.settings.fallback_image_url }}"
+              src="{{ fb }}&width=800"
+              srcset="{{ fb }}&width=400 400w,
+                      {{ fb }}&width=800 800w,
+                      {{ fb }}&width=1000 1000w"
+              sizes="(max-width: 749px) 50vw, (max-width: 990px) 50vw, 33vw"
               alt="{{ block.settings.name | escape }}"
               class="rt-cat__img"
-              loading="lazy">
+              loading="lazy"
+              decoding="async">
           {%- endif -%}
           <span class="rt-cat__num">{{ num | prepend: '0' | slice: -2, 2 }} / {{ total | prepend: '0' | slice: -2, 2 }}</span>
         </div>
