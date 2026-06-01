@@ -1125,11 +1125,15 @@ document.addEventListener('DOMContentLoaded', function() {
      freshly-rendered cart-icon-bubble section that ships in the same payload. */
   function countFromBubbleSection(sections) {
     if (!sections || !sections['cart-icon-bubble']) return null;
-    var text = new DOMParser()
-      .parseFromString(sections['cart-icon-bubble'], 'text/html')
-      .body.textContent || '';
-    var m = text.match(/\d+/);
-    return m ? parseInt(m[0], 10) : 0; /* empty bubble => empty cart */
+    var doc = new DOMParser().parseFromString(sections['cart-icon-bubble'], 'text/html');
+    var countEl = doc.querySelector('.cart-count-bubble [aria-hidden="true"]');
+    if (countEl) {
+      var n = parseInt((countEl.textContent || '').replace(/\D+/g, ''), 10);
+      return isNaN(n) ? null : n;
+    }
+    /* Bubble present but count hidden (>= 100) → leave the badge unchanged */
+    if (doc.querySelector('.cart-count-bubble')) return null;
+    return 0; /* no bubble => empty cart */
   }
 
   subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
