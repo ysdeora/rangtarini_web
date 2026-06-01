@@ -564,6 +564,8 @@
   background: var(--rt-ink); color: var(--rt-paper); padding: 80px 28px;
 }
 .rt-karkhana-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+/* No image set (live) → single column, no empty bordered box / dead space */
+.rt-karkhana-grid--solo { grid-template-columns: 1fr; }
 .rt-karkhana-eyebrow {
   font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 500;
   letter-spacing: 0.28em; text-transform: uppercase; color: var(--rt-paper); opacity: 0.55;
