@@ -52,6 +52,10 @@
     flex-shrink: 0;
     display: inline-block;
   }
+  /* Calmer on small screens — two marquees + hero is a lot of motion up top */
+  @media (max-width: 749px) {
+    .rt-mq__track { animation-duration: 85s; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .rt-mq__track { animation: none; }
   }
