@@ -237,7 +237,7 @@
 <section class="rt-hero">
   <!-- Panel 1 — Gold Plated -->
   <div class="rt-hero__panel rt-hero__panel--gold">
-    <a class="rt-hero__link" href="{{ gold_link }}" aria-label="{{ section.settings.gold_label | default: 'Gold Plated' | escape }} — {{ section.settings.gold_tagline | escape }}">
+    <a class="rt-hero__link" href="{{ gold_link }}">
       <div class="rt-hero__media">
         {%- if section.settings.gold_video != blank -%}
           {{ section.settings.gold_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1200x' }}
