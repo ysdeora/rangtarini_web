@@ -1,0 +1,237 @@
+{%- liquid
+  assign coll = section.settings.collection
+  assign bs = coll.products | slice: 0, 5
+  assign featured = bs.first
+-%}
+
+<style>
+  .rt-bs { background: var(--rt-paper); --rt-pad: clamp(20px, 3.4vw, 48px); }
+
+  .rt-shead {
+    padding: clamp(48px, 7vw, 86px) var(--rt-pad) clamp(20px, 3vw, 30px);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-shead__idx { font-family: var(--rt-font-grotesk); color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
+  .rt-shead__title { font-family: var(--rt-font-grotesk); font-size: clamp(38px, 6vw, 96px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9; margin: 12px 0 0; color: var(--rt-ink); }
+  .rt-shead__meta { font-family: var(--rt-font-grotesk); text-align: right; opacity: 0.6; font-size: 10px; letter-spacing: 0.28em; line-height: 2; text-transform: uppercase; }
+
+  .rt-bs__wrap {
+    display: grid; grid-template-columns: 1.04fr 0.96fr;
+    gap: clamp(22px, 3.4vw, 60px); align-items: stretch;
+    padding: clamp(28px, 4vw, 56px) var(--rt-pad) clamp(56px, 7vw, 96px);
+  }
+
+  /* Featured #1 */
+  .rt-bs__hero { position: relative; display: flex; flex-direction: column; }
+  .rt-bs__frame { position: relative; overflow: hidden; aspect-ratio: 4 / 3.4; background: var(--rt-bone); }
+  .rt-bs__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--rt-ez), opacity 0.6s var(--rt-ez); }
+  .rt-bs__frame img.alt { opacity: 0; }
+  .rt-bs__hero:hover .rt-bs__frame img.alt { opacity: 1; }
+  .rt-bs__hero:hover .rt-bs__frame img.base { transform: scale(1.045); }
+  .rt-bs__rank {
+    position: absolute; z-index: 3; top: 0; left: 0;
+    background: var(--rt-gold); color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk); display: flex; align-items: baseline;
+    padding: 11px 15px 10px;
+  }
+  .rt-bs__rank .hash { font-size: 12px; font-weight: 700; opacity: 0.65; }
+  .rt-bs__rank .n { font-size: 21px; font-weight: 900; letter-spacing: -0.02em; }
+  .rt-bs__rank .lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; align-self: center; margin-left: 9px; }
+
+  .rt-bs__info { padding-top: 18px; display: flex; flex-direction: column; gap: 13px; }
+  .rt-bs__sku { font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.16em; opacity: 0.5; text-transform: uppercase; }
+  .rt-bs__nm { font-family: var(--rt-font-grotesk); font-weight: 900; text-transform: uppercase; font-size: clamp(24px, 2.7vw, 42px); letter-spacing: -0.02em; line-height: 0.98; color: var(--rt-ink); text-decoration: none; }
+  .rt-bs__nm:hover { color: var(--rt-gold-deep); }
+  .rt-bs__meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .rt-stars { color: var(--rt-gold); letter-spacing: 2px; font-size: 13px; line-height: 1; }
+  .rt-stars .off { opacity: 0.28; }
+  .rt-bs__rate { font-family: var(--rt-font-grotesk); font-size: 11px; opacity: 0.62; letter-spacing: 0.04em; }
+  .rt-bs__buy { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 6px; }
+  .rt-bs__pr { font-family: var(--rt-font-grotesk); font-size: clamp(19px, 2vw, 27px); font-weight: 600; }
+  .rt-bs__od { font-family: var(--rt-font-grotesk); font-size: 12px; opacity: 0.4; text-decoration: line-through; }
+
+  /* Add-to-bag (Dawn product-form) */
+  .rt-bs__hero .product-form { margin: 0; }
+  .rt-bs__add {
+    border: 1px solid var(--rt-ink); background: var(--rt-ink); color: var(--rt-paper);
+    padding: 13px 22px; font-family: var(--rt-font-grotesk); font-size: 10.5px; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+    transition: background 0.3s var(--rt-ez), color 0.3s var(--rt-ez);
+    position: relative;
+  }
+  .rt-bs__add:hover { background: var(--rt-paper); color: var(--rt-ink); }
+  .rt-bs__add[disabled] { opacity: 0.45; cursor: not-allowed; }
+  .rt-bs__add .loading__spinner { display: none; position: absolute; right: 14px; }
+  .rt-bs__add.loading .loading__spinner { display: inline-flex; }
+  .rt-bs__add.loading > span { opacity: 0.5; }
+  .product-form__error-message-wrapper { font-family: var(--rt-font-grotesk); font-size: 11px; color: #9c2a2a; margin-top: 8px; }
+
+  /* Ranked list #2–#5 */
+  .rt-bs__list { display: flex; flex-direction: column; border-top: 1px solid var(--rt-ink); }
+  .rt-bs__row {
+    display: grid; grid-template-columns: 40px 78px 1fr auto; align-items: center;
+    gap: clamp(12px, 1.6vw, 22px); padding: clamp(13px, 1.5vw, 19px) clamp(8px, 1vw, 14px);
+    border-bottom: 1px solid var(--rt-ink); text-decoration: none; color: var(--rt-ink);
+    transition: background 0.35s var(--rt-ez), padding-left 0.35s var(--rt-ez);
+  }
+  .rt-bs__row:hover { background: var(--rt-paper-soft); padding-left: clamp(14px, 1.6vw, 22px); }
+  .rt-bs__row .rk { font-family: var(--rt-font-mono); font-size: 12px; letter-spacing: 0.12em; opacity: 0.5; }
+  .rt-bs__row .th { aspect-ratio: 1 / 1; overflow: hidden; position: relative; background: var(--rt-bone); }
+  .rt-bs__row .th img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--rt-ez); }
+  .rt-bs__row:hover .th img { transform: scale(1.07); }
+  .rt-bs__row .nm { font-family: var(--rt-font-grotesk); font-weight: 800; text-transform: uppercase; font-size: clamp(13px, 1.2vw, 16px); letter-spacing: -0.01em; line-height: 1.05; }
+  .rt-bs__row .rowstars { margin-top: 6px; display: flex; align-items: baseline; gap: 7px; }
+  .rt-bs__row .rowstars .ct { font-family: var(--rt-font-mono); font-size: 10px; opacity: 0.45; letter-spacing: 0.1em; }
+  .rt-bs__row .right { text-align: right; display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+  .rt-bs__row .right .pr { font-family: var(--rt-font-grotesk); font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .rt-bs__row .right .arr { display: inline-block; transition: transform 0.35s var(--rt-ez); font-size: 13px; }
+  .rt-bs__row:hover .right .arr { transform: translateX(5px); }
+  .rt-bs__all { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; align-self: flex-start; font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--rt-ink); text-decoration: none; border: 1px solid var(--rt-ink); padding: 15px 26px; transition: background 0.3s var(--rt-ez), color 0.3s var(--rt-ez); }
+  .rt-bs__all:hover { background: var(--rt-ink); color: var(--rt-paper); }
+
+  .rt-bs__empty { font-family: var(--rt-font-grotesk); font-size: 13px; opacity: 0.55; padding: 40px var(--rt-pad) 80px; }
+
+  @media (max-width: 1024px) { .rt-bs__wrap { grid-template-columns: 1fr; gap: 36px; } }
+  @media (max-width: 740px) {
+    .rt-shead { grid-template-columns: 1fr; align-items: start; }
+    .rt-shead__meta { text-align: left; }
+    .rt-bs__row { grid-template-columns: 30px 60px 1fr auto; gap: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-bs__frame img, .rt-bs__row .th img { transition: none; }
+  }
+</style>
+
+<section class="rt-bs" aria-labelledby="rt-bs-title">
+  <div class="rt-shead">
+    <div>
+      <span class="rt-shead__idx">{{ section.settings.eyebrow | default: '03 — Most loved' }}</span>
+      <h2 class="rt-shead__title rt-mask" id="rt-bs-title"><span>{{ section.settings.heading | default: 'Bestsellers.' }}</span></h2>
+    </div>
+    {%- if section.settings.meta != blank -%}<div class="rt-shead__meta">{{ section.settings.meta }}</div>{%- endif -%}
+  </div>
+
+  {%- if featured != blank -%}
+    <div class="rt-bs__wrap">
+
+      {%- comment -%} Featured #1 {%- endcomment -%}
+      {%- assign f_secondary = featured.images[1] -%}
+      <div class="rt-bs__hero" data-rt-reveal>
+        <div class="rt-bs__frame">
+          <div class="rt-bs__rank"><span class="hash">№</span><span class="n">1</span><span class="lbl">Bestseller</span></div>
+          {%- if featured.featured_image != blank -%}
+            <a href="{{ featured.url }}" aria-label="{{ featured.title | escape }}" style="position:absolute;inset:0;z-index:2"></a>
+            <img class="base" src="{{ featured.featured_image | image_url: width: 900 }}"
+                 srcset="{{ featured.featured_image | image_url: width: 600 }} 600w, {{ featured.featured_image | image_url: width: 900 }} 900w, {{ featured.featured_image | image_url: width: 1300 }} 1300w"
+                 sizes="(max-width: 1024px) 100vw, 52vw"
+                 alt="{{ featured.title | escape }}" loading="lazy" decoding="async">
+          {%- endif -%}
+          {%- if f_secondary != blank -%}
+            <img class="alt" src="{{ f_secondary | image_url: width: 900 }}" sizes="(max-width: 1024px) 100vw, 52vw" alt="" aria-hidden="true" loading="lazy" decoding="async">
+          {%- endif -%}
+        </div>
+        <div class="rt-bs__info">
+          {%- liquid
+            assign f_variant = featured.selected_or_first_available_variant
+            assign f_sku = f_variant.sku
+            assign f_meta = f_sku
+            if f_meta == blank
+              assign f_meta = featured.type
+            endif
+          -%}
+          {%- if f_meta != blank -%}<span class="rt-bs__sku">{{ f_meta | escape }}</span>{%- endif -%}
+          <a class="rt-bs__nm" href="{{ featured.url }}">{{ featured.title | escape }}</a>
+
+          {%- if featured.metafields.reviews.rating.value != blank -%}
+            {%- liquid
+              assign f_rv = featured.metafields.reviews.rating.value
+              assign f_max = f_rv.scale_max | default: 5
+              assign f_filled = f_rv.rating | round
+            -%}
+            <div class="rt-bs__meta">
+              <span class="rt-stars" aria-hidden="true">{% for i in (1..f_max) %}{% if i <= f_filled %}★{% else %}<span class="off">★</span>{% endif %}{% endfor %}</span>
+              <span class="rt-bs__rate">{{ f_rv.rating }} · {{ featured.metafields.reviews.rating_count }} reviews</span>
+            </div>
+          {%- endif -%}
+
+          <div class="rt-bs__buy">
+            <span class="rt-bs__pr">{{ featured.price_min | money_without_trailing_zeros }}</span>
+            {%- if featured.compare_at_price > featured.price -%}<span class="rt-bs__od">{{ featured.compare_at_price | money_without_trailing_zeros }}</span>{%- endif -%}
+
+            <product-form class="product-form" data-section-id="{{ section.id }}">
+              <div class="product-form__error-message-wrapper" role="alert" hidden>
+                <span class="product-form__error-message"></span>
+              </div>
+              {%- form 'product', featured, id: 'rt-bs-form-{{ section.id }}', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                <input type="hidden" name="id" value="{{ f_variant.id }}" class="product-variant-id" {% unless featured.available %}disabled{% endunless %}>
+                <button type="submit" name="add" class="rt-bs__add" {% unless featured.available %}disabled{% endunless %}>
+                  <span>{% if featured.available %}Add to bag →{% else %}Sold out{% endif %}</span>
+                  {%- render 'loading-spinner' -%}
+                </button>
+              {%- endform -%}
+            </product-form>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} Ranked list #2–#5 {%- endcomment -%}
+      <div class="rt-bs__list">
+        {%- for product in bs offset: 1 -%}
+          <a class="rt-bs__row" href="{{ product.url }}" data-rt-reveal style="--rt-reveal-delay: {{ forloop.index0 | times: 90 }}ms">
+            <span class="rk">{{ forloop.index | plus: 1 | prepend: '0' | slice: -2, 2 }}</span>
+            <div class="th">
+              {%- if product.featured_image != blank -%}
+                <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+              {%- endif -%}
+            </div>
+            <div class="det">
+              <div class="nm">{{ product.title | escape }}</div>
+              {%- if product.metafields.reviews.rating.value != blank -%}
+                {%- liquid
+                  assign rv = product.metafields.reviews.rating.value
+                  assign rmax = rv.scale_max | default: 5
+                  assign rfilled = rv.rating | round
+                -%}
+                <div class="rowstars">
+                  <span class="rt-stars" aria-hidden="true">{% for i in (1..rmax) %}{% if i <= rfilled %}★{% else %}<span class="off">★</span>{% endif %}{% endfor %}</span>
+                  <span class="ct">{{ rv.rating }} · {{ product.metafields.reviews.rating_count }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="right">
+              <span class="pr">{{ product.price_min | money_without_trailing_zeros }}</span>
+              <span class="arr" aria-hidden="true">→</span>
+            </div>
+          </a>
+        {%- endfor -%}
+        {%- if coll.url != blank -%}
+          <a class="rt-bs__all" href="{{ coll.url }}">{{ section.settings.all_label | default: 'Shop all bestsellers' }} <span aria-hidden="true">→</span></a>
+        {%- endif -%}
+      </div>
+
+    </div>
+  {%- else -%}
+    <p class="rt-bs__empty">Select a Bestsellers collection in the theme editor to populate this section.</p>
+  {%- endif -%}
+</section>
+
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Bestsellers",
+  "class": "rt-bestsellers-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "03 — Most loved" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Bestsellers." },
+    { "type": "richtext", "id": "meta", "label": "Meta (right)", "default": "<p>Ranked by you<br>Updated weekly</p>" },
+    {
+      "type": "collection", "id": "collection", "label": "Bestsellers collection",
+      "info": "Set this collection's sort order to 'Best selling' (or curate it manually). Shows the first 5 products."
+    },
+    { "type": "text", "id": "all_label", "label": "Shop-all label", "default": "Shop all bestsellers" }
+  ],
+  "presets": [{ "name": "Bestsellers" }]
+}
+{% endschema %}
