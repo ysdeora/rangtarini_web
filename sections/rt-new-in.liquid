@@ -1,0 +1,265 @@
+{%- comment -%}
+  New In — auto-detects newest products (newest-first, within a date window)
+  and renders them as a draggable horizontal rail. Logic mirrors
+  new-arrivals-section.liquid; presentation is the v4 "Cinema" rail.
+{%- endcomment -%}
+
+{%- liquid
+  assign product_limit = 10
+  assign days_threshold = section.settings.days_new | default: 60
+  assign now_unix = 'now' | date: '%s' | plus: 0
+  assign threshold_seconds = days_threshold | times: 86400
+
+  assign all_sorted = collections.all.products | sort: 'created_at' | reverse
+
+  assign new_products = '' | split: ''
+  for product in all_sorted
+    assign product_unix = product.created_at | date: '%s' | plus: 0
+    assign age_seconds = now_unix | minus: product_unix
+    if age_seconds <= threshold_seconds
+      assign new_products = new_products | concat: product
+    endif
+    if new_products.size >= product_limit
+      break
+    endif
+  endfor
+
+  if new_products.size < 4
+    assign new_products = all_sorted | slice: 0, product_limit
+  endif
+-%}
+
+<style>
+  .rt-ni { background: var(--rt-paper); --rt-pad: clamp(20px, 3.4vw, 48px); border-bottom: 1px solid var(--rt-ink); }
+
+  .rt-shead {
+    padding: clamp(48px, 7vw, 86px) var(--rt-pad) clamp(20px, 3vw, 30px);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-shead__idx { font-family: var(--rt-font-grotesk); color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
+  .rt-shead__title { font-family: var(--rt-font-grotesk); font-size: clamp(38px, 6vw, 96px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9; margin: 12px 0 0; color: var(--rt-ink); }
+  .rt-shead__right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .rt-shead__link { font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--rt-ink); text-decoration: none; }
+  .rt-shead__meta { font-family: var(--rt-font-grotesk); opacity: 0.55; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; line-height: 1.9; }
+
+  .rt-rail-wrap { position: relative; }
+  .rt-rail {
+    display: flex; gap: 1px; background: var(--rt-ink);
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; cursor: grab;
+  }
+  .rt-rail::-webkit-scrollbar { display: none; }
+  .rt-rail.is-drag { cursor: grabbing; scroll-snap-type: none; }
+
+  .rt-ni-card {
+    flex: 0 0 clamp(240px, 23vw, 330px);
+    scroll-snap-align: start;
+    background: var(--rt-paper);
+    padding: 18px 18px 22px;
+    display: flex; flex-direction: column; gap: 16px;
+    text-decoration: none; color: var(--rt-ink);
+    -webkit-user-select: none; user-select: none;
+  }
+  .rt-ni-card__frame { aspect-ratio: 3 / 3.8; overflow: hidden; position: relative; background: var(--rt-bone); }
+  .rt-ni-card__frame img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.9s var(--rt-ez), opacity 0.5s var(--rt-ez);
+    -webkit-user-drag: none;
+  }
+  .rt-ni-card__frame img.alt { opacity: 0; }
+  .rt-ni-card:hover .rt-ni-card__frame img.alt { opacity: 1; }
+  .rt-ni-card:hover .rt-ni-card__frame img.base { transform: scale(1.04); }
+  .rt-ni-card__soldout {
+    position: absolute; inset: 0; z-index: 2;
+    background: rgba(10,10,10,0.42);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--rt-paper); font-family: var(--rt-font-grotesk);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
+  }
+  .rt-ni-card__sku { font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.16em; opacity: 0.5; text-transform: uppercase; }
+  .rt-ni-card__nmrow { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .rt-ni-card__nm { font-family: var(--rt-font-grotesk); font-weight: 700; font-size: 13.5px; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.2; }
+  .rt-ni-card__pr { font-family: var(--rt-font-grotesk); font-size: 13px; font-weight: 500; white-space: nowrap; }
+  .rt-ni-card__pr s { opacity: 0.45; margin-right: 5px; }
+
+  .rt-rail-ui {
+    display: flex; align-items: center; gap: 24px;
+    padding: 16px var(--rt-pad);
+    border-top: 1px solid var(--rt-ink);
+  }
+  .rt-rail-ui__count { font-family: var(--rt-font-grotesk); font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; opacity: 0.55; white-space: nowrap; }
+  .rt-rail-ui__track { flex: 1; height: 1px; background: var(--rt-line); position: relative; }
+  .rt-rail-ui__thumb { position: absolute; top: -1px; left: 0; height: 3px; background: var(--rt-ink); width: 20%; }
+  .rt-rail-ui__btns { display: flex; border: 1px solid var(--rt-ink); flex: none; }
+  .rt-rail-ui__btns button {
+    background: var(--rt-paper); border: 0; width: 46px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; color: var(--rt-ink); cursor: pointer;
+    transition: background 0.3s var(--rt-ez), color 0.3s var(--rt-ez);
+  }
+  .rt-rail-ui__btns button + button { border-left: 1px solid var(--rt-ink); }
+  .rt-rail-ui__btns button:hover { background: var(--rt-ink); color: var(--rt-paper); }
+
+  .rt-ni-empty { font-family: var(--rt-font-grotesk); font-size: 13px; opacity: 0.55; padding: 40px var(--rt-pad); }
+
+  @media (max-width: 740px) {
+    .rt-shead { grid-template-columns: 1fr; align-items: start; }
+    .rt-shead__right { text-align: left; align-items: flex-start; }
+    .rt-ni-card { flex-basis: 72vw; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rt-ni-card__frame img { transition: none; }
+    .rt-rail { scroll-behavior: auto; }
+  }
+</style>
+
+<section class="rt-ni" aria-labelledby="rt-ni-title">
+  <div class="rt-shead">
+    <div>
+      <span class="rt-shead__idx">{{ section.settings.eyebrow | default: '02 — Just landed' }}</span>
+      <h2 class="rt-shead__title rt-mask" id="rt-ni-title"><span>{{ section.settings.heading | default: 'New In.' }}</span></h2>
+    </div>
+    <div class="rt-shead__right">
+      <a class="rt-shead__link rt-link-sweep" href="{{ section.settings.cta_url | default: '/collections/all?sort_by=created-descending' }}">{{ section.settings.cta_label | default: 'View all' }} →</a>
+      {%- if section.settings.meta != blank -%}<span class="rt-shead__meta">{{ section.settings.meta }}</span>{%- endif -%}
+    </div>
+  </div>
+
+  {%- if new_products.size > 0 -%}
+    <div class="rt-rail-wrap" data-rt-rail>
+      <div class="rt-rail" data-rail-track>
+        {%- for product in new_products -%}
+          {%- liquid
+            assign primary = product.featured_image
+            assign secondary = product.images[1]
+            assign variant = product.selected_or_first_available_variant
+            assign sku = variant.sku
+            assign meta_line = sku
+            if meta_line == blank
+              assign meta_line = product.type
+            endif
+            if meta_line == blank
+              assign meta_line = product.vendor
+            endif
+          -%}
+          <a class="rt-ni-card" href="{{ product.url }}" aria-label="{{ product.title | escape }}, {{ product.price_min | money_without_trailing_zeros }}">
+            <div class="rt-ni-card__frame">
+              {%- if primary != blank -%}
+                <img class="base"
+                  src="{{ primary | image_url: width: 500 }}"
+                  srcset="{{ primary | image_url: width: 300 }} 300w, {{ primary | image_url: width: 500 }} 500w, {{ primary | image_url: width: 700 }} 700w"
+                  sizes="(max-width: 740px) 72vw, 23vw"
+                  alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+              {%- endif -%}
+              {%- if secondary != blank -%}
+                <img class="alt"
+                  src="{{ secondary | image_url: width: 500 }}"
+                  srcset="{{ secondary | image_url: width: 300 }} 300w, {{ secondary | image_url: width: 500 }} 500w, {{ secondary | image_url: width: 700 }} 700w"
+                  sizes="(max-width: 740px) 72vw, 23vw"
+                  alt="" aria-hidden="true" loading="lazy" decoding="async">
+              {%- endif -%}
+              {%- unless product.available -%}<div class="rt-ni-card__soldout">Sold Out</div>{%- endunless -%}
+            </div>
+            {%- if meta_line != blank -%}<span class="rt-ni-card__sku">{{ meta_line | escape }}</span>{%- endif -%}
+            <div class="rt-ni-card__nmrow">
+              <span class="rt-ni-card__nm">{{ product.title | escape }}</span>
+              <span class="rt-ni-card__pr">
+                {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
+                {{ product.price_min | money_without_trailing_zeros }}
+              </span>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+      <div class="rt-rail-ui">
+        <span class="rt-rail-ui__count">{{ new_products.size | prepend: '0' | slice: -2, 2 }} pieces</span>
+        <div class="rt-rail-ui__track"><div class="rt-rail-ui__thumb" data-rail-thumb></div></div>
+        <div class="rt-rail-ui__btns">
+          <button type="button" data-rail-prev aria-label="Previous">←</button>
+          <button type="button" data-rail-next aria-label="Next">→</button>
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <p class="rt-ni-empty">New pieces are on their way. Check back soon.</p>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    var rail = root.querySelector('[data-rail-track]');
+    if (!rail) return;
+    var thumb = root.querySelector('[data-rail-thumb]');
+    var prev = root.querySelector('[data-rail-prev]');
+    var next = root.querySelector('[data-rail-next]');
+
+    function step() {
+      var card = rail.querySelector('.rt-ni-card');
+      return card ? card.getBoundingClientRect().width + 1 : 300;
+    }
+    function updateThumb() {
+      if (!thumb) return;
+      var max = rail.scrollWidth - rail.clientWidth;
+      var ratio = rail.clientWidth / rail.scrollWidth;
+      thumb.style.width = Math.max(8, ratio * 100) + '%';
+      var travel = 100 - Math.max(8, ratio * 100);
+      var pos = max > 0 ? (rail.scrollLeft / max) : 0;
+      thumb.style.left = (pos * travel) + '%';
+    }
+    rail.addEventListener('scroll', updateThumb, { passive: true });
+    window.addEventListener('resize', updateThumb);
+    updateThumb();
+
+    if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+
+    /* Pointer drag-to-scroll */
+    var down = false, startX = 0, startLeft = 0, moved = false;
+    rail.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'touch') return; /* native touch scroll handles this */
+      down = true; moved = false;
+      startX = e.clientX; startLeft = rail.scrollLeft;
+      rail.classList.add('is-drag');
+    });
+    rail.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      rail.scrollLeft = startLeft - dx;
+    });
+    function endDrag() { down = false; rail.classList.remove('is-drag'); }
+    rail.addEventListener('pointerup', endDrag);
+    rail.addEventListener('pointercancel', endDrag);
+    rail.addEventListener('pointerleave', endDrag);
+    /* Prevent click navigation after a drag */
+    rail.addEventListener('click', function (e) {
+      if (moved) { e.preventDefault(); moved = false; }
+    }, true);
+  }());
+</script>
+
+{% schema %}
+{
+  "name": "New In Rail",
+  "tag": "div",
+  "class": "rt-new-in-section",
+  "limit": 1,
+  "templates": ["index"],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "02 — Just landed" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "New In." },
+    {
+      "type": "range", "id": "days_new", "label": "Show products added within (days)",
+      "info": "Falls back to the most recent products if fewer than 4 qualify.",
+      "min": 30, "max": 180, "step": 30, "default": 60
+    },
+    { "type": "text", "id": "meta", "label": "Meta (right)", "default": "Drag or arrow" },
+    { "type": "text", "id": "cta_label", "label": "Link label", "default": "View all" },
+    { "type": "url", "id": "cta_url", "label": "Link", "info": "Defaults to all products, newest first." }
+  ],
+  "presets": [{ "name": "New In Rail" }]
+}
+{% endschema %}
