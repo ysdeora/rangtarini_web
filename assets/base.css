@@ -6,11 +6,19 @@
 
 :root {
   --rt-ink: #0a0a0a;
+  --rt-ink-soft: #16140f;
   --rt-paper: #efece4;
+  --rt-paper-soft: #e6e0d0;
+  --rt-bone: #d2cab7;
   --rt-gold: #b59159;
   --rt-gold-deep: #7a5e2c;
+  --rt-wa-green: #1f9e58;
+  --rt-line: rgba(10, 10, 10, 0.16);
+  --rt-line-paper: rgba(239, 236, 228, 0.22);
   --rt-font-grotesk: 'Archivo', 'Montserrat', sans-serif;
   --rt-font-deva: 'Noto Serif Devanagari', serif;
+  --rt-font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --rt-ez: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Header styling handled by sections/rt-header.liquid */
