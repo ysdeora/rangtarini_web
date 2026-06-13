@@ -1107,34 +1107,50 @@
      class there — not on .rt-hd-wrap, which can't stick on its own. */
   var hdWrap = document.querySelector('.rt-hd-wrap');
   var hdSection = hdWrap ? hdWrap.closest('.shopify-section') : null;
+  /* Cinematic hero (homepage only) — header floats transparent over it */
+  var heroEl = document.querySelector('.rt-hero-cinema');
+  var HEADER_H = hdWrap ? hdWrap.offsetHeight : 60;
   var lastScrollY = window.scrollY;
   var scrollTicking = false;
   var HD_THRESHOLD = 80;
 
+  function syncHeaderState() {
+    var y = window.scrollY;
+    var isSearchOpen = searchPanel && searchPanel.classList.contains('is-open');
+    var isMobileOpen = mobileNav && !mobileNav.hidden;
+
+    /* Over the hero while its bottom edge is still beneath the header band */
+    var overHero = false;
+    if (heroEl && !isSearchOpen && !isMobileOpen) {
+      overHero = heroEl.getBoundingClientRect().bottom > HEADER_H + 2;
+    }
+
+    if (hdSection) {
+      hdSection.classList.toggle('rt-hd--onhero', overHero);
+      /* Frosted only once we've left the hero (the two states are exclusive) */
+      hdSection.classList.toggle('rt-hd--scrolled', y > HD_THRESHOLD && !overHero);
+    }
+
+    if (hdSection && !isSearchOpen && !isMobileOpen) {
+      if (y > lastScrollY && y > HD_THRESHOLD) {
+        hdSection.classList.add('rt-hd--hidden');
+      } else {
+        hdSection.classList.remove('rt-hd--hidden');
+      }
+    }
+
+    lastScrollY = y;
+    scrollTicking = false;
+  }
+
   window.addEventListener('scroll', function () {
     if (scrollTicking) return;
     scrollTicking = true;
-    requestAnimationFrame(function () {
-      var y = window.scrollY;
-      var isSearchOpen = searchPanel && searchPanel.classList.contains('is-open');
-      var isMobileOpen = mobileNav && !mobileNav.hidden;
-
-      if (hdSection) {
-        hdSection.classList.toggle('rt-hd--scrolled', y > HD_THRESHOLD);
-      }
-
-      if (hdSection && !isSearchOpen && !isMobileOpen) {
-        if (y > lastScrollY && y > HD_THRESHOLD) {
-          hdSection.classList.add('rt-hd--hidden');
-        } else {
-          hdSection.classList.remove('rt-hd--hidden');
-        }
-      }
-
-      lastScrollY = y;
-      scrollTicking = false;
-    });
+    requestAnimationFrame(syncHeaderState);
   }, { passive: true });
+
+  /* Initial paint — establish the over-hero state before any scroll */
+  syncHeaderState();
 
 }());
 </script>
