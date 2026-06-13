@@ -5,11 +5,11 @@
     border-top: 1px solid rgba(239,236,228,0.1);
   }
 
-  /* ── Giant wordmark ── */
+  /* ── Giant wordmark (sits at the bottom, above the legal bar) ── */
   .rt-ft__hero {
-    padding: 48px 0 0;
+    padding: clamp(40px, 6vw, 76px) 0 clamp(28px, 4vw, 44px);
     text-align: center;
-    border-bottom: 1px solid rgba(239,236,228,0.1);
+    border-top: 1px solid rgba(239,236,228,0.1);
     overflow: hidden;
   }
   .rt-ft__wordmark {
@@ -31,7 +31,7 @@
     font-weight: 600;
     color: var(--rt-gold);
     display: block;
-    margin: 16px 0 40px;
+    margin: 16px 0 0;
     letter-spacing: 0;
   }
 
