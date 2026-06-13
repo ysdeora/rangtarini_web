@@ -1,0 +1,93 @@
+{%- liquid
+  assign wa_number = section.settings.whatsapp_number | default: '919251110762'
+  assign wa_msg = section.settings.whatsapp_message | default: "Hi Rangtarini, I'd like to commission a custom piece."
+  assign wa_href = 'https://wa.me/' | append: wa_number | append: '?text=' | append: wa_msg | url_encode
+  assign chips = section.settings.chips | default: 'Bridal commissions,Jadau kundan,Temple silver,Restorations' | split: ','
+-%}
+
+<style>
+  .rt-wa { background: var(--rt-bone); border-bottom: 1px solid var(--rt-ink); --rt-pad: clamp(20px, 3.4vw, 48px); }
+  .rt-wa__grid {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 4vw, 64px);
+    padding: clamp(44px, 6vw, 80px) var(--rt-pad); align-items: center;
+  }
+  .rt-wa__eyebrow { font-family: var(--rt-font-grotesk); font-size: 10px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rt-gold-deep); }
+  .rt-wa__hd {
+    font-family: var(--rt-font-grotesk); font-size: clamp(32px, 4.4vw, 68px); font-weight: 900;
+    letter-spacing: -0.03em; text-transform: uppercase; line-height: 0.92; margin: 12px 0 0; color: var(--rt-ink);
+  }
+  .rt-wa__hd em { font-style: normal; color: var(--rt-gold-deep); }
+  .rt-wa__chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .rt-wa__chip {
+    font-family: var(--rt-font-grotesk); font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    border: 1px solid var(--rt-ink); padding: 9px 14px; background: transparent; white-space: nowrap; color: var(--rt-ink);
+    transition: background 0.3s var(--rt-ez), color 0.3s var(--rt-ez);
+  }
+  .rt-wa__chip:hover { background: var(--rt-ink); color: var(--rt-paper); }
+
+  .rt-wa__right { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  .rt-wa__copy { margin: 0; font-family: var(--rt-font-grotesk); font-size: 13.5px; line-height: 1.75; opacity: 0.78; max-width: 380px; color: var(--rt-ink); text-wrap: pretty; }
+  .rt-wa__btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 17px 28px; background: var(--rt-wa-green); border: 1px solid var(--rt-wa-green); color: #f4fbf6;
+    font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+    text-decoration: none; position: relative; overflow: hidden; isolation: isolate;
+    transition: color 0.35s var(--rt-ez);
+  }
+  .rt-wa__btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--rt-ink); transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--rt-ez); }
+  .rt-wa__btn:hover { color: #fff; }
+  .rt-wa__btn:hover::before { transform: scaleX(1); }
+  .rt-wa__btn .arr { transition: transform 0.35s var(--rt-ez); }
+  .rt-wa__btn:hover .arr { transform: translateX(5px); }
+  .rt-wa__note { font-family: var(--rt-font-mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; color: var(--rt-ink); }
+  .rt-wa__email { font-family: var(--rt-font-mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rt-ink); opacity: 0.7; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  .rt-wa__email:hover { opacity: 1; }
+
+  @media (max-width: 1024px) { .rt-wa__grid { grid-template-columns: 1fr; } }
+</style>
+
+<section class="rt-wa" aria-labelledby="rt-wa-title">
+  <div class="rt-wa__grid">
+    <div data-rt-reveal>
+      <span class="rt-wa__eyebrow">{{ section.settings.eyebrow | default: '05 — Made to order' }}</span>
+      <h2 class="rt-wa__hd" id="rt-wa-title">{{ section.settings.heading | default: 'A piece that exists <em>once.</em>' }}</h2>
+      {%- if chips.size > 0 -%}
+        <div class="rt-wa__chips">
+          {%- for chip in chips -%}
+            {%- assign chip = chip | strip -%}
+            {%- if chip != blank -%}<span class="rt-wa__chip">{{ chip | escape }}</span>{%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="rt-wa__right" data-rt-reveal style="--rt-reveal-delay: 120ms">
+      {%- if section.settings.copy != blank -%}<p class="rt-wa__copy">{{ section.settings.copy }}</p>{%- endif -%}
+      <a class="rt-wa__btn" href="{{ wa_href }}" target="_blank" rel="noopener noreferrer">
+        {{ section.settings.button_label | default: 'Start on WhatsApp' }} <span class="arr" aria-hidden="true">→</span>
+      </a>
+      <span class="rt-wa__note">{{ section.settings.note | default: 'Replies within hours · 10am–7pm IST' }}</span>
+      {%- if section.settings.email != blank -%}
+        <a class="rt-wa__email" href="mailto:{{ section.settings.email }}">Or email {{ section.settings.email }} →</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Order — WhatsApp",
+  "class": "rt-custom-order-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "05 — Made to order" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Wrap a word in <em></em> to gild it.", "default": "A piece that exists <em>once.</em>" },
+    { "type": "text", "id": "chips", "label": "Chips (comma-separated)", "default": "Bridal commissions,Jadau kundan,Temple silver,Restorations" },
+    { "type": "textarea", "id": "copy", "label": "Copy", "default": "Send a reference, a sketch, or your grandmother's piece that needs a second life. Our bench replies with a plan, and a date." },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number (E.164 without +)", "default": "919251110762" },
+    { "type": "text", "id": "whatsapp_message", "label": "Pre-filled WhatsApp message", "default": "Hi Rangtarini, I'd like to commission a custom piece." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Start on WhatsApp" },
+    { "type": "text", "id": "note", "label": "Reply note", "default": "Replies within hours · 10am–7pm IST" },
+    { "type": "text", "id": "email", "label": "Fallback enquiry email", "default": "bespoke@rangtarini.com" }
+  ],
+  "presets": [{ "name": "Custom Order — WhatsApp" }]
+}
+{% endschema %}
