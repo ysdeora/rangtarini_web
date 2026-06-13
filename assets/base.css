@@ -72,17 +72,21 @@ h3, .h3, h4, .h4 {
   line-height: 1.4;
 }
 
-/* v4 redesign: the legacy serif heading rules above use !important and steal
-   the Archivo grotesk system inside the redesigned rt-* sections. Re-assert it
-   here — !important is required only to override the legacy !important. */
-.rt-hero-cinema-section :is(h1, h2, h3, h4),
-.rt-catalog-section :is(h1, h2, h3, h4),
-.rt-new-in-section :is(h1, h2, h3, h4),
-.rt-bestsellers-section :is(h1, h2, h3, h4),
-.rt-craft-section :is(h1, h2, h3, h4),
-.rt-occ-section :is(h1, h2, h3, h4),
-.rt-custom-order-section :is(h1, h2, h3, h4),
-.rt-nl-section :is(h1, h2, h3, h4) {
+/* v4 global type system — the legacy Playfair/Montserrat rules above use
+   !important and steal the Archivo grotesk voice inside every redesigned
+   rt-* section (headings AND body copy). Re-assert it once here for all of
+   them; !important is required only to override the legacy !important.
+   Mono/Devanagari accents set their own font on dedicated spans, so they
+   are unaffected (none are h1–h4/p/li). */
+.rt-hero-cinema-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-catalog-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-new-in-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-bestsellers-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-craft-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-occ-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-custom-order-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-nl-section :is(h1, h2, h3, h4, p, li, .rte),
+.rt-footer-section :is(h1, h2, h3, h4, p, li, .rte) {
   font-family: var(--rt-font-grotesk) !important;
 }
 
