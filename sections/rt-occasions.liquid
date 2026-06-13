@@ -1,211 +1,72 @@
 <style>
-  .rt-occ {
-    background: var(--rt-paper);
+  .rt-occ { background: var(--rt-paper); border-bottom: 1px solid var(--rt-ink); --rt-pad: clamp(20px, 3.4vw, 48px); }
+
+  .rt-shead {
+    padding: clamp(48px, 7vw, 86px) var(--rt-pad) clamp(20px, 3vw, 30px);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px;
     border-bottom: 1px solid var(--rt-ink);
   }
-  .rt-occ__hd {
-    padding: 72px 28px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .rt-occ__eyebrow {
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--rt-ink);
-    opacity: 0.72;
-    margin: 0 0 12px;
-  }
-  .rt-occ__display {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(48px, 6vw, 88px);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-    line-height: 0.92;
-    color: var(--rt-ink);
-    margin: 0;
-  }
-  .rt-occ__subcount {
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--rt-ink);
-    opacity: 0.72;
-  }
+  .rt-shead__idx { font-family: var(--rt-font-grotesk); color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
+  .rt-shead__title { font-family: var(--rt-font-grotesk); font-size: clamp(38px, 6vw, 96px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9; margin: 12px 0 0; color: var(--rt-ink); }
+  .rt-shead__meta { font-family: var(--rt-font-grotesk); text-align: right; opacity: 0.6; font-size: 10px; letter-spacing: 0.28em; line-height: 2; text-transform: uppercase; }
 
-  .rt-occ__rows {
-    border-top: 1px solid var(--rt-ink);
-  }
+  .rt-occ__rows { }
   .rt-occ__row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: clamp(16px, 2.4vw, 32px);
+    padding: clamp(30px, 4vw, 52px) var(--rt-pad);
     border-bottom: 1px solid var(--rt-ink);
   }
-
-  .rt-occ__img-wrap {
-    position: relative;
-    overflow: hidden;
-  }
-  .rt-occ__img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    min-height: 380px;
-    object-fit: cover;
-    display: block;
-    transition: transform 600ms ease;
-  }
-  .rt-occ__row:hover .rt-occ__img {
-    transform: scale(1.03);
-  }
+  .rt-occ__img-wrap { position: relative; overflow: hidden; aspect-ratio: 16 / 9.5; }
+  .rt-occ__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s var(--rt-ez); }
+  .rt-occ__row:hover .rt-occ__img { transform: scale(1.045); }
   .rt-occ__img-tag {
-    position: absolute;
-    left: 22px;
-    top: 20px;
-    background: var(--rt-paper);
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding: 4px 9px;
-    color: var(--rt-ink);
+    position: absolute; left: 18px; top: 16px; z-index: 2;
+    background: var(--rt-paper); font-family: var(--rt-font-grotesk); font-size: 10px;
+    letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; padding: 4px 9px; color: var(--rt-ink);
   }
 
-  .rt-occ__copy {
-    padding: 0 56px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 22px;
-  }
+  .rt-occ__copy { display: flex; flex-direction: column; }
   .rt-occ__letter {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(80px, 10vw, 120px);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    line-height: 0.85;
-    color: var(--rt-ink);
-    margin: 0;
+    font-family: var(--rt-font-grotesk); font-weight: 900; font-size: clamp(60px, 7vw, 110px); line-height: 0.9;
+    color: transparent; -webkit-text-stroke: 1.5px var(--rt-ink); margin: 0;
   }
-  .rt-occ__name {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-    line-height: 0.95;
-    color: var(--rt-ink);
-    margin: 0;
-  }
-  .rt-occ__sub {
-    font-family: var(--rt-font-grotesk);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.6;
-    color: var(--rt-ink);
-    opacity: 0.75;
-    letter-spacing: 0;
-  }
+  .rt-occ__name { font-family: var(--rt-font-grotesk); font-weight: 900; text-transform: uppercase; font-size: clamp(28px, 3.4vw, 54px); letter-spacing: -0.02em; line-height: 0.98; margin: 10px 0 0; color: var(--rt-ink); }
+  .rt-occ__sub { font-family: var(--rt-font-grotesk); margin: 12px 0 0; font-size: 13.5px; line-height: 1.7; opacity: 0.7; max-width: 380px; color: var(--rt-ink); }
   .rt-occ__enter {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    width: 240px;
-    padding: 12px 0;
-    border-top: 1px solid var(--rt-ink);
-    border-bottom: 1px solid var(--rt-ink);
-    color: var(--rt-ink);
-    text-decoration: none;
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-top: 8px;
-    transition: opacity 220ms;
+    display: inline-flex; align-items: center; gap: 12px; align-self: flex-start; margin-top: 22px;
+    padding: 15px 26px; border: 1px solid var(--rt-ink); color: var(--rt-ink); text-decoration: none;
+    font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+    transition: background 0.3s var(--rt-ez), color 0.3s var(--rt-ez);
   }
-  .rt-occ__enter:hover { opacity: 0.6; }
-  .rt-occ__enter span { transition: transform 220ms ease; }
-  .rt-occ__enter:hover span { transform: translateX(5px); }
+  .rt-occ__enter:hover { background: var(--rt-ink); color: var(--rt-paper); }
+  .rt-occ__enter .arr { transition: transform 0.3s var(--rt-ez); }
+  .rt-occ__enter:hover .arr { transform: translateX(5px); }
 
-  /* odd rows: image left; even rows: image right */
+  /* even rows flip media to the right */
   .rt-occ__row--right .rt-occ__img-wrap { order: 2; }
-  .rt-occ__row--right .rt-occ__copy    { order: 1; }
+  .rt-occ__row--right .rt-occ__copy { order: 1; }
 
-  @media (max-width: 990px) {
-    .rt-occ__copy { padding: 32px 32px; }
-    .rt-occ__img { min-height: 300px; }
-  }
-  @media (max-width: 749px) {
-    .rt-occ__hd { padding: 32px 16px 16px; }
-    .rt-occ__display { font-size: 40px; }
-
-    /* 2×2 card grid */
-    .rt-occ__rows {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--rt-ink);
-      border-top: none;
-    }
-    .rt-occ__row {
-      display: block;
-      position: relative;
-      overflow: hidden;
-      border-bottom: none;
-    }
-    /* reset alternation — not needed in flat grid */
+  @media (max-width: 740px) {
+    .rt-shead { grid-template-columns: 1fr; align-items: start; }
+    .rt-shead__meta { text-align: left; }
+    .rt-occ__row,
+    .rt-occ__row--right { grid-template-columns: 1fr; }
     .rt-occ__row--right .rt-occ__img-wrap,
-    .rt-occ__row--right .rt-occ__copy { order: unset; }
-
-    /* portrait card image */
-    .rt-occ__img { aspect-ratio: 3/4; min-height: unset; }
-
-    /* copy becomes an absolute overlay pinned to image bottom */
-    .rt-occ__copy {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      display: block;
-      padding: 0;
-    }
-    .rt-occ__letter,
-    .rt-occ__name,
-    .rt-occ__sub { display: none; }
-
-    /* "Enter the edit →" = full-width tappable dark bar */
-    .rt-occ__enter {
-      display: flex;
-      width: 100%;
-      background: rgba(10,10,10,0.72);
-      color: var(--rt-paper);
-      border-color: rgba(239,236,228,0.2);
-      border-left: none;
-      border-right: none;
-      padding: 10px 12px;
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      margin-top: 0;
-      justify-content: space-between;
-    }
+    .rt-occ__row--right .rt-occ__copy { order: initial; }
+    .rt-occ__img-wrap { aspect-ratio: 16 / 11; }
+    .rt-occ__copy { margin-top: 18px; }
   }
+  @media (prefers-reduced-motion: reduce) { .rt-occ__img { transition: none; } }
 </style>
 
-<section class="rt-occ">
-  <div class="rt-occ__hd">
+<section class="rt-occ" aria-labelledby="rt-occ-title">
+  <div class="rt-shead">
     <div>
-      <p class="rt-occ__eyebrow">Index 02 — By occasion</p>
-      <h2 class="rt-occ__display rt-mask"><span>Edits.</span></h2>
+      <span class="rt-shead__idx">{{ section.settings.eyebrow | default: '05 — By occasion' }}</span>
+      <h2 class="rt-shead__title rt-mask" id="rt-occ-title"><span>{{ section.settings.heading | default: 'The Edits.' }}</span></h2>
     </div>
-    <span class="rt-occ__subcount">Four · curated by the studio</span>
+    {%- if section.settings.meta != blank -%}<div class="rt-shead__meta">{{ section.settings.meta }}</div>{%- endif -%}
   </div>
 
   <div class="rt-occ__rows">
@@ -217,38 +78,26 @@
           {%- if block.settings.image != blank -%}
             <img
               src="{{ block.settings.image | image_url: width: 1200 }}"
-              srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
-                      {{ block.settings.image | image_url: width: 900 }} 900w,
-                      {{ block.settings.image | image_url: width: 1200 }} 1200w"
-              sizes="(max-width: 749px) 100vw, 50vw"
-              alt="{{ block.settings.name | escape }}"
-              class="rt-occ__img"
-              loading="lazy"
-              decoding="async"
-              width="{{ block.settings.image.width }}"
-              height="{{ block.settings.image.height }}">
+              srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 740px) 100vw, 50vw"
+              alt="{{ block.settings.name | escape }}" class="rt-occ__img" loading="lazy" decoding="async">
           {%- elsif block.settings.fallback_url != blank -%}
             {%- assign fb = block.settings.fallback_url -%}
             <img
               src="{{ fb }}&width=900"
-              srcset="{{ fb }}&width=600 600w,
-                      {{ fb }}&width=900 900w,
-                      {{ fb }}&width=1200 1200w"
-              sizes="(max-width: 749px) 100vw, 50vw"
-              alt="{{ block.settings.name | escape }}"
-              class="rt-occ__img"
-              loading="lazy"
-              decoding="async">
+              srcset="{{ fb }}&width=600 600w, {{ fb }}&width=900 900w, {{ fb }}&width=1200 1200w"
+              sizes="(max-width: 740px) 100vw, 50vw"
+              alt="{{ block.settings.name | escape }}" class="rt-occ__img" loading="lazy" decoding="async">
           {%- endif -%}
           <span class="rt-occ__img-tag">{{ block.settings.name }}</span>
         </div>
 
         <div class="rt-occ__copy">
-          <p class="rt-occ__letter">{{ block.settings.letter }}</p>
+          <p class="rt-occ__letter" aria-hidden="true">{{ block.settings.letter }}</p>
           <h3 class="rt-occ__name">{{ block.settings.name }}</h3>
           <p class="rt-occ__sub">{{ block.settings.sub }}</p>
           <a href="{{ block.settings.url }}" class="rt-occ__enter">
-            Enter the edit <span>→</span>
+            {{ block.settings.cta_label | default: 'Shop the edit' }} <span class="arr" aria-hidden="true">→</span>
           </a>
         </div>
 
@@ -261,48 +110,26 @@
 {
   "name": "Occasions",
   "class": "rt-occ-section",
-  "presets": [{"name": "Occasions"}],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "05 — By occasion" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Edits." },
+    { "type": "richtext", "id": "meta", "label": "Meta (right)", "default": "<p>Four moods<br>One bench</p>" }
+  ],
   "blocks": [
     {
       "type": "occasion",
       "name": "Occasion",
       "settings": [
-        {
-          "type": "text",
-          "id": "letter",
-          "label": "Index letter (A, B, C…)",
-          "default": "A"
-        },
-        {
-          "type": "text",
-          "id": "name",
-          "label": "Occasion name",
-          "default": "Bridal"
-        },
-        {
-          "type": "text",
-          "id": "sub",
-          "label": "Sub-description",
-          "default": "Heirloom kundan & polki"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Occasion image"
-        },
-        {
-          "type": "text",
-          "id": "fallback_url",
-          "label": "Fallback image URL (if no image set)"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Collection / page link"
-        }
+        { "type": "text", "id": "letter", "label": "Index letter (A, B, C…)", "default": "A" },
+        { "type": "text", "id": "name", "label": "Occasion name", "default": "Bridal" },
+        { "type": "text", "id": "sub", "label": "Sub-description", "default": "Heirloom kundan & polki" },
+        { "type": "image_picker", "id": "image", "label": "Occasion image" },
+        { "type": "text", "id": "fallback_url", "label": "Fallback image URL (if no image set)" },
+        { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop the edit" },
+        { "type": "url", "id": "url", "label": "Collection / page link" }
       ]
     }
   ],
-  "settings": []
+  "presets": [{ "name": "Occasions" }]
 }
 {% endschema %}
