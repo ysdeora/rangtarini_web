@@ -26,6 +26,28 @@
     box-shadow: 0 1px 0 rgba(10,10,10,0.06);
   }
 
+  /* Transparent state while floating over the cinematic hero (light-on-dark) */
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd-wrap {
+    background: transparent;
+    border-bottom-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__nav-link,
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__logo {
+    color: var(--rt-paper);
+    transition: color 320ms ease, opacity 180ms;
+  }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__nav-link { opacity: 0.82; }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__nav-item:hover > .rt-hd__nav-link,
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__nav-link:hover { opacity: 1; }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__icon svg { stroke: var(--rt-paper); transition: stroke 320ms ease; }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__menu-btn span { background: var(--rt-paper); }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__cart-count { background: var(--rt-paper); color: var(--rt-ink); }
+  /* Keep the inline search panel readable on its own paper surface even while onhero */
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__search-panel { background: var(--rt-paper); }
+
   /* 3-col grid */
   .rt-hd {
     display: grid;
