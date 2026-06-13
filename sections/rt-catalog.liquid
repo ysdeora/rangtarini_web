@@ -1,0 +1,216 @@
+{%- liquid
+  assign pad = '--rt-pad: clamp(20px, 3.4vw, 48px);'
+-%}
+
+<style>
+  .rt-cat { background: var(--rt-paper); --rt-pad: clamp(20px, 3.4vw, 48px); }
+
+  /* Shared section head */
+  .rt-shead {
+    padding: clamp(48px, 7vw, 86px) var(--rt-pad) clamp(20px, 3vw, 30px);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-shead__idx {
+    font-family: var(--rt-font-grotesk);
+    color: var(--rt-gold-deep);
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    font-size: 10.5px;
+    text-transform: uppercase;
+  }
+  .rt-shead__title {
+    font-family: var(--rt-font-grotesk);
+    font-size: clamp(38px, 6vw, 96px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    margin: 12px 0 0;
+    color: var(--rt-ink);
+  }
+  .rt-shead__meta {
+    font-family: var(--rt-font-grotesk);
+    text-align: right;
+    opacity: 0.6;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    line-height: 2;
+    text-transform: uppercase;
+    color: var(--rt-ink);
+  }
+
+  .rt-cat__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(16px, 2.4vw, 32px);
+    padding: clamp(28px, 4vw, 56px) var(--rt-pad) clamp(56px, 7vw, 96px);
+  }
+  .rt-cat__tile { position: relative; display: block; text-decoration: none; color: var(--rt-ink); }
+  .rt-cat__frame { position: relative; overflow: hidden; background: var(--rt-bone); }
+  .rt-cat__frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s var(--rt-ez);
+  }
+  .rt-cat__tile:hover .rt-cat__frame img { transform: scale(1.05); }
+  .rt-cat__chip {
+    position: absolute;
+    top: 10px; left: 10px;
+    z-index: 2;
+    background: var(--rt-paper);
+    color: var(--rt-ink);
+    font-family: var(--rt-font-grotesk);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    padding: 5px 8px;
+    text-transform: uppercase;
+  }
+  .rt-cat__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 14px;
+    gap: 12px;
+  }
+  .rt-cat__name {
+    font-family: var(--rt-font-grotesk);
+    font-weight: 800;
+    font-size: clamp(15px, 1.5vw, 21px);
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .rt-cat__count {
+    font-family: var(--rt-font-grotesk);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    opacity: 0.55;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .rt-cat__count .arr { display: inline-block; transition: transform 0.35s var(--rt-ez); }
+  .rt-cat__tile:hover .rt-cat__count .arr { transform: translateX(6px); }
+
+  /* Asymmetric desktop placement */
+  .rt-cat__tile:nth-child(1) { grid-column: 1 / span 7; }
+  .rt-cat__tile:nth-child(1) .rt-cat__frame { aspect-ratio: 4 / 3.1; }
+  .rt-cat__tile:nth-child(2) { grid-column: 8 / span 5; padding-top: clamp(40px, 6vw, 110px); }
+  .rt-cat__tile:nth-child(2) .rt-cat__frame { aspect-ratio: 3 / 3.55; }
+  .rt-cat__tile:nth-child(3) { grid-column: 1 / span 4; margin-top: clamp(-30px, -2vw, -12px); }
+  .rt-cat__tile:nth-child(3) .rt-cat__frame { aspect-ratio: 3 / 3.7; }
+  .rt-cat__tile:nth-child(4) { grid-column: 5 / span 4; padding-top: clamp(36px, 5vw, 90px); }
+  .rt-cat__tile:nth-child(4) .rt-cat__frame { aspect-ratio: 3 / 3.2; }
+  .rt-cat__tile:nth-child(5) { grid-column: 9 / span 4; }
+  .rt-cat__tile:nth-child(5) .rt-cat__frame { aspect-ratio: 3 / 3.7; }
+  .rt-cat__tile:nth-child(6) { grid-column: 3 / span 8; }
+  .rt-cat__tile:nth-child(6) .rt-cat__frame { aspect-ratio: 16 / 7; }
+
+  @media (max-width: 1024px) {
+    .rt-cat__tile:nth-child(1) { grid-column: 1 / span 12; }
+    .rt-cat__tile:nth-child(2) { grid-column: 1 / span 6; padding-top: 0; }
+    .rt-cat__tile:nth-child(3) { grid-column: 7 / span 6; margin-top: 0; padding-top: clamp(30px, 6vw, 60px); }
+    .rt-cat__tile:nth-child(4) { grid-column: 1 / span 6; padding-top: 0; }
+    .rt-cat__tile:nth-child(5) { grid-column: 7 / span 6; padding-top: clamp(30px, 6vw, 60px); }
+    .rt-cat__tile:nth-child(6) { grid-column: 1 / span 12; }
+  }
+  @media (max-width: 740px) {
+    .rt-shead { grid-template-columns: 1fr; align-items: start; }
+    .rt-shead__meta { text-align: left; }
+    .rt-cat__grid { gap: 30px; }
+    .rt-cat__tile:nth-child(n) { grid-column: 1 / span 12; padding-top: 0; margin-top: 0; }
+    .rt-cat__tile:nth-child(n) .rt-cat__frame { aspect-ratio: 4 / 3; }
+  }
+</style>
+
+<section class="rt-cat" aria-labelledby="rt-cat-title">
+  <div class="rt-shead">
+    <div>
+      <span class="rt-shead__idx">{{ section.settings.eyebrow | default: '01 — Six families' }}</span>
+      <h2 class="rt-shead__title rt-mask" id="rt-cat-title"><span>{{ section.settings.heading | default: 'The Catalog.' }}</span></h2>
+    </div>
+    {%- if section.settings.meta != blank -%}
+      <div class="rt-shead__meta">{{ section.settings.meta }}</div>
+    {%- endif -%}
+  </div>
+
+  <div class="rt-cat__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign coll = block.settings.collection
+        assign img = block.settings.image | default: coll.featured_image
+        assign name = block.settings.name | default: coll.title | default: 'Collection'
+        assign url = block.settings.url | default: coll.url | default: '#'
+        assign count_text = block.settings.count_text
+        if count_text == blank and coll != blank
+          assign count_text = coll.all_products_count | append: ' pieces'
+        endif
+      -%}
+      <a class="rt-cat__tile"
+         href="{{ url }}"
+         {{ block.shopify_attributes }}
+         data-rt-reveal
+         style="--rt-reveal-delay: {{ forloop.index0 | times: 70 }}ms"
+         aria-label="{{ name | escape }}">
+        <span class="rt-cat__chip">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+        <div class="rt-cat__frame">
+          {%- if img != blank -%}
+            <img
+              src="{{ img | image_url: width: 900 }}"
+              srcset="{{ img | image_url: width: 500 }} 500w, {{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1300 }} 1300w"
+              sizes="(max-width: 740px) 100vw, (max-width: 1024px) 50vw, 40vw"
+              alt="{{ name | escape }}"
+              loading="lazy" decoding="async">
+          {%- endif -%}
+        </div>
+        <div class="rt-cat__row">
+          <span class="rt-cat__name">{{ name | escape }}</span>
+          <span class="rt-cat__count">
+            {%- if count_text != blank -%}{{ count_text }} {% endif %}<span class="arr" aria-hidden="true">→</span>
+          </span>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "The Catalog",
+  "class": "rt-catalog-section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "01 — Six families" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Catalog." },
+    { "type": "richtext", "id": "meta", "label": "Meta (right)", "default": "<p>Hand-finished<br>Hallmarked · BIS 925</p>" }
+  ],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Family",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection", "info": "Supplies image, link and live piece count." },
+        { "type": "text", "id": "name", "label": "Name override" },
+        { "type": "text", "id": "count_text", "label": "Count override", "info": "e.g. 62 pieces. Defaults to live product count." },
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "url", "id": "url", "label": "Link override" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Catalog",
+      "blocks": [
+        { "type": "category" }, { "type": "category" }, { "type": "category" },
+        { "type": "category" }, { "type": "category" }, { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}
