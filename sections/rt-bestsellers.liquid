@@ -164,7 +164,7 @@
               <div class="product-form__error-message-wrapper" role="alert" hidden>
                 <span class="product-form__error-message"></span>
               </div>
-              {%- form 'product', featured, id: 'rt-bs-form-{{ section.id }}', class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+              {%- form 'product', featured, id: f_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
                 <input type="hidden" name="id" value="{{ f_variant.id }}" class="product-variant-id" {% unless featured.available %}disabled{% endunless %}>
                 <button type="submit" name="add" class="rt-bs__add" {% unless featured.available %}disabled{% endunless %}>
                   <span>{% if featured.available %}Add to bag →{% else %}Sold out{% endif %}</span>
