@@ -177,7 +177,7 @@
 
       {%- comment -%} Ranked list #2–#5 {%- endcomment -%}
       <div class="rt-bs__list">
-        {%- for product in bs offset: 1 -%}
+        {%- for product in coll.products limit: 4 offset: 1 -%}
           <a class="rt-bs__row" href="{{ product.url }}" data-rt-reveal style="--rt-reveal-delay: {{ forloop.index0 | times: 90 }}ms">
             <span class="rk">{{ forloop.index | plus: 1 | prepend: '0' | slice: -2, 2 }}</span>
             <div class="th">
