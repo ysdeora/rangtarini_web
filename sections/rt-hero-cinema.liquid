@@ -182,28 +182,35 @@
 </style>
 
 <section class="rt-hc rt-hero-cinema" data-rt-hero>
-  <div class="rt-hc__media">
-    {%- if section.settings.hero_video != blank -%}
-      {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1600x' }}
-    {%- elsif section.settings.hero_image != blank -%}
-      <img
-        src="{{ section.settings.hero_image | image_url: width: 1600 }}"
-        srcset="{{ section.settings.hero_image | image_url: width: 800 }} 800w,
-                {{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
-                {{ section.settings.hero_image | image_url: width: 1800 }} 1800w,
-                {{ section.settings.hero_image | image_url: width: 2400 }} 2400w"
-        sizes="100vw"
-        alt="{{ section.settings.hero_image_alt | default: 'Rangtarini' | escape }}"
-        fetchpriority="high" loading="eager"
-        width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}">
-    {%- elsif gold_col.image != blank -%}
-      <img
-        src="{{ gold_col.image | image_url: width: 1600 }}"
-        srcset="{{ gold_col.image | image_url: width: 800 }} 800w, {{ gold_col.image | image_url: width: 1200 }} 1200w, {{ gold_col.image | image_url: width: 1800 }} 1800w"
-        sizes="100vw"
-        alt="{{ gold_col.title | default: 'Rangtarini' | escape }}"
-        fetchpriority="high" loading="eager">
+  <div class="rt-hc__media{% if section.settings.hero_video_mobile != blank %} has-mobile{% endif %}">
+    {%- if section.settings.hero_video_mobile != blank -%}
+      <div class="rt-hc__layer rt-hc__layer--mobile">
+        {{ section.settings.hero_video_mobile | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '900x' }}
+      </div>
     {%- endif -%}
+    <div class="rt-hc__layer rt-hc__layer--desktop">
+      {%- if section.settings.hero_video != blank -%}
+        {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1600x' }}
+      {%- elsif section.settings.hero_image != blank -%}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 1600 }}"
+          srcset="{{ section.settings.hero_image | image_url: width: 800 }} 800w,
+                  {{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
+                  {{ section.settings.hero_image | image_url: width: 1800 }} 1800w,
+                  {{ section.settings.hero_image | image_url: width: 2400 }} 2400w"
+          sizes="100vw"
+          alt="{{ section.settings.hero_image_alt | default: 'Rangtarini' | escape }}"
+          fetchpriority="high" loading="eager"
+          width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}">
+      {%- elsif gold_col.image != blank -%}
+        <img
+          src="{{ gold_col.image | image_url: width: 1600 }}"
+          srcset="{{ gold_col.image | image_url: width: 800 }} 800w, {{ gold_col.image | image_url: width: 1200 }} 1200w, {{ gold_col.image | image_url: width: 1800 }} 1800w"
+          sizes="100vw"
+          alt="{{ gold_col.title | default: 'Rangtarini' | escape }}"
+          fetchpriority="high" loading="eager">
+      {%- endif -%}
+    </div>
   </div>
   <div class="rt-hc__scrim"></div>
 
