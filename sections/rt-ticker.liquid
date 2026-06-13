@@ -63,7 +63,7 @@
           {%- else -%}
             <span class="rt-ticker__en">{{ block.settings.text | escape }}</span>
           {%- endif -%}
-          <span class="rt-ticker__sep">—</span>
+          <span class="rt-ticker__dia" aria-hidden="true"></span>
         </span>
       {%- endfor -%}
     {%- endfor -%}
