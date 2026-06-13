@@ -139,6 +139,7 @@
             if f_meta == blank
               assign f_meta = featured.type
             endif
+            assign f_form_id = 'rt-bs-form-' | append: section.id
           -%}
           {%- if f_meta != blank -%}<span class="rt-bs__sku">{{ f_meta | escape }}</span>{%- endif -%}
           <a class="rt-bs__nm" href="{{ featured.url }}">{{ featured.title | escape }}</a>
