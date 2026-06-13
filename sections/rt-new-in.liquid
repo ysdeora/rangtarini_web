@@ -203,6 +203,13 @@
     }
     rail.addEventListener('scroll', updateThumb, { passive: true });
     window.addEventListener('resize', updateThumb);
+    window.addEventListener('load', updateThumb);
+    /* Recalc after layout settles (theme editor loads sections async) and as images decode */
+    requestAnimationFrame(updateThumb);
+    setTimeout(updateThumb, 300);
+    rail.querySelectorAll('img').forEach(function (img) {
+      if (!img.complete) img.addEventListener('load', updateThumb, { once: true });
+    });
     updateThumb();
 
     if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
