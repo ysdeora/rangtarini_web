@@ -1,171 +1,133 @@
 <style>
   .rt-nl {
-    background: var(--rt-paper);
-    border-bottom: 1px solid var(--rt-ink);
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    border-bottom: 1px solid var(--rt-line-paper);
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 540px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+    padding: clamp(30px, 4vw, 46px) var(--rt-pad);
   }
-  .rt-nl__img-wrap {
-    overflow: hidden;
-    border-right: 1px solid var(--rt-ink);
-  }
-  .rt-nl__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .rt-nl__copy {
-    padding: 72px 56px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 24px;
-  }
+  .rt-nl__lead { min-width: 0; }
   .rt-nl__eyebrow {
     font-family: var(--rt-font-grotesk);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    font-weight: 500;
-    color: var(--rt-ink);
-    opacity: 0.72;
-    margin: 0;
+    font-weight: 600;
+    color: var(--rt-gold);
+    margin: 0 0 8px;
   }
-  .rt-nl__display {
+  .rt-nl__title {
     font-family: var(--rt-font-grotesk);
-    font-size: clamp(56px, 8vw, 112px);
+    font-size: clamp(22px, 2.6vw, 36px);
     font-weight: 900;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
-    line-height: 0.92;
-    color: var(--rt-ink);
+    line-height: 0.98;
+    color: var(--rt-paper);
     margin: 0;
   }
   .rt-nl__deva {
     font-family: var(--rt-font-deva);
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 0.62em;
+    font-weight: 500;
     letter-spacing: 0;
-    color: var(--rt-gold-deep);
+    color: var(--rt-gold);
+    margin-left: 12px;
+    white-space: nowrap;
   }
   .rt-nl__body {
     font-family: var(--rt-font-grotesk);
-    font-size: 14px;
+    font-size: 12.5px;
     font-weight: 400;
-    line-height: 1.65;
-    color: var(--rt-ink);
-    opacity: 0.8;
-    margin: 0;
-    max-width: 420px;
-    letter-spacing: 0;
+    line-height: 1.6;
+    color: var(--rt-paper);
+    opacity: 0.6;
+    margin: 10px 0 0;
+    max-width: 460px;
   }
+  .rt-nl__right { justify-self: end; min-width: min(420px, 100%); }
   .rt-nl__form {
     display: flex;
-    border-bottom: 1px solid var(--rt-ink);
-    margin-top: 8px;
-    align-items: center;
+    align-items: stretch;
+    border: 1px solid var(--rt-line-paper);
   }
   .rt-nl__input {
     flex: 1;
     border: 0;
-    padding: 16px 0;
+    padding: 14px 16px;
     background: transparent;
     font-family: var(--rt-font-grotesk);
-    font-size: 17px;
-    color: var(--rt-ink);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--rt-paper);
     outline: none;
     min-width: 0;
   }
-  .rt-nl__input::placeholder { opacity: 0.45; }
+  .rt-nl__input::placeholder {
+    color: rgba(239, 236, 228, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 10.5px;
+  }
   .rt-nl__submit {
-    background: transparent;
     border: 0;
-    color: var(--rt-ink);
+    border-left: 1px solid var(--rt-line-paper);
+    background: transparent;
+    color: var(--rt-paper);
     cursor: pointer;
-    padding: 0 4px;
+    padding: 0 22px;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.28em;
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
     white-space: nowrap;
-    transition: opacity 220ms;
+    transition: background 240ms var(--rt-ez), color 240ms var(--rt-ez);
   }
-  .rt-nl__submit:hover { opacity: 0.6; }
-  .rt-nl__arrow { font-size: 18px; }
+  .rt-nl__submit:hover { background: var(--rt-gold); color: var(--rt-ink); }
   .rt-nl__success {
-    display: none;
     font-family: var(--rt-font-grotesk);
-    font-size: 13px;
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 600;
-    color: var(--rt-ink);
-    padding: 16px 0;
-    animation: rt-nl-success 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    color: var(--rt-gold);
+    margin-top: 12px;
+    animation: rt-nl-success 600ms var(--rt-ez) both;
   }
   @keyframes rt-nl-success {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 749px) {
+    .rt-nl { grid-template-columns: 1fr; gap: 20px; }
+    .rt-nl__right { justify-self: stretch; min-width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
     .rt-nl__success { animation: none; }
   }
-
-  @media (max-width: 749px) {
-    .rt-nl {
-      grid-template-columns: 1fr;
-    }
-    .rt-nl__img-wrap {
-      border-right: none;
-      border-bottom: 1px solid var(--rt-ink);
-      min-height: 280px;
-    }
-    .rt-nl__copy {
-      padding: 40px 16px;
-      gap: 16px;
-    }
-    .rt-nl__display { font-size: 56px; }
-  }
 </style>
 
 <section class="rt-nl">
-  <div class="rt-nl__img-wrap">
-    {%- if section.settings.image != blank -%}
-      <img
-        src="{{ section.settings.image | image_url: width: 1000 }}"
-        srcset="{{ section.settings.image | image_url: width: 600 }} 600w,
-                {{ section.settings.image | image_url: width: 1000 }} 1000w"
-        sizes="(max-width: 749px) 100vw, 50vw"
-        alt="{{ section.settings.image_alt | default: 'Rangtarini jewelry' | escape }}"
-        class="rt-nl__img"
-        loading="lazy"
-        decoding="async"
-        width="{{ section.settings.image.width }}"
-        height="{{ section.settings.image.height }}">
-    {%- else -%}
-      <img
-        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/brand_story.jpg?v=1776532899"
-        alt="Rangtarini"
-        class="rt-nl__img"
-        loading="lazy">
+  <div class="rt-nl__lead">
+    <p class="rt-nl__eyebrow">{{ section.settings.eyebrow | default: 'The Rangtarini Circle' }}</p>
+    <h2 class="rt-nl__title">{{ section.settings.heading | default: 'Subscribe.' }}<span class="rt-nl__deva">रंगतारिणी</span></h2>
+    {%- if section.settings.body != blank -%}
+      <p class="rt-nl__body">{{ section.settings.body }}</p>
     {%- endif -%}
   </div>
 
-  <div class="rt-nl__copy">
-    <p class="rt-nl__eyebrow">{{ section.settings.eyebrow | default: 'The Rangtarini Circle' }}</p>
-    <h2 class="rt-nl__display rt-mask"><span>{{ section.settings.heading | default: 'Subscribe.' }}</span></h2>
-    <span class="rt-nl__deva">रंगतारिणी</span>
-    <p class="rt-nl__body" data-rt-reveal>{{ section.settings.body | default: 'One thoughtful email a fortnight — drops, the journal from the karkhana, and members-only edits. ₹500 off your first order over ₹3,500.' }}</p>
-
+  <div class="rt-nl__right">
     {%- form 'customer', id: 'rt-nl-form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
-      <div class="rt-nl__form" id="rt-nl-fields">
+      <div class="rt-nl__form">
         <input
           type="email"
           name="contact[email]"
@@ -174,13 +136,13 @@
           placeholder="{{ section.settings.placeholder | default: 'your@email.com' }}"
           required
           autocomplete="email">
-        <button type="submit" class="rt-nl__submit rt-link-sweep">
+        <button type="submit" class="rt-nl__submit">
           {{ section.settings.button_label | default: 'Subscribe' }}
-          <span class="rt-nl__arrow">→</span>
+          <span aria-hidden="true">→</span>
         </button>
       </div>
       {%- if form.posted_successfully? -%}
-        <div class="rt-nl__success" style="display:block;">Subscribed — welcome to the Circle.</div>
+        <div class="rt-nl__success">Subscribed — welcome to the Circle.</div>
       {%- endif -%}
     {%- endform -%}
   </div>
@@ -192,16 +154,6 @@
   "class": "rt-nl-section",
   "presets": [{"name": "Newsletter"}],
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Left image"
-    },
-    {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Image alt text"
-    },
     {
       "type": "text",
       "id": "eyebrow",
