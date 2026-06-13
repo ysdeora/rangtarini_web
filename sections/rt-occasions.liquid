@@ -41,11 +41,15 @@
 
   @media (max-width: 740px) {
     .rt-occ__row,
-    .rt-occ__row--right { grid-template-columns: 1fr; }
+    .rt-occ__row--right { grid-template-columns: 1fr; padding: 20px var(--rt-pad); gap: 0; }
     .rt-occ__row--right .rt-occ__img-wrap,
     .rt-occ__row--right .rt-occ__copy { order: initial; }
-    .rt-occ__img-wrap { aspect-ratio: 16 / 11; }
-    .rt-occ__copy { margin-top: 18px; }
+    .rt-occ__img-wrap { aspect-ratio: 16 / 9; }
+    .rt-occ__copy { margin-top: 14px; }
+    .rt-occ__letter { font-size: 42px; }
+    .rt-occ__name { font-size: 23px; margin-top: 4px; }
+    .rt-occ__sub { font-size: 12.5px; line-height: 1.55; margin-top: 8px; }
+    .rt-occ__enter { margin-top: 14px; padding: 12px 20px; }
   }
   @media (prefers-reduced-motion: reduce) { .rt-occ__img { transition: none; } }
 </style>
