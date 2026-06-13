@@ -1,7 +1,6 @@
 {%- liquid
   assign coll = section.settings.collection
-  assign bs = coll.products | slice: 0, 5
-  assign featured = bs.first
+  assign featured = coll.products.first
 -%}
 
 <style>
