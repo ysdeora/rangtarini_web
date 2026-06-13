@@ -68,6 +68,20 @@ h3, .h3, h4, .h4 {
   line-height: 1.4;
 }
 
+/* v4 redesign: the legacy serif heading rules above use !important and steal
+   the Archivo grotesk system inside the redesigned rt-* sections. Re-assert it
+   here — !important is required only to override the legacy !important. */
+.rt-hero-cinema-section :is(h1, h2, h3, h4),
+.rt-catalog-section :is(h1, h2, h3, h4),
+.rt-new-in-section :is(h1, h2, h3, h4),
+.rt-bestsellers-section :is(h1, h2, h3, h4),
+.rt-craft-section :is(h1, h2, h3, h4),
+.rt-occ-section :is(h1, h2, h3, h4),
+.rt-custom-order-section :is(h1, h2, h3, h4),
+.rt-nl-section :is(h1, h2, h3, h4) {
+  font-family: var(--rt-font-grotesk) !important;
+}
+
 /* Product Titles - More refined */
 .card__heading {
   font-family: var(--font-heading-secondary) !important;
