@@ -1,153 +1,119 @@
 {
   "sections": {
     "rt_hero": {
-      "type": "rt-hero-triptych",
-      "name": "Hero — Gold & Silver",
+      "type": "rt-hero-cinema",
       "settings": {
+        "eyebrow": "Gold Plated · Sterling Silver · Jadau Kundan",
+        "title_line_1": "Heirloom,",
+        "title_line_2": "reimagined",
+        "subtext": "Three generations of Rajasthani karigari, set for the way you live now. Every piece begins by hand and ends as someone's inheritance.",
         "gold_collection": "gold-plated-silver-alloy",
-        "gold_kicker": "01 — In gold",
-        "gold_label": "Gold Plated",
-        "gold_tagline": "22k gold over 925 sterling silver — heirloom warmth, everyday wear.",
-        "gold_cta_label": "Shop Gold",
+        "gold_cta_label": "Gold Plated",
         "silver_collection": "pure-silver-925",
-        "silver_kicker": "02 — In silver",
-        "silver_label": "Silver 925",
-        "silver_tagline": "Hallmarked 925 sterling — pure, hypoallergenic, made to last.",
-        "silver_cta_label": "Shop Silver"
+        "silver_cta_label": "Silver 925",
+        "side_deva": "रंगतारिणी",
+        "frame_right": "Jaipur · India"
       }
     },
-    "rt_marquee": {
-      "type": "rt-wordmark-marquee",
-      "name": "Wordmark Marquee",
-      "settings": {}
-    },
-    "rt_cover": {
-      "type": "rt-editorial-cover",
-      "name": "Editorial Cover",
+    "rt_catalog": {
+      "type": "rt-catalog",
       "settings": {
-        "header_left": "The collection, SS26",
-        "header_left_sub": "Photographed in Jaipur",
-        "vol_label": "Vol. 02 — Campaign",
-        "header_right": "Look 03 / 14",
-        "credit": "Photography · Rangtarini Studio",
-        "editorial_line": "A study of weight, light, and inheritance. — Rangtarini",
-        "cta_label": "View collection",
-        "cta_url": "/collections/all"
-      }
-    },
-    "rt_categories": {
-      "type": "rt-categories-v2",
-      "name": "The Catalog",
+        "eyebrow": "01 — Six families",
+        "heading": "The Catalog.",
+        "meta": "<p>Hand-finished<br>Hallmarked · BIS 925</p>"
+      },
       "blocks": {
         "cat_necklaces": {
           "type": "category",
-          "settings": {
-            "fallback_image_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Necklace_category_image.jpg?v=1777315165",
-            "name": "Necklaces & Sets",
-            "piece_count": "",
-            "url": "/collections/necklaces-sets"
-          }
+          "settings": { "collection": "necklaces-sets", "name": "Necklaces & Sets" }
         },
         "cat_earrings": {
           "type": "category",
-          "settings": {
-            "fallback_image_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Earrings_category_image.jpg?v=1777315473",
-            "name": "Earrings",
-            "piece_count": "",
-            "url": "/collections/earrings"
-          }
+          "settings": { "collection": "earrings", "name": "Earrings" }
         },
         "cat_rings": {
           "type": "category",
-          "settings": {
-            "fallback_image_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Ring_Collection.jpg?v=1773002183",
-            "name": "Rings",
-            "piece_count": "",
-            "url": "/collections/rings"
-          }
+          "settings": { "collection": "rings", "name": "Rings" }
         },
         "cat_maangtikka": {
           "type": "category",
-          "settings": {
-            "fallback_image_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Rakhdi_Category_image.jpg?v=1777315707",
-            "name": "Maang Tikka",
-            "piece_count": "",
-            "url": "/collections/maang-tikka-rakhdi"
-          }
+          "settings": { "collection": "maang-tikka-rakhdi", "name": "Maang Tikka" }
         },
         "cat_payal": {
           "type": "category",
-          "settings": {
-            "fallback_image_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Payal_Collection.jpg?v=1773002417",
-            "name": "Payal",
-            "piece_count": "",
-            "url": "/collections/payal-anklets"
-          }
+          "settings": { "collection": "payal-anklets", "name": "Payal" }
         },
         "cat_bangles": {
           "type": "category",
-          "settings": {
-            "fallback_image_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Bangle_Colllection.jpg?v=1773002481",
-            "name": "Bangles",
-            "piece_count": "",
-            "url": "/collections/bangles-bracelets"
-          }
+          "settings": { "collection": "bangles-bracelets", "name": "Bangles" }
         }
       },
-      "block_order": ["cat_necklaces", "cat_earrings", "cat_rings", "cat_maangtikka", "cat_payal", "cat_bangles"],
-      "settings": {}
+      "block_order": ["cat_necklaces", "cat_earrings", "cat_rings", "cat_maangtikka", "cat_payal", "cat_bangles"]
     },
-    "rt_pair": {
-      "type": "rt-featured-pair",
-      "name": "Featured Pair",
+    "rt_new_in": {
+      "type": "rt-new-in",
       "settings": {
-        "collection_1": "necklaces-sets",
-        "tag_1": "Featured · 01",
-        "label_1": "Necklaces & Sets",
-        "meta_1": "Necklace · Kundan · 925",
-        "link_1": "/collections/necklaces-sets",
-        "collection_2": "earrings",
-        "tag_2": "Featured · 02",
-        "label_2": "Earrings",
-        "meta_2": "Earring · Polki · 925",
-        "link_2": "/collections/earrings"
-      }
-    },
-    "new_arrivals_section_URVCw4": {
-      "type": "new-arrivals-section",
-      "name": "New Arrivals",
-      "settings": {
-        "eyebrow": "Latest drop · This season",
-        "heading": "New in.",
-        "subheading": "The latest additions to our collection — handcrafted, just for you.",
-        "days_new": 30,
+        "eyebrow": "02 — Just landed",
+        "heading": "New In.",
+        "days_new": 60,
+        "meta": "Drag or arrow",
         "cta_label": "View all",
         "cta_url": "/collections/all?sort_by=created-descending"
       }
     },
+    "rt_bestsellers": {
+      "type": "rt-bestsellers",
+      "settings": {
+        "eyebrow": "03 — Most loved",
+        "heading": "Bestsellers.",
+        "meta": "<p>Ranked by you<br>Updated weekly</p>",
+        "collection": "bestsellers",
+        "all_label": "Shop all bestsellers"
+      }
+    },
     "rt_craft": {
       "type": "rt-craft-bespoke",
-      "name": "Craft & Bespoke",
       "settings": {
-        "headline": "Made by hand. Made to outlive.",
+        "eyebrow": "04 — The workshop",
+        "headline": "Made by hand. Made to <em>outlive.</em>",
+        "deva": "रंगतारिणी",
+        "foot_text": "No two pieces leave the bench identical — the stone decides the setting, the hand decides the line. We hold the techniques steady and let the forms move with you.",
         "story_url": "/pages/about-us",
-        "story_label": "Read our story",
-        "whatsapp_number": "919251110762",
-        "bespoke_email": "bespoke@rangtarini.com"
-      }
+        "story_label": "Read the craft story"
+      },
+      "blocks": {
+        "stat_hours": {
+          "type": "stat",
+          "settings": { "value": "72", "unit": "HRS", "label": "Bench time per jadau set" }
+        },
+        "stat_gen": {
+          "type": "stat",
+          "settings": { "value": "3", "unit": "GEN", "label": "Generations of karigars" }
+        },
+        "stat_silver": {
+          "type": "stat",
+          "settings": { "value": "92.5", "unit": "STG", "label": "Hallmarked sterling standard" }
+        }
+      },
+      "block_order": ["stat_hours", "stat_gen", "stat_silver"]
     },
     "rt_occasions": {
       "type": "rt-occasions",
-      "name": "Occasions",
+      "settings": {
+        "eyebrow": "05 — By occasion",
+        "heading": "The Edits.",
+        "meta": "<p>Four moods<br>One bench</p>"
+      },
       "blocks": {
         "occ_bridal": {
           "type": "occasion",
           "settings": {
             "letter": "A",
             "name": "Bridal",
-            "sub": "Heirloom kundan & polki — crafted to wear on the most important day",
+            "sub": "Heirloom kundan & polki — crafted to wear on the most important day.",
             "fallback_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Rakhdi_Category_image.jpg?v=1777315707",
-            "url": "/collections/maang-tikka-rakhdi"
+            "cta_label": "Shop bridal",
+            "url": "/collections/bridal"
           }
         },
         "occ_festive": {
@@ -155,8 +121,9 @@
           "settings": {
             "letter": "B",
             "name": "Festive",
-            "sub": "Diwali · Raksha Bandhan · Karwa Chauth · Navratri",
+            "sub": "Diwali · Raksha Bandhan · Karwa Chauth · Navratri — pieces that hold their own against the lights.",
             "fallback_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Bangle_Colllection.jpg?v=1773002481",
+            "cta_label": "Shop festive",
             "url": "/collections/bangles-bracelets"
           }
         },
@@ -165,8 +132,9 @@
           "settings": {
             "letter": "C",
             "name": "Everyday",
-            "sub": "Light, layerable silver — from desk to dinner",
+            "sub": "Light, layerable silver — from desk to dinner, work before weddings.",
             "fallback_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Ring_Collection.jpg?v=1773002183",
+            "cta_label": "Shop everyday",
             "url": "/collections/rings"
           }
         },
@@ -175,14 +143,28 @@
           "settings": {
             "letter": "D",
             "name": "Gifting",
-            "sub": "From ₹1,800 · premium packaging · ships in 2 days",
+            "sub": "From ₹1,800 · premium packaging · ships in 2 days.",
             "fallback_url": "https://cdn.shopify.com/s/files/1/0955/2301/2971/files/Payal_Collection.jpg?v=1773002417",
+            "cta_label": "Shop gifting",
             "url": "/collections/payal-anklets"
           }
         }
       },
-      "block_order": ["occ_bridal", "occ_festive", "occ_everyday", "occ_gifting"],
-      "settings": {}
+      "block_order": ["occ_bridal", "occ_festive", "occ_everyday", "occ_gifting"]
+    },
+    "rt_custom_order": {
+      "type": "rt-custom-order",
+      "settings": {
+        "eyebrow": "06 — Made to order",
+        "heading": "A piece that exists <em>once.</em>",
+        "chips": "Bridal commissions,Jadau kundan,Temple silver,Restorations",
+        "copy": "Send a reference, a sketch, or your grandmother's piece that needs a second life. Our bench replies with a plan, and a date.",
+        "whatsapp_number": "919251110762",
+        "whatsapp_message": "Hi Rangtarini, I'd like to commission a custom piece.",
+        "button_label": "Start on WhatsApp",
+        "note": "Replies within hours · 10am–7pm IST",
+        "email": "bespoke@rangtarini.com"
+      }
     },
     "177885933667e31c5b": {
       "type": "apps",
@@ -202,7 +184,7 @@
             "link_color": "#000000",
             "background_color": "#efece4",
             "feed_id": "",
-            "html_area": "<div style=\"text-align:center; padding: 3rem 1.5rem 1.5rem; max-width:900px; margin:0 auto;\">\n  <p style=\"font-family:'Archivo',sans-serif; font-size:10px; letter-spacing:0.28em; text-transform:uppercase; color:var(--rt-ink,#0a0a0a); opacity:0.55; margin:0 0 0.6rem;\">\n    Tagged · @rangtarini\n  <\/p>\n  <h2 style=\"font-family:'Archivo',sans-serif; font-size:clamp(28px,4vw,48px); font-weight:900; letter-spacing:-0.03em; text-transform:uppercase; color:var(--rt-ink,#0a0a0a); margin:0 0 0.5rem; line-height:0.95;\">\n    #WornRangtarini\n  <\/h2>\n  <a href=\"https:\/\/www.instagram.com\/rangtarini\" target=\"_blank\" rel=\"noopener\" style=\"font-family:'Archivo',sans-serif; font-size:11px; letter-spacing:0.28em; text-transform:uppercase; font-weight:600; color:var(--rt-ink,#0a0a0a); text-decoration:none;\">\n    Follow on Instagram →\n  <\/a>\n<\/div>"
+            "html_area": "<div style=\"text-align:center; padding: 3.5rem 1.5rem 2rem; max-width:900px; margin:0 auto;\">\n  <p style=\"font-family:'Archivo',sans-serif; font-size:9px; letter-spacing:0.28em; text-transform:uppercase; color:#7a5e2c; margin:0 0 0.7rem; font-weight:600;\">07 — Worn, not stored<\/p>\n  <h2 style=\"font-family:'Archivo',sans-serif; font-size:clamp(30px,4.6vw,72px); font-weight:900; letter-spacing:-0.03em; text-transform:uppercase; color:#0a0a0a; margin:0 0 0.6rem; line-height:0.92;\"><span style=\"color:#7a5e2c;\">#<\/span>WornRangtarini<\/h2>\n  <a href=\"https:\/\/www.instagram.com\/rangtarini\" target=\"_blank\" rel=\"noopener\" style=\"font-family:'Archivo',sans-serif; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; font-weight:600; color:#0a0a0a; text-decoration:none;\">@rangtarini →<\/a>\n<\/div>"
           }
         }
       },
@@ -213,7 +195,6 @@
     },
     "rt_newsletter": {
       "type": "rt-newsletter",
-      "name": "Newsletter",
       "settings": {
         "eyebrow": "The Rangtarini Circle",
         "heading": "Subscribe.",
@@ -225,13 +206,12 @@
   },
   "order": [
     "rt_hero",
-    "rt_marquee",
-    "rt_categories",
-    "rt_cover",
-    "rt_pair",
-    "new_arrivals_section_URVCw4",
+    "rt_catalog",
+    "rt_new_in",
+    "rt_bestsellers",
     "rt_craft",
     "rt_occasions",
+    "rt_custom_order",
     "177885933667e31c5b",
     "rt_newsletter"
   ]
