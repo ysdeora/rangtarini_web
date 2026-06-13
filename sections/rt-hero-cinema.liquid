@@ -244,6 +244,13 @@
     while (el && !el.classList.contains('rt-hc')) { el = el.previousElementSibling; }
     if (!el) return;
     requestAnimationFrame(function () { el.classList.add('is-in'); });
+
+    /* The header parses before this section, so its first sync sees no hero.
+       Set the transparent-over-hero state immediately to avoid a solid-bar flash. */
+    if (window.scrollY < 8) {
+      var hd = document.querySelector('.rt-header-section');
+      if (hd) hd.classList.add('rt-hd--onhero');
+    }
   }());
 </script>
 
