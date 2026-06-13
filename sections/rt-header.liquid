@@ -1152,8 +1152,21 @@
     requestAnimationFrame(syncHeaderState);
   }, { passive: true });
 
-  /* Initial paint — establish the over-hero state before any scroll */
+  /* Initial paint — establish the over-hero state before any scroll.
+     Re-resolve the hero once the template body has parsed. */
   syncHeaderState();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      refreshHero();
+      HEADER_H = hdWrap ? hdWrap.offsetHeight : 60;
+      syncHeaderState();
+    });
+  } else {
+    refreshHero();
+    syncHeaderState();
+  }
+  /* Theme editor — hero can load after the header */
+  document.addEventListener('shopify:section:load', function () { refreshHero(); syncHeaderState(); });
 
 }());
 </script>
