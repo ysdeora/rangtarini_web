@@ -21,8 +21,8 @@
   --rt-ez: cubic-bezier(0.16, 1, 0.3, 1);
   /* Shared spacing rhythm — every rt-* section references these */
   --rt-pad: clamp(20px, 3.4vw, 48px);        /* horizontal section padding */
-  --rt-shead-py: clamp(40px, 5.5vw, 72px);   /* section-head top padding */
-  --rt-section-gap: clamp(24px, 3vw, 40px);  /* vertical gap between stacked sections */
+  --rt-shead-py: clamp(26px, 3.4vw, 48px);   /* section-head top padding */
+  --rt-section-gap: clamp(20px, 2.6vw, 36px);/* vertical gap between stacked sections */
 }
 
 /* Header styling handled by sections/rt-header.liquid */
