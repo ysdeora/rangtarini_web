@@ -1,0 +1,354 @@
+{%- liquid
+  assign gold_col = section.settings.gold_collection
+  assign silver_col = section.settings.silver_collection
+  assign gold_link = gold_col.url | default: '/collections/gold-plated-silver-alloy'
+  assign silver_link = silver_col.url | default: '/collections/pure-silver-925'
+-%}
+
+<style>
+  /* Bleed the hero up under the (transparent) sticky header */
+  #shopify-section-{{ section.id }} {
+    margin-top: calc(-1 * var(--rt-header-h, 60px));
+    position: relative;
+    z-index: 1;
+  }
+
+  .rt-hc {
+    position: relative;
+    height: 100svh;
+    min-height: 560px;
+    background: var(--rt-ink);
+    color: var(--rt-paper);
+    overflow: hidden;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-hc__media { position: absolute; inset: 0; z-index: 0; }
+  .rt-hc__media img,
+  .rt-hc__media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .rt-hc__media img,
+  .rt-hc__media video { animation: rt-hc-kb 9s var(--rt-ez, ease-out) both; }
+  @keyframes rt-hc-kb { from { transform: scale(1.1); } to { transform: scale(1); } }
+
+  .rt-hc__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top,
+      rgba(5,4,2,0.82) 0%, rgba(5,4,2,0.25) 44%, rgba(5,4,2,0.12) 70%, rgba(5,4,2,0.4) 100%);
+  }
+
+  .rt-hc__frame {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    padding: calc(var(--rt-header-h, 60px) + 18px) clamp(20px, 3.4vw, 48px) 0;
+    font-family: var(--rt-font-mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .rt-hc__frame span:last-child { margin-left: auto; }
+
+  .rt-hc__content {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 3;
+    padding: 0 clamp(20px, 3.4vw, 48px) clamp(36px, 5.5vh, 64px);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+  }
+
+  .rt-hc__eyebrow {
+    font-family: var(--rt-font-grotesk);
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rt-gold);
+    display: block;
+  }
+  .rt-hc__title {
+    font-family: var(--rt-font-grotesk);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    font-size: clamp(40px, 7vw, 116px);
+    margin: 16px 0 0;
+    color: var(--rt-paper);
+  }
+  .rt-hc__title .gold { color: var(--rt-gold); }
+  .rt-hc__sub {
+    max-width: 420px;
+    margin: 18px 0 0;
+    font-size: 13px;
+    line-height: 1.7;
+    font-weight: 400;
+    opacity: 0.82;
+    text-wrap: pretty;
+  }
+  .rt-hc__ctas { display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
+
+  .rt-hc__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    font-family: var(--rt-font-grotesk);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border: 1px solid var(--rt-paper);
+    transition: color 0.35s var(--rt-ez), border-color 0.35s var(--rt-ez);
+  }
+  .rt-hc__btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--rt-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--rt-ez);
+  }
+  .rt-hc__btn:hover { color: var(--rt-ink); border-color: var(--rt-gold); }
+  .rt-hc__btn:hover::before { transform: scaleX(1); }
+  .rt-hc__btn .arr { transition: transform 0.35s var(--rt-ez); }
+  .rt-hc__btn:hover .arr { transform: translateX(5px); }
+  .rt-hc__btn--paper { background: var(--rt-paper); color: var(--rt-ink); border-color: var(--rt-paper); }
+  .rt-hc__btn--onink { background: transparent; color: var(--rt-paper); }
+
+  .rt-hc__side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .rt-hc__deva {
+    font-family: var(--rt-font-deva);
+    font-size: 17px;
+    color: var(--rt-gold);
+    writing-mode: vertical-rl;
+  }
+  .rt-hc__cue { width: 1px; height: 72px; background: var(--rt-line-paper); position: relative; overflow: hidden; }
+  .rt-hc__cue::after {
+    content: "";
+    position: absolute;
+    left: 0; top: -40%;
+    width: 1px; height: 40%;
+    background: var(--rt-gold);
+    animation: rt-hc-cue 2.2s var(--rt-ez) infinite;
+  }
+  @keyframes rt-hc-cue { from { top: -40%; } to { top: 110%; } }
+
+  /* Entrance reveals (mask) */
+  .rt-hc__mask { display: block; overflow: hidden; }
+  .rt-hc__mask > span { display: block; transform: translateY(115%); transition: transform 1.1s var(--rt-ez); transition-delay: var(--d, 0ms); }
+  .rt-hc.is-in .rt-hc__mask > span { transform: none; }
+  .rt-hc__rise { opacity: 0; transform: translateY(22px); transition: opacity 0.9s var(--rt-ez), transform 0.9s var(--rt-ez); transition-delay: var(--d, 0ms); }
+  .rt-hc.is-in .rt-hc__rise { opacity: 1; transform: none; }
+
+  @media (max-width: 740px) {
+    .rt-hc__content { grid-template-columns: 1fr; }
+    .rt-hc__side { display: none; }
+    .rt-hc__ctas .rt-hc__btn { flex: 1; justify-content: center; padding: 16px 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rt-hc__media img, .rt-hc__media video,
+    .rt-hc__mask > span, .rt-hc__rise { animation: none !important; transition: none !important; transform: none !important; opacity: 1 !important; }
+    .rt-hc__cue::after { animation: none; }
+  }
+</style>
+
+<section class="rt-hc rt-hero-cinema" data-rt-hero>
+  <div class="rt-hc__media">
+    {%- if section.settings.hero_video != blank -%}
+      {{ section.settings.hero_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, image_size: '1600x' }}
+    {%- elsif section.settings.hero_image != blank -%}
+      <img
+        src="{{ section.settings.hero_image | image_url: width: 1600 }}"
+        srcset="{{ section.settings.hero_image | image_url: width: 800 }} 800w,
+                {{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.hero_image | image_url: width: 1800 }} 1800w,
+                {{ section.settings.hero_image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.hero_image_alt | default: 'Rangtarini' | escape }}"
+        fetchpriority="high" loading="eager"
+        width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}">
+    {%- elsif gold_col.image != blank -%}
+      <img
+        src="{{ gold_col.image | image_url: width: 1600 }}"
+        srcset="{{ gold_col.image | image_url: width: 800 }} 800w, {{ gold_col.image | image_url: width: 1200 }} 1200w, {{ gold_col.image | image_url: width: 1800 }} 1800w"
+        sizes="100vw"
+        alt="{{ gold_col.title | default: 'Rangtarini' | escape }}"
+        fetchpriority="high" loading="eager">
+    {%- endif -%}
+  </div>
+  <div class="rt-hc__scrim"></div>
+
+  <div class="rt-hc__frame">
+    {%- if section.settings.frame_left != blank -%}<span>{{ section.settings.frame_left | escape }}</span>{%- endif -%}
+    {%- if section.settings.frame_right != blank -%}<span>{{ section.settings.frame_right | escape }}</span>{%- endif -%}
+  </div>
+
+  <div class="rt-hc__content">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="rt-hc__mask"><span class="rt-hc__eyebrow">{{ section.settings.eyebrow }}</span></span>
+      {%- endif -%}
+      <h1 class="rt-hc__title">
+        <span class="rt-hc__mask"><span style="--d:120ms">{{ section.settings.title_line_1 | default: 'Heirloom,' }}</span></span>
+        <span class="rt-hc__mask"><span style="--d:240ms">{{ section.settings.title_line_2 | default: 'reimagined' }}<span class="gold">.</span></span></span>
+      </h1>
+      {%- if section.settings.subtext != blank -%}
+        <p class="rt-hc__sub rt-hc__rise" style="--d:420ms">{{ section.settings.subtext }}</p>
+      {%- endif -%}
+      <div class="rt-hc__ctas rt-hc__rise" style="--d:540ms">
+        <a class="rt-hc__btn rt-hc__btn--paper" href="{{ gold_link }}">
+          {{ section.settings.gold_cta_label | default: 'Gold Plated' }} <span class="arr" aria-hidden="true">→</span>
+        </a>
+        <a class="rt-hc__btn rt-hc__btn--onink" href="{{ silver_link }}">
+          {{ section.settings.silver_cta_label | default: 'Silver 925' }}
+        </a>
+      </div>
+    </div>
+    <div class="rt-hc__side rt-hc__rise" style="--d:700ms">
+      {%- if section.settings.side_deva != blank -%}<span class="rt-hc__deva">{{ section.settings.side_deva }}</span>{%- endif -%}
+      <div class="rt-hc__cue" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var el = document.currentScript.previousElementSibling;
+    while (el && !el.classList.contains('rt-hc')) { el = el.previousElementSibling; }
+    if (!el) return;
+    requestAnimationFrame(function () { el.classList.add('is-in'); });
+  }());
+</script>
+
+{% schema %}
+{
+  "name": "Hero — Cinema",
+  "class": "rt-hero-cinema-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background media"
+    },
+    {
+      "type": "video",
+      "id": "hero_video",
+      "label": "Background video",
+      "info": "Plays muted + looped. Falls back to the image below, then the Gold collection image."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Background image (fallback)"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Image alt text",
+      "default": "Heirloom jewellery, reimagined"
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Gold Plated · Sterling Silver · Jadau Kundan"
+    },
+    {
+      "type": "text",
+      "id": "title_line_1",
+      "label": "Title — line 1",
+      "default": "Heirloom,"
+    },
+    {
+      "type": "text",
+      "id": "title_line_2",
+      "label": "Title — line 2",
+      "default": "reimagined"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Sub-paragraph",
+      "default": "Three generations of Rajasthani karigari, set for the way you live now. Every piece begins by hand and ends as someone's inheritance."
+    },
+    {
+      "type": "header",
+      "content": "Calls to action"
+    },
+    {
+      "type": "collection",
+      "id": "gold_collection",
+      "label": "Primary collection (Gold)"
+    },
+    {
+      "type": "text",
+      "id": "gold_cta_label",
+      "label": "Primary button label",
+      "default": "Gold Plated"
+    },
+    {
+      "type": "collection",
+      "id": "silver_collection",
+      "label": "Secondary collection (Silver)"
+    },
+    {
+      "type": "text",
+      "id": "silver_cta_label",
+      "label": "Secondary button label",
+      "default": "Silver 925"
+    },
+    {
+      "type": "header",
+      "content": "Accents"
+    },
+    {
+      "type": "text",
+      "id": "side_deva",
+      "label": "Vertical Devanagari accent",
+      "default": "रंगतारिणी"
+    },
+    {
+      "type": "text",
+      "id": "frame_left",
+      "label": "Frame label — left"
+    },
+    {
+      "type": "text",
+      "id": "frame_right",
+      "label": "Frame label — right",
+      "default": "Jaipur · India"
+    }
+  ],
+  "presets": [{ "name": "Hero — Cinema" }]
+}
+{% endschema %}
