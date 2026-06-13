@@ -1107,8 +1107,11 @@
      class there — not on .rt-hd-wrap, which can't stick on its own. */
   var hdWrap = document.querySelector('.rt-hd-wrap');
   var hdSection = hdWrap ? hdWrap.closest('.shopify-section') : null;
-  /* Cinematic hero (homepage only) — header floats transparent over it */
+  /* Cinematic hero (homepage only) — header floats transparent over it.
+     The header markup is parsed before the template body, so resolve the hero
+     lazily (now if present, again on DOMContentLoaded / section load). */
   var heroEl = document.querySelector('.rt-hero-cinema');
+  function refreshHero() { heroEl = document.querySelector('.rt-hero-cinema'); }
   var HEADER_H = hdWrap ? hdWrap.offsetHeight : 60;
   var lastScrollY = window.scrollY;
   var scrollTicking = false;
