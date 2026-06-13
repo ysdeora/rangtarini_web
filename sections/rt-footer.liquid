@@ -162,14 +162,21 @@
   }
   @media (max-width: 749px) {
     .rt-ft__cols { grid-template-columns: 1fr 1fr; }
-    .rt-ft__col { padding: 28px 20px; }
+    .rt-ft__col { padding: 20px 16px; }
     .rt-ft__col:nth-child(odd)  { border-right: 1px solid rgba(239,236,228,0.1); }
     .rt-ft__col:nth-child(even) { border-right: none; }
     .rt-ft__col:nth-child(n+3)  { border-top: 1px solid rgba(239,236,228,0.1); }
+    .rt-ft__col-heading { margin-bottom: 14px; }
+    .rt-ft__desc { font-size: 12.5px; margin-bottom: 16px; }
+    .rt-ft__links { gap: 10px; }
+    .rt-ft__link { font-size: 13px; }
+    .rt-ft__hero { padding: 26px 0 20px; }
+    .rt-ft__wordmark { font-size: clamp(36px, 11vw, 56px); }
+    .rt-ft__deva { font-size: 18px; margin-top: 10px; }
     .rt-ft__bottom {
       grid-template-columns: 1fr;
-      padding: 20px;
-      gap: 12px;
+      padding: 18px;
+      gap: 10px;
     }
     .rt-ft__payments { justify-content: flex-start; }
     .rt-ft__origin   { text-align: left; }
