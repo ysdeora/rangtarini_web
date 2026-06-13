@@ -1,424 +1,184 @@
 <style>
-  .rt-craft {
-    background: var(--rt-ink);
-    color: var(--rt-paper);
-    border-bottom: 1px solid var(--rt-ink);
-  }
+  .rt-craft { background: var(--rt-ink); color: var(--rt-paper); border-bottom: 1px solid var(--rt-ink); --rt-pad: clamp(20px, 3.4vw, 48px); }
 
-  /* ── Cinematic image section ── */
-  .rt-craft__hero {
-    position: relative;
-    height: 72vh;
-    min-height: 520px;
-    overflow: hidden;
-  }
-  .rt-craft__bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .rt-craft__grad {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg,
-      rgba(10,10,10,0.45) 0%,
-      rgba(10,10,10,0) 25%,
-      rgba(10,10,10,0) 60%,
-      rgba(10,10,10,0.65) 100%);
-    pointer-events: none;
-  }
-
-  .rt-craft__corner-cap {
-    position: absolute;
-    left: 28px;
-    top: 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  .rt-craft__corner-title {
-    font-family: var(--rt-font-grotesk);
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.4;
-    color: var(--rt-paper);
-    letter-spacing: 0;
-  }
-  .rt-craft__corner-sub {
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 400;
-    color: var(--rt-paper);
-    opacity: 0.55;
-  }
-  .rt-craft__deva-tr {
-    position: absolute;
-    right: 28px;
-    top: 24px;
-    font-family: var(--rt-font-deva);
-    font-size: 24px;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: var(--rt-gold);
-  }
-
-  .rt-craft__bottom {
-    position: absolute;
-    left: 28px;
-    right: 28px;
-    bottom: 32px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: end;
-  }
+  /* ── Cinematic media ── */
+  .rt-craft__media { position: relative; height: clamp(420px, 78vh, 760px); overflow: hidden; }
+  .rt-craft__plx { position: absolute; inset: -8% 0; will-change: transform; }
+  .rt-craft__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rt-craft__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to top, rgba(5,4,2,0.9), rgba(5,4,2,0.1) 55%); }
+  .rt-craft__deva-tr { position: absolute; right: var(--rt-pad); top: 24px; z-index: 2; font-family: var(--rt-font-deva); font-size: 24px; font-weight: 600; color: var(--rt-gold); }
+  .rt-craft__title { position: absolute; left: 0; bottom: 0; z-index: 2; padding: 0 var(--rt-pad) clamp(28px, 4vw, 52px); }
+  .rt-craft__eyebrow { font-family: var(--rt-font-grotesk); font-size: 10px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rt-gold); }
   .rt-craft__headline {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(40px, 7vw, 96px);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
-    line-height: 0.92;
-    color: var(--rt-paper);
-    margin: 0;
-    max-width: 14ch;
+    font-family: var(--rt-font-grotesk); font-size: clamp(40px, 7vw, 120px); font-weight: 900;
+    letter-spacing: -0.04em; text-transform: uppercase; line-height: 0.9; color: var(--rt-paper); margin: 12px 0 0; max-width: 14ch;
   }
-  .rt-craft__story-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    min-width: 220px;
-    padding: 12px 0;
-    border-top: 1px solid var(--rt-paper);
-    border-bottom: 1px solid var(--rt-paper);
-    color: var(--rt-paper);
-    text-decoration: none;
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 600;
-    transition: opacity 220ms;
-    white-space: nowrap;
-  }
-  .rt-craft__story-link:hover { opacity: 0.75; }
+  .rt-craft__headline em { font-style: normal; color: var(--rt-gold); }
 
-  /* ── Bespoke 3-panel band ── */
-  .rt-craft__bespoke {
-    border-top: 1px solid rgba(239,236,228,0.18);
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto;
-  }
+  /* ── Counter stats ── */
+  .rt-craft__stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rt-line-paper); }
+  .rt-craft__stat { padding: clamp(28px, 4vw, 48px) var(--rt-pad); border-right: 1px solid var(--rt-line-paper); }
+  .rt-craft__stat:last-child { border-right: none; }
+  .rt-craft__big { font-family: var(--rt-font-grotesk); font-weight: 900; font-size: clamp(40px, 5vw, 76px); letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .rt-craft__big sub { font-size: 0.32em; vertical-align: baseline; letter-spacing: 0.1em; margin-left: 4px; font-weight: 600; bottom: 0; }
+  .rt-craft__cap { margin: 12px 0 0; font-family: var(--rt-font-grotesk); font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; opacity: 0.6; }
 
-  .rt-craft__panel {
-    padding: 44px 44px;
-    border-right: 1px solid rgba(239,236,228,0.18);
+  /* ── Foot ── */
+  .rt-craft__foot { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px var(--rt-pad); border-top: 1px solid var(--rt-line-paper); }
+  .rt-craft__foot p { margin: 0; max-width: 620px; font-family: var(--rt-font-grotesk); font-size: 13.5px; line-height: 1.75; opacity: 0.8; text-wrap: pretty; }
+  .rt-craft__story {
+    display: inline-flex; align-items: center; gap: 12px; white-space: nowrap;
+    padding: 15px 26px; border: 1px solid var(--rt-paper); color: var(--rt-paper); text-decoration: none;
+    font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+    transition: background 0.3s var(--rt-ez), color 0.3s var(--rt-ez), border-color 0.3s var(--rt-ez);
   }
-  .rt-craft__panel:first-child { padding-left: 28px; }
-  .rt-craft__panel:last-child { border-right: none; padding-right: 28px; }
+  .rt-craft__story:hover { background: var(--rt-gold); color: var(--rt-ink); border-color: var(--rt-gold); }
+  .rt-craft__story .arr { transition: transform 0.3s var(--rt-ez); }
+  .rt-craft__story:hover .arr { transform: translateX(5px); }
 
-  .rt-craft__bespoke-badge {
-    display: inline-block;
-    background: var(--rt-gold);
-    color: var(--rt-ink);
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding: 4px 9px;
-    margin-bottom: 16px;
+  @media (max-width: 740px) {
+    .rt-craft__media { height: clamp(280px, 50vh, 400px); }
+    .rt-craft__stats { grid-template-columns: repeat(3, 1fr); }
+    .rt-craft__stat { padding: 18px 8px; text-align: center; }
+    .rt-craft__big { font-size: clamp(24px, 7.5vw, 38px); }
+    .rt-craft__cap { margin-top: 6px; font-size: 8px; letter-spacing: 0.12em; }
+    .rt-craft__foot { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .rt-craft__foot p { font-size: 12.5px; }
+    .rt-craft__story { width: 100%; justify-content: center; }
   }
-  .rt-craft__bespoke-sub {
-    font-family: var(--rt-font-grotesk);
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    opacity: 0.5;
-    margin-left: 14px;
-    vertical-align: middle;
-  }
-  .rt-craft__bespoke-hd {
-    font-family: var(--rt-font-grotesk);
-    font-size: clamp(28px, 4.4vw, 56px);
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-    line-height: 0.95;
-    color: var(--rt-paper);
-    margin: 0;
-    max-width: 16ch;
-  }
-
-  .rt-craft__desc {
-    font-family: var(--rt-font-grotesk);
-    font-size: 14px;
-    line-height: 1.65;
-    opacity: 0.82;
-    color: var(--rt-paper);
-    margin: 0 0 22px;
-    max-width: 44ch;
-  }
-  .rt-craft__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: auto;
-  }
-  .rt-craft__chip {
-    border: 1px solid rgba(239,236,228,0.28);
-    padding: 6px 12px;
-    font-family: var(--rt-font-grotesk);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    opacity: 0.85;
-    color: var(--rt-paper);
-  }
-
-  .rt-craft__panel--desc {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-  }
-  .rt-craft__panel:last-child {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 14px;
-    min-width: 280px;
-  }
-  .rt-craft__wa-btn {
-    background: #25D366;
-    color: #0a0a0a;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 22px;
-    border: 1px solid #25D366;
-    font-family: var(--rt-font-grotesk);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    transition: opacity 220ms;
-  }
-  .rt-craft__wa-btn:hover { opacity: 0.9; }
-  .rt-craft__wa-btn-inner {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
-  .rt-craft__wa-small {
-    font-size: 11px;
-    font-family: monospace;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    opacity: 0.7;
-  }
-  .rt-craft__wa-big {
-    font-size: 17px;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-  }
-  .rt-craft__wa-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    opacity: 0.7;
-    font-family: monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--rt-paper);
-  }
-  .rt-craft__wa-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: #25D366;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .rt-craft__email-link {
-    color: var(--rt-paper);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-top: 1px solid rgba(239,236,228,0.22);
-    font-family: monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    opacity: 0.85;
-    transition: opacity 220ms;
-  }
-  .rt-craft__email-link:hover { opacity: 1; }
-
-  @media (max-width: 990px) {
-    .rt-craft__bespoke {
-      grid-template-columns: 1fr;
-    }
-    .rt-craft__panel {
-      border-right: none;
-      border-bottom: 1px solid rgba(239,236,228,0.18);
-      padding: 32px 24px;
-    }
-    .rt-craft__panel:first-child { padding-left: 24px; }
-    .rt-craft__panel:last-child { border-bottom: none; padding-right: 24px; min-width: unset; }
-  }
-  @media (max-width: 749px) {
-    .rt-craft__hero { height: 60vh; min-height: 420px; }
-    .rt-craft__bottom { grid-template-columns: 1fr; gap: 16px; }
-    .rt-craft__story-link { min-width: unset; width: 100%; }
-    .rt-craft__panel--desc { display: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .rt-craft__plx { inset: 0; transform: none !important; } }
 </style>
-
-{%- assign wa_number = section.settings.whatsapp_number | default: '919251110762' -%}
-{%- assign wa_msg    = 'Hi Rangtarini, I' | append: "'" | append: 'd like to customize a piece of jewellery.' -%}
-{%- assign wa_href   = 'https://wa.me/' | append: wa_number | append: '?text=' | append: wa_msg | url_encode -%}
-{%- assign email     = section.settings.bespoke_email | default: 'bespoke@rangtarini.com' -%}
 
 <section class="rt-craft">
 
-  <!-- Cinematic image -->
-  <div class="rt-craft__hero">
-    {%- if section.settings.image != blank -%}
-      <img
-        src="{{ section.settings.image | image_url: width: 1600 }}"
-        srcset="{{ section.settings.image | image_url: width: 800 }} 800w,
-                {{ section.settings.image | image_url: width: 1200 }} 1200w,
-                {{ section.settings.image | image_url: width: 1600 }} 1600w"
-        sizes="100vw"
-        alt="{{ section.settings.image_alt | default: 'Rangtarini karkhana' | escape }}"
-        class="rt-craft__bg"
-        loading="lazy"
-        decoding="async">
-    {%- else -%}
-      <img
-        src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/worker_poster.jpg?v=1776532899"
-        alt="Rangtarini karkhana"
-        class="rt-craft__bg"
-        loading="lazy">
-    {%- endif -%}
-    <div class="rt-craft__grad"></div>
-
-    <div class="rt-craft__corner-cap">
-      <span class="rt-craft__corner-title">The karkhana, Jaipur</span>
-      <span class="rt-craft__corner-sub">On craft &amp; lineage</span>
+  <div class="rt-craft__media">
+    <div class="rt-craft__plx" data-craft-plx>
+      {%- if section.settings.image != blank -%}
+        <img class="rt-craft__bg"
+          src="{{ section.settings.image | image_url: width: 1600 }}"
+          srcset="{{ section.settings.image | image_url: width: 800 }} 800w, {{ section.settings.image | image_url: width: 1200 }} 1200w, {{ section.settings.image | image_url: width: 1600 }} 1600w, {{ section.settings.image | image_url: width: 2200 }} 2200w"
+          sizes="100vw"
+          alt="{{ section.settings.image_alt | default: 'Rangtarini karkhana' | escape }}"
+          loading="lazy" decoding="async">
+      {%- else -%}
+        <img class="rt-craft__bg" src="https://cdn.shopify.com/s/files/1/0955/2301/2971/files/worker_poster.jpg?v=1776532899" alt="Rangtarini karkhana" loading="lazy">
+      {%- endif -%}
     </div>
-    <span class="rt-craft__deva-tr">रंगतारिणी</span>
-
-    <div class="rt-craft__bottom">
-      <h2 class="rt-craft__headline">{{ section.settings.headline | default: 'Made by hand. Made to outlive.' }}</h2>
-      <a href="{{ section.settings.story_url | default: '/pages/about-us' }}" class="rt-craft__story-link">
-        {{ section.settings.story_label | default: 'Read our story' }} <span>→</span>
-      </a>
+    <div class="rt-craft__scrim"></div>
+    {%- if section.settings.deva != blank -%}<span class="rt-craft__deva-tr">{{ section.settings.deva }}</span>{%- endif -%}
+    <div class="rt-craft__title">
+      {%- if section.settings.eyebrow != blank -%}<span class="rt-craft__eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+      <h2 class="rt-craft__headline rt-mask"><span>{{ section.settings.headline | default: 'Made by hand. Made to outlive.' }}</span></h2>
     </div>
   </div>
 
-  <!-- Bespoke band -->
-  <div class="rt-craft__bespoke">
-
-    <!-- Panel 1: headline -->
-    <div class="rt-craft__panel" data-rt-reveal>
-      <div>
-        <span class="rt-craft__bespoke-badge">Bespoke</span>
-        <span class="rt-craft__bespoke-sub">Custom · made to order</span>
-      </div>
-      <h3 class="rt-craft__bespoke-hd">Have something in mind?<br>We'll make it for you.</h3>
+  {%- if section.blocks.size > 0 -%}
+    <div class="rt-craft__stats">
+      {%- for block in section.blocks -%}
+        <div class="rt-craft__stat" {{ block.shopify_attributes }} data-rt-reveal style="--rt-reveal-delay: {{ forloop.index0 | times: 120 }}ms">
+          <div class="rt-craft__big">
+            <span class="rt-craft__count" data-to="{{ block.settings.value | escape }}">{{ block.settings.value }}</span>{%- if block.settings.unit != blank -%}<sub>{{ block.settings.unit }}</sub>{%- endif -%}
+          </div>
+          <p class="rt-craft__cap">{{ block.settings.label | escape }}</p>
+        </div>
+      {%- endfor -%}
     </div>
+  {%- endif -%}
 
-    <!-- Panel 2: description + chips -->
-    <div class="rt-craft__panel rt-craft__panel--desc" data-rt-reveal style="--rt-reveal-delay: 90ms">
-      <p class="rt-craft__desc">
-        Send us a reference, a sketch, or an idea — we design completely new pieces from scratch.
-        Our karigars craft each commission in kundan, moissanite, CZ, polki, silver or gold-plated,
-        with a quote and timeline within 24 hours.
-      </p>
-      <div class="rt-craft__chips">
-        {%- assign chip_labels = 'Design from scratch,Recreate heirlooms,From a reference photo,Match an outfit,Couple sets' | split: ',' -%}
-        {%- for chip in chip_labels -%}
-          <span class="rt-craft__chip">{{ chip }}</span>
-        {%- endfor -%}
-      </div>
-    </div>
-
-    <!-- Panel 3: CTAs -->
-    <div class="rt-craft__panel" data-rt-reveal style="--rt-reveal-delay: 180ms">
-      <a href="{{ wa_href }}" target="_blank" rel="noopener noreferrer" class="rt-craft__wa-btn">
-        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <path d="M16 3C8.82 3 3 8.82 3 16c0 2.3.61 4.46 1.68 6.32L3 29l6.86-1.65A12.93 12.93 0 0 0 16 29c7.18 0 13-5.82 13-13S23.18 3 16 3Zm7.45 18.34c-.31.88-1.82 1.73-2.5 1.79-.67.07-1.31.34-4.4-.92-3.7-1.5-6.05-5.32-6.23-5.57-.18-.25-1.5-1.99-1.5-3.79 0-1.8.94-2.69 1.27-3.06.33-.37.73-.46.97-.46h.7c.22 0 .52-.08.81.62.31.74 1.04 2.54 1.13 2.73.09.18.15.4.03.65-.12.25-.18.4-.37.62-.18.22-.39.49-.55.66-.18.18-.37.38-.16.74.21.36.95 1.57 2.04 2.54 1.41 1.25 2.6 1.64 2.97 1.83.37.18.58.15.79-.09.21-.25.92-1.07 1.16-1.44.25-.37.5-.31.83-.18.34.12 2.13 1.01 2.49 1.19.37.18.62.27.71.42.09.16.09.92-.22 1.8Z" fill="#0a0a0a"/>
-        </svg>
-        <span class="rt-craft__wa-btn-inner">
-          <span class="rt-craft__wa-small">Talk to the studio</span>
-          <span class="rt-craft__wa-big">Start on WhatsApp →</span>
-        </span>
-      </a>
-      <span class="rt-craft__wa-status">
-        <span class="rt-craft__wa-dot"></span>
-        Replies within a business day · Mon–Sat
-      </span>
-      <a href="mailto:{{ email }}" class="rt-craft__email-link">
-        Or email {{ email }} →
-      </a>
-    </div>
-
+  <div class="rt-craft__foot">
+    {%- if section.settings.foot_text != blank -%}<p>{{ section.settings.foot_text }}</p>{%- endif -%}
+    <a href="{{ section.settings.story_url | default: '/pages/about-us' }}" class="rt-craft__story">
+      {{ section.settings.story_label | default: 'Read the craft story' }} <span class="arr" aria-hidden="true">→</span>
+    </a>
   </div>
 </section>
 
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Count-up */
+    var counters = root.querySelectorAll('.rt-craft__count');
+    function fmt(n, dec) { return dec > 0 ? n.toFixed(dec) : Math.round(n).toString(); }
+    function run(el) {
+      var raw = el.getAttribute('data-to') || '0';
+      var target = parseFloat(raw);
+      if (isNaN(target)) return;
+      var dec = (raw.split('.')[1] || '').length;
+      if (reduce) { el.textContent = fmt(target, dec); return; }
+      var start = null, dur = 1300;
+      function tick(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(target * eased, dec);
+        if (p < 1) requestAnimationFrame(tick); else el.textContent = fmt(target, dec);
+      }
+      requestAnimationFrame(tick);
+    }
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (e) { if (e.isIntersecting) { run(e.target); obs.unobserve(e.target); } });
+      }, { threshold: 0.5 });
+      counters.forEach(function (c) { io.observe(c); });
+    } else {
+      counters.forEach(run);
+    }
+
+    /* Light parallax on the media */
+    var plx = root.querySelector('[data-craft-plx]');
+    if (plx && !reduce) {
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (ticking) return; ticking = true;
+        requestAnimationFrame(function () {
+          var r = plx.getBoundingClientRect();
+          var vh = window.innerHeight || 1;
+          var prog = (r.top + r.height / 2 - vh / 2) / vh; /* -~1..1 */
+          plx.style.transform = 'translateY(' + (prog * -36) + 'px)';
+          ticking = false;
+        });
+      }, { passive: true });
+    }
+  }());
+</script>
+
 {% schema %}
 {
-  "name": "Craft & Bespoke",
+  "name": "Craft Story",
   "class": "rt-craft-section",
-  "presets": [{"name": "Craft & Bespoke"}],
   "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image (karkhana / craft)" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "04 — The workshop" },
+    { "type": "text", "id": "headline", "label": "Headline", "info": "Wrap a word in <em></em> to gild it.", "default": "Made by hand. Made to <em>outlive.</em>" },
+    { "type": "text", "id": "deva", "label": "Devanagari accent", "default": "रंगतारिणी" },
+    { "type": "textarea", "id": "foot_text", "label": "Footer paragraph", "default": "No two pieces leave the bench identical — the stone decides the setting, the hand decides the line. We hold the techniques steady and let the forms move with you." },
+    { "type": "url", "id": "story_url", "label": "Story link" },
+    { "type": "text", "id": "story_label", "label": "Story link label", "default": "Read the craft story" }
+  ],
+  "max_blocks": 3,
+  "blocks": [
     {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Background image (karkhana / craft)"
-    },
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "info": "Number that counts up (decimals allowed, e.g. 92.5).", "default": "72" },
+        { "type": "text", "id": "unit", "label": "Unit", "default": "HRS" },
+        { "type": "text", "id": "label", "label": "Caption", "default": "Bench time per jadau set" }
+      ]
+    }
+  ],
+  "presets": [
     {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Image alt text"
-    },
-    {
-      "type": "text",
-      "id": "headline",
-      "label": "Main headline",
-      "default": "Made by hand. Made to outlive."
-    },
-    {
-      "type": "url",
-      "id": "story_url",
-      "label": "Story CTA link"
-    },
-    {
-      "type": "text",
-      "id": "story_label",
-      "label": "Story CTA label",
-      "default": "Read our story"
-    },
-    {
-      "type": "text",
-      "id": "whatsapp_number",
-      "label": "WhatsApp number (E.164 without +, e.g. 919251110762)",
-      "default": "919251110762"
-    },
-    {
-      "type": "text",
-      "id": "bespoke_email",
-      "label": "Bespoke enquiry email",
-      "default": "bespoke@rangtarini.com"
+      "name": "Craft Story",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "72", "unit": "HRS", "label": "Bench time per jadau set" } },
+        { "type": "stat", "settings": { "value": "3", "unit": "GEN", "label": "Generations of karigars" } },
+        { "type": "stat", "settings": { "value": "92.5", "unit": "STG", "label": "Hallmarked sterling standard" } }
+      ]
     }
   ]
 }
