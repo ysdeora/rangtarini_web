@@ -104,9 +104,9 @@
 .rt-hero-title {
   font-family: var(--font-grotesk);
   font-weight: 900;
-  font-size: clamp(44px, 5.5vw, 88px);
+  font-size: clamp(52px, 8vw, 132px);
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.045em;
   text-transform: uppercase;
   margin: 0;
 }
