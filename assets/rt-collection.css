@@ -949,7 +949,7 @@
 .rt-card-attrs {
   font-family: var(--font-mono);
   font-size: 9px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.55;
   white-space: nowrap;
