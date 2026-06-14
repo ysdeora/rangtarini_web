@@ -409,9 +409,9 @@
   border-right: 0;
   background: var(--paper);
   position: sticky;
-  top: var(--rt-toolbar-bottom);
+  top: var(--rt-toolbar-bottom, calc(var(--rt-header-h, 64px) + 59px));
   align-self: flex-start;
-  max-height: calc(100vh - var(--rt-toolbar-bottom));
+  max-height: calc(100vh - var(--rt-toolbar-bottom, calc(var(--rt-header-h, 64px) + 59px)));
   overflow-y: auto;
   transition:
     flex-basis 0.32s var(--ez),
