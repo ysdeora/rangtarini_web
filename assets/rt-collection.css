@@ -493,7 +493,7 @@
 }
 .rt-filter-option-count {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   opacity: 0.45;
   flex-shrink: 0;
