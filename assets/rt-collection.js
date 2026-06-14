@@ -24,11 +24,6 @@
       document.querySelector('header');
     var headerH = header ? header.offsetHeight : 61;
     document.documentElement.style.setProperty('--rt-header-h', headerH + 'px');
-
-    /* sidebar sticks below the sticky toolbar — keep its offset live */
-    var toolbar = document.querySelector('.rt-toolbar');
-    var toolbarH = toolbar ? toolbar.offsetHeight : 0;
-    document.documentElement.style.setProperty('--rt-toolbar-bottom', (headerH + toolbarH) + 'px');
   }
 
   document.addEventListener('DOMContentLoaded', setHeightVars);
