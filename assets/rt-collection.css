@@ -236,10 +236,10 @@
   border: 1px solid var(--ink);
   padding: 7px 13px;
   font-family: var(--font-grotesk);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
