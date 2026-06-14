@@ -112,8 +112,8 @@
 }
 .rt-hero-desc {
   font-family: var(--font-grotesk);
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13.5px;
+  line-height: 1.72;
   max-width: 52ch;
   margin: 12px 0 0;
   opacity: 0.82;
