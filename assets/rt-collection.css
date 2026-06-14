@@ -1047,7 +1047,7 @@
 .rt-editorial-title {
   font-family: var(--font-grotesk);
   font-weight: 800;
-  font-size: clamp(24px, 3vw, 40px);
+  font-size: clamp(28px, 3vw, 46px);
   line-height: 0.92;
   letter-spacing: -0.03em;
   text-transform: uppercase;
