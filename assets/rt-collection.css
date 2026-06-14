@@ -1205,9 +1205,10 @@
   gap: 24px;
 }
 .rt-related-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
+  font-family: var(--font-grotesk);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   opacity: 0.55;
   margin-bottom: 10px;
