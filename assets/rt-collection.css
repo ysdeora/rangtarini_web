@@ -223,7 +223,7 @@
 .rt-pills-label {
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   opacity: 0.55;
   flex-shrink: 0;
