@@ -95,7 +95,7 @@
 }
 .rt-hero-deva {
   font-family: var(--font-deva);
-  font-size: 22px;
+  font-size: clamp(22px, 2.4vw, 32px);
   color: var(--gold-cool);
   font-weight: 500;
   line-height: 1;
