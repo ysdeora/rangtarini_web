@@ -675,10 +675,10 @@
 .rt-sidebar-note {
   padding: 18px 20px;
   font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  font-size: 10px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  line-height: 1.65;
+  line-height: 1.7;
   opacity: 0.5;
 }
 
