@@ -707,7 +707,7 @@
 .rt-chips-label {
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.55;
   margin-right: 4px;
