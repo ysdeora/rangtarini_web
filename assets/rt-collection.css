@@ -287,7 +287,7 @@
 ════════════════════════════════════════════════════════════ */
 .rt-toolbar {
   position: sticky;
-  top: var(--rt-header-h);
+  top: var(--rt-header-h, 64px);
   z-index: 40;
   background: rgba(239, 236, 228, 0.86);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
