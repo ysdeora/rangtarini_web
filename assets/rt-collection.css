@@ -39,9 +39,11 @@
   --ez:           cubic-bezier(0.16, 1, 0.3, 1);
   --pad:          clamp(20px, 3.4vw, 48px);
 
-  /* sticky offsets (rt-collection.js keeps these live) */
-  --rt-header-h:  64px;
-  --rt-toolbar-bottom: calc(var(--rt-header-h) + 59px);
+  /*
+   * Sticky offsets --rt-header-h and --rt-toolbar-bottom are written live
+   * to :root by rt-collection.js. They are intentionally NOT declared here,
+   * so the JS value resolves; the var() fallbacks below cover first paint.
+   */
 
   background: var(--paper);
   color: var(--ink);
