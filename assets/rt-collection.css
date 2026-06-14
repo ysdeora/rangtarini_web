@@ -420,7 +420,7 @@
   text-underline-offset: 3px;
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   opacity: 0.65;
   color: var(--ink);
