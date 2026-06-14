@@ -855,7 +855,7 @@
 .rt-badge--mto  {
   background: rgba(239,236,228,0.9);
   color: var(--ink);
-  font-size: 8px;
+  font-size: 9px;
 }
 
 /* Quick-add overlay */
