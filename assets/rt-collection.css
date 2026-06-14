@@ -321,8 +321,8 @@
   border: 1px solid var(--ink);
   padding: 8px 30px 8px 13px;
   font-family: var(--font-grotesk);
-  font-size: 10px;
-  letter-spacing: 0.22em;
+  font-size: 11px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--ink);
