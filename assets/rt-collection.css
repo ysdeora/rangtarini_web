@@ -128,9 +128,10 @@
 .rt-hero-stat-n {
   font-family: var(--font-grotesk);
   font-weight: 800;
-  font-size: 26px;
+  font-size: clamp(28px, 3vw, 42px);
   line-height: 1;
   letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 .rt-hero-stat-l {
   font-family: var(--font-mono);
