@@ -1388,7 +1388,7 @@
     justify-content: flex-start;
   }
   .rt-hero-deva { font-size: 18px; }
-  .rt-hero-title { font-size: clamp(32px, 9vw, 52px); }
+  .rt-hero-title { font-size: clamp(40px, 12vw, 68px); }
   .rt-hero-desc { font-size: 13px; margin: 6px 0 0; line-height: 1.55; }
   .rt-hero-image { display: none; }
 
