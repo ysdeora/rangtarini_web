@@ -1267,8 +1267,8 @@
   background: var(--paper);
   padding: 3px 8px;
   font-family: var(--font-grotesk);
-  font-size: 9px;
-  letter-spacing: 0.22em;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 700;
 }
