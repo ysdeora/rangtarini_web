@@ -1115,7 +1115,7 @@
 .rt-empty-title {
   font-family: var(--font-grotesk);
   font-weight: 900;
-  font-size: clamp(42px, 6vw, 80px);
+  font-size: clamp(44px, 6vw, 84px);
   line-height: 0.92;
   letter-spacing: -0.03em;
   text-transform: uppercase;
