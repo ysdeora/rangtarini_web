@@ -73,8 +73,8 @@ h3, .h3, h4, .h4 {
   line-height: 1.4;
 }
 
-/* (Removed the rt-* Archivo carve-out — now redundant: --font-heading*/
-/* and --font-body above point at Archivo, so every page already gets it.) */
+/* Removed the rt-* Archivo carve-out — now redundant, since the heading and
+   body font variables above already resolve to Archivo for every page. */
 
 /* ── Shared section head (eyebrow + display title + meta) ──
    Centralised so Catalog / New-In / Bestsellers / Occasions all reference one
