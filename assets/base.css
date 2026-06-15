@@ -397,7 +397,7 @@ main .product .price__sale {
 
 /* Category Title (Clickable) */
 .category-title {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--rt-font-grotesk);
   font-size: 1.7rem;
   font-weight: 600;
   color: #1a1a1a;
@@ -471,7 +471,7 @@ main .product .price__sale {
 }
 
 .nav-single a {
-  font-family: 'Playfair Display', serif;
+  font-family: var(--rt-font-grotesk);
   font-size: 1.7rem;
   font-weight: 600;
   color: #1a1a1a;
