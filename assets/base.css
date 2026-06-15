@@ -503,7 +503,7 @@ main .product .price__sale {
   align-items: center;
   justify-content: center;
   gap: 0.875rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--rt-font-grotesk);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.1em;
