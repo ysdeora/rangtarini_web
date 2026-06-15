@@ -442,7 +442,7 @@ main .product .price__sale {
 }
 
 .category-links a {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--rt-font-grotesk);
   font-size: 1.6rem;
   font-weight: 400;
   color: #666;
