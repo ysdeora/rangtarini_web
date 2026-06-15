@@ -17,6 +17,13 @@
   --font-mono:  ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --font-deva:  "Noto Serif Devanagari", "Playfair Display", Georgia, serif;
 
+  /* base.css forces every heading to font-family: var(--font-heading) !important
+     (Playfair) / var(--font-heading-secondary) !important (Cormorant). Re-point
+     those vars to Archivo within the collection so all headings render in Archivo.
+     Devanagari accents are <span>s, not headings, so they keep --font-deva. */
+  --font-heading: var(--font-grotesk);
+  --font-heading-secondary: var(--font-grotesk);
+
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-grotesk);
