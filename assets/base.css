@@ -197,22 +197,22 @@ p,
    ============================================ */
 
 :root {
-  /* Primary Colors - Keep these */
-  --color-gold: #C9A961;
-  --color-gold-dark: #A68A47;
+  /* Primary Colors — new design palette (paper / ink / bone / gold) */
+  --color-gold: var(--rt-gold);        /* #b59159 */
+  --color-gold-dark: var(--rt-gold-deep); /* #7a5e2c */
   --color-gold-light: #E8D5A0;
-  
-  /* Backgrounds - Keep these */
-  --color-bg-primary: #FBF9F4;
-  --color-bg-secondary: #F5F0E8;
-  --color-bg-dark: #2C2520;
+
+  /* Backgrounds */
+  --color-bg-primary: var(--rt-paper);      /* #efece4 */
+  --color-bg-secondary: var(--rt-paper-soft); /* #e6e0d0 */
+  --color-bg-dark: var(--rt-ink-soft);      /* #16140f */
   --color-bg-white: #FFFFFF;
-  
-  /* Text - Refined */
-  --color-text-primary: #1a1a1a;  /* Changed - deeper black */
-  --color-text-secondary: #666666;  /* Changed - neutral gray */
-  --color-text-light: #999999;  /* Changed - lighter gray */
-  --color-text-on-dark: #FBF9F4;
+
+  /* Text */
+  --color-text-primary: var(--rt-ink);  /* #0a0a0a */
+  --color-text-secondary: #666666;  /* neutral gray */
+  --color-text-light: #999999;  /* lighter gray */
+  --color-text-on-dark: var(--rt-paper);
   
   /* Accents - Simplified (remove if not using) */
   --color-ruby: #8B2E3E;
