@@ -232,7 +232,7 @@ p,
 body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  font-weight: 300;  /* Light by default */
+  font-weight: 400;  /* Archivo base weight */
 }
 
 .gradient {
