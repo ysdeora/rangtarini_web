@@ -75,7 +75,7 @@
 .rt-hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 380px;
+  min-height: 460px;
   overflow: hidden;
 }
 .rt-hero-copy {
