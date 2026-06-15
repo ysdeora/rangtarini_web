@@ -590,8 +590,10 @@ main .product .price__sale {
 
     /* ── VARIABLES (match existing site palette) ── */
     :root {
+      /* facet-UI helper tints only. --rt-ink is intentionally NOT redefined
+         here — it inherits the canonical #0a0a0a from the top of this file
+         (the old #1a1a1a redefinition was clobbering it site-wide). */
       --rt-white:   #ffffff;
-      --rt-ink:     #1a1a1a;
       --rt-mid:     #6b6b6b;
       --rt-lite:    #a8a8a8;
       --rt-border:  #e5e0db;
