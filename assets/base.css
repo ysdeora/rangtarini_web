@@ -73,23 +73,8 @@ h3, .h3, h4, .h4 {
   line-height: 1.4;
 }
 
-/* v4 global type system — the legacy Playfair/Montserrat rules above use
-   !important and steal the Archivo grotesk voice inside every redesigned
-   rt-* section (headings AND body copy). Re-assert it once here for all of
-   them; !important is required only to override the legacy !important.
-   Mono/Devanagari accents set their own font on dedicated spans, so they
-   are unaffected (none are h1–h4/p/li). */
-.rt-hero-cinema-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-catalog-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-new-in-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-bestsellers-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-craft-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-occ-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-custom-order-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-nl-section :is(h1, h2, h3, h4, p, li, .rte),
-.rt-footer-section :is(h1, h2, h3, h4, p, li, .rte) {
-  font-family: var(--rt-font-grotesk) !important;
-}
+/* (Removed the rt-* Archivo carve-out — now redundant: --font-heading*/
+/* and --font-body above point at Archivo, so every page already gets it.) */
 
 /* ── Shared section head (eyebrow + display title + meta) ──
    Centralised so Catalog / New-In / Bestsellers / Occasions all reference one
