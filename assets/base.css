@@ -154,7 +154,7 @@ body,
 p,
 .rte {
   font-family: var(--font-body) !important;
-  font-weight: 300;  /* Changed from 400 - lighter */
+  font-weight: 400;  /* Archivo reads better at 400 than 300 */
   line-height: 1.7;  /* More spacious */
 }
 
