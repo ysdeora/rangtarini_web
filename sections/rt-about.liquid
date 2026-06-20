@@ -1,797 +1,305 @@
 {%- comment -%}
-  rt-about.liquid
-  About Us editorial section — dark-background design matching v3 aesthetic.
-  All copy and images are editable from the Theme Editor.
+  rt-about.liquid — About Us (Heirloom · Cinema)
+  Implements the Claude Design "Rangtarini About Heirloom" layout on the
+  theme's --rt-* tokens. All copy/images editable from the Theme Editor.
+  Motion: global rt-reveal.js ([data-rt-reveal] → .rt-in).
 {%- endcomment -%}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+{{ 'rt-about.css' | asset_url | stylesheet_tag }}
 
-<style>
-  .rt-about {
-    --rt-serif:  "Cormorant Garamond", Georgia, serif;
-    --rt-sans:   "Archivo", sans-serif;
-    --rt-mono:   "DM Mono", "Courier New", monospace;
-    --rt-dark:   #0a0a0a;
-    --rt-dark2:  #111111;
-    --rt-dark3:  #0d0d0d;
-    --rt-cream:  #f5f0e8;
-    --rt-muted:  #aaaaaa;
-    --rt-dim:    #888888;
-    --rt-gold:   #c9a84c;
-    --rt-gold2:  #e8d5a3;
-    --rt-rule:   rgba(201, 168, 76, 0.12);
-    box-sizing: border-box;
-    font-family: var(--rt-sans);
-    font-weight: 300;
-    color: var(--rt-cream);
-    background: var(--rt-dark);
-    -webkit-font-smoothing: antialiased;
-  }
-  .rt-about *, .rt-about *::before, .rt-about *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  .rt-about a { text-decoration: none; }
+{%- liquid
+  assign deva_house = 'रंगतारिणी'
+  assign s = section.settings
+-%}
 
-  /* Shared tokens */
-  .rt-about__eyebrow {
-    font-family: var(--rt-sans);
-    font-size: 11px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--rt-gold);
-    display: block;
-    margin-bottom: 16px;
-  }
-  .rt-about__rule {
-    width: 40px;
-    height: 1px;
-    background: var(--rt-gold);
-    margin-bottom: 28px;
-  }
+<div class="rt-about" id="rt-about-{{ section.id }}">
 
-  /* Scroll reveal */
-  .rt-ab-reveal {
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.65s ease, transform 0.65s ease;
-  }
-  .rt-ab-reveal.rt-ab-visible { opacity: 1; transform: none; }
-  .rt-ab-d1 { transition-delay: 0.10s; }
-  .rt-ab-d2 { transition-delay: 0.20s; }
-  .rt-ab-d3 { transition-delay: 0.30s; }
-
-  /* ── 1. HERO ── */
-  .rt-ab-hero {
-    background: var(--rt-dark);
-    padding: 72px 64px 64px;
-    border-bottom: 1px solid var(--rt-rule);
-  }
-  .rt-ab-hero__headline {
-    font-family: var(--rt-serif);
-    font-size: clamp(3.8rem, 7vw, 7rem);
-    font-weight: 300;
-    line-height: 1.08;
-    color: var(--rt-cream);
-    margin-bottom: 28px;
-  }
-  .rt-ab-hero__headline em { font-style: italic; color: var(--rt-gold2); }
-  .rt-ab-hero__sub {
-    font-size: 14px;
-    line-height: 1.9;
-    color: var(--rt-muted);
-    max-width: 52ch;
-  }
-
-  /* ── 2. FOUNDER ── */
-  .rt-ab-founder {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--rt-rule);
-  }
-  .rt-ab-founder__img {
-    background: #141414;
-    position: relative;
-    min-height: 480px;
-    overflow: hidden;
-  }
-  .rt-ab-founder__img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-  }
-  .rt-ab-founder__copy {
-    background: var(--rt-dark2);
-    padding: 64px 56px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .rt-ab-founder__headline {
-    font-family: var(--rt-serif);
-    font-size: clamp(2.8rem, 4vw, 4.2rem);
-    font-weight: 300;
-    line-height: 1.15;
-    color: var(--rt-cream);
-    margin-bottom: 28px;
-  }
-  .rt-ab-founder__headline em { font-style: italic; color: var(--rt-gold2); }
-  .rt-ab-founder__body { font-size: 13px; line-height: 1.9; color: var(--rt-muted); }
-  .rt-ab-founder__body p { margin-bottom: 18px; }
-  .rt-ab-founder__body p:last-child { margin-bottom: 0; }
-  .rt-ab-founder__body strong { color: var(--rt-cream); font-weight: 500; }
-
-  /* ── 3. MISSION ── */
-  .rt-ab-mission {
-    padding: 72px 64px;
-    background: var(--rt-dark3);
-    border-bottom: 1px solid var(--rt-rule);
-  }
-  .rt-ab-mission__quote {
-    font-family: var(--rt-serif);
-    font-size: clamp(2.2rem, 3.5vw, 3.6rem);
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.4;
-    color: var(--rt-cream);
-    max-width: 28ch;
-    margin-bottom: 36px;
-    padding-left: 28px;
-    border-left: 2px solid var(--rt-gold);
-  }
-  .rt-ab-mission__body { font-size: 13px; line-height: 1.9; color: var(--rt-muted); max-width: 62ch; }
-  .rt-ab-mission__body p { margin-bottom: 16px; }
-  .rt-ab-mission__body p:last-child { margin-bottom: 0; }
-  .rt-ab-mission__body em { color: var(--rt-cream); font-style: normal; }
-
-  /* ── 4. ORIGIN ── */
-  .rt-ab-origin {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--rt-rule);
-  }
-  .rt-ab-origin__copy {
-    padding: 64px 56px;
-    background: var(--rt-dark2);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-right: 1px solid rgba(201,168,76,0.10);
-  }
-  .rt-ab-origin__headline {
-    font-family: var(--rt-serif);
-    font-size: clamp(2.6rem, 3.5vw, 3.8rem);
-    font-weight: 300;
-    line-height: 1.15;
-    color: var(--rt-cream);
-    margin-bottom: 28px;
-  }
-  .rt-ab-origin__headline em { font-style: italic; color: var(--rt-gold2); }
-  .rt-ab-origin__body { font-size: 13px; line-height: 1.9; color: var(--rt-muted); }
-  .rt-ab-origin__body p { margin-bottom: 16px; }
-  .rt-ab-origin__body p:last-child { margin-bottom: 0; }
-  .rt-ab-origin__img {
-    background: #141414;
-    position: relative;
-    overflow: hidden;
-    min-height: 420px;
-  }
-  .rt-ab-origin__img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.8s ease;
-  }
-  .rt-ab-origin__img:hover img { transform: scale(1.04); }
-
-  /* ── 5. MATERIALS ── */
-  .rt-ab-materials {
-    background: var(--rt-dark);
-    padding: 72px 64px;
-    border-bottom: 1px solid var(--rt-rule);
-  }
-  .rt-ab-materials__hd { margin-bottom: 44px; }
-  .rt-ab-materials__headline {
-    font-family: var(--rt-serif);
-    font-size: clamp(2.6rem, 3.5vw, 3.6rem);
-    font-weight: 300;
-    color: var(--rt-cream);
-    margin-bottom: 14px;
-  }
-  .rt-ab-materials__sub { font-size: 13px; color: var(--rt-dim); line-height: 1.75; max-width: 55ch; }
-  .rt-ab-mat-grid {
-    display: grid;
-    grid-template-columns: repeat({{ section.blocks | size | at_most: 3 }}, 1fr);
-    border: 1px solid var(--rt-rule);
-  }
-  .rt-ab-mat-item {
-    padding: 48px 40px;
-    border-right: 1px solid var(--rt-rule);
-    transition: background 0.3s ease;
-  }
-  .rt-ab-mat-item:last-child { border-right: none; }
-  .rt-ab-mat-item:hover { background: rgba(201,168,76,0.03); }
-  .rt-ab-mat-num {
-    font-family: var(--rt-serif);
-    font-size: 2.8rem;
-    font-weight: 300;
-    color: #d3d3d3;
-    line-height: 1;
-    margin-bottom: 16px;
-  }
-  .rt-ab-mat-tag {
-    display: inline-block;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--rt-gold);
-    border: 1px solid rgba(201,168,76,0.30);
-    padding: 4px 12px;
-    margin-bottom: 14px;
-  }
-  .rt-ab-mat-name {
-    font-family: var(--rt-serif);
-    font-size: 2.1rem;
-    font-weight: 400;
-    color: var(--rt-cream);
-    margin-bottom: 14px;
-  }
-  .rt-ab-mat-desc { font-size: 12px; line-height: 1.8; color: var(--rt-dim); }
-
-  /* ── 6. CLOSING ── */
-  .rt-ab-closing {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--rt-rule);
-  }
-  .rt-ab-bespoke {
-    padding: 64px 56px;
-    background: var(--rt-dark2);
-    border-right: 1px solid rgba(201,168,76,0.10);
-  }
-  .rt-ab-bespoke__headline {
-    font-family: var(--rt-serif);
-    font-size: clamp(2.6rem, 3.2vw, 3.4rem);
-    font-weight: 300;
-    color: var(--rt-cream);
-    line-height: 1.15;
-    margin-bottom: 24px;
-  }
-  .rt-ab-bespoke__headline em { font-style: italic; color: var(--rt-gold2); }
-  .rt-ab-bespoke__body {
-    font-size: 13px;
-    color: var(--rt-muted);
-    line-height: 1.9;
-    margin-bottom: 36px;
-  }
-  .rt-ab-bespoke__cta {
-    display: inline-block;
-    font-family: var(--rt-sans);
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--rt-dark);
-    background: var(--rt-gold);
-    padding: 16px 36px;
-    transition: background 0.2s ease;
-  }
-  .rt-ab-bespoke__cta:hover { background: var(--rt-gold2); }
-  .rt-ab-signoff {
-    padding: 64px 56px;
-    background: var(--rt-dark3);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .rt-ab-signoff__statement {
-    font-family: var(--rt-serif);
-    font-size: clamp(1.9rem, 2.5vw, 2.6rem);
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.55;
-    color: var(--rt-cream);
-    margin-bottom: 36px;
-  }
-  .rt-ab-signoff__name {
-    font-family: var(--rt-serif);
-    font-size: 1.5rem;
-    color: var(--rt-gold);
-    margin-bottom: 6px;
-  }
-  .rt-ab-signoff__title {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #555;
-  }
-  .rt-ab-signoff__shop {
-    display: inline-block;
-    margin-top: 36px;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--rt-cream);
-    border-bottom: 1px solid var(--rt-gold);
-    padding-bottom: 4px;
-    transition: color 0.2s ease;
-  }
-  .rt-ab-signoff__shop:hover { color: var(--rt-gold); }
-
-  /* Mobile */
-  @media (max-width: 749px) {
-    .rt-ab-hero { padding: 56px 24px 48px; }
-
-    .rt-ab-founder { grid-template-columns: 1fr; }
-    .rt-ab-founder__img { min-height: 300px; aspect-ratio: 4/3; }
-    .rt-ab-founder__copy { padding: 48px 24px; }
-
-    .rt-ab-mission { padding: 56px 24px; }
-
-    .rt-ab-origin { grid-template-columns: 1fr; }
-    .rt-ab-origin__img { min-height: 260px; order: -1; }
-    .rt-ab-origin__copy { padding: 48px 24px; border-right: none; border-top: 1px solid var(--rt-rule); }
-
-    .rt-ab-materials { padding: 56px 24px; }
-    .rt-ab-mat-grid { grid-template-columns: 1fr; }
-    .rt-ab-mat-item { border-right: none; border-bottom: 1px solid var(--rt-rule); padding: 40px 28px; }
-    .rt-ab-mat-item:last-child { border-bottom: none; }
-
-    .rt-ab-closing { grid-template-columns: 1fr; }
-    .rt-ab-bespoke { padding: 48px 24px; border-right: none; border-bottom: 1px solid var(--rt-rule); }
-    .rt-ab-signoff { padding: 48px 24px; }
-  }
-</style>
-
-<div class="rt-about">
-
-  {%- comment -%}── 1. HERO ──{%- endcomment -%}
-  <div class="rt-ab-hero">
-    {%- if section.settings.hero_eyebrow != blank -%}
-      <span class="rt-about__eyebrow rt-ab-reveal">{{ section.settings.hero_eyebrow | escape }}</span>
-    {%- endif -%}
-    <div class="rt-about__rule rt-ab-reveal rt-ab-d1"></div>
-    <h1 class="rt-ab-hero__headline rt-ab-reveal rt-ab-d2">
-      {{ section.settings.hero_headline }}
-    </h1>
-    {%- if section.settings.hero_sub != blank -%}
-      <p class="rt-ab-hero__sub rt-ab-reveal rt-ab-d3">{{ section.settings.hero_sub | escape }}</p>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%}── 2. FOUNDER ──{%- endcomment -%}
-  <div class="rt-ab-founder">
-    <div class="rt-ab-founder__img">
-      {%- if section.settings.founder_image != blank -%}
-        {%- assign fimg = section.settings.founder_image -%}
-        <img src="{{ fimg | image_url: width: 900 }}"
-             srcset="{{ fimg | image_url: width: 600 }} 600w, {{ fimg | image_url: width: 900 }} 900w"
-             sizes="50vw"
-             alt="{{ fimg.alt | default: section.settings.founder_name | escape }}"
-             width="{{ fimg.width }}"
-             height="{{ fimg.height }}"
-             loading="lazy">
+  {%- comment -%}════════ HERO ════════{%- endcomment -%}
+  <section class="rt-ab-hero" data-screen-label="Hero">
+    <div class="rt-ab-hero__media">
+      {%- if s.hero_image != blank -%}
+        <img class="rt-ab-img"
+             src="{{ s.hero_image | image_url: width: 2000 }}"
+             srcset="{{ s.hero_image | image_url: width: 1200 }} 1200w, {{ s.hero_image | image_url: width: 2000 }} 2000w"
+             sizes="100vw"
+             alt="{{ s.hero_image.alt | default: 'Rangtarini' | escape }}"
+             loading="eager" fetchpriority="high"
+             width="{{ s.hero_image.width }}" height="{{ s.hero_image.height }}">
+      {%- else -%}
+        <span class="rt-ab-ph" aria-hidden="true"></span>
       {%- endif -%}
     </div>
-    <div class="rt-ab-founder__copy">
-      {%- if section.settings.founder_eyebrow != blank -%}
-        <span class="rt-about__eyebrow rt-ab-reveal">{{ section.settings.founder_eyebrow | escape }}</span>
-      {%- endif -%}
-      <div class="rt-about__rule rt-ab-reveal rt-ab-d1"></div>
-      <h2 class="rt-ab-founder__headline rt-ab-reveal rt-ab-d2">
-        {{ section.settings.founder_headline }}
-      </h2>
-      {%- if section.settings.founder_body != blank -%}
-        <div class="rt-ab-founder__body rt-ab-reveal rt-ab-d3">
-          {{ section.settings.founder_body }}
-        </div>
-      {%- endif -%}
+    <div class="rt-ab-hero__scrim" aria-hidden="true"></div>
+    <div class="rt-ab-hero__frame" aria-hidden="true">
+      <span>Est. Rajasthan</span>
+      <span>Udaipur — 24.5854° N</span>
     </div>
-  </div>
-
-  {%- comment -%}── 3. MISSION ──{%- endcomment -%}
-  <div class="rt-ab-mission">
-    {%- if section.settings.mission_eyebrow != blank -%}
-      <span class="rt-about__eyebrow rt-ab-reveal">{{ section.settings.mission_eyebrow | escape }}</span>
-    {%- endif -%}
-    {%- if section.settings.mission_quote != blank -%}
-      <blockquote class="rt-ab-mission__quote rt-ab-reveal rt-ab-d1">
-        {{ section.settings.mission_quote | escape }}
-      </blockquote>
-    {%- endif -%}
-    {%- if section.settings.mission_body != blank -%}
-      <div class="rt-ab-mission__body rt-ab-reveal rt-ab-d2">
-        {{ section.settings.mission_body }}
-      </div>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%}── 4. ORIGIN ──{%- endcomment -%}
-  <div class="rt-ab-origin">
-    <div class="rt-ab-origin__copy">
-      {%- if section.settings.origin_eyebrow != blank -%}
-        <span class="rt-about__eyebrow rt-ab-reveal">{{ section.settings.origin_eyebrow | escape }}</span>
-      {%- endif -%}
-      <div class="rt-about__rule rt-ab-reveal rt-ab-d1"></div>
-      <h2 class="rt-ab-origin__headline rt-ab-reveal rt-ab-d2">
-        {{ section.settings.origin_headline }}
-      </h2>
-      {%- if section.settings.origin_body != blank -%}
-        <div class="rt-ab-origin__body rt-ab-reveal rt-ab-d3">
-          {{ section.settings.origin_body }}
-        </div>
-      {%- endif -%}
-    </div>
-    <div class="rt-ab-origin__img">
-      {%- if section.settings.origin_image != blank -%}
-        {%- assign oimg = section.settings.origin_image -%}
-        <img src="{{ oimg | image_url: width: 900 }}"
-             srcset="{{ oimg | image_url: width: 600 }} 600w, {{ oimg | image_url: width: 900 }} 900w"
-             sizes="50vw"
-             alt="{{ oimg.alt | default: section.settings.origin_eyebrow | escape }}"
-             width="{{ oimg.width }}"
-             height="{{ oimg.height }}"
-             loading="lazy">
-      {%- endif -%}
-    </div>
-  </div>
-
-  {%- comment -%}── 5. MATERIALS ──{%- endcomment -%}
-  {%- if section.blocks.size > 0 -%}
-    <div class="rt-ab-materials">
-      <div class="rt-ab-materials__hd">
-        {%- if section.settings.mat_eyebrow != blank -%}
-          <span class="rt-about__eyebrow rt-ab-reveal">{{ section.settings.mat_eyebrow | escape }}</span>
+    <div class="rt-ab-hero__content">
+      <div>
+        {%- if s.hero_eyebrow != blank -%}
+          <span class="rt-ab-hero__eyebrow" data-rt-reveal>{{ s.hero_eyebrow | escape }}</span>
         {%- endif -%}
-        {%- if section.settings.mat_headline != blank -%}
-          <h2 class="rt-ab-materials__headline rt-ab-reveal rt-ab-d1">{{ section.settings.mat_headline | escape }}</h2>
+        <h1 class="rt-ab-hero__headline" data-rt-reveal style="--d:120ms;">{{ s.hero_headline }}</h1>
+        {%- if s.hero_sub != blank -%}
+          <p class="rt-ab-hero__sub" data-rt-reveal style="--d:280ms;">{{ s.hero_sub | escape }}</p>
         {%- endif -%}
-        {%- if section.settings.mat_sub != blank -%}
-          <p class="rt-ab-materials__sub rt-ab-reveal rt-ab-d2">{{ section.settings.mat_sub | escape }}</p>
-        {%- endif -%}
-      </div>
-      <div class="rt-ab-mat-grid">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'material' -%}
-            <div class="rt-ab-mat-item rt-ab-reveal{% if forloop.index0 > 0 %} rt-ab-d{{ forloop.index0 }}{% endif %}" {{ block.shopify_attributes }}>
-              {%- if block.settings.number != blank -%}
-                <div class="rt-ab-mat-num">{{ block.settings.number | escape }}</div>
-              {%- endif -%}
-              {%- if block.settings.tag != blank -%}
-                <span class="rt-ab-mat-tag">{{ block.settings.tag | escape }}</span>
-              {%- endif -%}
-              {%- if block.settings.name != blank -%}
-                <h3 class="rt-ab-mat-name">{{ block.settings.name | escape }}</h3>
-              {%- endif -%}
-              {%- if block.settings.description != blank -%}
-                <p class="rt-ab-mat-desc">{{ block.settings.description | escape }}</p>
-              {%- endif -%}
-            </div>
+        <div class="rt-ab-hero__ctas" data-rt-reveal style="--d:400ms;">
+          {%- if s.hero_cta1_label != blank -%}
+            <a class="rt-ab-btn rt-ab-btn--paper" href="{{ s.hero_cta1_url | default: '#ra-founder' }}">{{ s.hero_cta1_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
           {%- endif -%}
-        {%- endfor -%}
+          {%- if s.hero_cta2_label != blank -%}
+            <a class="rt-ab-btn rt-ab-btn--onink" href="{{ s.hero_cta2_url | default: '/collections/all' }}">{{ s.hero_cta2_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="rt-ab-hero__side" data-rt-reveal style="--d:520ms;">
+        <span class="deva" aria-hidden="true">{{ deva_house }}</span>
+        <span class="rt-ab-hero__cue" aria-hidden="true"></span>
       </div>
     </div>
-  {%- endif -%}
+  </section>
 
-  {%- comment -%}── 6. CLOSING ──{%- endcomment -%}
-  <div class="rt-ab-closing">
-    <div class="rt-ab-bespoke">
-      {%- if section.settings.bespoke_eyebrow != blank -%}
-        <span class="rt-about__eyebrow rt-ab-reveal">{{ section.settings.bespoke_eyebrow | escape }}</span>
-      {%- endif -%}
-      <div class="rt-about__rule rt-ab-reveal rt-ab-d1"></div>
-      <h2 class="rt-ab-bespoke__headline rt-ab-reveal rt-ab-d2">
-        {{ section.settings.bespoke_headline }}
-      </h2>
-      {%- if section.settings.bespoke_body != blank -%}
-        <p class="rt-ab-bespoke__body rt-ab-reveal rt-ab-d3">{{ section.settings.bespoke_body | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.bespoke_cta_label != blank and section.settings.bespoke_cta_url != blank -%}
-        <a href="{{ section.settings.bespoke_cta_url }}" class="rt-ab-bespoke__cta rt-ab-reveal">
-          {{ section.settings.bespoke_cta_label | escape }}
-        </a>
+  {%- comment -%}════════ INTRO STATEMENT ════════{%- endcomment -%}
+  <section class="ra-intro" data-screen-label="Intro">
+    <div>
+      {%- if s.intro_idx != blank -%}<span class="idx" data-rt-reveal>{{ s.intro_idx | escape }}</span>{%- endif -%}
+      {%- if s.intro_lead != blank -%}<p class="ra-intro-lead" data-rt-reveal style="--d:90ms;">{{ s.intro_lead }}</p>{%- endif -%}
+    </div>
+    <div class="ra-intro-foot">
+      {%- if s.intro_body != blank -%}<p data-rt-reveal>{{ s.intro_body | escape }}</p>{%- endif -%}
+      {%- if s.intro_deva != blank -%}<span class="ra-intro-deva" data-rt-reveal style="--d:120ms;" aria-hidden="true">{{ s.intro_deva | escape }}</span>{%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%}════════ 01 · FOUNDER ════════{%- endcomment -%}
+  <section class="ra-founder" id="ra-founder" data-screen-label="Founder">
+    <div class="ra-founder-media">
+      <div class="ra-founder-frame" data-rt-reveal>
+        {%- if s.founder_image != blank -%}
+          <img class="rt-ab-img" src="{{ s.founder_image | image_url: width: 1000 }}"
+               alt="{{ s.founder_image.alt | default: s.founder_name | escape }}" loading="lazy"
+               width="{{ s.founder_image.width }}" height="{{ s.founder_image.height }}">
+        {%- else -%}
+          <span class="rt-ab-ph" aria-hidden="true"></span>
+        {%- endif -%}
+      </div>
+      {%- if s.founder_name != blank -%}
+        <figcaption class="ra-founder-cap">
+          <span class="nm">{{ s.founder_name | escape }}</span>
+          {%- if s.founder_role != blank -%}<span class="ttl">{{ s.founder_role | escape }}</span>{%- endif -%}
+        </figcaption>
       {%- endif -%}
     </div>
-    <div class="rt-ab-signoff">
-      {%- if section.settings.signoff_quote != blank -%}
-        <p class="rt-ab-signoff__statement rt-ab-reveal">"{{ section.settings.signoff_quote | escape }}"</p>
-      {%- endif -%}
-      {%- if section.settings.signoff_name != blank -%}
-        <p class="rt-ab-signoff__name rt-ab-reveal rt-ab-d1">{{ section.settings.signoff_name | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.signoff_title != blank -%}
-        <p class="rt-ab-signoff__title rt-ab-reveal rt-ab-d2">{{ section.settings.signoff_title | escape }}</p>
-      {%- endif -%}
-      {%- if section.settings.signoff_shop_label != blank and section.settings.signoff_shop_url != blank -%}
-        <a href="{{ section.settings.signoff_shop_url }}" class="rt-ab-signoff__shop rt-ab-reveal rt-ab-d3">
-          {{ section.settings.signoff_shop_label | escape }}
-        </a>
+    <div class="ra-founder-body">
+      {%- if s.founder_eyebrow != blank -%}<span class="idx" data-rt-reveal>{{ s.founder_eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="ra-founder-headline" data-rt-reveal style="--d:80ms;">{{ s.founder_headline }}</h2>
+      {%- if s.founder_deva != blank -%}<span class="ra-founder-deva" data-rt-reveal style="--d:140ms;">{{ s.founder_deva | escape }}</span>{%- endif -%}
+      {%- if s.founder_body != blank -%}<div class="ra-founder-copy" data-rt-reveal style="--d:180ms;">{{ s.founder_body }}</div>{%- endif -%}
+      {%- if s.founder_test != blank -%}
+        <div class="ra-test" data-rt-reveal style="--d:300ms;">
+          <span class="q">{{ s.founder_test }}</span>
+          {%- if s.founder_test_note != blank -%}<span class="note">{{ s.founder_test_note | escape }}</span>{%- endif -%}
+        </div>
       {%- endif -%}
     </div>
+  </section>
+
+  {%- comment -%}════════ 02 · MANIFESTO ════════{%- endcomment -%}
+  <section class="ra-mani" data-screen-label="Manifesto">
+    <div class="ra-mani-inner">
+      {%- if s.mission_eyebrow != blank -%}<span class="idx" data-rt-reveal>{{ s.mission_eyebrow | escape }}</span>{%- endif -%}
+      {%- if s.mission_quote != blank -%}<blockquote class="ra-mani-quote" data-rt-reveal style="--d:90ms;">{{ s.mission_quote }}</blockquote>{%- endif -%}
+      {%- if s.mission_body != blank -%}<div class="ra-mani-foot" data-rt-reveal style="--d:160ms;">{{ s.mission_body }}</div>{%- endif -%}
+    </div>
+    <span class="ra-mani-wm" aria-hidden="true">{{ deva_house }}</span>
+  </section>
+
+  {%- comment -%}════════ 03 · PLACE ════════{%- endcomment -%}
+  <section class="ra-place" data-screen-label="Place">
+    <div class="ra-place-body">
+      {%- if s.origin_eyebrow != blank -%}<span class="idx" data-rt-reveal>{{ s.origin_eyebrow | escape }}</span>{%- endif -%}
+      <h2 class="ra-place-headline" data-rt-reveal style="--d:80ms;">{{ s.origin_headline }}</h2>
+      {%- if s.origin_body != blank -%}<div class="ra-place-copy" data-rt-reveal style="--d:160ms;">{{ s.origin_body }}</div>{%- endif -%}
+    </div>
+    <div class="ra-place-media">
+      <div class="ra-place-frame" data-rt-reveal>
+        {%- if s.origin_image != blank -%}
+          <img class="rt-ab-img" src="{{ s.origin_image | image_url: width: 1200 }}"
+               alt="{{ s.origin_image.alt | default: 'Udaipur' | escape }}" loading="lazy"
+               width="{{ s.origin_image.width }}" height="{{ s.origin_image.height }}">
+        {%- else -%}
+          <span class="rt-ab-ph" aria-hidden="true"></span>
+        {%- endif -%}
+        {%- if s.origin_coord != blank -%}<span class="ra-place-coord">{{ s.origin_coord | escape }}</span>{%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}════════ 04 · MATERIALS ════════{%- endcomment -%}
+  <div class="rt-shead" data-screen-label="Materials head">
+    <div>
+      {%- if s.mat_eyebrow != blank -%}<span class="rt-shead__idx">{{ s.mat_eyebrow | escape }}</span>{%- endif -%}
+      {%- if s.mat_headline != blank -%}<h2 class="rt-shead__title" data-rt-reveal>{{ s.mat_headline | escape }}</h2>{%- endif -%}
+    </div>
+    {%- if s.mat_sub != blank -%}<div class="rt-shead__meta">{{ s.mat_sub | escape }}</div>{%- endif -%}
   </div>
+  <section class="ra-mat" data-screen-label="Materials">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'material' -%}
+        <article class="ra-mat-card" data-rt-reveal style="--d:{{ forloop.index0 | times: 110 }}ms;" {{ block.shopify_attributes }}>
+          <div class="ra-mat-frame">
+            {%- if block.settings.image != blank -%}
+              <img class="rt-ab-img" src="{{ block.settings.image | image_url: width: 800 }}"
+                   alt="{{ block.settings.image.alt | default: block.settings.name | escape }}" loading="lazy"
+                   width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+            {%- else -%}
+              <span class="rt-ab-ph" aria-hidden="true"></span>
+            {%- endif -%}
+            {%- if block.settings.number != blank -%}<span class="ra-mat-no">{{ block.settings.number | escape }}</span>{%- endif -%}
+          </div>
+          {%- if block.settings.tag != blank -%}<span class="ra-mat-kicker">{{ block.settings.tag | escape }}</span>{%- endif -%}
+          {%- if block.settings.name != blank -%}<h3>{{ block.settings.name | escape }}</h3>{%- endif -%}
+          {%- if block.settings.description != blank -%}<p>{{ block.settings.description | escape }}</p>{%- endif -%}
+        </article>
+      {%- endif -%}
+    {%- endfor -%}
+  </section>
+
+  {%- comment -%}════════ 05 · BESPOKE ════════{%- endcomment -%}
+  <section class="rt-ab-wa" id="ra-bespoke" data-screen-label="Bespoke">
+    <div class="rt-ab-wa-grid">
+      <div>
+        {%- if s.bespoke_eyebrow != blank -%}<span class="idx">{{ s.bespoke_eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="rt-ab-wa-head" data-rt-reveal style="--d:60ms;">{{ s.bespoke_headline }}</h2>
+        {%- if s.bespoke_chips != blank -%}
+          <div class="rt-ab-wa-chips" data-rt-reveal style="--d:150ms;">
+            {%- assign chips = s.bespoke_chips | newline_to_br | split: '<br />' -%}
+            {%- for chip in chips -%}
+              {%- assign chip_t = chip | strip -%}
+              {%- if chip_t != blank -%}<span class="rt-ab-wa-chip">{{ chip_t | escape }}</span>{%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="rt-ab-wa-right" data-rt-reveal style="--d:250ms;">
+        {%- if s.bespoke_body != blank -%}<p>{{ s.bespoke_body | escape }}</p>{%- endif -%}
+        {%- if s.bespoke_cta_label != blank -%}
+          <a class="rt-ab-btn rt-ab-btn--wa" href="{{ s.bespoke_cta_url }}">{{ s.bespoke_cta_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+        {%- endif -%}
+        {%- if s.bespoke_note != blank -%}<span class="rt-ab-wa-note">{{ s.bespoke_note | escape }}</span>{%- endif -%}
+        {%- if s.bespoke_email != blank -%}
+          <a class="rt-ab-wa-email" href="mailto:{{ s.bespoke_email }}">Or email {{ s.bespoke_email | escape }} <span class="arr" aria-hidden="true">→</span></a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%}════════ CLOSING ════════{%- endcomment -%}
+  <section class="ra-close" data-screen-label="Closing">
+    <div class="ra-close-inner">
+      <span class="mark" data-rt-reveal aria-hidden="true">{{ deva_house }}</span>
+      {%- if s.signoff_quote != blank -%}<blockquote class="ra-close-quote" data-rt-reveal style="--d:100ms;">{{ s.signoff_quote }}</blockquote>{%- endif -%}
+      <div class="by" data-rt-reveal style="--d:220ms;">
+        {%- if s.signoff_name != blank -%}<span class="nm">{{ s.signoff_name | escape }}</span>{%- endif -%}
+        {%- if s.signoff_title != blank -%}<span class="role">{{ s.signoff_title | escape }}</span>{%- endif -%}
+      </div>
+      {%- if s.signoff_shop_label != blank -%}
+        <a class="rt-ab-btn rt-ab-btn--onink" data-rt-reveal style="--d:300ms;" href="{{ s.signoff_shop_url | default: '/collections/all' }}">{{ s.signoff_shop_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+      {%- endif -%}
+    </div>
+    <span class="ra-close-wm" aria-hidden="true">RT</span>
+  </section>
 
 </div>
-
-<script>
-(function () {
-  var els = document.querySelectorAll('.rt-ab-reveal');
-  if (!els.length) return;
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(function (el) { el.classList.add('rt-ab-visible'); });
-    return;
-  }
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('rt-ab-visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  els.forEach(function (el) { obs.observe(el); });
-})();
-</script>
 
 {% schema %}
 {
   "name": "About Page",
-  "class": "rt-about-section",
+  "tag": "section",
+  "class": "section-rt-about",
   "settings": [
-    {
-      "type": "header",
-      "content": "Hero"
-    },
-    {
-      "type": "text",
-      "id": "hero_eyebrow",
-      "label": "Eyebrow",
-      "default": "About Us"
-    },
-    {
-      "type": "richtext",
-      "id": "hero_headline",
-      "label": "Headline",
-      "default": "<p>Born in Jodhpur.<br>Made in Rajasthan.<br><em>Worn Everywhere.</em></p>"
-    },
-    {
-      "type": "textarea",
-      "id": "hero_sub",
-      "label": "Subheadline",
-      "default": "Handcrafted Indian jewelry, rooted in Rajasthan. Regal by design. Yours to wear."
-    },
-    {
-      "type": "header",
-      "content": "Founder"
-    },
-    {
-      "type": "image_picker",
-      "id": "founder_image",
-      "label": "Founder photo"
-    },
-    {
-      "type": "text",
-      "id": "founder_eyebrow",
-      "label": "Eyebrow",
-      "default": "The Woman Behind It"
-    },
-    {
-      "type": "richtext",
-      "id": "founder_headline",
-      "label": "Headline",
-      "default": "<p><em>I don’t trend-chase.</em><br>I curate.</p>"
-    },
-    {
-      "type": "text",
-      "id": "founder_name",
-      "label": "Founder name (for image alt text)",
-      "default": "Bhoomika Ranawat"
-    },
-    {
-      "type": "richtext",
-      "id": "founder_body",
-      "label": "Body copy",
-      "default": "<p>My name is <strong>Bhoomika Ranawat</strong>. I grew up in Jodhpur — surrounded by jewelry the way most children are surrounded by toys. At weddings, at temples, at Sunday markets.</p><p>Silver anklets. Gold chokers. Jhumkas passed from mother to daughter like quiet heirlooms. I didn’t study jewelry. I absorbed it. I learned to read a piece — whether it carries something real, or whether it’s just surface.</p><p>Every piece at Rangtarini passes one test: <strong>does it feel worthy?</strong> Worthy of the craft. Worthy of the woman who will wear it. If it doesn’t — it doesn’t make the cut.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Mission"
-    },
-    {
-      "type": "text",
-      "id": "mission_eyebrow",
-      "label": "Eyebrow",
-      "default": "Why We Exist"
-    },
-    {
-      "type": "textarea",
-      "id": "mission_quote",
-      "label": "Pull quote",
-      "default": "Fine Indian jewelry has always existed. What hasn’t always existed — is access to it."
-    },
-    {
-      "type": "richtext",
-      "id": "mission_body",
-      "label": "Body copy",
-      "default": "<p>The intricate meenakari work, the kundan settings, the filigree jhumkas — designs with centuries of lineage — out of reach for the very women who grew up loving them. <em>Rangtarini changes that.</em></p><p>By working with 925 sterling silver and gold-plated silver, we bring regal, handcrafted Indian jewelry into everyday life — without asking you to choose between authenticity and affordability.</p>"
-    },
-    {
-      "type": "header",
-      "content": "Origin"
-    },
-    {
-      "type": "text",
-      "id": "origin_eyebrow",
-      "label": "Eyebrow",
-      "default": "Where We Come From"
-    },
-    {
-      "type": "richtext",
-      "id": "origin_headline",
-      "label": "Headline",
-      "default": "<p>Rajasthan Is Not<br><em>Just Our Origin.</em></p>"
-    },
-    {
-      "type": "richtext",
-      "id": "origin_body",
-      "label": "Body copy",
-      "default": "<p>Rangtarini is rooted in Rajasthan — its havelis, its lakes, its centuries of craft. A land where jewelry has never been mere decoration. It has always been identity.</p><p>That quiet confidence — unhurried, unperformed — is what we hope every Rangtarini piece carries. Not jewelry that demands attention. Jewelry that earns it.</p>"
-    },
-    {
-      "type": "image_picker",
-      "id": "origin_image",
-      "label": "Origin image"
-    },
-    {
-      "type": "header",
-      "content": "Materials"
-    },
-    {
-      "type": "text",
-      "id": "mat_eyebrow",
-      "label": "Eyebrow",
-      "default": "What We Make"
-    },
-    {
-      "type": "text",
-      "id": "mat_headline",
-      "label": "Headline",
-      "default": "Three Materials. One Standard."
-    },
-    {
-      "type": "text",
-      "id": "mat_sub",
-      "label": "Subheadline",
-      "default": "Every piece is handcrafted and selected by hand. What unites them is not material — it is intent."
-    },
-    {
-      "type": "header",
-      "content": "Bespoke CTA"
-    },
-    {
-      "type": "text",
-      "id": "bespoke_eyebrow",
-      "label": "Eyebrow",
-      "default": "Bespoke"
-    },
-    {
-      "type": "richtext",
-      "id": "bespoke_headline",
-      "label": "Headline",
-      "default": "<p>Some Stories<br><em>Are Singular.</em></p>"
-    },
-    {
-      "type": "textarea",
-      "id": "bespoke_body",
-      "label": "Body copy",
-      "default": "For the bride with a vision. The daughter recreating her mother’s piece. The woman who knows exactly what she wants and hasn’t found it yet. One conversation at a time, from concept to creation."
-    },
-    {
-      "type": "text",
-      "id": "bespoke_cta_label",
-      "label": "CTA label",
-      "default": "Start a Conversation"
-    },
-    {
-      "type": "url",
-      "id": "bespoke_cta_url",
-      "label": "CTA link"
-    },
-    {
-      "type": "header",
-      "content": "Signoff"
-    },
-    {
-      "type": "textarea",
-      "id": "signoff_quote",
-      "label": "Quote",
-      "default": "Every piece we add is another step toward making regal Indian jewelry truly everyone’s."
-    },
-    {
-      "type": "text",
-      "id": "signoff_name",
-      "label": "Name",
-      "default": "Bhoomika Ranawat"
-    },
-    {
-      "type": "text",
-      "id": "signoff_title",
-      "label": "Title",
-      "default": "Founder, Rangtarini"
-    },
-    {
-      "type": "text",
-      "id": "signoff_shop_label",
-      "label": "Shop CTA label",
-      "default": "Shop the Collection"
-    },
-    {
-      "type": "url",
-      "id": "signoff_shop_url",
-      "label": "Shop CTA link",
-      "default": "/collections/all"
-    }
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Our story · Handcrafted in Rajasthan" },
+    { "type": "richtext", "id": "hero_headline", "label": "Headline", "info": "Italicise words to accent them in gold.", "default": "<p>Born in Jodhpur.<br>Based in Udaipur.<br>Worn <em>everywhere.</em></p>" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sub-text", "default": "Handcrafted Indian jewellery, rooted in Rajasthan — regal by design, and yours to wear." },
+    { "type": "text", "id": "hero_cta1_label", "label": "Primary CTA label", "default": "Meet the founder" },
+    { "type": "text", "id": "hero_cta1_url", "label": "Primary CTA link", "default": "#ra-founder" },
+    { "type": "text", "id": "hero_cta2_label", "label": "Secondary CTA label", "default": "Shop the collection" },
+    { "type": "url", "id": "hero_cta2_url", "label": "Secondary CTA link" },
+
+    { "type": "header", "content": "Intro statement" },
+    { "type": "text", "id": "intro_idx", "label": "Eyebrow", "default": "Rangtarini — the house" },
+    { "type": "inline_richtext", "id": "intro_lead", "label": "Lead statement", "info": "Italicise words to accent them in gold.", "default": "A name for the woman who <em>colours the world</em> — and the jewellery she refuses to take off." },
+    { "type": "textarea", "id": "intro_body", "label": "Supporting paragraph", "default": "The name means \"she who colours the world.\" We built the house in her image — unhurried, certain, the kind of woman who finds one piece and keeps it for thirty years. Everything we make is meant to be worn that long." },
+    { "type": "text", "id": "intro_deva", "label": "Devanagari accent", "default": "रंगतारिणी" },
+
+    { "type": "header", "content": "01 · The founder" },
+    { "type": "image_picker", "id": "founder_image", "label": "Founder portrait" },
+    { "type": "text", "id": "founder_eyebrow", "label": "Eyebrow", "default": "01 — The woman behind it" },
+    { "type": "richtext", "id": "founder_headline", "label": "Headline", "default": "<p>I don't trend-chase.<br><em>I curate.</em></p>" },
+    { "type": "text", "id": "founder_deva", "label": "Devanagari accent", "default": "भूमिका" },
+    { "type": "richtext", "id": "founder_body", "label": "Body", "default": "<p>I grew up in Jodhpur, surrounded by jewellery the way most children are surrounded by toys — at weddings, at temples, at Sunday markets.</p><p>I didn't study jewellery. I absorbed it. I learned to read a piece — whether it carries something real, or whether it's just surface.</p><p>So every piece at Rangtarini meets one test before it earns its name. <strong>If it doesn't feel worthy — it doesn't make the cut.</strong></p>" },
+    { "type": "text", "id": "founder_name", "label": "Founder name", "default": "Bhoomika Ranawat" },
+    { "type": "text", "id": "founder_role", "label": "Founder role / caption", "default": "Founder · Rangtarini" },
+    { "type": "text", "id": "founder_test", "label": "Pull-quote question", "default": "Does it feel <em>worthy?</em>" },
+    { "type": "text", "id": "founder_test_note", "label": "Pull-quote note", "default": "The only question that matters" },
+
+    { "type": "header", "content": "02 · Why we exist (manifesto)" },
+    { "type": "text", "id": "mission_eyebrow", "label": "Eyebrow", "default": "02 — Why we exist" },
+    { "type": "richtext", "id": "mission_quote", "label": "Statement", "default": "<p>Fine Indian jewellery has always existed. What hasn't — is <em>access</em> to it.</p>" },
+    { "type": "richtext", "id": "mission_body", "label": "Supporting paragraphs", "default": "<p>The intricate meenakari, the kundan settings, the filigree jhumkas — designs with centuries of lineage — have been quietly out of reach for the very women who grew up loving them.</p><p>So we built Rangtarini around silver — not the untouchable price of gold. The same hands, the same lineage, <em>without asking you to choose between what's authentic and what's affordable.</em></p>" },
+
+    { "type": "header", "content": "03 · Where we are" },
+    { "type": "image_picker", "id": "origin_image", "label": "Place image" },
+    { "type": "text", "id": "origin_eyebrow", "label": "Eyebrow", "default": "03 — Where we are" },
+    { "type": "richtext", "id": "origin_headline", "label": "Headline", "default": "<p>Udaipur is not <em>just our address.</em></p>" },
+    { "type": "richtext", "id": "origin_body", "label": "Body", "default": "<p>We are based in Udaipur — the city of lakes, of havelis, of a particular unhurried elegance that finds its way into everything made here.</p><p>Udaipur does not shout. It does not perform. It simply <em>is.</em> That quiet confidence is what we hope every Rangtarini piece carries.</p>" },
+    { "type": "text", "id": "origin_coord", "label": "Coordinate caption", "default": "Udaipur · 24.5854° N, 73.7125° E" },
+
+    { "type": "header", "content": "04 · What we make" },
+    { "type": "text", "id": "mat_eyebrow", "label": "Eyebrow", "default": "04 — What we make" },
+    { "type": "text", "id": "mat_headline", "label": "Headline", "default": "Three materials. One standard." },
+    { "type": "textarea", "id": "mat_sub", "label": "Meta", "default": "Handcrafted · selected by hand. United by intent, not metal." },
+
+    { "type": "header", "content": "05 · Bespoke" },
+    { "type": "text", "id": "bespoke_eyebrow", "label": "Eyebrow", "default": "05 — Made to order" },
+    { "type": "richtext", "id": "bespoke_headline", "label": "Headline", "default": "<p>A piece that exists <em>once.</em></p>" },
+    { "type": "textarea", "id": "bespoke_chips", "label": "Chips (one per line)", "default": "Bridal commissions\nJadau kundan\nTemple silver\nRestorations" },
+    { "type": "textarea", "id": "bespoke_body", "label": "Body", "default": "Send a reference, a sketch, or your grandmother's piece that needs a second life. Our bench replies with a plan, and a date." },
+    { "type": "text", "id": "bespoke_cta_label", "label": "CTA label", "default": "Start on WhatsApp" },
+    { "type": "url", "id": "bespoke_cta_url", "label": "CTA link" },
+    { "type": "text", "id": "bespoke_note", "label": "Note", "default": "Replies within hours · 10am–7pm IST" },
+    { "type": "text", "id": "bespoke_email", "label": "Bespoke email", "default": "bespoke@rangtarini.com" },
+
+    { "type": "header", "content": "Closing" },
+    { "type": "richtext", "id": "signoff_quote", "label": "Closing statement", "default": "<p>Every piece we add is another step toward making regal Indian jewellery <em>truly everyone's.</em></p>" },
+    { "type": "text", "id": "signoff_name", "label": "Name", "default": "Bhoomika Ranawat" },
+    { "type": "text", "id": "signoff_title", "label": "Role", "default": "Founder · Rangtarini" },
+    { "type": "text", "id": "signoff_shop_label", "label": "CTA label", "default": "Shop the collection" },
+    { "type": "url", "id": "signoff_shop_url", "label": "CTA link" }
   ],
   "blocks": [
     {
       "type": "material",
       "name": "Material",
       "settings": [
-        {
-          "type": "text",
-          "id": "number",
-          "label": "Number",
-          "default": "01"
-        },
-        {
-          "type": "text",
-          "id": "tag",
-          "label": "Tag",
-          "default": "925 Sterling"
-        },
-        {
-          "type": "text",
-          "id": "name",
-          "label": "Name",
-          "default": "Pure Silver"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Description",
-          "default": "Authentic 925 sterling silver, BIS hallmarked. No compromise, no coating. Made to last a lifetime."
-        }
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "number", "label": "Number", "default": "01" },
+        { "type": "text", "id": "tag", "label": "Kicker", "default": "925 Sterling" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Pure Silver" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Authentic 925 sterling silver, BIS hallmarked. Made to be worn for a lifetime." }
       ]
     }
   ],
+  "max_blocks": 3,
   "presets": [
     {
       "name": "About Page",
       "blocks": [
-        {
-          "type": "material",
-          "settings": {
-            "number": "01",
-            "tag": "925 Sterling",
-            "name": "Pure Silver",
-            "description": "Authentic 925 sterling silver, BIS hallmarked. No compromise, no coating. Made to last a lifetime."
-          }
-        },
-        {
-          "type": "material",
-          "settings": {
-            "number": "02",
-            "tag": "Gold Plated",
-            "name": "Gold-Plated Silver",
-            "description": "The warmth of gold, the integrity of a pure silver base. For everyday luxury and occasion dressing alike."
-          }
-        },
-        {
-          "type": "material",
-          "settings": {
-            "number": "03",
-            "tag": "Silver Alloy",
-            "name": "Gold-Plated Alloy",
-            "description": "Thoughtfully designed pieces at accessible price points — without sacrificing the Rangtarini standard of design."
-          }
-        }
+        { "type": "material", "settings": { "number": "01", "tag": "925 Sterling", "name": "Pure Silver" } },
+        { "type": "material", "settings": { "number": "02", "tag": "Gold Plated", "name": "Gold-Plated Silver" } },
+        { "type": "material", "settings": { "number": "03", "tag": "Silver Alloy", "name": "Gold-Plated Alloy" } }
       ]
     }
   ]
