@@ -112,6 +112,7 @@
   text-transform: uppercase;
   margin: 0;
 }
+.rt-hero-title-dot { color: var(--gold-cool); }
 .rt-hero-desc {
   font-family: var(--font-grotesk);
   font-size: 13.5px;
