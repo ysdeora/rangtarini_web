@@ -139,7 +139,8 @@
   <div class="rt-shead" data-screen-label="Materials head">
     <div>
       {%- if s.mat_eyebrow != blank -%}<span class="rt-shead__idx">{{ s.mat_eyebrow | escape }}</span>{%- endif -%}
-      {%- if s.mat_headline != blank -%}<h2 class="rt-shead__title" data-rt-reveal>{{ s.mat_headline | escape }}</h2>{%- endif -%}
+      {%- comment -%} Break after the first sentence so it reads as two lines (e.g. "Three materials." / "One standard.") {%- endcomment -%}
+      {%- if s.mat_headline != blank -%}<h2 class="rt-shead__title" data-rt-reveal>{{ s.mat_headline | escape | replace_first: '. ', '.<br>' }}</h2>{%- endif -%}
     </div>
     {%- if s.mat_sub != blank -%}<div class="rt-shead__meta">{{ s.mat_sub | escape }}</div>{%- endif -%}
   </div>
