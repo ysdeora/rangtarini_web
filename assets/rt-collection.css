@@ -68,7 +68,9 @@
 .rt-hero-inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 460px;
+  /* Height is driven by the copy column (with this floor); the image is
+     absolutely positioned and cropped, so it never inflates the hero. */
+  min-height: 440px;
   overflow: hidden;
 }
 .rt-hero-copy {
