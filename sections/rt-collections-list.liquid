@@ -204,7 +204,15 @@
   <div class="rt-cl__hd">
     <div>
       <span class="rt-cl__eyebrow">{{ section.settings.eyebrow | default: '— All Collections' }}</span>
-      <h1 class="rt-cl__display">{{ section.settings.heading | default: 'The archive.' }}</h1>
+      {%- assign cl_heading = section.settings.heading | default: 'The archive.' -%}
+      <h1 class="rt-cl__display">
+        {%- if cl_heading ends_with: '.' -%}
+          {%- assign cl_cut = cl_heading | size | minus: 1 -%}
+          {{ cl_heading | slice: 0, cl_cut | escape }}<span class="rt-cl__dot">.</span>
+        {%- else -%}
+          {{ cl_heading | escape }}
+        {%- endif -%}
+      </h1>
     </div>
     <span class="rt-cl__total">{{ paginate.items }} {{ 'collections' | t: count: paginate.items }}</span>
   </div>
