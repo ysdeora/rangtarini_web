@@ -205,12 +205,13 @@
     <div>
       <span class="rt-cl__eyebrow">{{ section.settings.eyebrow | default: '— All Collections' }}</span>
       {%- assign cl_heading = section.settings.heading | default: 'The archive.' -%}
+      {%- assign cl_last = cl_heading | slice: -1 -%}
       <h1 class="rt-cl__display">
-        {%- if cl_heading ends_with: '.' -%}
+        {%- if cl_last == '.' -%}
           {%- assign cl_cut = cl_heading | size | minus: 1 -%}
-          {{ cl_heading | slice: 0, cl_cut | escape }}<span class="rt-cl__dot">.</span>
+          {{- cl_heading | slice: 0, cl_cut | escape -}}<span class="rt-cl__dot">.</span>
         {%- else -%}
-          {{ cl_heading | escape }}
+          {{- cl_heading | escape -}}
         {%- endif -%}
       </h1>
     </div>
