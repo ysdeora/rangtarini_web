@@ -47,7 +47,7 @@
           </div>
 
           <div>
-            <h1 class="rt-hero-title">{{ collection.title }}</h1>
+            <h1 class="rt-hero-title">{{ collection.title }}<span class="rt-hero-title-dot" aria-hidden="true">.</span></h1>
             {%- if collection.description != blank -%}
               <div class="rt-hero-desc">{{ collection.description | strip_html }}</div>
             {%- endif -%}
