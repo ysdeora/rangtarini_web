@@ -900,7 +900,7 @@
 
       <!-- Title -->
       <div class="rt-title-block">
-        <h1 class="rt-title">{{ product.title }}.</h1>
+        <h1 class="rt-title">{{ product.title }}<span class="rt-title-dot" aria-hidden="true">.</span></h1>
         <div class="rt-title-sub">
           {%- if product.metafields.custom.title_devanagari != blank -%}
             <span class="rt-deva">{{ product.metafields.custom.title_devanagari }}</span>
