@@ -304,6 +304,7 @@
   font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 1.02;
   font-size: clamp(26px, 4.4vw, 66px); text-wrap: balance;
 }
+.ra-close-quote p { margin: 0; font: inherit; }
 .ra-close .by { margin-top: 30px; display: flex; flex-direction: column; gap: 5px; align-items: center; }
 .ra-close .by .nm { font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px; }
 .ra-close .by .role { font-family: var(--rt-font-mono); font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.55; }
