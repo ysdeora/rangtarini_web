@@ -20,6 +20,9 @@
    (.rt-about a has higher specificity than .rt-ab-btn--*, so exclude buttons). */
 .rt-about a:not(.rt-ab-btn) { color: inherit; }
 .rt-about em, .rt-about i { font-style: normal; color: var(--rt-gold); }
+/* reset Dawn's stock blockquote styling (italic + dark --color-foreground +
+   left border) so the manifesto / closing quotes inherit their section colour. */
+.rt-about blockquote { padding: 0; border: 0; color: inherit; font-style: normal; }
 
 /* ─── reveals (global rt-reveal.js adds .rt-in) ──────────────────── */
 .rt-about [data-rt-reveal] {
