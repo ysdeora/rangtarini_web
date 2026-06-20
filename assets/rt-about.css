@@ -54,7 +54,7 @@
 .rt-ab-btn .arr { transition: transform 0.35s var(--rt-ez); }
 .rt-ab-btn:hover .arr { transform: translateX(5px); }
 .rt-ab-btn--paper { background: var(--rt-paper); color: var(--rt-ink); border-color: var(--rt-paper); }
-.rt-ab-btn--paper:hover { border-color: var(--rt-gold); }
+.rt-ab-btn--paper:hover { color: var(--rt-ink); border-color: var(--rt-gold); }
 .rt-ab-btn--onink { background: transparent; color: var(--rt-paper); border-color: var(--rt-paper); }
 .rt-ab-btn--onink:hover { color: var(--rt-ink); background: var(--rt-paper); border-color: var(--rt-paper); }
 .rt-ab-btn--wa { background: var(--rt-wa-green); border-color: var(--rt-wa-green); color: #f4fbf6; }
