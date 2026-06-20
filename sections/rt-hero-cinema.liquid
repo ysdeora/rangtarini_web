@@ -8,7 +8,9 @@
 <style>
   /* Bleed the hero up under the (transparent) sticky header */
   #shopify-section-{{ section.id }} {
-    margin-top: calc(-1 * var(--rt-header-h, 60px));
+    /* Extra 1px covers the header wrap's border-bottom (not counted in --rt-header-h),
+       which is transparent over the hero and otherwise leaks a thin gap above the hero. */
+    margin-top: calc(-1 * var(--rt-header-h, 60px) - 1px);
     position: relative;
     z-index: 1;
   }
