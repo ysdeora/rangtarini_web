@@ -19,6 +19,8 @@
           {%- if deva != blank -%}
             <span class="rt-cn-product__deva" aria-hidden="true">{{ deva }}</span>
           {%- endif -%}
+          {%- assign modal_id = 'CartDisclosureModal-notification-' | append: item.key | replace: ':', '-' -%}
+          {%- render 'cart-disclosure-indicator', product: item.product, modal_id: modal_id -%}
         </div>
         {%- unless item.product.has_only_default_variant -%}
           {%- for option in item.options_with_values -%}

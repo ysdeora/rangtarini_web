@@ -42,6 +42,9 @@ if (!customElements.get('product-form')) {
         }
         config.body = formData;
 
+        const variantId = formData.get('id');
+        const quantity = parseInt(formData.get('quantity')) || 1;
+        const linesUpdateDeferred = this.createCartLinesUpdateEvent(variantId, quantity);
         if (this.cart?.openPending) this.cart.openPending();
 
         fetch(`${routes.cart_add_url}`, config)
@@ -50,11 +53,13 @@ if (!customElements.get('product-form')) {
             if (response.status) {
               publish(PUB_SUB_EVENTS.cartError, {
                 source: 'product-form',
-                productVariantId: formData.get('id'),
+                productVariantId: variantId,
                 errors: response.errors || response.description,
                 message: response.message,
               });
               this.handleErrorMessage(response.description);
+              this.dispatchCartErrorEvent(response.description || response.message, 'INVALID');
+              linesUpdateDeferred?.reject(new Error(response.description || response.message));
 
               const soldOutMessage = this.submitButton.querySelector('.sold-out-message');
               if (!soldOutMessage) return;
@@ -64,15 +69,18 @@ if (!customElements.get('product-form')) {
               this.error = true;
               return;
             } else if (!this.cart) {
+              this.resolveCartLinesUpdate(linesUpdateDeferred);
               window.location = window.routes.cart_url;
               return;
             }
+
+            this.resolveCartLinesUpdate(linesUpdateDeferred);
 
             const startMarker = CartPerformance.createStartingMarker('add:wait-for-subscribers');
             if (!this.error)
               publish(PUB_SUB_EVENTS.cartUpdate, {
                 source: 'product-form',
-                productVariantId: formData.get('id'),
+                productVariantId: variantId,
                 cartData: response,
               }).then(() => {
                 CartPerformance.measureFromMarker('add:wait-for-subscribers', startMarker);
@@ -100,6 +108,8 @@ if (!customElements.get('product-form')) {
           })
           .catch((e) => {
             console.error(e);
+            this.dispatchCartErrorEvent(e.message || 'Network error', 'SERVICE_UNAVAILABLE');
+            linesUpdateDeferred?.reject(e);
           })
           .finally(() => {
             this.submitButton.classList.remove('loading');
@@ -134,6 +144,45 @@ if (!customElements.get('product-form')) {
           this.submitButton.removeAttribute('disabled');
           this.submitButtonText.textContent = window.variantStrings.addToCart;
         }
+      }
+
+      createCartLinesUpdateEvent(variantId, quantity) {
+        const { CartLinesUpdateEvent } = window.StandardEvents || {};
+        if (!CartLinesUpdateEvent) return null;
+
+        const deferred = CartLinesUpdateEvent.createPromise();
+        this.dispatchEvent(
+          new CartLinesUpdateEvent({
+            action: 'add',
+            context: 'product',
+            lines: [{ merchandiseId: variantId, quantity }],
+            promise: deferred.promise,
+          })
+        );
+        return deferred;
+      }
+
+      resolveCartLinesUpdate(deferred) {
+        if (!deferred) return;
+        const { CartLinesUpdateEvent } = window.StandardEvents || {};
+        if (!CartLinesUpdateEvent) return;
+
+        const pendingCartDataPromise = typeof CartItems !== 'undefined'
+          ? CartItems.fetchCartData()
+          : fetch(`${routes.cart_url}.json`).then((response) => response.json());
+
+        pendingCartDataPromise
+          .then((cart) => {
+            if (!cart?.currency) return deferred.reject(new Error('Missing currency in cart response'));
+            deferred.resolve({ cart: CartLinesUpdateEvent.createCartFromAjaxResponse(cart) });
+          })
+          .catch((e) => deferred.reject(e));
+      }
+
+      dispatchCartErrorEvent(message, code) {
+        const { CartErrorEvent } = window.StandardEvents || {};
+        if (!CartErrorEvent) return;
+        this.dispatchEvent(new CartErrorEvent({ error: message, code }));
       }
 
       get variantIdInput() {
