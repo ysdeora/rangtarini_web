@@ -1284,7 +1284,10 @@
 
   <!-- ── [E] From the Karkhana (Index 04) ── -->
   <section id="rt-karkhana" aria-label="About our craft">
-    {%- assign has_karkhana_img = section.settings.karkhana_image != blank -%}
+    {%- assign has_karkhana_img = false -%}
+    {%- if section.settings.karkhana_image != blank -%}
+      {%- assign has_karkhana_img = true -%}
+    {%- endif -%}
     <div class="rt-karkhana-grid{% unless has_karkhana_img or request.design_mode %} rt-karkhana-grid--solo{% endunless %}">
       <div>
         <span class="rt-karkhana-eyebrow">{{ section.settings.karkhana_eyebrow | default: 'Index 04 — How we make everything' }}</span>
