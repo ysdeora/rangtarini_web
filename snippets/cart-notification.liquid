@@ -46,7 +46,7 @@
       {%- comment -%} Subtotal row — updated via cartUpdate PubSub subscriber {%- endcomment -%}
       <div id="cart-notification-subtotal" class="rt-cn-subtotal">
         <span class="rt-cn-subtotal__label">{{ 'general.cart.bag_subtotal' | t: count: cart.item_count }}</span>
-        <span class="rt-cn-subtotal__price">{{ cart.total_price | money }}</span>
+        <span class="rt-cn-subtotal__price">{% render 'rt-money', amount: cart.total_price %}</span>
       </div>
 
       {%- comment -%} Actions {%- endcomment -%}
