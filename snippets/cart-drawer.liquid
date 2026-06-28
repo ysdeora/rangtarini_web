@@ -169,18 +169,18 @@
                                 {{ 'products.product.price.regular_price' | t }}
                               </span>
                               <s class="cart-item__old-price product-option">
-                                {{- item.original_price | money -}}
+                                {% render 'rt-money', amount: item.original_price %}
                               </s>
                               <span class="visually-hidden">
                                 {{ 'products.product.price.sale_price' | t }}
                               </span>
                               <strong class="cart-item__final-price product-option">
-                                {{ item.final_price | money }}
+                                {% render 'rt-money', amount: item.final_price %}
                               </strong>
                             </div>
                           {%- else -%}
                             <div class="product-option">
-                              {{ item.original_price | money }}
+                              {% render 'rt-money', amount: item.original_price %}
                             </div>
                           {%- endif -%}
 
