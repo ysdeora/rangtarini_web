@@ -528,8 +528,13 @@
 
           <div class="totals" role="status">
             <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-            <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+            <p class="totals__total-value">{% render 'rt-money', amount: cart.total_price, with_currency: true %}</p>
           </div>
+
+          {%- if settings.currency_enabled and request.locale.iso_code -%}{%- endif -%}
+          {%- if settings.currency_enabled -%}
+            <small class="rt-currency__note tax-note caption-large rte">{{ 'localization.currency_cart_disclaimer' | t }}</small>
+          {%- endif -%}
 
           <small class="tax-note caption-large rte">
             {%- if cart.duties_included and cart.taxes_included -%}
