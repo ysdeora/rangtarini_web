@@ -1,0 +1,39 @@
+{%- comment -%}
+  Currency picker (display-only). Lets visitors view prices in a chosen currency;
+  checkout is always charged in INR. Conversion is handled client-side by
+  assets/rt-currency.js. Gated on settings.currency_enabled.
+
+  Accepts:
+  - variant: {String} 'footer' for footer styling (optional)
+  - show_note: {Boolean} Render the reference-price disclaimer (optional, default true)
+{%- endcomment -%}
+{%- if settings.currency_enabled -%}
+  {%- liquid
+    assign currency_codes = settings.currency_list | default: 'INR' | split: ','
+    assign default_code = settings.currency_default | default: 'INR' | strip | upcase
+    if show_note == null
+      assign show_note = true
+    endif
+  -%}
+  <rt-currency-picker class="rt-currency{% if variant == 'footer' %} rt-currency--footer{% endif %}">
+    <div class="rt-currency__control">
+      <label class="visually-hidden" for="rt-currency-{{ variant | default: 'header' }}">
+        {{- 'localization.currency_label' | t -}}
+      </label>
+      <select id="rt-currency-{{ variant | default: 'header' }}" class="rt-currency__select">
+        {%- for raw_code in currency_codes -%}
+          {%- assign cur = raw_code | strip | upcase -%}
+          {%- if cur != blank -%}
+            <option value="{{ cur }}" {% if cur == default_code %}selected{% endif %}>{{ cur }}</option>
+          {%- endif -%}
+        {%- endfor -%}
+      </select>
+      <svg class="rt-currency__arrow" viewBox="0 0 10 6" fill="none" aria-hidden="true" focusable="false">
+        <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.4" />
+      </svg>
+    </div>
+    {%- if show_note -%}
+      <span class="rt-currency__note">{{ 'localization.currency_disclaimer' | t }}</span>
+    {%- endif -%}
+  </rt-currency-picker>
+{%- endif -%}
