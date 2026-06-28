@@ -1185,7 +1185,7 @@
                     <p class="rt-cart__discount-item">
                       {{- 'icon-discount.svg' | inline_asset_content -}}
                       {{ discount.title | escape }}
-                      <span>(−{{ discount.total_allocated_amount | money }})</span>
+                      <span>(−{% render 'rt-money', amount: discount.total_allocated_amount %})</span>
                     </p>
                   {%- endfor -%}
                 </div>
