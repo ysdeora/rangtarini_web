@@ -47,7 +47,3 @@
   color: var(--rt-gold-deep);
   max-width: 30ch;
 }
-
-.rt-currency--footer .rt-currency__select {
-  border-color: var(--rt-line-paper);
-}
