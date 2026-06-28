@@ -1163,14 +1163,14 @@
                     <div class="rt-citem__price-col">
                       <div>
                         {%- if item.original_line_price != item.final_line_price -%}
-                          <span class="rt-citem__total--old">{{ item.original_line_price | money }}</span>
-                          <p class="rt-citem__total">{{ item.final_line_price | money }}</p>
+                          <span class="rt-citem__total--old">{% render 'rt-money', amount: item.original_line_price %}</span>
+                          <p class="rt-citem__total">{% render 'rt-money', amount: item.final_line_price %}</p>
                         {%- else -%}
-                          <p class="rt-citem__total">{{ item.original_line_price | money }}</p>
+                          <p class="rt-citem__total">{% render 'rt-money', amount: item.original_line_price %}</p>
                         {%- endif -%}
                       </div>
                       {%- if item.quantity > 1 -%}
-                        <span class="rt-citem__unit">{{ item.final_price | money }} ea</span>
+                        <span class="rt-citem__unit">{% render 'rt-money', amount: item.final_price %} ea</span>
                       {%- endif -%}
                     </div>
 
