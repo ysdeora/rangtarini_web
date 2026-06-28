@@ -289,7 +289,7 @@
 
             {%- if product.available -%}
               <div class="na-add-btn" aria-hidden="true">
-                Add — {{ product.price_min | money_without_trailing_zeros }}
+                Add — {% render 'rt-money', amount: product.price_min, no_trailing_zeros: true %}
               </div>
             {%- else -%}
               <div class="na-soldout-overlay">Sold Out</div>
