@@ -1056,6 +1056,11 @@
           </button>
         </div>
 
+        {%- comment %} Wishlist by Square (Vitals) injects its "Add to Wishlist" button next to
+           `.product-form__submit`. This empty, layout-neutral anchor places it below Add to bag
+           without disturbing the qty/ATC grid. {%- endcomment %}
+        <div class="rt-wishlist-anchor product-form__submit"></div>
+
         <!-- Stock + free shipping -->
         <div class="rt-stock-row">
           <span class="rt-stock-dot {% if current_variant.available %}{% if current_variant.inventory_management == blank %}rt-stock-dot--in{% elsif current_variant.inventory_quantity <= 5 and current_variant.inventory_quantity > 0 %}rt-stock-dot--low{% else %}rt-stock-dot--in{% endif %}{% else %}rt-stock-dot--out{% endif %}" id="rt-stock-{{ section.id }}">
