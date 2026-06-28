@@ -157,8 +157,8 @@
             <div class="rt-ni-card__nmrow">
               <span class="rt-ni-card__nm">{{ product.title | escape }}</span>
               <span class="rt-ni-card__pr">
-                {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}
-                {{ product.price_min | money_without_trailing_zeros }}
+                {%- if product.compare_at_price > product.price -%}<s>{% render 'rt-money', amount: product.compare_at_price, no_trailing_zeros: true %}</s>{%- endif -%}
+                {% render 'rt-money', amount: product.price_min, no_trailing_zeros: true %}
               </span>
             </div>
           </a>
