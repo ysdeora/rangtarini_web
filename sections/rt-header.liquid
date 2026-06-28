@@ -277,6 +277,15 @@
     .rt-hd__cart-count--pulse { animation: none; }
   }
 
+  /* Wishlist icon slot — Wishlist by Square (Vitals) injects its icon here.
+     Override Dawn's base.css .header__icons padding so it aligns with our icons. */
+  .rt-hd__wishlist-slot {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+  }
+  .rt-hd__wishlist-slot:empty { display: none; }
+
   /* ── Inline search panel ── */
   .rt-hd__search-panel predictive-search { position: relative; display: block; }
   .rt-hd__search-panel {
