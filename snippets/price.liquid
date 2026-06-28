@@ -102,7 +102,12 @@
         {%- endunless -%}
         <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
         <span class="price-item price-item--sale price-item--last">
-          {{ money_price }}
+          {%- capture rt_price -%}{% render 'rt-money', amount: price, with_currency: settings.currency_code_enabled %}{%- endcapture -%}
+          {%- if target == product and product.price_varies -%}
+            {{ 'products.product.price.from_price_html' | t: price: rt_price }}
+          {%- else -%}
+            {{ rt_price }}
+          {%- endif -%}
         </span>
       </div>
       {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
