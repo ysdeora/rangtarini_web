@@ -390,6 +390,15 @@
         quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
       };
 
+      {%- if settings.currency_enabled -%}
+      window.RtCurrencyConfig = {
+        enabled: true,
+        list: {{ settings.currency_list | default: 'INR' | split: ',' | json }},
+        default: {{ settings.currency_default | default: 'INR' | strip | upcase | json }},
+        rounding: {{ settings.currency_rounding | default: 'charm_99' | json }},
+      };
+      {%- endif -%}
+
       window.variantStrings = {
         addToCart: `{{ 'products.product.add_to_cart' | t }}`,
         soldOut: `{{ 'products.product.sold_out' | t }}`,
