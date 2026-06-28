@@ -67,6 +67,11 @@
     <script src="{{ 'standard-actions-override.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'rt-reveal.js' | asset_url }}" defer="defer"></script>
 
+    {%- if settings.currency_enabled -%}
+      {{ 'component-rt-currency.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'rt-currency.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
