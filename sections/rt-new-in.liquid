@@ -194,11 +194,18 @@
     }
     function updateThumb() {
       if (!thumb) return;
-      var max = rail.scrollWidth - rail.clientWidth;
-      var ratio = rail.clientWidth / rail.scrollWidth;
-      thumb.style.width = Math.max(8, ratio * 100) + '%';
-      var travel = 100 - Math.max(8, ratio * 100);
-      var pos = max > 0 ? (rail.scrollLeft / max) : 0;
+      var sw = rail.scrollWidth, cw = rail.clientWidth;
+      var max = sw - cw;
+      if (!(sw > 0) || max <= 1) {
+        /* Everything fits — show a full, static bar */
+        thumb.style.width = '100%';
+        thumb.style.left = '0%';
+        return;
+      }
+      var widthPct = Math.max(12, (cw / sw) * 100);
+      var travel = 100 - widthPct;
+      var pos = Math.min(1, Math.max(0, rail.scrollLeft / max));
+      thumb.style.width = widthPct + '%';
       thumb.style.left = (pos * travel) + '%';
     }
     rail.addEventListener('scroll', updateThumb, { passive: true });
