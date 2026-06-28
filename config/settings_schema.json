@@ -1396,6 +1396,56 @@
         "id": "currency_code_enabled",
         "label": "t:settings_schema.currency_format.settings.currency_code_enabled.label",
         "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:settings_schema.currency_format.settings.header__display.content"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:settings_schema.currency_format.settings.display_paragraph.content"
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_enabled",
+        "label": "t:settings_schema.currency_format.settings.currency_enabled.label",
+        "info": "t:settings_schema.currency_format.settings.currency_enabled.info",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "currency_list",
+        "label": "t:settings_schema.currency_format.settings.currency_list.label",
+        "info": "t:settings_schema.currency_format.settings.currency_list.info",
+        "default": "INR,USD,GBP,EUR,AED,SGD,AUD,CAD,SAR,JPY"
+      },
+      {
+        "type": "text",
+        "id": "currency_default",
+        "label": "t:settings_schema.currency_format.settings.currency_default.label",
+        "info": "t:settings_schema.currency_format.settings.currency_default.info",
+        "default": "INR"
+      },
+      {
+        "type": "select",
+        "id": "currency_rounding",
+        "options": [
+          {
+            "value": "charm_99",
+            "label": "t:settings_schema.currency_format.settings.currency_rounding.options__1.label"
+          },
+          {
+            "value": "nearest_int",
+            "label": "t:settings_schema.currency_format.settings.currency_rounding.options__2.label"
+          },
+          {
+            "value": "exact",
+            "label": "t:settings_schema.currency_format.settings.currency_rounding.options__3.label"
+          }
+        ],
+        "default": "charm_99",
+        "label": "t:settings_schema.currency_format.settings.currency_rounding.label",
+        "info": "t:settings_schema.currency_format.settings.currency_rounding.info"
       }
     ]
   },
