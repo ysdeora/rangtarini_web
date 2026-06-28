@@ -1640,7 +1640,9 @@
     var atcLbl = document.getElementById('rt-atc-label-' + sid);
     if (atcLbl && match && match.available) {
       var fmtMoney = function(cents){ return '₹' + Number(cents / 100).toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:0}); };
-      atcLbl.innerHTML = 'Add to bag · ' + fmtMoney(match.price * qty) + ' <span style="font-size:14px;">→</span>';
+      var moneyTag = function(cents){ return '<span class="rt-money" data-rt-money="' + cents + '">' + fmtMoney(cents) + '</span>'; };
+      atcLbl.innerHTML = 'Add to bag · ' + moneyTag(match.price * qty) + ' <span style="font-size:14px;">→</span>';
+      if (window.RtCurrency) window.RtCurrency.convert(atcLbl);
     }
   };
 
