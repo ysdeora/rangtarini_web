@@ -146,8 +146,8 @@
           {%- endif -%}
 
           <div class="rt-bs__buy">
-            <span class="rt-bs__pr">{{ featured.price_min | money_without_trailing_zeros }}</span>
-            {%- if featured.compare_at_price > featured.price -%}<span class="rt-bs__od">{{ featured.compare_at_price | money_without_trailing_zeros }}</span>{%- endif -%}
+            <span class="rt-bs__pr">{% render 'rt-money', amount: featured.price_min, no_trailing_zeros: true %}</span>
+            {%- if featured.compare_at_price > featured.price -%}<span class="rt-bs__od">{% render 'rt-money', amount: featured.compare_at_price, no_trailing_zeros: true %}</span>{%- endif -%}
 
             <product-form class="product-form" data-section-id="{{ section.id }}">
               <div class="product-form__error-message-wrapper" role="alert" hidden>
