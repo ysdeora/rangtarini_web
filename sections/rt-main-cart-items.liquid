@@ -1212,7 +1212,7 @@
                 <div class="rt-cart__summary-rows">
                   <div class="rt-cart__summary-row">
                     <span class="rt-cart__summary-row-label">Subtotal (MRP)</span>
-                    <span class="rt-cart__summary-row-val">{{ mrp_total | money }}</span>
+                    <span class="rt-cart__summary-row-val">{% render 'rt-money', amount: mrp_total %}</span>
                   </div>
 
                   {%- if cart_savings > 0 -%}
