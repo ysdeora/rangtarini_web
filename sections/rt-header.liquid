@@ -849,9 +849,6 @@
           </svg>
         </a>
       {%- endif -%}
-      {%- comment %} Wishlist by Square (Vitals) prepends its wishlist icon into `.header__icons`.
-         This empty slot gives it an anchor that sits inline with our header icons. {%- endcomment %}
-      <div class="header__icons rt-hd__wishlist-slot"></div>
       <a href="{{ routes.cart_url }}" class="rt-hd__icon rt-hd__icon--cart" aria-label="Cart, {{ cart.item_count }} items">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
