@@ -636,7 +636,7 @@
                               data-single-variant="{{ product.has_only_default_variant }}"
                               data-product-url="{{ product.url }}"
                               aria-label="{{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}">
-                        Quick add<span class="rt-quick-add-price"> &mdash; {{ product.price | money }}</span>
+                        Quick add<span class="rt-quick-add-price"> &mdash; {% render 'rt-money', amount: product.price %}</span>
                       </button>
                     {%- endif -%}
 
