@@ -192,21 +192,27 @@
       var card = rail.querySelector('.rt-ni-card');
       return card ? card.getBoundingClientRect().width + 1 : 300;
     }
+    var cards = rail.querySelectorAll('.rt-ni-card');
     function updateThumb() {
       if (!thumb) return;
-      var sw = rail.scrollWidth, cw = rail.clientWidth;
-      var max = sw - cw;
-      if (!(sw > 0) || max <= 1) {
-        /* Everything fits — show a full, static bar */
+      var cw = rail.clientWidth;
+      var maxScroll = rail.scrollWidth - cw;
+      /* Width = how much of the row is on screen, derived from the card count
+         (deterministic — no dependence on scrollWidth being measured in time). */
+      var widthPct = 30;
+      if (cards.length && cards[0].getBoundingClientRect().width > 0) {
+        var cardW = cards[0].getBoundingClientRect().width + 1; /* +1px rail gap */
+        var perView = Math.max(1, Math.min(cards.length, cw / cardW));
+        widthPct = Math.max(14, (perView / cards.length) * 100);
+      }
+      if (widthPct >= 100 || maxScroll <= 1) {
         thumb.style.width = '100%';
         thumb.style.left = '0%';
         return;
       }
-      var widthPct = Math.max(12, (cw / sw) * 100);
-      var travel = 100 - widthPct;
-      var pos = Math.min(1, Math.max(0, rail.scrollLeft / max));
+      var pos = Math.min(1, Math.max(0, rail.scrollLeft / maxScroll));
       thumb.style.width = widthPct + '%';
-      thumb.style.left = (pos * travel) + '%';
+      thumb.style.left = (pos * (100 - widthPct)) + '%';
     }
     rail.addEventListener('scroll', updateThumb, { passive: true });
     window.addEventListener('resize', updateThumb);
