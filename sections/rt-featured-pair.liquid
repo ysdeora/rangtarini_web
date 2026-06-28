@@ -210,7 +210,7 @@
         <span class="rt-pair__meta">{{ section.settings.meta_2 | default: 'Earring · Polki · 925' }}</span>
       </div>
       {%- if prod2 -%}
-        <span class="rt-pair__price">{{ prod2.price_min | money_without_trailing_zeros }}</span>
+        <span class="rt-pair__price">{% render 'rt-money', amount: prod2.price_min, no_trailing_zeros: true %}</span>
       {%- endif -%}
     </div>
   </a>
