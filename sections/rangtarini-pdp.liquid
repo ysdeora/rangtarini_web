@@ -1411,9 +1411,9 @@
       <span class="rt-sticky-sub" id="rt-sticky-sub-{{ section.id }}">{% unless current_variant.title == 'Default Title' %}{{ current_variant.title }}{% endunless %}</span>
     </div>
     <div class="rt-sticky-price" id="rt-sticky-price-{{ section.id }}">
-      {{ current_variant.price | money }}
+      {% render 'rt-money', amount: current_variant.price %}
       {%- if current_variant.compare_at_price > current_variant.price -%}
-        <s>{{ current_variant.compare_at_price | money }}</s>
+        <s>{% render 'rt-money', amount: current_variant.compare_at_price %}</s>
       {%- endif -%}
     </div>
     <button class="rt-sticky-add" onclick="document.getElementById('rt-atc-{{ section.id }}').closest('form').requestSubmit()">
