@@ -284,6 +284,7 @@
   </div>
 
   <div class="rt-ft__bottom">
+    {%- render 'rt-currency-picker', variant: 'footer' -%}
     <span class="rt-ft__copy">&#169; {{ 'now' | date: '%Y' }} {{ section.settings.wordmark | default: 'Rangtarini' }} &middot; {{ section.settings.email | default: 'info@rangtarini.com' }}</span>
     <div class="rt-ft__payments">
       <span class="rt-ft__payment">Visa</span>
