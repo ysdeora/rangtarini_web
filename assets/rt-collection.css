@@ -909,6 +909,32 @@
 }
 .rt-card:hover .rt-sku-badge { opacity: 0; }
 
+/* Wishlist heart (Wishlist by Square) */
+ooo-wl-wishlist-button.rt-card-wishlist:not(:defined) { visibility: hidden; }
+.rt-card-wishlist {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  z-index: 4;
+}
+.rt-card-wishlist-btn {
+  width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--paper);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 200ms ease;
+}
+.rt-card-wishlist-btn:hover { transform: scale(1.06); }
+.rt-card-wishlist-btn svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: var(--ink); stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.rt-card-wishlist-btn[aria-checked='true'] svg { fill: var(--ink); }
+
 /* Card meta */
 .rt-card-meta {
   margin-top: 13px;
