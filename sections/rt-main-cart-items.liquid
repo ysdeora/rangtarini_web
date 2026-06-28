@@ -1008,7 +1008,7 @@
                 </a>
                 <div class="rt-cart__upsell-info">
                   <a href="{{ product.url }}" class="rt-cart__upsell-name">{{ product.title | escape }}</a>
-                  <span class="rt-cart__upsell-price">{{ product.price | money }}</span>
+                  <span class="rt-cart__upsell-price">{% render 'rt-money', amount: product.price %}</span>
                 </div>
               </div>
             {%- endfor -%}
@@ -1385,7 +1385,7 @@
               </a>
               <div class="rt-cart__upsell-info">
                 <a href="{{ product.url }}" class="rt-cart__upsell-name">{{ product.title | escape }}</a>
-                <span class="rt-cart__upsell-price">{{ product.price | money }}</span>
+                <span class="rt-cart__upsell-price">{% render 'rt-money', amount: product.price %}</span>
               </div>
               {%- if product.variants.first.sku != blank -%}
                 <span class="rt-cart__upsell-variant">{{ product.variants.first.sku }}</span>
