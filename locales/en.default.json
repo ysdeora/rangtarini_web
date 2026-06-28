@@ -389,7 +389,10 @@
     "update_country": "Update country/region",
     "search": "Search",
     "popular_countries_regions": "Popular countries/regions",
-    "country_results_count": "{{ count }} countries/regions found"
+    "country_results_count": "{{ count }} countries/regions found",
+    "currency_label": "Currency",
+    "currency_disclaimer": "Shown for reference. You'll be charged the equivalent in INR at checkout.",
+    "currency_cart_disclaimer": "Prices are shown in your selected currency for reference. Your order is charged in INR (₹) at checkout."
   },
   "customer": {
     "account": {
