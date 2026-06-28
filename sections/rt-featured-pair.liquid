@@ -160,7 +160,7 @@
         <span class="rt-pair__meta">{{ section.settings.meta_1 | default: 'Necklace · Kundan · 925' }}</span>
       </div>
       {%- if prod1 -%}
-        <span class="rt-pair__price">{{ prod1.price_min | money_without_trailing_zeros }}</span>
+        <span class="rt-pair__price">{% render 'rt-money', amount: prod1.price_min, no_trailing_zeros: true %}</span>
       {%- endif -%}
     </div>
   </a>
