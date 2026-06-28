@@ -1252,9 +1252,12 @@
                       {%- endif -%}
                     </span>
                     {%- if cart_savings > 0 -%}
-                      <span class="rt-cart__summary-saved">You save {{ cart_savings | money }}</span>
+                      <span class="rt-cart__summary-saved">You save {% render 'rt-money', amount: cart_savings %}</span>
                     {%- endif -%}
                   </div>
+                  {%- if settings.currency_enabled -%}
+                    <p class="rt-cart__summary-fx rt-currency__note">{{ 'localization.currency_cart_disclaimer' | t }}</p>
+                  {%- endif -%}
                 </div>
 
                 {%- if settings.show_cart_note -%}
