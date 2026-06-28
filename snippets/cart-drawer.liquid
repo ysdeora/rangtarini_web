@@ -531,7 +531,6 @@
             <p class="totals__total-value">{% render 'rt-money', amount: cart.total_price, with_currency: true %}</p>
           </div>
 
-          {%- if settings.currency_enabled and request.locale.iso_code -%}{%- endif -%}
           {%- if settings.currency_enabled -%}
             <small class="rt-currency__note tax-note caption-large rte">{{ 'localization.currency_cart_disclaimer' | t }}</small>
           {%- endif -%}
