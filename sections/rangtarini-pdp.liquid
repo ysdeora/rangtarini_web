@@ -1078,22 +1078,6 @@ ooo-wl-wishlist-button.rt-wishlist:not(:defined) { visibility: hidden; }
           </button>
         </div>
 
-        <!-- Add to wishlist (Wishlist by Square) -->
-        <ooo-wl-wishlist-button
-          class="rt-wishlist"
-          product-id="{{ product.id }}"
-          handle="{{ product.handle }}"
-          loading
-        >
-          <button type="button" class="rt-wishlist-btn">
-            <svg class="rt-wishlist-heart" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <span class="rt-wishlist-add">Add to wishlist</span>
-            <span class="rt-wishlist-remove">Saved to wishlist</span>
-          </button>
-        </ooo-wl-wishlist-button>
-
         <!-- Stock + free shipping -->
         <div class="rt-stock-row">
           <span class="rt-stock-dot {% if current_variant.available %}{% if current_variant.inventory_management == blank %}rt-stock-dot--in{% elsif current_variant.inventory_quantity <= 5 and current_variant.inventory_quantity > 0 %}rt-stock-dot--low{% else %}rt-stock-dot--in{% endif %}{% else %}rt-stock-dot--out{% endif %}" id="rt-stock-{{ section.id }}">
