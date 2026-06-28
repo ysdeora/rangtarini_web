@@ -652,9 +652,9 @@
                     <div class="rt-card-row1">
                       <p class="rt-card-name">{{ product.title }}</p>
                       <div class="rt-card-prices">
-                        <span class="rt-price-cur">{{ product.price | money }}</span>
+                        <span class="rt-price-cur">{% render 'rt-money', amount: product.price %}</span>
                         {%- if rt_on_sale -%}
-                          <span class="rt-price-was">{{ product.compare_at_price | money }}</span>
+                          <span class="rt-price-was">{% render 'rt-money', amount: product.compare_at_price %}</span>
                         {%- endif -%}
                       </div>
                     </div>
