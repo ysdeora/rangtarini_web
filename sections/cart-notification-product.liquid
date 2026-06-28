@@ -28,7 +28,7 @@
           {%- endfor -%}
         {%- endunless -%}
         <p class="rt-cn-product__qty">{{ 'products.product.quantity.label' | t }}: {{ item.quantity }}</p>
-        <p class="rt-cn-product__price">{{ item.final_price | money }}</p>
+        <p class="rt-cn-product__price">{% render 'rt-money', amount: item.final_price %}</p>
       </div>
     </div>
   {%- endfor -%}
