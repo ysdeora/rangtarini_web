@@ -306,6 +306,37 @@
         "paragraph": "Cart and checkout prices always show currency codes",
         "currency_code_enabled": {
           "label": "Currency codes"
+        },
+        "header__display": {
+          "content": "Currency display (reference only)"
+        },
+        "display_paragraph": {
+          "content": "Lets visitors view prices converted to another currency. Checkout always charges in INR."
+        },
+        "currency_enabled": {
+          "label": "Show currency picker",
+          "info": "Adds a currency selector to the header and footer."
+        },
+        "currency_list": {
+          "label": "Currencies offered",
+          "info": "Comma-separated ISO codes. INR stays the base and is always included."
+        },
+        "currency_default": {
+          "label": "Default currency",
+          "info": "ISO code shown before a visitor picks one (e.g. INR)."
+        },
+        "currency_rounding": {
+          "label": "Rounding for converted prices",
+          "info": "INR always renders exactly as Shopify does.",
+          "options__1": {
+            "label": "Charm .99 ending"
+          },
+          "options__2": {
+            "label": "Nearest whole unit"
+          },
+          "options__3": {
+            "label": "Exact (2 decimals)"
+          }
         }
       }
     },
