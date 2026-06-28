@@ -963,9 +963,9 @@
 
         <div class="rt-price-block">
           <div class="rt-price-left" id="rt-price-{{ section.id }}">
-            <span class="rt-price-main">{{ current_variant.price | money }}</span>
+            <span class="rt-price-main">{% render 'rt-money', amount: current_variant.price %}</span>
             {%- if current_variant.compare_at_price > current_variant.price -%}
-              <span class="rt-price-was">{{ current_variant.compare_at_price | money }}</span>
+              <span class="rt-price-was">{% render 'rt-money', amount: current_variant.compare_at_price %}</span>
               {%- assign saved_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price -%}
               <span class="rt-price-save">−{{ saved_pct }}% off</span>
             {%- endif -%}
