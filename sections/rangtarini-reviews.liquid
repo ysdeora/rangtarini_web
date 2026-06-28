@@ -15,10 +15,7 @@
 {%- assign rt_count = product.metafields.reviews.rating_count | plus: 0 -%}
 {%- assign rt_avg   = product.metafields.reviews.rating.value.rating | round: 1 -%}
 
-{%- comment -%} Don't render section at all if no reviews {%- endcomment -%}
-{%- if rt_count == 0 and product.metafields.judgeme.badge == blank -%}
-  {%- comment -%} Hidden — no social proof yet {%- endcomment -%}
-{%- else -%}
+{%- comment -%} Always render: reviews when present, otherwise a "write a review" prompt {%- endcomment -%}
 
 <style>
 /* ════════════════════════════════════════════════════════
@@ -98,6 +95,19 @@
   text-transform: uppercase;
   color: var(--rt-ink);
   opacity: 0.5;
+}
+
+/* ── Empty state (no reviews yet) ── */
+.rt-rev__empty-note {
+  font-family: var(--rt-font-serif);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--rt-ink);
+  opacity: 0.75;
+  max-width: 48ch;
+  margin: -28px 0 40px;
 }
 
 /* ── Judge.me global overrides ── */
@@ -331,6 +341,16 @@
         <span class="rt-rev__avg-ct">{{ rt_count }} {{ rt_count | pluralize: 'review', 'reviews' }}</span>
       </div>
     </div>{%- comment -%} /rt-rev__head {%- endcomment -%}
+  {%- else -%}
+    <div class="rt-rev__head rt-rev__head--empty">
+      <div>
+        <span class="rt-rev__eyebrow">What our customers say</span>
+        <h2 class="rt-rev__title">{{ section.settings.empty_title | default: 'Be the first to review' }}</h2>
+      </div>
+    </div>
+    {%- if section.settings.empty_note != blank -%}
+      <p class="rt-rev__empty-note">{{ section.settings.empty_note }}</p>
+    {%- endif -%}
   {%- endif -%}
 
   {%- comment -%} App blocks — add Judge.me Review Widget here in theme editor {%- endcomment -%}
@@ -350,8 +370,6 @@
 
 </section>
 
-{%- endif -%}{%- comment -%} /if rt_count == 0 {%- endcomment -%}
-
 {% schema %}
 {
   "name": "Rangtarini Reviews",
@@ -367,6 +385,19 @@
       "label": "Section heading",
       "default": "Loved by Our Customers",
       "info": "Appears only when the product has at least 1 review"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Empty-state heading",
+      "default": "Be the first to review",
+      "info": "Shown when the product has no reviews yet"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_note",
+      "label": "Empty-state note",
+      "default": "Share your experience with this piece — your review helps the next customer decide."
     }
   ]
 }
