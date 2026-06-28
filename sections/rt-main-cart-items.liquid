@@ -1218,7 +1218,7 @@
                   {%- if cart_savings > 0 -%}
                     <div class="rt-cart__summary-row">
                       <span class="rt-cart__summary-row-label">Catalog savings</span>
-                      <span class="rt-cart__summary-row-val rt-cart__summary-row-val--accent">− {{ cart_savings | money }}</span>
+                      <span class="rt-cart__summary-row-val rt-cart__summary-row-val--accent">− {% render 'rt-money', amount: cart_savings %}</span>
                     </div>
                   {%- endif -%}
 
