@@ -645,21 +645,6 @@
                       <span class="rt-sku-badge" aria-hidden="true">{{ product.selected_or_first_available_variant.sku | escape }}</span>
                     {%- endif -%}
 
-                    {%- comment -%} Add to wishlist (Wishlist by Square) {%- endcomment -%}
-                    <ooo-wl-wishlist-button
-                      class="rt-card-wishlist"
-                      product-id="{{ product.id }}"
-                      handle="{{ product.handle }}"
-                      loading
-                      onclick="event.preventDefault(); event.stopPropagation();"
-                    >
-                      <button type="button" class="rt-card-wishlist-btn" aria-label="Add to wishlist">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                        </svg>
-                      </button>
-                    </ooo-wl-wishlist-button>
-
                   </div>{%- comment -%} / .rt-card-img {%- endcomment -%}
 
                   {%- comment -%} Card meta {%- endcomment -%}
