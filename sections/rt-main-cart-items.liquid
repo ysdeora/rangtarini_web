@@ -1240,7 +1240,7 @@
 
                   <div class="rt-cart__summary-total-row">
                     <span class="rt-cart__summary-total-label">Total</span>
-                    <span class="rt-cart__summary-total-amount">{{ cart.total_price | money_with_currency }}</span>
+                    <span class="rt-cart__summary-total-amount">{% render 'rt-money', amount: cart.total_price, with_currency: true %}</span>
                   </div>
 
                   <div class="rt-cart__summary-footer">
