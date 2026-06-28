@@ -1029,6 +1029,7 @@
       menuBtn.setAttribute('aria-label', 'Close menu');
       mobileNav.hidden = false;
       mobileNav.classList.add('is-open');
+      syncHeaderState(); /* drop the transparent over-hero state so header + drawer read dark-on-light */
       var f = drawerFocusables();
       if (f.length) setTimeout(function () { f[0].focus(); }, 30);
     }
@@ -1037,6 +1038,7 @@
       menuBtn.setAttribute('aria-label', 'Open menu');
       mobileNav.classList.remove('is-open');
       mobileNav.hidden = true;
+      syncHeaderState(); /* restore the over-hero transparent state if applicable */
       menuBtn.focus();
     }
     menuBtn.addEventListener('click', function () {
