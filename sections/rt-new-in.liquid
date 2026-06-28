@@ -83,7 +83,9 @@
   }
   .rt-rail-ui__count { font-family: var(--rt-font-grotesk); font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; opacity: 0.55; white-space: nowrap; }
   .rt-rail-ui__track { flex: 1; height: 3px; background: rgba(10, 10, 10, 0.14); position: relative; border-radius: 3px; }
-  .rt-rail-ui__thumb { position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: 7px; background: #0a0a0a; width: 30%; min-width: 44px; border-radius: 7px; }
+  /* Two-class selector (0,2,0) overrides base.css `div:empty { display: none }` (0,1,1) —
+     the thumb is an empty div, so it would otherwise be hidden. */
+  .rt-rail-ui__track .rt-rail-ui__thumb { display: block; position: absolute; top: 50%; transform: translateY(-50%); left: 0; height: 7px; background: #0a0a0a; width: 30%; min-width: 44px; border-radius: 7px; }
   .rt-rail-ui__btns { display: flex; border: 1px solid var(--rt-ink); flex: none; }
   .rt-rail-ui__btns button {
     background: var(--rt-paper); border: 0; width: 46px; height: 38px;
