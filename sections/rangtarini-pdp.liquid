@@ -838,9 +838,9 @@
   <!-- ── [A] Breadcrumb ── -->
   <nav class="rt-bc" aria-label="Breadcrumb">
     <div class="rt-bc__path">
-      <a href="/">Rangtarini</a>
+      <a href="{{ routes.root_url }}">Rangtarini</a>
       <span class="rt-bc__sep">/</span>
-      <a href="/collections/all">Shop</a>
+      <a href="{{ routes.all_products_collection_url }}">Shop</a>
       {%- if collection -%}
         <span class="rt-bc__sep">/</span>
         <a href="{{ collection.url }}">{{ collection.title }}</a>
