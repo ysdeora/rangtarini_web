@@ -1206,9 +1206,16 @@ document.addEventListener('DOMContentLoaded', function() {
       var label = subtotalEl.querySelector('.rt-cn-subtotal__label');
       var price = subtotalEl.querySelector('.rt-cn-subtotal__price');
       if (label) label.textContent = 'Bag subtotal — ' + count + ' ' + (count === 1 ? 'item' : 'items');
-      if (price) price.textContent = Shopify && Shopify.formatMoney
-        ? Shopify.formatMoney(paise, window.Shopify.money_format || 'Rs. {{amount}}')
-        : 'Rs. ' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (price) {
+        var moneyEl = price.querySelector(".rt-money") || price;
+        var inr = Shopify && Shopify.formatMoney
+          ? Shopify.formatMoney(paise, window.Shopify.money_format || "Rs. {{amount}}")
+          : "Rs. " + (paise / 100).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        moneyEl.setAttribute("data-rt-money", paise);
+        moneyEl.textContent = inr;
+        delete moneyEl.__rtInr;
+        if (window.RtCurrency) window.RtCurrency.convert(price);
+      }
     }
 
     /* Header cart count badge — never blow it away when the count is unknown */
