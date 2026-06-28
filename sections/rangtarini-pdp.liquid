@@ -1579,19 +1579,25 @@
     var fmtMoney = function(cents){
       return '₹' + Number(cents / 100).toLocaleString('en-IN', {minimumFractionDigits: 0, maximumFractionDigits: 0});
     };
+    /* Emit a node the currency engine can convert; INR text is the immediate fallback. */
+    var moneyTag = function(cents){
+      return '<span class="rt-money" data-rt-money="' + cents + '">' + fmtMoney(cents) + '</span>';
+    };
     if (priceEl) {
-      var html = '<span class="rt-price-main">' + fmtMoney(match.price) + '</span>';
+      var html = '<span class="rt-price-main">' + moneyTag(match.price) + '</span>';
       if (match.compare_at_price && match.compare_at_price > match.price) {
         var pct = Math.round((1 - match.price / match.compare_at_price) * 100);
-        html += '<span class="rt-price-was">' + fmtMoney(match.compare_at_price) + '</span>';
+        html += '<span class="rt-price-was">' + moneyTag(match.compare_at_price) + '</span>';
         html += '<span class="rt-price-save">−' + pct + '% off</span>';
       }
       priceEl.innerHTML = html;
+      if (window.RtCurrency) window.RtCurrency.convert(priceEl);
     }
     if (stickyPrice) {
-      var sh = fmtMoney(match.price * qty);
-      if (match.compare_at_price && match.compare_at_price > match.price) sh += ' <s>' + fmtMoney(match.compare_at_price) + '</s>';
+      var sh = moneyTag(match.price * qty);
+      if (match.compare_at_price && match.compare_at_price > match.price) sh += ' <s>' + moneyTag(match.compare_at_price) + '</s>';
       stickyPrice.innerHTML = sh;
+      if (window.RtCurrency) window.RtCurrency.convert(stickyPrice);
     }
 
     /* ATC button */
