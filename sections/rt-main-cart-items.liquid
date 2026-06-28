@@ -1225,7 +1225,7 @@
                   {%- for discount in cart.cart_level_discount_applications -%}
                     <div class="rt-cart__summary-row">
                       <span class="rt-cart__summary-row-label">{{ discount.title | escape }}</span>
-                      <span class="rt-cart__summary-row-val rt-cart__summary-row-val--accent">− {{ discount.total_allocated_amount | money }}</span>
+                      <span class="rt-cart__summary-row-val rt-cart__summary-row-val--accent">− {% render 'rt-money', amount: discount.total_allocated_amount %}</span>
                     </div>
                   {%- endfor -%}
 
