@@ -1,0 +1,29 @@
+{%- comment -%}
+  Renders a price that the rt-currency engine can convert client-side.
+
+  Outputs the exact Shopify INR string server-side (no flash / no layout shift) and
+  carries the raw integer amount (smallest unit) in data-rt-money so assets/rt-currency.js
+  can rewrite the displayed value into the visitor's chosen currency. Display-only —
+  checkout is always charged in INR.
+
+  Accepts:
+  - amount: {Number} Raw price in the smallest unit, e.g. variant.price, item.final_line_price (required)
+  - with_currency: {Boolean} Use money_with_currency for the INR string (optional)
+  - no_trailing_zeros: {Boolean} Use money_without_trailing_zeros for the INR string (optional)
+  - class: {String} Extra class(es) on the span (optional)
+
+  Usage:
+  {% render 'rt-money', amount: variant.price %}
+  {% render 'rt-money', amount: cart.total_price, with_currency: true %}
+{%- endcomment -%}
+{%- liquid
+  assign rt_amount = amount | default: 0
+  if with_currency
+    assign rt_inr = rt_amount | money_with_currency
+  elsif no_trailing_zeros
+    assign rt_inr = rt_amount | money_without_trailing_zeros
+  else
+    assign rt_inr = rt_amount | money
+  endif
+-%}
+<span class="rt-money{% if class %} {{ class }}{% endif %}" data-rt-money="{{ rt_amount }}">{{- rt_inr -}}</span>
