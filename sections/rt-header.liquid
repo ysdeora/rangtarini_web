@@ -832,8 +832,9 @@
       {{ section.settings.logo_text | default: 'RANGTARINI' }}
     </a>
 
-    {%- comment %} Right — search + account + cart {%- endcomment %}
-    <div class="rt-hd__actions">
+    {%- comment %} Right — search + account + wishlist + cart.
+       `header__icons` is the anchor Wishlist by Square (Vitals) prepends its wishlist icon into. {%- endcomment %}
+    <div class="rt-hd__actions header__icons">
       <button class="rt-hd__icon rt-hd__icon--search"
               aria-label="Search"
               aria-expanded="false"
