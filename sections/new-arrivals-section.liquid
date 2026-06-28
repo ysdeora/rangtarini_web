@@ -300,9 +300,9 @@
             <h3 class="na-name">{{ product.title | escape }}</h3>
             <p class="na-price-row">
               {%- if on_sale -%}
-                <span class="na-price-compare">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+                <span class="na-price-compare">{% render 'rt-money', amount: product.compare_at_price, no_trailing_zeros: true %}</span>
               {%- endif -%}
-              {{ product.price_min | money_without_trailing_zeros }}
+              {% render 'rt-money', amount: product.price_min, no_trailing_zeros: true %}
             </p>
           </div>
         </a>
