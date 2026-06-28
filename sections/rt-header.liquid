@@ -45,13 +45,14 @@
   #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__icon svg { stroke: var(--rt-paper); transition: stroke 320ms ease; }
   #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__menu-btn span { background: var(--rt-paper); }
   #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__cart-count { background: var(--rt-paper); color: var(--rt-ink); }
-  /* Currency chip turns light-on-dark over the cinematic hero */
-  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-currency__select {
+  /* Currency chip turns light-on-dark over the cinematic hero (desktop chip only —
+     the drawer picker sits on a solid light surface and must stay dark) */
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__actions .rt-currency__select {
     color: var(--rt-paper);
     border-color: color-mix(in srgb, var(--rt-paper) 45%, transparent);
     transition: color 320ms ease, border-color 320ms ease;
   }
-  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-currency__arrow { color: var(--rt-paper); }
+  #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__actions .rt-currency__arrow { color: var(--rt-paper); }
   /* Keep the inline search panel readable on its own paper surface even while onhero */
   #shopify-section-{{ section.id }}.rt-hd--onhero .rt-hd__search-panel { background: var(--rt-paper); }
 
