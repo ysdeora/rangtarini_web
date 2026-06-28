@@ -15,7 +15,7 @@
       assign show_note = true
     endif
   -%}
-  <rt-currency-picker class="rt-currency{% if variant == 'footer' %} rt-currency--footer{% endif %}">
+  <rt-currency-picker class="rt-currency{% if variant %} rt-currency--{{ variant }}{% endif %}">
     <div class="rt-currency__control">
       <label class="visually-hidden" for="rt-currency-{{ variant | default: 'header' }}">
         {{- 'localization.currency_label' | t -}}
