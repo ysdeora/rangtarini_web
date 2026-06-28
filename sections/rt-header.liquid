@@ -830,6 +830,7 @@
 
     {%- comment %} Right — search + account + cart {%- endcomment %}
     <div class="rt-hd__actions">
+      {%- render 'rt-currency-picker', show_note: false -%}
       <button class="rt-hd__icon rt-hd__icon--search"
               aria-label="Search"
               aria-expanded="false"
