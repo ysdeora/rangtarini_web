@@ -925,6 +925,8 @@
   font-weight: 600;
   line-height: 1.25;
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .rt-card-prices {
   display: inline-flex;
