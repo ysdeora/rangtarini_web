@@ -114,7 +114,7 @@ h3, .h3, h4, .h4 {
   line-height: 1.9;
   text-transform: uppercase;
 }
-@media (max-width: 740px) {
+@media (max-width: 990px) {
   .rt-shead { grid-template-columns: 1fr; align-items: start; }
   .rt-shead__meta { text-align: left; }
 }
