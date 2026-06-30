@@ -124,7 +124,7 @@
 .ra-intro-lead {
   font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em;
   line-height: 0.98; margin: 14px 0 0;
-  font-size: clamp(28px, 4.6vw, 68px); text-wrap: balance; max-width: 18ch;
+  font-size: clamp(25px, 3.8vw, 50px); text-wrap: balance; max-width: 20ch;
 }
 .ra-intro-foot {
   display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(24px, 4vw, 72px);
