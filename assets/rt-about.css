@@ -177,7 +177,7 @@
    02 · MANIFESTO  (ink)
    ════════════════════════════════════════════════════════════════ */
 .ra-mani { background: var(--rt-ink); color: var(--rt-paper); position: relative; overflow: hidden; }
-.ra-mani-inner { padding: clamp(56px, 8vw, 128px) var(--rt-pad); position: relative; z-index: 1; }
+.ra-mani-inner { padding: clamp(44px, 6vw, 88px) var(--rt-pad); position: relative; z-index: 1; }
 .ra-mani .idx { color: var(--rt-gold); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
 .ra-mani-quote {
   margin: 22px 0 0; padding: 0; border: 0;
