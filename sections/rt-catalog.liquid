@@ -87,8 +87,10 @@
     .rt-cat__tile:nth-child(6) { grid-column: 1 / span 12; }
   }
   @media (max-width: 740px) {
-    .rt-cat__grid { gap: 30px; }
-    .rt-cat__tile:nth-child(n) { grid-column: 1 / span 12; padding-top: 0; margin-top: 0; }
+    /* Single real column — avoids 11 phantom column-gaps from the 12-track grid
+       (11 × 30px = 330px) overflowing the viewport on small screens. */
+    .rt-cat__grid { grid-template-columns: 1fr; gap: 30px; }
+    .rt-cat__tile:nth-child(n) { grid-column: auto; padding-top: 0; margin-top: 0; }
     .rt-cat__tile:nth-child(n) .rt-cat__frame { aspect-ratio: 4 / 3; height: auto; }
   }
 </style>
