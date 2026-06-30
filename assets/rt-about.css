@@ -202,35 +202,6 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
-   03 · PLACE  (Udaipur)
-   ════════════════════════════════════════════════════════════════ */
-.ra-place {
-  display: grid; grid-template-columns: repeat(12, 1fr);
-  gap: clamp(24px, 3.4vw, 64px); align-items: center;
-  padding: clamp(48px, 6vw, 96px) var(--rt-pad);
-  border-bottom: 1px solid var(--rt-ink);
-}
-.ra-place-body { grid-column: 1 / span 5; }
-.ra-place-body .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
-.ra-place-body h2, .ra-place-headline {
-  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.95;
-  font-size: clamp(30px, 4vw, 64px); margin: 16px 0 0;
-}
-.ra-place-headline p { margin: 0; font: inherit; }
-.ra-place-body .ra-place-copy { margin: 20px 0 0; }
-.ra-place-body .ra-place-copy p { margin: 16px 0 0; font-size: 14px; line-height: 1.8; opacity: 0.8; text-wrap: pretty; max-width: 40ch; }
-.ra-place-body .ra-place-copy p:first-child { margin-top: 0; }
-.ra-place-body em, .ra-place-body i { color: var(--rt-gold-deep); opacity: 1; }
-.ra-place-media { grid-column: 7 / span 6; position: relative; }
-.ra-place-frame { position: relative; overflow: hidden; aspect-ratio: 5 / 4; background: var(--rt-bone); }
-.ra-place-coord {
-  position: absolute; top: 0; right: 0; z-index: 3;
-  background: var(--rt-paper); color: var(--rt-ink);
-  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-  padding: 8px 12px; border-left: 1px solid var(--rt-ink); border-bottom: 1px solid var(--rt-ink);
-}
-
-/* ════════════════════════════════════════════════════════════════
    04 · MATERIALS  (uses base.css .rt-shead for the section head)
    ════════════════════════════════════════════════════════════════ */
 /* Constrain the meta (auto) column so the title gets ≥65% of the row;
