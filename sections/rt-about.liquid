@@ -114,27 +114,6 @@
     <span class="ra-mani-wm" aria-hidden="true">{{ deva_house }}</span>
   </section>
 
-  {%- comment -%}════════ 03 · PLACE ════════{%- endcomment -%}
-  <section class="ra-place" data-screen-label="Place">
-    <div class="ra-place-body">
-      {%- if s.origin_eyebrow != blank -%}<span class="idx" data-rt-reveal>{{ s.origin_eyebrow | escape }}</span>{%- endif -%}
-      <h2 class="ra-place-headline" data-rt-reveal style="--d:80ms;">{{ s.origin_headline }}</h2>
-      {%- if s.origin_body != blank -%}<div class="ra-place-copy" data-rt-reveal style="--d:160ms;">{{ s.origin_body }}</div>{%- endif -%}
-    </div>
-    <div class="ra-place-media">
-      <div class="ra-place-frame" data-rt-reveal>
-        {%- if s.origin_image != blank -%}
-          <img class="rt-ab-img" src="{{ s.origin_image | image_url: width: 1200 }}"
-               alt="{{ s.origin_image.alt | default: 'Udaipur' | escape }}" loading="lazy"
-               width="{{ s.origin_image.width }}" height="{{ s.origin_image.height }}">
-        {%- else -%}
-          <span class="rt-ab-ph" aria-hidden="true"></span>
-        {%- endif -%}
-        {%- if s.origin_coord != blank -%}<span class="ra-place-coord">{{ s.origin_coord | escape }}</span>{%- endif -%}
-      </div>
-    </div>
-  </section>
-
   {%- comment -%}════════ 04 · MATERIALS ════════{%- endcomment -%}
   <div class="rt-shead" data-screen-label="Materials head">
     <div>
