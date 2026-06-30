@@ -295,11 +295,8 @@
    RESPONSIVE
    ════════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .ra-founder { grid-template-columns: 1fr; gap: 32px; }
-  .ra-founder-media, .ra-founder-body { grid-column: 1 / -1; }
-  .ra-founder-frame { aspect-ratio: 4 / 3.4; }
-  .ra-place { grid-template-columns: 1fr; gap: 32px; }
-  .ra-place-body, .ra-place-media { grid-column: 1 / -1; }
+  /* Materials head: stack the meta under the title instead of squeezing it beside */
+  .rt-about .rt-shead { grid-template-columns: 1fr; gap: 14px; }
   .ra-intro-foot { grid-template-columns: 1fr; }
   .ra-intro-deva { justify-self: start; text-align: left; }
   .ra-mani-foot { grid-template-columns: 1fr; }
@@ -308,10 +305,13 @@
 @media (max-width: 740px) {
   .rt-ab-hero__content { grid-template-columns: 1fr; }
   .rt-ab-hero__side { display: none; }
+  /* Founder stays 2-col on tablet (image capped); only stacks on phones */
+  .ra-founder { grid-template-columns: 1fr; gap: 24px; }
+  .ra-founder-media, .ra-founder-body { grid-column: 1 / -1; }
+  .ra-founder-frame { aspect-ratio: 4 / 3.4; max-height: none; }
   .ra-mat { grid-template-columns: 1fr; }
   .ra-mat-card { border-right: 0; border-bottom: 1px solid var(--rt-ink); }
   .ra-mat-card:last-child { border-bottom: 0; }
   .ra-mat-frame { aspect-ratio: 16 / 9; }
   .ra-test { flex-direction: column; gap: 8px; align-items: flex-start; }
-  .ra-place-coord { font-size: 8px; }
 }
