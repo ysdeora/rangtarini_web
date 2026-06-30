@@ -1257,6 +1257,9 @@
   color: var(--ink);
   display: block;
 }
+/* A 4th tile is rendered so the 2-col mobile grid is a full 2×2; on the
+   3-col desktop grid it would orphan onto a second row, so hide it there. */
+.rt-related-card:nth-child(4) { display: none; }
 .rt-related-img {
   position: relative;
   overflow: hidden;
