@@ -316,4 +316,5 @@
   .ra-mat-card:last-child { border-bottom: 0; }
   .ra-mat-frame { aspect-ratio: 16 / 9; }
   .ra-test { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .rt-ab-wa-grid { grid-template-columns: 1fr; }
 }
