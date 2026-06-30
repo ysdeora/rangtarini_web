@@ -146,7 +146,7 @@
   border-bottom: 1px solid var(--rt-ink);
 }
 .ra-founder-media { grid-column: 1 / span 6; position: relative; }
-.ra-founder-frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; height: auto; max-height: clamp(340px, 46vh, 480px); background: var(--rt-bone); }
+.ra-founder-frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; height: auto; max-height: clamp(380px, 34vw, 480px); background: var(--rt-bone); }
 .ra-founder-cap {
   position: absolute; left: 0; bottom: 0; z-index: 3;
   background: var(--rt-ink); color: var(--rt-paper);
