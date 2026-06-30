@@ -1458,4 +1458,5 @@
 @media (max-width: 480px) {
   .rt-grid { gap: 8px; row-gap: 28px; }
   .rt-pagination { padding: 20px 0; }
+  .rt-related-card-name { font-size: 14px; }
 }
