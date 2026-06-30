@@ -886,7 +886,7 @@
         {%- elsif rt_nav_sibling_links -%}
           {%- comment -%} Nav-menu siblings: other collections in the same menu group {%- endcomment -%}
           {%- for sibling in rt_nav_sibling_links -%}
-            {%- if rt_col_num >= 3 -%}{%- break -%}{%- endif -%}
+            {%- if rt_col_num >= 4 -%}{%- break -%}{%- endif -%}
             {%- if sibling.type == 'collection_link'
                 and sibling.object.handle != collection.handle
                 and sibling.object.products_count > 0 -%}
@@ -919,7 +919,7 @@
         {%- else -%}
           {%- comment -%} Fallback: any store collection {%- endcomment -%}
           {%- for auto_col in collections -%}
-            {%- if rt_col_num >= 3 -%}{%- break -%}{%- endif -%}
+            {%- if rt_col_num >= 4 -%}{%- break -%}{%- endif -%}
             {%- if auto_col.handle != collection.handle
                 and auto_col.handle != 'frontpage'
                 and auto_col.handle != 'all'
