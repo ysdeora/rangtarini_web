@@ -208,7 +208,7 @@
    ════════════════════════════════════════════════════════════════ */
 /* Constrain the meta (auto) column so the title gets ≥65% of the row;
    also override Dawn's h2 word-break to prevent mid-word line breaks. */
-.rt-about .rt-shead { grid-template-columns: 1fr 35%; }
+.rt-about .rt-shead { grid-template-columns: 1fr; }
 .rt-about .rt-shead__title { word-break: normal; }
 .ra-mat { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--rt-ink); }
 .ra-mat-card {
