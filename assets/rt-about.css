@@ -101,7 +101,7 @@
 .rt-ab-hero__headline { margin: 16px 0 0; }
 .rt-ab-hero__headline p {
   margin: 0; font-weight: 900; text-transform: uppercase;
-  font-size: clamp(38px, 7.4vw, 124px); line-height: 0.92; letter-spacing: -0.045em; text-wrap: balance;
+  font-size: clamp(33px, 5.8vw, 80px); line-height: 0.95; letter-spacing: -0.04em; text-wrap: balance;
 }
 .rt-ab-hero__sub {
   max-width: 440px; margin: 18px 0 0;
