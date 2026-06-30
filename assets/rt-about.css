@@ -305,6 +305,7 @@
 @media (max-width: 740px) {
   .rt-ab-hero__content { grid-template-columns: 1fr; }
   .rt-ab-hero__side { display: none; }
+  .rt-ab-hero__frame { display: none; } /* corner labels crowd the headline on mobile */
   /* Founder stays 2-col on tablet (image capped); only stacks on phones */
   .ra-founder { grid-template-columns: 1fr; gap: 24px; }
   .ra-founder-media, .ra-founder-body { grid-column: 1 / -1; }
