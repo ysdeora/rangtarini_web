@@ -1449,6 +1449,7 @@
   /* Related — keep two columns so the images don't blow up to full width */
   .rt-related { padding: 36px 14px 28px; }
   .rt-related-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .rt-related-card:nth-child(4) { display: block; } /* fill the 2×2 grid on mobile */
   .rt-related-card-footer { flex-direction: column; align-items: flex-start; gap: 5px; }
   .rt-related-card-name { font-size: 16px; }
   .rt-related-header { flex-direction: column; align-items: flex-start; }
