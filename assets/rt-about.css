@@ -240,8 +240,8 @@
 }
 .rt-ab-wa .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
 .rt-ab-wa-head {
-  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.95;
-  font-size: clamp(32px, 4.4vw, 68px); margin: 12px 0 0;
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.96;
+  font-size: clamp(29px, 3.8vw, 50px); margin: 12px 0 0;
 }
 .rt-ab-wa-head p { margin: 0; font: inherit; }
 .rt-ab-wa-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
