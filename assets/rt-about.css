@@ -77,7 +77,7 @@
    ════════════════════════════════════════════════════════════════ */
 .rt-ab-hero {
   position: relative; overflow: hidden;
-  min-height: clamp(440px, 64vh, 600px);
+  min-height: clamp(540px, 74vh, 720px);
   background: var(--rt-ink); color: var(--rt-paper);
   border-bottom: 1px solid var(--rt-ink);
 }
