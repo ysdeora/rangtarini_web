@@ -853,7 +853,7 @@
 
         {%- if rt_manual_related -%}
           {%- comment -%} Schema pickers {%- endcomment -%}
-          {%- for i in (1..3) -%}
+          {%- for i in (1..4) -%}
             {%- assign rt_col_handle_key = 'related_collection_' | append: i -%}
             {%- assign rt_col = section.settings[rt_col_handle_key] -%}
             {%- if rt_col != blank -%}
