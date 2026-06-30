@@ -181,8 +181,8 @@
 .ra-mani .idx { color: var(--rt-gold); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
 .ra-mani-quote {
   margin: 22px 0 0; padding: 0; border: 0;
-  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.98;
-  font-size: clamp(30px, 5.2vw, 86px); max-width: 16ch; text-wrap: balance;
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 1;
+  font-size: clamp(27px, 4.2vw, 62px); max-width: 17ch; text-wrap: balance;
 }
 /* richtext emits a <p> child — keep it on the blockquote's font (beats base.css's
    global `p { font-weight: 400; line-height: 1.7 }`). */
