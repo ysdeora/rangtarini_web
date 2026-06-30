@@ -275,9 +275,9 @@
 }
 .ra-close .mark { font-family: var(--rt-font-deva); color: var(--rt-gold); font-size: 22px; opacity: 0.9; }
 .ra-close-quote {
-  margin: 24px 0 0; padding: 0; border: 0; max-width: 22ch;
-  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 1.02;
-  font-size: clamp(26px, 4.4vw, 66px); text-wrap: balance;
+  margin: 22px 0 0; padding: 0; border: 0; max-width: 22ch;
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 1.04;
+  font-size: clamp(25px, 3.8vw, 50px); text-wrap: balance;
 }
 .ra-close-quote p { margin: 0; font: inherit; }
 .ra-close .by { margin-top: 30px; display: flex; flex-direction: column; gap: 5px; align-items: center; }
