@@ -1463,4 +1463,9 @@
   .rt-grid { gap: 8px; row-gap: 28px; }
   .rt-pagination { padding: 20px 0; }
   .rt-related-card-name { font-size: 14px; }
+
+  /* Keep Filter + Sort on one row without the sort control running off-screen */
+  .rt-toolbar { grid-template-columns: auto 1fr; gap: 10px; }
+  .rt-sort-wrap { justify-self: end; min-width: 0; }
+  .rt-sort-select { letter-spacing: 0.08em; padding: 8px 26px 8px 10px; min-width: 0; }
 }
