@@ -791,7 +791,8 @@
   {%- comment -%} 1. Schema pickers (manual override) {%- endcomment -%}
   {%- if section.settings.related_collection_1 != blank
       or section.settings.related_collection_2 != blank
-      or section.settings.related_collection_3 != blank -%}
+      or section.settings.related_collection_3 != blank
+      or section.settings.related_collection_4 != blank -%}
     {%- assign rt_manual_related = true -%}
     {%- assign rt_has_related = true -%}
   {%- endif -%}
