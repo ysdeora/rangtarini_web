@@ -235,8 +235,8 @@
    ════════════════════════════════════════════════════════════════ */
 .rt-ab-wa { background: var(--rt-bone); border-bottom: 1px solid var(--rt-ink); }
 .rt-ab-wa-grid {
-  display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 4vw, 64px);
-  padding: clamp(44px, 6vw, 80px) var(--rt-pad); align-items: center;
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 4vw, 56px);
+  padding: clamp(36px, 5vw, 60px) var(--rt-pad); align-items: center;
 }
 .rt-ab-wa .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
 .rt-ab-wa-head {
