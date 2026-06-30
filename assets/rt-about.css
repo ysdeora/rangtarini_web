@@ -157,8 +157,8 @@
 .ra-founder-body { grid-column: 8 / span 5; display: flex; flex-direction: column; justify-content: center; }
 .ra-founder-body .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
 .ra-founder-body h2, .ra-founder-headline {
-  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.95;
-  font-size: clamp(30px, 3.8vw, 60px); margin: 16px 0 0;
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.96;
+  font-size: clamp(26px, 3.2vw, 46px); margin: 14px 0 0;
 }
 .ra-founder-headline p { margin: 0; font: inherit; }
 .ra-founder-deva { font-family: var(--rt-font-deva); color: var(--rt-gold-deep); font-size: 22px; margin-top: 14px; opacity: 0.85; }
