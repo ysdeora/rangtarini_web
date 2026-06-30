@@ -39,14 +39,6 @@
   .rt-occ__row--right .rt-occ__img-wrap { order: 2; }
   .rt-occ__row--right .rt-occ__copy { order: 1; }
 
-  /* Tablet — stack image over copy (full width) before the phone refinements below */
-  @media (max-width: 990px) {
-    .rt-occ__row,
-    .rt-occ__row--right { grid-template-columns: 1fr; align-items: start; }
-    .rt-occ__row--right .rt-occ__img-wrap,
-    .rt-occ__row--right .rt-occ__copy { order: initial; }
-    .rt-occ__copy { margin-top: 18px; }
-  }
   @media (max-width: 740px) {
     .rt-occ__row,
     .rt-occ__row--right { grid-template-columns: 1fr; padding: 20px var(--rt-pad); gap: 0; }
