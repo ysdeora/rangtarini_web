@@ -302,7 +302,6 @@
   .ra-intro-foot { grid-template-columns: 1fr; }
   .ra-intro-deva { justify-self: start; text-align: left; }
   .ra-mani-foot { grid-template-columns: 1fr; }
-  .rt-ab-wa-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 740px) {
   .rt-ab-hero__content { grid-template-columns: 1fr; }
