@@ -1603,19 +1603,17 @@
     list.insertAdjacentHTML('afterbegin', html);
   }
 
-  /* ─── Show a video slide in the stage (play = load + autoplay) ─ */
-  function rtShowVideo(sid, mediaId, play) {
+  /* ─── Reveal a video slide's poster in the stage ─────────── */
+  /* Playback starts when the poster's play button is pressed
+     (wired by the <deferred-media> element in global.js). */
+  function rtShowVideo(sid, mediaId) {
     var stage = document.getElementById('rt-stage-' + sid);
     if (!stage) return;
     stage.classList.add('is-video');
     if (window.pauseAllMedia) window.pauseAllMedia();
-    var active = null;
     stage.querySelectorAll('.rt-stage-video').forEach(function(s){
-      var on = s.dataset.mediaId === mediaId;
-      s.hidden = !on;
-      if (on) active = s;
+      s.hidden = s.dataset.mediaId !== mediaId;
     });
-    if (play && active && typeof active.loadContent === 'function') active.loadContent(false);
   }
 
   /* ─── Restore the image stage (hide any active video) ────── */
