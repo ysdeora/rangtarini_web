@@ -224,8 +224,7 @@ select:focus {
 /* ===== COLLECTION PAGE - PRODUCT CARD FIXES ===== */
 
 /* Product Title - Larger Size */
-.card__heading,
-.card-information__text h3 {
+.card__heading {
   font-family: var(--font-heading-secondary) !important;
   font-size: 1.8rem !important;  /* Increased from default */
   font-weight: 500 !important;
