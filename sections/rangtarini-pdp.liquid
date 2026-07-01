@@ -910,6 +910,41 @@
           {{ 'product-1' | placeholder_svg_tag }}
         {%- endif -%}
 
+        {%- comment -%} Video slides — deferred (loaded only when a video thumb is tapped) {%- endcomment -%}
+        {%- for media in product.media limit: 10 -%}
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+            <deferred-media class="rt-stage-video deferred-media" data-media-id="{{ media.id }}" hidden>
+              <button
+                id="Deferred-Poster-{{ media.id }}"
+                class="rt-stage-video__poster deferred-media__poster"
+                type="button"
+                aria-label="{{ 'products.product.media.play_video' | t }}"
+              >
+                <img
+                  src="{{ media | image_url: width: 1200 }}"
+                  srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w"
+                  sizes="(max-width: 989px) 100vw, 55vw"
+                  alt="{{ media.alt | default: product.title | escape }}"
+                  width="{{ media.preview_image.width }}" height="{{ media.preview_image.height }}"
+                  loading="lazy"
+                >
+                <span class="rt-stage-video__play" aria-hidden="true"></span>
+              </button>
+              <template>
+                {%- if media.media_type == 'external_video' -%}
+                  {%- if media.host == 'youtube' -%}
+                    {{ media | external_video_url: autoplay: true, playlist: media.external_id | external_video_tag: loading: 'lazy' }}
+                  {%- else -%}
+                    {{ media | external_video_url: autoplay: true | external_video_tag: loading: 'lazy' }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ media | media_tag: image_size: '1600x', autoplay: true, controls: true, preload: 'none' }}
+                {%- endif -%}
+              </template>
+            </deferred-media>
+          {%- endif -%}
+        {%- endfor -%}
+
         <span class="rt-stage-badge rt-stage-sku">{{ product.variants.first.sku | default: product.type }}</span>
         <span class="rt-stage-badge rt-stage-hint" id="rt-zoom-hint-{{ section.id }}">Hover to zoom</span>
         <div class="rt-stage-counter">
