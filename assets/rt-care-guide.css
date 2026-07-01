@@ -147,6 +147,7 @@
 .ca-avoid h2 {
   font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em;
   font-size: clamp(28px, 4.4vw, 60px); line-height: 1; margin: 14px 0 0; max-width: 18ch;
+  color: var(--rt-paper); word-break: normal;
 }
 .ca-avoid h2 em { font-style: normal; color: var(--rt-gold); }
 .ca-avoid > p {
