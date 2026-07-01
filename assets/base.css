@@ -156,13 +156,6 @@ p,
 
 /* Mobile Adjustments */
 @media screen and (max-width: 749px) {
-  :root {
-    --font-heading-xl: 2.625rem;
-    --font-heading-lg: 2rem;
-    --font-heading-md: 1.625rem;
-    --font-heading-sm: 1.375rem;
-  }
-  
   .product__title {
     font-size: 1.75rem;
   }
