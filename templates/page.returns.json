@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "rt_returns": {
+      "type": "rt-returns",
+      "settings": {}
+    }
+  },
+  "order": ["rt_returns"]
+}
