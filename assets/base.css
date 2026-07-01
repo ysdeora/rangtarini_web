@@ -235,15 +235,13 @@ select:focus {
 }
 
 /* Product Title Link - Fixed Hover Color */
-.card__heading a,
-.card-information__text h3 a {
+.card__heading a {
   color: #1a1a1a !important;
   text-decoration: none !important;
   transition: color 0.3s ease !important;
 }
 
-.card__heading a:hover,
-.card-information__text h3 a:hover {
+.card__heading a:hover {
   color: #000000 !important;  /* Black on hover, not light brown */
 }
 
