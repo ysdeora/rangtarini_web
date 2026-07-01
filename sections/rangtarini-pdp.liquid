@@ -859,12 +859,16 @@
     <!-- [B1] Gallery -->
     <div class="rt-gallery">
       <!-- Thumbnail rail -->
-      <div class="rt-thumb-rail" role="list" aria-label="Product images">
+      <div class="rt-thumb-rail" role="list" aria-label="Product media">
         {%- for media in product.media limit: 10 -%}
+          {%- assign is_video = false -%}
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}{%- assign is_video = true -%}{%- endif -%}
           <button
-            class="rt-thumb-btn{% if forloop.first %} is-active{% endif %}"
+            class="rt-thumb-btn{% if forloop.first %} is-active{% endif %}{% if is_video %} is-video{% endif %}"
             role="listitem"
-            aria-label="View image {{ forloop.index }}"
+            aria-label="{% if is_video %}{{ 'products.product.media.load_video' | t: index: forloop.index }}{% else %}{{ 'products.product.media.load_image' | t: index: forloop.index }}{% endif %}"
+            data-media-type="{{ media.media_type }}"
+            data-media-id="{{ media.id }}"
             data-src="{{ media | image_url: width: 1600 }}"
             data-srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w"
             data-alt="{{ media.alt | default: product.title | escape }}"
@@ -878,6 +882,7 @@
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
               width="76" height="88"
             >
+            {%- if is_video -%}<span class="rt-thumb-play" aria-hidden="true"></span>{%- endif -%}
             <span class="rt-thumb-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
           </button>
         {%- endfor -%}
