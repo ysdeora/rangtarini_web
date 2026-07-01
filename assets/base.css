@@ -525,16 +525,6 @@ main .product .price__sale {
   background: #999;
 }
 
-/* Hide any duplicate close buttons */
-.menu-drawer__close-button {
-  display: none !important;
-}
-
-/* Remove brand name duplicate */
-.drawer-brand {
-  display: none !important;
-}
-
 /* =================================================
       RANGTARINI — Collection Page Overrides
       layout/theme.liquid — paste before </head>
