@@ -1850,6 +1850,12 @@
     populateWITP(parsed);
     populateDescTab(parsed);
     populateSpecRows(parsed);
+
+    /* If the first media is a video, show its poster (with play button) on the stage */
+    var firstThumb = document.querySelector('[data-rt-section="' + SEC + '"] .rt-thumb-btn.is-active');
+    if (firstThumb && (firstThumb.dataset.mediaType === 'video' || firstThumb.dataset.mediaType === 'external_video')) {
+      rtShowVideo(SEC, firstThumb.dataset.mediaId, false);
+    }
   });
 
 })();
