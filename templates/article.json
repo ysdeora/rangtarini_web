@@ -17,7 +17,7 @@
         "content": {
           "type": "content",
           "settings": {
-            "show_author": true,
+            "show_author": false,
             "author_bio": "Notes from the Rangtarini editorial desk — catalog-plain writing on craft, materials and the festive calendar, written alongside the karigars who make the work."
           }
         },
