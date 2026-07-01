@@ -1758,6 +1758,7 @@
 
     /* gallery — variant image */
     if (match.featured_image && match.featured_image.src) {
+      rtShowImage(sid);
       var heroImg = document.getElementById('rt-hero-img-' + sid);
       if (heroImg) heroImg.src = match.featured_image.src;
     }
