@@ -526,8 +526,7 @@ main .product .price__sale {
 }
 
 /* =================================================
-      RANGTARINI — Collection Page Overrides
-      layout/theme.liquid — paste before </head>
+      RANGTARINI — Collection Page Overrides (facets / sort / subnav)
       ================================================= */
 
     /* ── VARIABLES (match existing site palette) ── */
