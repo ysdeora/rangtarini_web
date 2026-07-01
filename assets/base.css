@@ -110,14 +110,8 @@ h3, .h3, h4, .h4 {
   .rt-shead__meta { text-align: left; }
 }
 
-/* Product Titles - More refined */
-.card__heading {
-  font-family: var(--font-heading-secondary) !important;
-  font-weight: 500;
-  font-size: 1.5rem;  /* Smaller, more minimal */
-  letter-spacing: 0.02em;
-}
-
+/* Product Titles - More refined
+   (card heading is defined once, later, in the collection-card block below) */
 .product__title {
   font-family: var(--font-heading) !important;  /* Changed to primary heading font */
   font-weight: 300;  /* Very light */
