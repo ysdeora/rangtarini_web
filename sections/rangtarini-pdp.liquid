@@ -849,6 +849,28 @@
   .rt-angles-grid { grid-template-columns: 1fr; }
   .rt-atc-row { grid-template-columns: auto 1fr; }
 }
+
+/* ── Tablet (portrait 768 & landscape 1024): keep gallery + buy box side-by-side
+   so the product image stays a sensible size instead of going full-bleed.
+   Placed after the ≤989 rules so it overrides the mobile single-column stack. ── */
+@media (min-width: 750px) and (max-width: 1024px) {
+  .rt-hero-pdp {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+    padding: 28px 24px 44px;
+    align-items: start;
+  }
+  .rt-gallery { grid-template-columns: 60px 1fr; gap: 12px; }
+  .rt-thumb-rail {
+    position: sticky; top: 88px;
+    flex-direction: column; overflow: visible;
+    scroll-snap-type: none; gap: 10px;
+    padding-bottom: 0; order: 0;
+  }
+  .rt-thumb-btn { width: 60px; }
+  .rt-main-stage { order: 0; }
+  .rt-title { font-size: clamp(34px, 5.2vw, 58px); }
+}
 {%- endstyle -%}
 
 {%- liquid
