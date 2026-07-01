@@ -1825,8 +1825,9 @@
     var lbImg = lb.querySelector('.rt-lightbox-img');
     var lbStage = document.getElementById('rt-stage-' + SEC);
     if (lbStage) {
-      lbStage.addEventListener('click', function() {
+      lbStage.addEventListener('click', function(e) {
         if (window.innerWidth >= 990) return;
+        if (lbStage.classList.contains('is-video') || (e.target.closest && e.target.closest('.rt-stage-video'))) return;
         var hi = document.getElementById('rt-hero-img-' + SEC);
         if (!hi) return;
         lbImg.src = hi.currentSrc || hi.src;
