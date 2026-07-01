@@ -1,0 +1,260 @@
+{%- comment -%}
+  rt-care-guide.liquid — Jewellery Care (Heirloom)
+  Implements the Claude Design "Rangtarini Care Heirloom" layout on the
+  theme's --rt-* tokens. All copy is editable from the Theme Editor.
+  The "Everyday care" head reuses base.css .rt-shead; the ticker/header/
+  footer are the global section groups, so this section is main content only.
+  Motion: global rt-reveal.js ([data-rt-reveal] → .rt-in).
+{%- endcomment -%}
+
+{{ 'rt-care-guide.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign essentials = section.blocks | where: 'type', 'essential'
+  assign clean_steps = section.blocks | where: 'type', 'clean_step'
+  assign materials = section.blocks | where: 'type', 'material'
+-%}
+
+<div class="rt-care" id="rt-care-{{ section.id }}">
+
+  {%- comment -%}════════ MASTHEAD ════════{%- endcomment -%}
+  <section class="rr-hero" data-screen-label="Masthead">
+    <div>
+      {%- if s.hero_kicker != blank -%}<span class="idx" data-rt-reveal>{{ s.hero_kicker | escape }}</span>{%- endif -%}
+      {%- if s.hero_title != blank -%}<h1 class="t-disp" data-rt-reveal style="--d:80ms;">{{ s.hero_title }}</h1>{%- endif -%}
+      {%- if s.hero_sub != blank -%}<p class="rr-hero-sub" data-rt-reveal style="--d:200ms;">{{ s.hero_sub | escape }}</p>{%- endif -%}
+    </div>
+    {%- if s.hero_deva != blank -%}<span class="rr-hero-deva" aria-hidden="true">{{ s.hero_deva | escape }}</span>{%- endif -%}
+  </section>
+
+  {%- comment -%}════════ PROMISE ════════{%- endcomment -%}
+  <section class="rr-assure" data-screen-label="Promise">
+    {%- if s.promise_kicker != blank -%}<span class="rr-kicker" data-rt-reveal>{{ s.promise_kicker | escape }}</span>{%- endif -%}
+    {%- if s.promise_title != blank -%}<h2 class="rr-h" data-rt-reveal style="--d:70ms;">{{ s.promise_title | escape }}</h2>{%- endif -%}
+    {%- if s.promise_body != blank -%}<p data-rt-reveal style="--d:140ms;">{{ s.promise_body | escape }}</p>{%- endif -%}
+  </section>
+
+  {%- comment -%}════════ EVERYDAY CARE (head + ledger) ════════{%- endcomment -%}
+  {%- if essentials.size > 0 -%}
+    <div class="rt-shead" data-screen-label="Everyday care">
+      <div>
+        {%- if s.ess_idx != blank -%}<span class="rt-shead__idx">{{ s.ess_idx | escape }}</span>{%- endif -%}
+        {%- if s.ess_title != blank -%}<h2 class="rt-shead__title" data-rt-reveal>{{ s.ess_title | escape }}</h2>{%- endif -%}
+      </div>
+      {%- if s.ess_meta != blank -%}<div class="rt-shead__meta">{{ s.ess_meta | escape | newline_to_br }}</div>{%- endif -%}
+    </div>
+    <section class="ca-ess" data-screen-label="Essentials">
+      {%- for block in essentials -%}
+        {%- assign num = forloop.index | prepend: '0' | slice: -2, 2 -%}
+        <div class="ca-ess-row" data-rt-reveal style="--d:{{ forloop.index0 | times: 70 }}ms;" {{ block.shopify_attributes }}>
+          <span class="no">{{ num }}</span>
+          {%- if block.settings.name != blank -%}<span class="name">{{ block.settings.name | escape }}</span>{%- endif -%}
+          {%- if block.settings.description != blank -%}<span class="desc">{{ block.settings.description | escape }}</span>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}════════ WHAT DULLS THE SHINE (on ink) ════════{%- endcomment -%}
+  <section class="ca-avoid" data-screen-label="What to avoid">
+    {%- if s.avoid_kicker != blank -%}<span class="rr-kicker" data-rt-reveal>{{ s.avoid_kicker | escape }}</span>{%- endif -%}
+    {%- if s.avoid_title != blank -%}<h2 data-rt-reveal style="--d:70ms;">{{ s.avoid_title }}</h2>{%- endif -%}
+    {%- if s.avoid_body != blank -%}<p data-rt-reveal style="--d:140ms;">{{ s.avoid_body | escape }}</p>{%- endif -%}
+    {%- if s.avoid_chips != blank -%}
+      <div class="ca-chips" data-rt-reveal style="--d:210ms;">
+        {%- assign chips = s.avoid_chips | newline_to_br | split: '<br />' -%}
+        {%- for chip in chips -%}
+          {%- assign chip_t = chip | strip -%}
+          {%- if chip_t != blank -%}<span class="ca-chip">{{ chip_t | escape }}</span>{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if s.avoid_deva != blank -%}<span class="ca-avoid-deva" aria-hidden="true">{{ s.avoid_deva | escape }}</span>{%- endif -%}
+  </section>
+
+  {%- comment -%}════════ RESTORING THE SHINE (split) ════════{%- endcomment -%}
+  {%- if clean_steps.size > 0 -%}
+    <section class="ca-clean" data-screen-label="Cleaning">
+      <div class="l" data-rt-reveal>
+        {%- if s.clean_kicker != blank -%}<span class="rr-kicker">{{ s.clean_kicker | escape }}</span>{%- endif -%}
+        {%- if s.clean_title != blank -%}<h2 class="rr-h">{{ s.clean_title | escape }}</h2>{%- endif -%}
+        {%- if s.clean_body != blank -%}<p class="body">{{ s.clean_body | escape }}</p>{%- endif -%}
+      </div>
+      <div class="r">
+        {%- for block in clean_steps -%}
+          {%- assign num = forloop.index | prepend: '0' | slice: -2, 2 -%}
+          <div class="ca-cstep" data-rt-reveal style="--d:{{ forloop.index0 | times: 70 | plus: 60 }}ms;" {{ block.shopify_attributes }}>
+            <span class="no">{{ num }}</span>
+            <div>
+              {%- if block.settings.title != blank -%}<span class="nm">{{ block.settings.title | escape }}</span>{%- endif -%}
+              {%- if block.settings.body != blank -%}<p class="bd">{{ block.settings.body | escape }}</p>{%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}════════ CARE BY MATERIAL ════════{%- endcomment -%}
+  {%- if materials.size > 0 -%}
+    <section class="ca-mats" data-screen-label="Know your metal">
+      <div class="ca-mats-head" data-rt-reveal>
+        {%- if s.mats_kicker != blank -%}<span class="rr-kicker">{{ s.mats_kicker | escape }}</span>{%- endif -%}
+        {%- if s.mats_title != blank -%}<h2 class="rr-h">{{ s.mats_title | escape }}</h2>{%- endif -%}
+        {%- if s.mats_body != blank -%}<p class="body">{{ s.mats_body | escape }}</p>{%- endif -%}
+      </div>
+      <div class="ca-mats-grid">
+        {%- for block in materials -%}
+          {%- assign num = forloop.index | prepend: '0' | slice: -2, 2 -%}
+          <div class="ca-mat" data-rt-reveal style="--d:{{ forloop.index0 | times: 80 | plus: 60 }}ms;" {{ block.shopify_attributes }}>
+            <div class="top">
+              <span class="no">{{ num }}</span>
+              {%- if block.settings.deva != blank -%}<span class="deva" aria-hidden="true">{{ block.settings.deva | escape }}</span>{%- endif -%}
+            </div>
+            {%- if block.settings.name != blank -%}<span class="nm">{{ block.settings.name | escape }}</span>{%- endif -%}
+            {%- if block.settings.body != blank -%}<p class="bd">{{ block.settings.body | escape }}</p>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}════════ QUICK REFERENCE STRIP ════════{%- endcomment -%}
+  {%- if s.quickref_items != blank -%}
+    <section class="rr-conds" data-screen-label="Quick reference">
+      {%- assign conds = s.quickref_items | newline_to_br | split: '<br />' -%}
+      {%- for cond in conds -%}
+        {%- assign cond_t = cond | strip -%}
+        {%- if cond_t != blank -%}
+          <div class="rr-cond" data-rt-reveal style="--d:{{ forloop.index0 | times: 80 }}ms;">
+            <span class="dia" aria-hidden="true"></span>
+            <span class="txt">{{ cond_t | escape }}</span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%}════════ SERVICING CTA (on ink) ════════{%- endcomment -%}
+  <section class="rr-cta" data-screen-label="Servicing">
+    <div>
+      {%- if s.cta_kicker != blank -%}<span class="kick" data-rt-reveal>{{ s.cta_kicker | escape }}</span>{%- endif -%}
+      {%- if s.cta_title != blank -%}<h2 class="t-disp" data-rt-reveal style="--d:80ms;">{{ s.cta_title }}</h2>{%- endif -%}
+      {%- if s.cta_body != blank -%}<p class="sub" data-rt-reveal style="--d:160ms;">{{ s.cta_body | escape }}</p>{%- endif -%}
+      {%- if s.cta_hours != blank -%}<p class="hours" data-rt-reveal style="--d:220ms;">{{ s.cta_hours | escape }}</p>{%- endif -%}
+    </div>
+    <div class="rr-cta-actions" data-rt-reveal style="--d:200ms;">
+      {%- if s.wa_label != blank and s.wa_url != blank -%}
+        <a class="rt-care__btn rt-care__btn--wa" href="{{ s.wa_url | escape }}" target="_blank" rel="noopener">{{ s.wa_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+      {%- endif -%}
+      {%- if s.email_label != blank and s.email_url != blank -%}
+        <a class="rt-care__btn rt-care__btn--onink" href="{{ s.email_url | escape }}">{{ s.email_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+      {%- endif -%}
+    </div>
+    {%- if s.cta_deva != blank -%}<span class="rr-cta-deva" aria-hidden="true">{{ s.cta_deva | escape }}</span>{%- endif -%}
+  </section>
+
+</div>
+
+{% schema %}
+{
+  "name": "Care Guide",
+  "tag": "section",
+  "class": "section-rt-care-guide",
+  "settings": [
+    { "type": "header", "content": "Masthead" },
+    { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "Jewellery Care · Keep it luminous" },
+    { "type": "richtext", "id": "hero_title", "label": "Title", "info": "Italicise a word to accent it in gold.", "default": "<p>Wear it <em>often.</em></p>" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sub-text", "default": "Your Rangtarini piece is built to last — with a little care, it will stay luminous for years. A few gentle habits keep the metal bright, the stones clear, and the finish as beautiful as the day it left our bench." },
+    { "type": "text", "id": "hero_deva", "label": "Devanagari watermark", "default": "देखभाल" },
+
+    { "type": "header", "content": "Promise band" },
+    { "type": "text", "id": "promise_kicker", "label": "Kicker", "default": "Made to be lived in" },
+    { "type": "text", "id": "promise_title", "label": "Title", "default": "Handcrafted to last a lifetime." },
+    { "type": "textarea", "id": "promise_body", "label": "Body", "default": "Each Rangtarini piece is made by hand to be worn and loved, not locked away. Fine jewellery only asks for a little attention in return — keep it away from moisture and chemicals, store it gently, and it will hold its glow for generations." },
+
+    { "type": "header", "content": "Everyday care — head", "info": "The numbered list below is built from Essential blocks." },
+    { "type": "text", "id": "ess_idx", "label": "Eyebrow", "default": "The essentials" },
+    { "type": "text", "id": "ess_title", "label": "Title", "default": "Everyday care." },
+    { "type": "textarea", "id": "ess_meta", "label": "Meta (one line per row)", "default": "Five simple habits\nA minute a day" },
+
+    { "type": "header", "content": "What dulls the shine (on ink)" },
+    { "type": "text", "id": "avoid_kicker", "label": "Kicker", "default": "Keep it away from" },
+    { "type": "richtext", "id": "avoid_title", "label": "Title", "info": "Italicise words to accent them in gold.", "default": "<p>What dulls <em>the shine.</em></p>" },
+    { "type": "textarea", "id": "avoid_body", "label": "Body", "default": "Everyday products and elements are the most common cause of tarnish and clouded stones. A moment's care avoiding these keeps your piece looking new." },
+    { "type": "textarea", "id": "avoid_chips", "label": "Chips (one per line)", "default": "Perfume\nLotion & Cream\nHairspray\nChlorine\nSaltwater\nSweat\nHousehold Cleaners\nHumidity\nDirect Sunlight" },
+    { "type": "text", "id": "avoid_deva", "label": "Devanagari watermark", "default": "यत्न" },
+
+    { "type": "header", "content": "Restoring the shine — head", "info": "The numbered steps beside it are built from Cleaning step blocks." },
+    { "type": "text", "id": "clean_kicker", "label": "Kicker", "default": "At-home cleaning" },
+    { "type": "text", "id": "clean_title", "label": "Title", "default": "Restoring the shine." },
+    { "type": "textarea", "id": "clean_body", "label": "Body", "default": "If a piece looks a little tired, a gentle clean at home brings it back. Always be soft — never scrub, and keep water away from strung kundan and glued settings." },
+
+    { "type": "header", "content": "Care by material — head", "info": "The cards below are built from Material blocks." },
+    { "type": "text", "id": "mats_kicker", "label": "Kicker", "default": "Know your metal" },
+    { "type": "text", "id": "mats_title", "label": "Title", "default": "Care by material." },
+    { "type": "textarea", "id": "mats_body", "label": "Body", "default": "Each of our materials wears a little differently. Here's how to keep every kind of Rangtarini piece at its best." },
+
+    { "type": "header", "content": "Quick reference strip" },
+    { "type": "textarea", "id": "quickref_items", "label": "Items (one per line)", "default": "Soft, dry cloth only — never scrub or use chemicals\nAirtight pouch, away from sunlight and humidity\nStore each piece separately to prevent scratches" },
+
+    { "type": "header", "content": "Servicing CTA (on ink)" },
+    { "type": "text", "id": "cta_kicker", "label": "Kicker", "default": "Care & servicing" },
+    { "type": "richtext", "id": "cta_title", "label": "Title", "info": "Italicise a word to accent it in gold.", "default": "<p>We'll keep it <em>bright.</em></p>" },
+    { "type": "textarea", "id": "cta_body", "label": "Body", "default": "Loved a piece a little too well? Our bench in Udaipur re-polishes, re-plates, and restrings Rangtarini jewellery so it looks its best for years to come. Reach out and we'll guide you." },
+    { "type": "text", "id": "cta_hours", "label": "Hours", "default": "Available Mon–Sat · 10:00–19:00 IST" },
+    { "type": "text", "id": "wa_label", "label": "WhatsApp button label", "default": "WhatsApp us" },
+    { "type": "text", "id": "wa_url", "label": "WhatsApp link", "info": "Full https://wa.me/… link (may include a ?text= message).", "default": "https://wa.me/919251110762?text=Hi%20Rangtarini%2C%20I%27d%20like%20help%20caring%20for%20my%20piece.%20Order%20Number%3A%20%0APiece%3A%20" },
+    { "type": "text", "id": "email_label", "label": "Email button label", "default": "Email us" },
+    { "type": "text", "id": "email_url", "label": "Email link", "info": "Full mailto:… link (may include a subject/body).", "default": "mailto:info@rangtarini.com?subject=Jewellery%20Care%20%26%20Servicing&body=Order%20Number%3A%20%0APiece%3A%20%0AHow%20can%20we%20help%3F%20" },
+    { "type": "text", "id": "cta_deva", "label": "Devanagari watermark", "default": "देखभाल" }
+  ],
+  "blocks": [
+    {
+      "type": "essential",
+      "name": "Essential (everyday care)",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Habit", "default": "Last on, first off" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Put your jewellery on after dressing, and remove it before bathing, swimming, or exercising." }
+      ]
+    },
+    {
+      "type": "clean_step",
+      "name": "Cleaning step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Step title", "default": "Wipe with a soft cloth" },
+        { "type": "textarea", "id": "body", "label": "Description", "default": "Use the polishing cloth provided, or any lint-free soft cloth. Buff gently in straight lines." }
+      ]
+    },
+    {
+      "type": "material",
+      "name": "Material",
+      "settings": [
+        { "type": "text", "id": "deva", "label": "Devanagari accent", "default": "रजत" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Sterling silver" },
+        { "type": "textarea", "id": "body", "label": "Description", "default": "925 silver naturally darkens over time — a soft polishing cloth restores its brightness in moments." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Care Guide",
+      "blocks": [
+        { "type": "essential", "settings": { "name": "Last on, first off", "description": "Put your jewellery on after dressing, and remove it before bathing, swimming, or exercising. Water, steam, and sweat are the quickest way to dull a finish." } },
+        { "type": "essential", "settings": { "name": "Keep away from chemicals", "description": "Avoid contact with perfumes, lotions, and hairspray. Apply them first and let them settle before you put your pieces on." } },
+        { "type": "essential", "settings": { "name": "Wipe after every wear", "description": "Gently wipe with a soft, dry cloth after each wear to remove moisture and oils. This one habit does more than anything else to keep the shine." } },
+        { "type": "essential", "settings": { "name": "Store airtight, in the dark", "description": "Keep each piece in the airtight pouch provided, away from direct sunlight and humidity. Sealed and shaded, silver stays brighter for far longer." } },
+        { "type": "essential", "settings": { "name": "Keep pieces separate", "description": "Store pieces individually to prevent scratching. Chains, stones, and polished surfaces mark one another when they sit together." } },
+        { "type": "clean_step", "settings": { "title": "Wipe with a soft cloth", "body": "Use the polishing cloth provided, or any lint-free soft cloth. Buff gently in straight lines to lift oils and light tarnish." } },
+        { "type": "clean_step", "settings": { "title": "For a deeper clean", "body": "Dip in lukewarm water with a drop of mild soap, wipe softly with your fingertips, then rinse and pat completely dry. Silver and gold-plated pieces only — avoid on kundan, pearls, and delicate stones." } },
+        { "type": "clean_step", "settings": { "title": "Dry thoroughly", "body": "Moisture is the enemy of shine. Dry every surface and setting fully before returning the piece to its airtight pouch." } },
+        { "type": "clean_step", "settings": { "title": "Never use harsh cleaners", "body": "Avoid toothpaste, chemical dips, and abrasive brushes — they strip plating and scratch stones. When in doubt, send it to us for a professional polish." } },
+        { "type": "material", "settings": { "deva": "रजत", "name": "Sterling silver", "body": "925 silver naturally darkens over time — this patina is normal, not a fault. A soft polishing cloth restores its brightness in moments; store airtight to slow tarnish." } },
+        { "type": "material", "settings": { "deva": "जड़ाऊ", "name": "Kundan & Jadau", "body": "Uncut stones are set with natural lac, so keep these pieces away from water and heat. Never submerge them — wipe only the metal gently with a dry cloth." } },
+        { "type": "material", "settings": { "deva": "स्वर्ण", "name": "Gold-plated", "body": "Plating is a fine surface layer. Handle gently, keep it away from friction and chemicals, and clean only with a dry cloth to preserve the finish for years." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
