@@ -1631,7 +1631,7 @@
     btn.classList.add('is-active');
     var type = btn.dataset.mediaType;
     if (type === 'video' || type === 'external_video') {
-      rtShowVideo(sid, btn.dataset.mediaId, true);
+      rtShowVideo(sid, btn.dataset.mediaId);
     } else {
       rtShowImage(sid);
       var img = document.getElementById('rt-hero-img-' + sid);
