@@ -247,8 +247,7 @@ select:focus {
 
 /* Mobile - Slightly Smaller but Still Readable */
 @media (max-width: 749px) {
-  .card__heading,
-  .card-information__text h3 {
+  .card__heading {
     font-size: 1.7rem !important;
   }
 }
