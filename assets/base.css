@@ -37,15 +37,6 @@
   --font-heading: var(--rt-font-grotesk);
   --font-heading-secondary: var(--rt-font-grotesk);
   --font-body: var(--rt-font-grotesk);
-
-  /* Font Sizes - Desktop */
-  --font-heading-xl: 4.5rem;      /* 72px - Hero */
-  --font-heading-lg: 3rem;        /* 48px - H1 */
-  --font-heading-md: 2.25rem;     /* 36px - H2 */
-  --font-heading-sm: 1.75rem;     /* 28px - H3 */
-  --font-body-lg: 1.125rem;       /* 18px */
-  --font-size-base: 1rem;         /* 16px — renamed; was a name-collision with --font-body */
-  --font-body-sm: 0.875rem;       /* 14px */
 }
 
 /* Headings - Lighter, more elegant */
