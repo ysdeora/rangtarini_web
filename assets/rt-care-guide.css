@@ -241,7 +241,7 @@
   position: relative; overflow: hidden;
 }
 .rr-cta .kick { color: var(--rt-gold); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
-.rr-cta h2 { font-size: clamp(38px, 6vw, 92px); margin: 14px 0 0; }
+.rr-cta h2 { font-size: clamp(38px, 6vw, 92px); margin: 14px 0 0; color: var(--rt-paper); word-break: normal; }
 .rr-cta h2 em { font-style: normal; color: var(--rt-gold); }
 .rr-cta .sub { margin: 20px 0 0; font-size: 13px; letter-spacing: 0.02em; opacity: 0.66; line-height: 1.7; max-width: 40ch; }
 .rr-cta .hours {
