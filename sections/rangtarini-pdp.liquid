@@ -1415,6 +1415,7 @@
         {%- assign angle_count = 0 -%}
         {%- for media in product.media limit: 10 -%}
           {%- if forloop.first -%}{%- continue -%}{%- endif -%}
+          {%- unless media.media_type == 'image' -%}{%- continue -%}{%- endunless -%}
           {%- if angle_count >= 3 -%}{%- break -%}{%- endif -%}
           {%- assign angle_count = angle_count | plus: 1 -%}
           <figure class="rt-angle-fig">
