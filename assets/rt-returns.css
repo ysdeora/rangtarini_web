@@ -1,0 +1,311 @@
+/* ════════════════════════════════════════════════════════════════════
+   RANGTARINI — Returns & Exchange (Heirloom)
+   Ported from the Claude Design "Rangtarini Returns Heirloom" handoff
+   (returns-heirloom.css) onto the theme's global --rt-* tokens (base.css).
+   Self-contained: every primitive the page needs (reveals, buttons,
+   display type) is namespaced .rt-returns / .rt-rr-*.
+   Motion uses the theme's global rt-reveal.js ([data-rt-reveal] → .rt-in).
+   Section head reuses base.css .rt-shead.
+   ════════════════════════════════════════════════════════════════════ */
+
+.rt-returns {
+  background: var(--rt-paper);
+  color: var(--rt-ink);
+  font-family: var(--rt-font-grotesk);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.rt-returns *, .rt-returns *::before, .rt-returns *::after { box-sizing: border-box; }
+.rt-returns a { text-decoration: none; }
+/* non-button links inherit their section's colour; buttons keep their own */
+.rt-returns a:not(.rt-rr-btn) { color: inherit; }
+.rt-returns em, .rt-returns i { font-style: normal; color: var(--rt-gold); }
+/* richtext headings emit a <p> child — keep it on the heading's own font and
+   beat base.css's global `p { font-weight: 400; line-height: 1.7 }`. */
+.rt-returns .rt-rr-h p,
+.rt-returns .rt-rr-hero h1 p,
+.rt-returns .rt-rr-cta h2 p,
+.rt-returns .rt-shead__title p { margin: 0; font: inherit; }
+
+/* ─── reveals (global rt-reveal.js adds .rt-in) ──────────────────── */
+.rt-returns [data-rt-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s var(--rt-ez), transform 0.9s var(--rt-ez);
+  transition-delay: var(--d, 0ms);
+}
+.rt-returns [data-rt-reveal].rt-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rt-returns [data-rt-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ─── buttons (gold-wipe on hover — matches About / homepage hero) ── */
+.rt-rr-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 17px 30px;
+  border: 1px solid var(--rt-ink);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+  white-space: nowrap;
+  position: relative; overflow: hidden; isolation: isolate;
+  transition: color 0.35s var(--rt-ez), border-color 0.35s var(--rt-ez);
+}
+.rt-rr-btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--rt-gold);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.45s var(--rt-ez);
+}
+.rt-rr-btn:hover { color: var(--rt-ink); border-color: var(--rt-gold); }
+.rt-rr-btn:hover::before { transform: scaleX(1); }
+.rt-rr-btn .arr { transition: transform 0.35s var(--rt-ez); }
+.rt-rr-btn:hover .arr { transform: translateX(5px); }
+.rt-rr-btn--wa { background: var(--rt-wa-green); color: #f4fbf6; border-color: var(--rt-wa-green); }
+.rt-rr-btn--onink { background: transparent; color: var(--rt-paper); border-color: var(--rt-paper); }
+
+/* ─── hero / masthead ─────────────────────────────────────────────── */
+.rt-rr-hero {
+  padding: clamp(64px, 11vh, 132px) var(--rt-pad) clamp(28px, 4vw, 44px);
+  border-bottom: 1px solid var(--rt-ink);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.rt-rr-hero .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; }
+.rt-rr-hero h1 {
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9;
+  font-size: clamp(46px, 8.6vw, 150px); margin: 16px 0 0;
+}
+.rt-rr-hero h1 em { font-style: normal; color: var(--rt-gold); }
+.rt-rr-hero-sub {
+  max-width: 460px;
+  margin: 22px 0 0;
+  font-size: 14px; line-height: 1.75; opacity: 0.72;
+  text-wrap: pretty;
+}
+.rt-rr-hero-deva {
+  font-family: var(--rt-font-deva);
+  color: var(--rt-gold);
+  font-size: clamp(18px, 2vw, 26px);
+  writing-mode: vertical-rl;
+  align-self: end;
+  opacity: 0.9;
+}
+
+/* ─── shared kicker / heads ───────────────────────────────────────── */
+.rt-rr-kicker {
+  font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; opacity: 0.5; display: block;
+}
+.rt-rr-h {
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em;
+  font-size: clamp(24px, 2.8vw, 40px); line-height: 1; margin: 12px 0 0;
+}
+
+/* ─── assurance band (single, centered) ───────────────────────────── */
+.rt-rr-assure {
+  padding: clamp(48px, 7vw, 96px) var(--rt-pad);
+  border-bottom: 1px solid var(--rt-ink);
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+.rt-rr-assure .rt-rr-kicker { text-align: center; }
+.rt-rr-assure .rt-rr-h {
+  font-size: clamp(28px, 4vw, 56px); max-width: 20ch; margin-top: 16px;
+}
+.rt-rr-assure p {
+  margin: clamp(20px, 2.4vw, 30px) auto 0;
+  max-width: 62ch;
+  font-size: clamp(14px, 1.5vw, 16px); line-height: 1.8; opacity: 0.72;
+  text-wrap: pretty;
+}
+
+/* ─── exchange eligibility ────────────────────────────────────────── */
+.rt-rr-elig { padding: clamp(40px, 6vw, 80px) var(--rt-pad) clamp(20px, 3vw, 30px); }
+.rt-rr-elig-head { max-width: 620px; }
+.rt-rr-elig-head .body { font-size: 14px; line-height: 1.75; opacity: 0.72; margin: 18px 0 0; }
+.rt-rr-cards {
+  margin-top: clamp(28px, 3.4vw, 44px);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rt-ink);
+}
+.rt-rr-card {
+  padding: clamp(22px, 2.4vw, 32px) clamp(18px, 2vw, 26px);
+  border-right: 1px solid var(--rt-line);
+  display: flex; flex-direction: column; gap: 14px;
+  min-height: 190px;
+  transition: background 0.35s var(--rt-ez);
+}
+.rt-rr-card:last-child { border-right: 0; }
+.rt-rr-card:hover { background: var(--rt-paper-soft); }
+.rt-rr-card .no {
+  font-family: var(--rt-font-mono); font-size: 10.5px; letter-spacing: 0.16em;
+  color: var(--rt-gold-deep);
+}
+.rt-rr-card .tick {
+  width: 26px; height: 26px; flex: none; border: 1px solid var(--rt-gold);
+  color: var(--rt-gold); display: flex; align-items: center; justify-content: center;
+  font-size: 13px; transform: rotate(45deg);
+}
+.rt-rr-card .tick span { transform: rotate(-45deg); }
+.rt-rr-card .name {
+  font-weight: 800; text-transform: uppercase; letter-spacing: -0.005em;
+  font-size: clamp(15px, 1.5vw, 18px); line-height: 1.15; margin-top: 6px;
+  min-height: 2.3em; display: flex; align-items: flex-start;
+}
+.rt-rr-card .sub { font-size: 12px; line-height: 1.6; opacity: 0.6; margin-top: auto; }
+
+.rt-rr-note {
+  margin-top: 22px;
+  display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;
+  padding: 20px 22px; border: 1px solid var(--rt-line);
+  background: rgba(122, 94, 44, 0.05);
+}
+.rt-rr-note .lbl {
+  font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--rt-gold-deep); padding-top: 3px; white-space: nowrap;
+}
+.rt-rr-note p { margin: 0; font-size: 12.5px; line-height: 1.75; opacity: 0.72; text-wrap: pretty; }
+
+/* ─── process / how to (base.css .rt-shead for the head) ──────────── */
+.rt-rr-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--rt-ink);
+  border-bottom: 1px solid var(--rt-ink);
+}
+.rt-rr-step {
+  padding: clamp(32px, 4vw, 56px) clamp(20px, 2.4vw, 34px);
+  border-right: 1px solid var(--rt-line);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.rt-rr-step:last-child { border-right: 0; }
+.rt-rr-step .big-no {
+  font-weight: 900; font-size: clamp(44px, 5vw, 74px); line-height: 0.8;
+  letter-spacing: -0.04em; color: var(--rt-gold);
+  font-variant-numeric: tabular-nums;
+}
+.rt-rr-step .st-name {
+  font-weight: 800; text-transform: uppercase; letter-spacing: -0.005em;
+  font-size: clamp(15px, 1.5vw, 18px); margin-top: 8px;
+}
+.rt-rr-step .st-body { font-size: 12.5px; line-height: 1.7; opacity: 0.68; }
+
+/* ─── conditions strip ────────────────────────────────────────────── */
+.rt-rr-conds {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--rt-ink);
+}
+.rt-rr-cond {
+  padding: clamp(28px, 3.4vw, 44px) var(--rt-pad);
+  border-right: 1px solid var(--rt-line);
+  display: flex; align-items: baseline; gap: 14px;
+}
+.rt-rr-cond:last-child { border-right: 0; }
+.rt-rr-cond .dia { width: 6px; height: 6px; background: var(--rt-gold); transform: rotate(45deg); flex: none; margin-top: 6px; }
+.rt-rr-cond .txt { font-size: 13px; line-height: 1.6; font-weight: 600; letter-spacing: -0.005em; }
+
+/* ─── refund policy ───────────────────────────────────────────────── */
+.rt-rr-refund {
+  display: grid; grid-template-columns: 0.92fr 1.08fr;
+  border-bottom: 1px solid var(--rt-ink);
+}
+.rt-rr-refund .l {
+  padding: clamp(40px, 5vw, 72px) var(--rt-pad);
+  border-right: 1px solid var(--rt-ink);
+}
+.rt-rr-refund .l .body { font-size: 13.5px; line-height: 1.8; opacity: 0.72; margin: 18px 0 0; max-width: 40ch; }
+.rt-rr-refund .r { display: flex; flex-direction: column; }
+.rt-rr-rcase {
+  padding: clamp(26px, 3vw, 40px) var(--rt-pad);
+  border-bottom: 1px solid var(--rt-line);
+  display: grid; grid-template-columns: 44px 1fr; gap: 18px; align-items: start;
+}
+.rt-rr-rcase .no { font-family: var(--rt-font-mono); font-size: 11px; letter-spacing: 0.16em; color: var(--rt-gold-deep); padding-top: 4px; }
+.rt-rr-rcase .name { font-weight: 800; text-transform: uppercase; letter-spacing: -0.005em; font-size: clamp(15px, 1.6vw, 19px); }
+.rt-rr-rcase .body { font-size: 13px; line-height: 1.72; opacity: 0.7; margin-top: 10px; max-width: 52ch; }
+.rt-rr-refund .r .foot {
+  padding: clamp(20px, 2.4vw, 28px) var(--rt-pad);
+  font-family: var(--rt-font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.6;
+  display: flex; align-items: center; gap: 10px;
+}
+.rt-rr-refund .r .foot .dia { width: 5px; height: 5px; background: var(--rt-gold); transform: rotate(45deg); flex: none; }
+
+/* ─── questions CTA (on ink) ──────────────────────────────────────── */
+.rt-rr-cta {
+  background: var(--rt-ink); color: var(--rt-paper);
+  padding: clamp(56px, 8vw, 108px) var(--rt-pad);
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px;
+  position: relative; overflow: hidden;
+}
+.rt-rr-cta .kick { color: var(--rt-gold); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; text-transform: uppercase; }
+.rt-rr-cta h2 {
+  font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9;
+  font-size: clamp(38px, 6vw, 92px); margin: 14px 0 0;
+}
+.rt-rr-cta h2 em { font-style: normal; color: var(--rt-gold); }
+.rt-rr-cta .sub { margin: 20px 0 0; font-size: 13px; letter-spacing: 0.02em; opacity: 0.66; line-height: 1.7; max-width: 40ch; }
+.rt-rr-cta .hours {
+  margin-top: 16px; font-family: var(--rt-font-mono); font-size: 10px;
+  letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55;
+}
+.rt-rr-cta-actions { display: flex; flex-direction: column; gap: 14px; min-width: 230px; }
+.rt-rr-cta-deva {
+  position: absolute; right: -2%; bottom: -18%;
+  font-family: var(--rt-font-deva); color: var(--rt-gold);
+  font-size: clamp(120px, 20vw, 300px); line-height: 1; opacity: 0.07;
+  pointer-events: none; user-select: none;
+}
+
+/* ─── responsive ──────────────────────────────────────────────────────
+   Tuned for: 1440 (base) · 1024 · 768 · 450 · 320
+   ──────────────────────────────────────────────────────────────────── */
+
+/* ≤1024 — laptop / tablet landscape: split panels stack, 4-up → 2-up */
+@media (max-width: 1024px) {
+  .rt-rr-refund { grid-template-columns: 1fr; }
+  .rt-rr-refund .l { border-right: 0; border-bottom: 1px solid var(--rt-ink); }
+  .rt-rr-cards { grid-template-columns: 1fr 1fr; }
+  .rt-rr-card:nth-child(2) { border-right: 0; }
+  .rt-rr-card:nth-child(1), .rt-rr-card:nth-child(2) { border-bottom: 1px solid var(--rt-line); }
+  .rt-rr-steps { grid-template-columns: 1fr 1fr; }
+  .rt-rr-step:nth-child(2) { border-right: 0; }
+  .rt-rr-step:nth-child(1), .rt-rr-step:nth-child(2) { border-bottom: 1px solid var(--rt-line); }
+}
+
+/* ≤768 — tablet portrait: hero + CTA to single column, conditions stack */
+@media (max-width: 768px) {
+  .rt-rr-hero { grid-template-columns: 1fr; row-gap: 8px; }
+  .rt-rr-hero-deva { display: none; }
+  .rt-rr-conds { grid-template-columns: 1fr; }
+  .rt-rr-cond { border-right: 0; border-bottom: 1px solid var(--rt-line); }
+  .rt-rr-cond:last-child { border-bottom: 0; }
+  .rt-rr-cta { grid-template-columns: 1fr; row-gap: 30px; }
+  .rt-rr-cta-actions { min-width: 0; }
+}
+
+/* ≤450 — phone: all multi-up grids collapse to one column */
+@media (max-width: 450px) {
+  .rt-rr-cards { grid-template-columns: 1fr; }
+  .rt-rr-card { border-right: 0; border-bottom: 1px solid var(--rt-line); min-height: 0; }
+  .rt-rr-card:last-child { border-bottom: 0; }
+  .rt-rr-card .name { min-height: 0; margin-top: 4px; }
+  .rt-rr-steps { grid-template-columns: 1fr; }
+  .rt-rr-step { border-right: 0; border-bottom: 1px solid var(--rt-line); }
+  .rt-rr-step:last-child { border-bottom: 0; }
+  .rt-rr-step .big-no { font-size: 56px; }
+  .rt-rr-note { grid-template-columns: 1fr; gap: 8px; }
+  .rt-rr-rcase { grid-template-columns: 30px 1fr; gap: 12px; }
+  .rt-rr-cta-actions { width: 100%; }
+  .rt-rr-cta-actions .rt-rr-btn { justify-content: center; }
+}
+
+/* ≤320 — smallest phones: tighten type + button padding */
+@media (max-width: 320px) {
+  .rt-rr-hero h1 { font-size: 42px; }
+  .rt-rr-cta h2 { font-size: 34px; }
+  .rt-rr-cta-actions .rt-rr-btn { padding: 15px 20px; }
+  .rt-rr-note { padding: 16px 16px; }
+}
