@@ -491,9 +491,9 @@
       left: 50%;
       transform: translateX(-50%);
       pointer-events: auto;
-      font-size: 17px;
-      letter-spacing: 0.26em;
-      text-indent: 0.26em;
+      font-size: 21px;
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
     }
     .rt-hd__menu-btn { display: flex; grid-column: 1; justify-self: start; }
     /* Logo is out of grid flow (absolute), so actions must be pinned to col 3 explicitly */
@@ -503,6 +503,11 @@
     /* Currency chip moves into the nav drawer on mobile so it can't crowd the centered logo */
     .rt-hd__actions .rt-currency { display: none; }
     .rt-hd__search-panel { padding: 0 16px; }
+  }
+
+  /* Phones — shrink the wordmark so it can't crowd the right-hand icons */
+  @media (max-width: 480px) {
+    .rt-hd__logo { font-size: 16px; letter-spacing: 0.2em; text-indent: 0.2em; }
   }
 
   /* ── Cart notification popup ── */
