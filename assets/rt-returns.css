@@ -80,6 +80,7 @@
 .rt-rr-hero h1 {
   font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9;
   font-size: clamp(46px, 8.6vw, 150px); margin: 16px 0 0;
+  color: var(--rt-ink); word-break: normal;
 }
 .rt-rr-hero h1 em { font-style: normal; color: var(--rt-gold); }
 .rt-rr-hero-sub {
