@@ -140,7 +140,7 @@
     </div>
     <div class="rt-rr-cta-actions" data-rt-reveal style="--d:200ms;">
       {%- if s.cta_whatsapp_url != blank and s.cta_wa_label != blank -%}
-        <a class="rt-rr-btn rt-rr-btn--wa" href="{{ s.cta_whatsapp_url }}" target="_blank" rel="noopener">{{ s.cta_wa_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+        <a class="rt-rr-btn rt-rr-btn--wa" href="{{ s.cta_whatsapp_url | escape }}" target="_blank" rel="noopener">{{ s.cta_wa_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
       {%- endif -%}
       {%- if s.cta_email != blank and s.cta_email_label != blank -%}
         <a class="rt-rr-btn rt-rr-btn--onink" href="mailto:{{ s.cta_email | escape }}?subject=Returns%20%26%20Exchange&body=Order%20Number%3A%20%0AIssue%3A%20">{{ s.cta_email_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
