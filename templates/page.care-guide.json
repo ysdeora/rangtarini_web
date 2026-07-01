@@ -1,0 +1,144 @@
+{
+  "sections": {
+    "rt_care": {
+      "type": "rt-care-guide",
+      "blocks": {
+        "ess_01": {
+          "type": "essential",
+          "settings": {
+            "name": "Last on, first off",
+            "description": "Put your jewellery on after dressing, and remove it before bathing, swimming, or exercising. Water, steam, and sweat are the quickest way to dull a finish."
+          }
+        },
+        "ess_02": {
+          "type": "essential",
+          "settings": {
+            "name": "Keep away from chemicals",
+            "description": "Avoid contact with perfumes, lotions, and hairspray. Apply them first and let them settle before you put your pieces on."
+          }
+        },
+        "ess_03": {
+          "type": "essential",
+          "settings": {
+            "name": "Wipe after every wear",
+            "description": "Gently wipe with a soft, dry cloth after each wear to remove moisture and oils. This one habit does more than anything else to keep the shine."
+          }
+        },
+        "ess_04": {
+          "type": "essential",
+          "settings": {
+            "name": "Store airtight, in the dark",
+            "description": "Keep each piece in the airtight pouch provided, away from direct sunlight and humidity. Sealed and shaded, silver stays brighter for far longer."
+          }
+        },
+        "ess_05": {
+          "type": "essential",
+          "settings": {
+            "name": "Keep pieces separate",
+            "description": "Store pieces individually to prevent scratching. Chains, stones, and polished surfaces mark one another when they sit together."
+          }
+        },
+        "clean_01": {
+          "type": "clean_step",
+          "settings": {
+            "title": "Wipe with a soft cloth",
+            "body": "Use the polishing cloth provided, or any lint-free soft cloth. Buff gently in straight lines to lift oils and light tarnish."
+          }
+        },
+        "clean_02": {
+          "type": "clean_step",
+          "settings": {
+            "title": "For a deeper clean",
+            "body": "Dip in lukewarm water with a drop of mild soap, wipe softly with your fingertips, then rinse and pat completely dry. Silver and gold-plated pieces only — avoid on kundan, pearls, and delicate stones."
+          }
+        },
+        "clean_03": {
+          "type": "clean_step",
+          "settings": {
+            "title": "Dry thoroughly",
+            "body": "Moisture is the enemy of shine. Dry every surface and setting fully before returning the piece to its airtight pouch."
+          }
+        },
+        "clean_04": {
+          "type": "clean_step",
+          "settings": {
+            "title": "Never use harsh cleaners",
+            "body": "Avoid toothpaste, chemical dips, and abrasive brushes — they strip plating and scratch stones. When in doubt, send it to us for a professional polish."
+          }
+        },
+        "mat_01": {
+          "type": "material",
+          "settings": {
+            "deva": "रजत",
+            "name": "Sterling silver",
+            "body": "925 silver naturally darkens over time — this patina is normal, not a fault. A soft polishing cloth restores its brightness in moments; store airtight to slow tarnish."
+          }
+        },
+        "mat_02": {
+          "type": "material",
+          "settings": {
+            "deva": "जड़ाऊ",
+            "name": "Kundan & Jadau",
+            "body": "Uncut stones are set with natural lac, so keep these pieces away from water and heat. Never submerge them — wipe only the metal gently with a dry cloth."
+          }
+        },
+        "mat_03": {
+          "type": "material",
+          "settings": {
+            "deva": "स्वर्ण",
+            "name": "Gold-plated",
+            "body": "Plating is a fine surface layer. Handle gently, keep it away from friction and chemicals, and clean only with a dry cloth to preserve the finish for years."
+          }
+        }
+      },
+      "block_order": [
+        "ess_01",
+        "ess_02",
+        "ess_03",
+        "ess_04",
+        "ess_05",
+        "clean_01",
+        "clean_02",
+        "clean_03",
+        "clean_04",
+        "mat_01",
+        "mat_02",
+        "mat_03"
+      ],
+      "settings": {
+        "hero_kicker": "Jewellery Care · Keep it luminous",
+        "hero_title": "<p>Wear it <em>often.</em></p>",
+        "hero_sub": "Your Rangtarini piece is built to last — with a little care, it will stay luminous for years. A few gentle habits keep the metal bright, the stones clear, and the finish as beautiful as the day it left our bench.",
+        "hero_deva": "देखभाल",
+        "promise_kicker": "Made to be lived in",
+        "promise_title": "Handcrafted to last a lifetime.",
+        "promise_body": "Each Rangtarini piece is made by hand to be worn and loved, not locked away. Fine jewellery only asks for a little attention in return — keep it away from moisture and chemicals, store it gently, and it will hold its glow for generations.",
+        "ess_idx": "The essentials",
+        "ess_title": "Everyday care.",
+        "ess_meta": "Five simple habits\nA minute a day",
+        "avoid_kicker": "Keep it away from",
+        "avoid_title": "<p>What dulls <em>the shine.</em></p>",
+        "avoid_body": "Everyday products and elements are the most common cause of tarnish and clouded stones. A moment's care avoiding these keeps your piece looking new.",
+        "avoid_chips": "Perfume\nLotion & Cream\nHairspray\nChlorine\nSaltwater\nSweat\nHousehold Cleaners\nHumidity\nDirect Sunlight",
+        "avoid_deva": "यत्न",
+        "clean_kicker": "At-home cleaning",
+        "clean_title": "Restoring the shine.",
+        "clean_body": "If a piece looks a little tired, a gentle clean at home brings it back. Always be soft — never scrub, and keep water away from strung kundan and glued settings.",
+        "mats_kicker": "Know your metal",
+        "mats_title": "Care by material.",
+        "mats_body": "Each of our materials wears a little differently. Here's how to keep every kind of Rangtarini piece at its best.",
+        "quickref_items": "Soft, dry cloth only — never scrub or use chemicals\nAirtight pouch, away from sunlight and humidity\nStore each piece separately to prevent scratches",
+        "cta_kicker": "Care & servicing",
+        "cta_title": "<p>We'll keep it <em>bright.</em></p>",
+        "cta_body": "Loved a piece a little too well? Our bench in Udaipur re-polishes, re-plates, and restrings Rangtarini jewellery so it looks its best for years to come. Reach out and we'll guide you.",
+        "cta_hours": "Available Mon–Sat · 10:00–19:00 IST",
+        "wa_label": "WhatsApp us",
+        "wa_url": "https://wa.me/919251110762?text=Hi%20Rangtarini%2C%20I%27d%20like%20help%20caring%20for%20my%20piece.%20Order%20Number%3A%20%0APiece%3A%20",
+        "email_label": "Email us",
+        "email_url": "mailto:info@rangtarini.com?subject=Jewellery%20Care%20%26%20Servicing&body=Order%20Number%3A%20%0APiece%3A%20%0AHow%20can%20we%20help%3F%20",
+        "cta_deva": "देखभाल"
+      }
+    }
+  },
+  "order": ["rt_care"]
+}
