@@ -1,0 +1,614 @@
+{%- liquid
+  assign topic_options = section.settings.topic_options | default: 'An existing order,A custom / bespoke piece,Sizing & care,Wholesale & press,Something else' | split: ','
+-%}
+
+<style>
+  /* ══════════════════════════════════════════════════════════════════
+     Rangtarini — Contact · Heirloom
+     Built on the global --rt-* design tokens (assets/base.css); reveals
+     use the global data-rt-reveal system (rt-motion.css + rt-reveal.js).
+     All styling scoped to .rt-contact-page to avoid collisions.
+     ══════════════════════════════════════════════════════════════════ */
+  .rt-contact-page { color: var(--rt-ink); background: var(--rt-paper); font-family: var(--rt-font-grotesk); }
+  .rt-contact-page *, .rt-contact-page *::before, .rt-contact-page *::after { box-sizing: border-box; }
+  .rt-contact-page a { color: inherit; text-decoration: none; }
+
+  /* ── type utilities (ported from heirloom.css) ── */
+  .rt-contact-page .t-caps { font-family: var(--rt-font-grotesk); text-transform: uppercase; letter-spacing: 0.22em; font-weight: 500; font-size: 11px; }
+  .rt-contact-page .t-disp { font-family: var(--rt-font-grotesk); font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; line-height: 0.9; margin: 0; }
+
+  /* ── placeholder imagery (striped, labelled) — studio fallback ── */
+  .rt-contact-page .ph {
+    position: relative; overflow: hidden;
+    background:
+      repeating-linear-gradient(135deg, rgba(10,10,10,0.06) 0 14px, rgba(10,10,10,0.10) 14px 28px),
+      var(--ph-bg, #cdc6b5);
+    color: rgba(10,10,10,0.55);
+    font-family: var(--rt-font-mono);
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 12px;
+  }
+  .rt-contact-page .ph span { max-width: 82%; opacity: 0.85; position: relative; z-index: 1; }
+  .rt-contact-page .ph[data-tone="sand"] { --ph-bg: #d9c89a; }
+
+  /* ── button ── */
+  .rt-contact-page .hl-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 17px 30px;
+    border: 1px solid var(--rt-ink);
+    background: var(--rt-ink); color: var(--rt-paper);
+    font-family: var(--rt-font-grotesk); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    position: relative; overflow: hidden; isolation: isolate;
+    white-space: nowrap; cursor: pointer;
+    transition: color 0.35s var(--rt-ez), border-color 0.35s var(--rt-ez);
+  }
+  .rt-contact-page .hl-btn::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: var(--rt-gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.45s var(--rt-ez);
+  }
+  .rt-contact-page .hl-btn:hover { color: var(--rt-ink); }
+  .rt-contact-page .hl-btn:hover::before { transform: scaleX(1); }
+  .rt-contact-page .hl-btn .arr { transition: transform 0.35s var(--rt-ez); }
+  .rt-contact-page .hl-btn:hover .arr { transform: translateX(5px); }
+
+  /* ── section head (shared editorial pattern) ── */
+  .rt-contact-page .hl-shead {
+    padding: clamp(48px, 7vw, 86px) var(--rt-pad) clamp(20px, 3vw, 30px);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px;
+    border-bottom: 1px solid var(--rt-ink);
+  }
+  .rt-contact-page .hl-shead .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; }
+  .rt-contact-page .hl-shead h2 { font-size: clamp(38px, 6vw, 96px); margin-top: 12px; }
+  .rt-contact-page .hl-shead .meta { text-align: right; opacity: 0.6; font-size: 10px; letter-spacing: 0.28em; line-height: 2; }
+
+  /* ── hero / masthead ── */
+  .rt-contact-page .rc-hero {
+    padding: clamp(64px, 11vh, 132px) var(--rt-pad) clamp(28px, 4vw, 44px);
+    border-bottom: 1px solid var(--rt-ink);
+    display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 28px;
+    position: relative; overflow: hidden;
+  }
+  .rt-contact-page .rc-hero .idx { color: var(--rt-gold-deep); font-weight: 600; letter-spacing: 0.3em; font-size: 10.5px; }
+  .rt-contact-page .rc-hero h1 { font-size: clamp(52px, 10vw, 168px); margin: 16px 0 0; }
+  .rt-contact-page .rc-hero h1 em { font-style: normal; color: var(--rt-gold); }
+  .rt-contact-page .rc-hero h1 .dot { color: var(--rt-gold); }
+  .rt-contact-page .rc-hero-sub { max-width: 430px; margin: 22px 0 0; font-size: 14px; line-height: 1.75; opacity: 0.72; text-wrap: pretty; }
+  .rt-contact-page .rc-hero-deva {
+    font-family: var(--rt-font-deva); color: var(--rt-gold);
+    font-size: clamp(18px, 2vw, 26px); letter-spacing: 0;
+    writing-mode: vertical-rl; align-self: end; opacity: 0.9;
+  }
+
+  /* ── main split: details rail + form ── */
+  .rt-contact-page .rc-split { display: grid; grid-template-columns: 0.92fr 1.08fr; border-bottom: 1px solid var(--rt-ink); }
+  .rt-contact-page .rc-details {
+    padding: clamp(36px, 5vw, 72px) var(--rt-pad);
+    border-right: 1px solid var(--rt-ink);
+    display: flex; flex-direction: column; gap: clamp(26px, 3.4vw, 42px);
+  }
+  .rt-contact-page .rc-details-head .kicker { font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; }
+  .rt-contact-page .rc-details-head h2 {
+    font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em;
+    font-size: clamp(24px, 2.8vw, 38px); line-height: 1; margin: 12px 0 0;
+  }
+
+  /* contact method rows */
+  .rt-contact-page .rc-methods { display: flex; flex-direction: column; }
+  .rt-contact-page .rc-method {
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px;
+    padding: clamp(18px, 2vw, 24px) 0;
+    border-top: 1px solid var(--rt-line);
+    transition: padding-left 0.35s var(--rt-ez);
+  }
+  .rt-contact-page .rc-method:last-child { border-bottom: 1px solid var(--rt-line); }
+  .rt-contact-page .rc-method:hover { padding-left: 10px; }
+  .rt-contact-page .rc-method > span:first-child { display: flex; flex-direction: column; }
+  .rt-contact-page .rc-method .lbl { display: block; font-size: 9.5px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--rt-gold-deep); }
+  .rt-contact-page .rc-method .val { display: block; font-weight: 800; letter-spacing: -0.01em; font-size: clamp(17px, 1.9vw, 23px); margin-top: 8px; line-height: 1.1; }
+  .rt-contact-page .rc-method .note { display: block; font-size: 11px; opacity: 0.55; margin-top: 7px; letter-spacing: 0.02em; }
+  .rt-contact-page .rc-method .arr { font-size: 18px; opacity: 0.4; transition: transform 0.35s var(--rt-ez), opacity 0.35s var(--rt-ez); }
+  .rt-contact-page .rc-method:hover .arr { transform: translateX(6px); opacity: 1; color: var(--rt-gold); }
+
+  /* hours */
+  .rt-contact-page .rc-hours {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+    font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; opacity: 0.6; padding-top: 4px;
+  }
+  .rt-contact-page .rc-hours .on { display: inline-flex; align-items: center; gap: 7px; color: var(--rt-wa-green); opacity: 1; }
+  .rt-contact-page .rc-hours .on::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--rt-wa-green); box-shadow: 0 0 0 0 rgba(31,158,88,0.5);
+    animation: rc-pulse 2.2s var(--rt-ez) infinite;
+  }
+  @keyframes rc-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(31,158,88,0.45); }
+    70% { box-shadow: 0 0 0 7px rgba(31,158,88,0); }
+    100% { box-shadow: 0 0 0 0 rgba(31,158,88,0); }
+  }
+
+  /* studio card */
+  .rt-contact-page .rc-studio { border: 1px solid var(--rt-ink); display: grid; grid-template-rows: auto 1fr; }
+  .rt-contact-page .rc-studio .frame { aspect-ratio: 16 / 8.4; overflow: hidden; }
+  .rt-contact-page .rc-studio .frame .ph { width: 100%; height: 100%; }
+  .rt-contact-page .rc-studio .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rt-contact-page .rc-studio .body { padding: clamp(18px, 2vw, 26px); display: flex; flex-direction: column; gap: 6px; }
+  .rt-contact-page .rc-studio .place { font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; font-size: 17px; }
+  .rt-contact-page .rc-studio .addr { font-size: 12.5px; line-height: 1.7; opacity: 0.66; max-width: 300px; }
+  .rt-contact-page .rc-studio .coord { font-family: var(--rt-font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.5; margin-top: 8px; }
+
+  /* ── form panel ── */
+  .rt-contact-page .rc-formwrap { background: var(--rt-bone); padding: clamp(36px, 5vw, 72px) var(--rt-pad); position: relative; }
+  .rt-contact-page .rc-formwrap .kicker { font-family: var(--rt-font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.5; }
+  .rt-contact-page .rc-formwrap h2 {
+    font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em;
+    font-size: clamp(24px, 2.8vw, 38px); line-height: 1; margin: 12px 0 0;
+  }
+  .rt-contact-page .rc-form { margin-top: clamp(26px, 3vw, 38px); display: flex; flex-direction: column; gap: 22px; }
+  .rt-contact-page .rc-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .rt-contact-page .rc-field { display: flex; flex-direction: column; gap: 9px; position: relative; }
+  .rt-contact-page .rc-field label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; opacity: 0.65; }
+  .rt-contact-page .rc-field label .req { color: var(--rt-gold-deep); margin-left: 3px; }
+  .rt-contact-page .rc-field input,
+  .rt-contact-page .rc-field select,
+  .rt-contact-page .rc-field textarea {
+    font-family: var(--rt-font-grotesk);
+    font-size: 14px; color: var(--rt-ink);
+    background: transparent;
+    border: 0; border-bottom: 1px solid var(--rt-ink);
+    padding: 11px 2px; outline: none; border-radius: 0;
+    transition: border-color 0.3s var(--rt-ez); width: 100%;
+  }
+  .rt-contact-page .rc-field select {
+    appearance: none; -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--rt-ink) 50%),
+                      linear-gradient(135deg, var(--rt-ink) 50%, transparent 50%);
+    background-position: calc(100% - 12px) calc(50% - 2px), calc(100% - 6px) calc(50% - 2px);
+    background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; cursor: pointer;
+  }
+  .rt-contact-page .rc-field textarea { resize: vertical; min-height: 118px; line-height: 1.6; }
+  .rt-contact-page .rc-field input::placeholder,
+  .rt-contact-page .rc-field textarea::placeholder { color: rgba(10,10,10,0.35); }
+  .rt-contact-page .rc-field input:focus,
+  .rt-contact-page .rc-field select:focus,
+  .rt-contact-page .rc-field textarea:focus { border-color: var(--rt-gold); }
+  .rt-contact-page .rc-field.rc-invalid input,
+  .rt-contact-page .rc-field.rc-invalid textarea { border-color: #a4442e; }
+  .rt-contact-page .rc-err { font-size: 10px; letter-spacing: 0.02em; color: #a4442e; opacity: 0; height: 0; transition: opacity 0.25s var(--rt-ez); }
+  .rt-contact-page .rc-field.rc-invalid .rc-err { opacity: 1; height: auto; }
+
+  .rt-contact-page .rc-form-foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 4px; }
+  .rt-contact-page .rc-form-foot .fine { font-family: var(--rt-font-mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.55; }
+  .rt-contact-page .rc-submit { min-width: 190px; justify-content: center; }
+
+  /* server-side error banner */
+  .rt-contact-page .rc-form-errors { margin: 0 0 4px; padding: 14px 18px; background: rgba(164,68,46,0.08); border: 1px solid rgba(164,68,46,0.4); font-size: 12px; letter-spacing: 0.02em; color: #a4442e; }
+  .rt-contact-page .rc-form-errors ul { margin: 8px 0 0; padding-left: 18px; }
+  .rt-contact-page .rc-form-errors li { margin-top: 2px; }
+
+  /* success note */
+  .rt-contact-page .rc-sent-note {
+    margin: 0 0 4px; display: flex; align-items: center; gap: 12px;
+    font-size: 12.5px; letter-spacing: 0.02em; padding: 14px 18px;
+    background: rgba(31,158,88,0.1); border: 1px solid rgba(31,158,88,0.4);
+  }
+  .rt-contact-page .rc-sent-note .tick {
+    width: 20px; height: 20px; flex: none; border-radius: 50%;
+    background: var(--rt-wa-green); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 11px;
+  }
+
+  /* ── faq strip ── */
+  .rt-contact-page .rc-faq { border-bottom: 1px solid var(--rt-ink); }
+  .rt-contact-page .rc-faq-item {
+    border-bottom: 1px solid var(--rt-line);
+    padding: clamp(20px, 2.4vw, 30px) var(--rt-pad);
+    display: grid; grid-template-columns: 44px 1fr auto; gap: 18px; align-items: start; cursor: pointer;
+  }
+  .rt-contact-page .rc-faq-item:last-child { border-bottom: 0; }
+  .rt-contact-page .rc-faq-item:focus-visible { outline: 2px solid var(--rt-gold); outline-offset: -2px; }
+  .rt-contact-page .rc-faq-item .no { font-family: var(--rt-font-mono); font-size: 11px; letter-spacing: 0.16em; color: var(--rt-gold-deep); padding-top: 4px; }
+  .rt-contact-page .rc-faq-item .q { font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; font-size: clamp(16px, 1.8vw, 22px); }
+  .rt-contact-page .rc-faq-item .a {
+    grid-column: 2 / 3; margin-top: 0; max-height: 0; overflow: hidden;
+    font-size: 13px; line-height: 1.75; opacity: 0.7; max-width: 640px;
+    transition: max-height 0.4s var(--rt-ez), margin-top 0.4s var(--rt-ez);
+  }
+  .rt-contact-page .rc-faq-item.is-open .a { max-height: 320px; margin-top: 14px; }
+  .rt-contact-page .rc-faq-item .pm { width: 22px; height: 22px; position: relative; opacity: 0.6; transition: transform 0.35s var(--rt-ez); }
+  .rt-contact-page .rc-faq-item .pm::before,
+  .rt-contact-page .rc-faq-item .pm::after { content: ""; position: absolute; background: var(--rt-ink); left: 50%; top: 50%; }
+  .rt-contact-page .rc-faq-item .pm::before { width: 14px; height: 1.5px; transform: translate(-50%, -50%); }
+  .rt-contact-page .rc-faq-item .pm::after { width: 1.5px; height: 14px; transform: translate(-50%, -50%); transition: transform 0.35s var(--rt-ez); }
+  .rt-contact-page .rc-faq-item.is-open .pm::after { transform: translate(-50%, -50%) scaleY(0); }
+
+  /* ═══ responsive · 1441 / 1024 / 768 / 450 / 340 ═══ */
+  @media (min-width: 1441px) {
+    .rt-contact-page .rc-details,
+    .rt-contact-page .rc-formwrap { padding-left: clamp(48px, 5vw, 96px); padding-right: clamp(48px, 5vw, 96px); }
+    .rt-contact-page .rc-hero-sub { max-width: 480px; }
+  }
+  @media (max-width: 1024px) {
+    .rt-contact-page .rc-split { grid-template-columns: 1fr; }
+    .rt-contact-page .rc-details { border-right: 0; border-bottom: 1px solid var(--rt-ink); }
+    .rt-contact-page .rc-studio { max-width: 560px; }
+  }
+  @media (max-width: 768px) {
+    .rt-contact-page .rc-hero { grid-template-columns: 1fr; }
+    .rt-contact-page .rc-hero-deva { display: none; }
+    .rt-contact-page .rc-hero-sub { max-width: none; }
+    .rt-contact-page .rc-studio { max-width: none; }
+  }
+  @media (max-width: 450px) {
+    .rt-contact-page .rc-hero { padding-top: clamp(48px, 9vh, 84px); }
+    .rt-contact-page .rc-hero .idx { font-size: 9.5px; letter-spacing: 0.22em; }
+    .rt-contact-page .rc-row2 { grid-template-columns: 1fr; gap: 22px; }
+    .rt-contact-page .rc-hours { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .rt-contact-page .rc-form-foot { flex-direction: column; align-items: stretch; gap: 16px; }
+    .rt-contact-page .rc-submit { width: 100%; }
+    .rt-contact-page .rc-method .val { font-size: clamp(16px, 5vw, 20px); }
+    .rt-contact-page .rc-faq-item { grid-template-columns: 26px 1fr auto; gap: 12px; }
+    .rt-contact-page .rc-faq-item .a { grid-column: 1 / -1; }
+    .rt-contact-page .rc-faq-item.is-open .a { max-height: 360px; }
+  }
+  @media (max-width: 340px) {
+    .rt-contact-page .rc-hero h1 { font-size: clamp(44px, 15vw, 56px); }
+    .rt-contact-page .rc-method .val { font-size: 15.5px; word-break: break-word; }
+    .rt-contact-page .rc-details-head h2,
+    .rt-contact-page .rc-formwrap h2 { font-size: 22px; }
+    .rt-contact-page .rc-faq-item .q { font-size: 15px; }
+    .rt-contact-page .rc-studio .coord { font-size: 8.5px; letter-spacing: 0.1em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rt-contact-page .rc-hours .on::before { animation: none; }
+  }
+</style>
+
+<div class="rt-contact-page" id="rt-contact-{{ section.id }}">
+
+  <!-- ════════ masthead ════════ -->
+  <section class="rc-hero">
+    <div>
+      {%- if section.settings.hero_eyebrow != blank -%}
+        <span class="idx" data-rt-reveal>{{ section.settings.hero_eyebrow | escape }}</span>
+      {%- endif -%}
+      <h1 class="t-disp">
+        <span data-rt-reveal style="--rt-reveal-delay: 60ms">{{ section.settings.hero_line1 | escape }}</span>
+        <span data-rt-reveal style="--rt-reveal-delay: 160ms"><em>{{ section.settings.hero_line2 | escape }}<span class="dot">.</span></em></span>
+      </h1>
+      {%- if section.settings.hero_sub != blank -%}
+        <p class="rc-hero-sub" data-rt-reveal style="--rt-reveal-delay: 280ms">{{ section.settings.hero_sub | escape }}</p>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.hero_deva != blank -%}
+      <span class="rc-hero-deva" aria-hidden="true">{{ section.settings.hero_deva | escape }}</span>
+    {%- endif -%}
+  </section>
+
+  <!-- ════════ details + form ════════ -->
+  <section class="rc-split">
+
+    <!-- left · direct channels -->
+    <div class="rc-details">
+      <div class="rc-details-head" data-rt-reveal>
+        {%- if section.settings.details_kicker != blank -%}<span class="kicker">{{ section.settings.details_kicker | escape }}</span>{%- endif -%}
+        <h2>{{ section.settings.details_heading }}</h2>
+      </div>
+
+      <div class="rc-methods" data-rt-reveal style="--rt-reveal-delay: 90ms">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'method' -%}
+            {%- assign m_url = block.settings.url | default: '#' -%}
+            <a class="rc-method" href="{{ m_url }}"{% if m_url contains '//' %} target="_blank" rel="noopener noreferrer"{% endif %} {{ block.shopify_attributes }}>
+              <span>
+                <span class="lbl">{{ block.settings.label | escape }}</span>
+                <span class="val">{{ block.settings.value | escape }}</span>
+                {%- if block.settings.note != blank -%}<span class="note">{{ block.settings.note | escape }}</span>{%- endif -%}
+              </span>
+              <span class="arr" aria-hidden="true">&rarr;</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.hours_text != blank -%}
+        <div class="rc-hours" data-rt-reveal style="--rt-reveal-delay: 150ms">
+          {%- if section.settings.hours_open_label != blank -%}<span class="on">{{ section.settings.hours_open_label | escape }}</span>{%- endif -%}
+          <span>{{ section.settings.hours_text | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.studio_place != blank or section.settings.studio_image != blank -%}
+        <div class="rc-studio" data-rt-reveal style="--rt-reveal-delay: 200ms">
+          <div class="frame">
+            {%- if section.settings.studio_image != blank -%}
+              {{ section.settings.studio_image | image_url: width: 1200 | image_tag:
+                loading: 'lazy',
+                widths: '400, 600, 800, 1200',
+                sizes: '(max-width: 1024px) 92vw, 46vw',
+                alt: section.settings.studio_place }}
+            {%- else -%}
+              <div class="ph" data-tone="sand"><span>{{ section.settings.studio_place | default: 'Rangtarini studio' | escape }} &middot; Udaipur</span></div>
+            {%- endif -%}
+          </div>
+          <div class="body">
+            {%- if section.settings.studio_place != blank -%}<span class="place">{{ section.settings.studio_place | escape }}</span>{%- endif -%}
+            {%- if section.settings.studio_address != blank -%}<span class="addr">{{ section.settings.studio_address | escape }}</span>{%- endif -%}
+            {%- if section.settings.studio_coord != blank -%}<span class="coord">{{ section.settings.studio_coord | escape }}</span>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- right · form -->
+    <div class="rc-formwrap">
+      {%- if section.settings.form_kicker != blank -%}<span class="kicker">{{ section.settings.form_kicker | escape }}</span>{%- endif -%}
+      <h2>{{ section.settings.form_heading }}</h2>
+
+      {%- form 'contact', id: 'ContactForm', class: 'rc-form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="rc-sent-note" tabindex="-1" autofocus>
+            <span class="tick" aria-hidden="true">&check;</span>
+            <span>{{ section.settings.success_text | escape }}</span>
+          </div>
+        {%- elsif form.errors -%}
+          <div class="rc-form-errors" role="alert" tabindex="-1" autofocus>
+            {{ 'templates.contact.form.error_heading' | t }}
+            <ul>
+              {%- for field in form.errors -%}
+                <li>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="rc-row2">
+          <div class="rc-field">
+            <label for="ContactForm-name">{{ section.settings.label_name | default: 'Name' | escape }}</label>
+            <input
+              type="text"
+              id="ContactForm-name"
+              name="contact[name]"
+              placeholder="{{ section.settings.ph_name | default: 'Your name' | escape }}"
+              autocomplete="name"
+              value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}">
+          </div>
+          <div class="rc-field">
+            <label for="ContactForm-phone">{{ section.settings.label_phone | default: 'Phone' | escape }}</label>
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              name="contact[phone]"
+              placeholder="{{ section.settings.ph_phone | default: '+91 …' | escape }}"
+              autocomplete="tel"
+              value="{% if form.phone %}{{ form.phone | escape }}{% elsif customer %}{{ customer.phone | escape }}{% endif %}">
+          </div>
+        </div>
+
+        <div class="rc-field{% if form.errors contains 'email' %} rc-invalid{% endif %}" data-required>
+          <label for="ContactForm-email">{{ section.settings.label_email | default: 'Email' | escape }} <span class="req">*</span></label>
+          <input
+            type="email"
+            id="ContactForm-email"
+            name="contact[email]"
+            placeholder="{{ section.settings.ph_email | default: 'you@email.com' | escape }}"
+            autocomplete="email"
+            spellcheck="false"
+            autocapitalize="off"
+            required
+            value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
+            {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="ContactForm-email-error"{% endif %}>
+          <span class="rc-err" id="ContactForm-email-error">
+            {%- if form.errors contains 'email' -%}
+              {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+            {%- else -%}
+              {{ section.settings.err_email | default: 'Please enter a valid email address.' | escape }}
+            {%- endif -%}
+          </span>
+        </div>
+
+        <div class="rc-field">
+          <label for="ContactForm-topic">{{ section.settings.label_topic | default: 'How can we help?' | escape }}</label>
+          <select id="ContactForm-topic" name="contact[Topic]">
+            {%- for opt in topic_options -%}
+              {%- assign opt = opt | strip -%}
+              {%- if opt != blank -%}<option value="{{ opt | escape }}">{{ opt | escape }}</option>{%- endif -%}
+            {%- endfor -%}
+          </select>
+        </div>
+
+        <div class="rc-field" data-required>
+          <label for="ContactForm-body">{{ section.settings.label_message | default: 'Message' | escape }} <span class="req">*</span></label>
+          <textarea
+            id="ContactForm-body"
+            name="contact[body]"
+            placeholder="{{ section.settings.ph_message | default: 'Tell us what you’re looking for…' | escape }}"
+            required>{{ form.body }}</textarea>
+          <span class="rc-err">{{ section.settings.err_message | default: 'Please add a short message.' | escape }}</span>
+        </div>
+
+        <div class="rc-form-foot">
+          <span class="fine">{{ section.settings.reply_note | default: 'We usually reply within 24 hours.' | escape }}</span>
+          <button type="submit" class="hl-btn rc-submit">{{ section.settings.submit_label | default: 'Send message' | escape }} <span class="arr" aria-hidden="true">&rarr;</span></button>
+        </div>
+      {%- endform -%}
+    </div>
+  </section>
+
+  {%- comment -%} render the FAQ block only if the merchant added FAQ items {%- endcomment -%}
+  {%- assign faq_count = 0 -%}
+  {%- for block in section.blocks -%}{%- if block.type == 'faq' -%}{%- assign faq_count = faq_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+
+  {%- if faq_count > 0 -%}
+    <!-- ════════ quick answers ════════ -->
+    <div class="hl-shead">
+      <div>
+        {%- if section.settings.faq_eyebrow != blank -%}<span class="idx t-caps">{{ section.settings.faq_eyebrow | escape }}</span>{%- endif -%}
+        <h2 class="t-disp" data-rt-reveal>{{ section.settings.faq_heading }}</h2>
+      </div>
+      {%- if section.settings.faq_meta != blank -%}<div class="meta t-caps">{{ section.settings.faq_meta }}</div>{%- endif -%}
+    </div>
+
+    <section class="rc-faq">
+      {%- assign faq_i = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          {%- assign faq_i = faq_i | plus: 1 -%}
+          {%- assign faq_no = faq_i | prepend: '0' | slice: -2, 2 -%}
+          <div
+            class="rc-faq-item{% if faq_i == 1 %} is-open{% endif %}"
+            data-faq
+            role="button"
+            tabindex="0"
+            aria-expanded="{% if faq_i == 1 %}true{% else %}false{% endif %}"
+            {{ block.shopify_attributes }}>
+            <span class="no">{{ faq_no }}</span>
+            <div>
+              <div class="q">{{ block.settings.question | escape }}</div>
+              <div class="a">{{ block.settings.answer | escape | newline_to_br }}</div>
+            </div>
+            <span class="pm" aria-hidden="true"></span>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </section>
+  {%- endif -%}
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('rt-contact-{{ section.id }}');
+    if (!root) return;
+
+    /* ── FAQ accordion — single open, keyboard accessible ── */
+    var items = root.querySelectorAll('[data-faq]');
+    function toggle(item) {
+      var isOpen = item.classList.contains('is-open');
+      items.forEach(function (o) {
+        o.classList.remove('is-open');
+        o.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('is-open');
+        item.setAttribute('aria-expanded', 'true');
+      }
+    }
+    items.forEach(function (item) {
+      item.addEventListener('click', function () { toggle(item); });
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          toggle(item);
+        }
+      });
+    });
+
+    /* ── Contact form — inline invalid affordance (native validation still guards submit) ── */
+    var form = root.querySelector('#ContactForm');
+    if (!form) return;
+    function fieldOf(el) { return el.closest('.rc-field'); }
+    form.addEventListener('invalid', function (e) {
+      var f = fieldOf(e.target);
+      if (f) f.classList.add('rc-invalid');
+    }, true);
+    form.querySelectorAll('input, textarea').forEach(function (el) {
+      el.addEventListener('input', function () {
+        var f = fieldOf(el);
+        if (f && f.classList.contains('rc-invalid')) f.classList.remove('rc-invalid');
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Contact — Heirloom",
+  "class": "rt-contact-section",
+  "settings": [
+    { "type": "header", "content": "Masthead" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Get in touch · We reply within 24 hours" },
+    { "type": "text", "id": "hero_line1", "label": "Heading line 1", "default": "Let’s" },
+    { "type": "text", "id": "hero_line2", "label": "Heading line 2 (gilded)", "default": "talk" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sub-text", "default": "Questions about an order, a custom commission, sizing, or care — or just curious about a piece. A real person from the bench in Udaipur will get back to you." },
+    { "type": "text", "id": "hero_deva", "label": "Devanagari accent", "default": "संपर्क" },
+
+    { "type": "header", "content": "Direct lines" },
+    { "type": "text", "id": "details_kicker", "label": "Kicker", "default": "Direct lines" },
+    { "type": "text", "id": "details_heading", "label": "Heading", "info": "Basic HTML allowed (e.g. <br>).", "default": "Reach us<br>directly." },
+
+    { "type": "header", "content": "Hours" },
+    { "type": "text", "id": "hours_open_label", "label": "Open-now label", "info": "Leave blank to hide the pulsing dot.", "default": "Open now" },
+    { "type": "text", "id": "hours_text", "label": "Hours", "default": "Mon–Sat · 10:00–19:00 IST" },
+
+    { "type": "header", "content": "Studio card" },
+    { "type": "image_picker", "id": "studio_image", "label": "Studio photo", "info": "Falls back to a labelled placeholder if empty." },
+    { "type": "text", "id": "studio_place", "label": "Place name", "default": "The Studio" },
+    { "type": "textarea", "id": "studio_address", "label": "Address", "default": "Rangtarini, Udaipur — the city of lakes, Rajasthan, India. Visits by appointment only." },
+    { "type": "text", "id": "studio_coord", "label": "Coordinates line", "default": "Udaipur · 24.5854° N, 73.7125° E" },
+
+    { "type": "header", "content": "Message form" },
+    { "type": "text", "id": "form_kicker", "label": "Kicker", "default": "Send a message" },
+    { "type": "text", "id": "form_heading", "label": "Heading", "default": "Write to us." },
+    { "type": "text", "id": "label_name", "label": "Name label", "default": "Name" },
+    { "type": "text", "id": "ph_name", "label": "Name placeholder", "default": "Your name" },
+    { "type": "text", "id": "label_phone", "label": "Phone label", "default": "Phone" },
+    { "type": "text", "id": "ph_phone", "label": "Phone placeholder", "default": "+91 …" },
+    { "type": "text", "id": "label_email", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "ph_email", "label": "Email placeholder", "default": "you@email.com" },
+    { "type": "text", "id": "err_email", "label": "Email error text", "default": "Please enter a valid email address." },
+    { "type": "text", "id": "label_topic", "label": "Topic label", "default": "How can we help?" },
+    { "type": "textarea", "id": "topic_options", "label": "Topic options (comma-separated)", "default": "An existing order,A custom / bespoke piece,Sizing & care,Wholesale & press,Something else" },
+    { "type": "text", "id": "label_message", "label": "Message label", "default": "Message" },
+    { "type": "text", "id": "ph_message", "label": "Message placeholder", "default": "Tell us what you’re looking for…" },
+    { "type": "text", "id": "err_message", "label": "Message error text", "default": "Please add a short message." },
+    { "type": "text", "id": "reply_note", "label": "Reply note", "default": "We usually reply within 24 hours." },
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send message" },
+    { "type": "textarea", "id": "success_text", "label": "Success message", "default": "Thank you — your message is on its way. We’ll reply to your email within 24 hours." },
+
+    { "type": "header", "content": "Quick answers (FAQ header)" },
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Before you write" },
+    { "type": "text", "id": "faq_heading", "label": "Heading", "info": "Basic HTML allowed (e.g. <br>).", "default": "Quick<br>answers." },
+    { "type": "text", "id": "faq_meta", "label": "Meta text", "info": "Basic HTML allowed (e.g. <br>).", "default": "Most-asked · tap to open<br>Still stuck? Message us" }
+  ],
+  "blocks": [
+    {
+      "type": "method",
+      "name": "Contact method",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Email" },
+        { "type": "text", "id": "value", "label": "Value", "default": "info@rangtarini.com" },
+        { "type": "text", "id": "note", "label": "Note", "default": "Orders, custom work & press" },
+        { "type": "url", "id": "url", "label": "Link", "info": "mailto:, tel:, https://wa.me/…, or any URL." }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Where is my order?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Every order ships with a tracking link by email and WhatsApp. If it’s been more than 48 hours since your confirmation and you haven’t received one, message us with your order number and we’ll trace it the same day." }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Contact — Heirloom",
+      "blocks": [
+        { "type": "method", "settings": { "label": "Email", "value": "info@rangtarini.com", "note": "Orders, custom work & press", "url": "mailto:info@rangtarini.com" } },
+        { "type": "method", "settings": { "label": "WhatsApp", "value": "+91 92511 10762", "note": "Fastest reply · 10am–7pm IST", "url": "https://wa.me/919251110762" } },
+        { "type": "method", "settings": { "label": "Instagram", "value": "@rangtarini", "note": "New drops & bench stories", "url": "https://instagram.com/rangtarini" } },
+        { "type": "faq", "settings": { "question": "Where is my order?", "answer": "Every order ships with a tracking link by email and WhatsApp. If it’s been more than 48 hours since your confirmation and you haven’t received one, message us with your order number and we’ll trace it the same day." } },
+        { "type": "faq", "settings": { "question": "Can I commission a custom piece?", "answer": "Yes — bridal sets, jadau kundan, temple silver and restorations of family heirlooms. Send a reference, a sketch, or the piece that needs a second life over WhatsApp and our bench will reply with a plan and a date." } },
+        { "type": "faq", "settings": { "question": "What is your return & exchange policy?", "answer": "Unworn pieces can be exchanged within 7 days of delivery in their original packaging. Custom and made-to-order commissions are final sale. Reach us before returning anything so we can guide you through it." } },
+        { "type": "faq", "settings": { "question": "Is the silver really 925 & hallmarked?", "answer": "Every sterling piece is authentic 925 silver and BIS hallmarked — no coating on the base metal, made to be polished, re-strung and worn for a lifetime. Certificates accompany applicable orders." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
