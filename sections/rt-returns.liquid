@@ -1,0 +1,258 @@
+{%- comment -%}
+  rt-returns.liquid — Returns & Exchange (Heirloom)
+  Implements the Claude Design "Rangtarini Returns Heirloom" layout on the
+  theme's --rt-* tokens. All copy editable from the Theme Editor.
+  Motion: global rt-reveal.js ([data-rt-reveal] → .rt-in).
+  Section head reuses base.css .rt-shead.
+{%- endcomment -%}
+
+{{ 'rt-returns.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+-%}
+
+<div class="rt-returns" id="rt-returns-{{ section.id }}">
+
+  {%- comment -%}════════ MASTHEAD ════════{%- endcomment -%}
+  <section class="rt-rr-hero" data-screen-label="Masthead">
+    <div>
+      {%- if s.hero_kicker != blank -%}<span class="idx" data-rt-reveal>{{ s.hero_kicker | escape }}</span>{%- endif -%}
+      {%- if s.hero_headline != blank -%}<h1 data-rt-reveal style="--d:120ms;">{{ s.hero_headline }}</h1>{%- endif -%}
+      {%- if s.hero_sub != blank -%}<p class="rt-rr-hero-sub" data-rt-reveal style="--d:280ms;">{{ s.hero_sub | escape }}</p>{%- endif -%}
+    </div>
+    {%- if s.hero_deva != blank -%}<span class="rt-rr-hero-deva" aria-hidden="true">{{ s.hero_deva | escape }}</span>{%- endif -%}
+  </section>
+
+  {%- comment -%}════════ ASSURANCE ════════{%- endcomment -%}
+  <section class="rt-rr-assure" data-screen-label="Assurance">
+    {%- if s.assure_kicker != blank -%}<span class="rt-rr-kicker" data-rt-reveal>{{ s.assure_kicker | escape }}</span>{%- endif -%}
+    {%- if s.assure_headline != blank -%}<h2 class="rt-rr-h" data-rt-reveal style="--d:70ms;">{{ s.assure_headline | escape }}</h2>{%- endif -%}
+    {%- if s.assure_body != blank -%}<p data-rt-reveal style="--d:140ms;">{{ s.assure_body | escape }}</p>{%- endif -%}
+  </section>
+
+  {%- comment -%}════════ EXCHANGE ELIGIBILITY ════════{%- endcomment -%}
+  <section class="rt-rr-elig" data-screen-label="Exchange eligibility">
+    <div class="rt-rr-elig-head" data-rt-reveal>
+      {%- if s.elig_kicker != blank -%}<span class="rt-rr-kicker">{{ s.elig_kicker | escape }}</span>{%- endif -%}
+      {%- if s.elig_headline != blank -%}<h2 class="rt-rr-h">{{ s.elig_headline | escape }}</h2>{%- endif -%}
+      {%- if s.elig_body != blank -%}<p class="body">{{ s.elig_body | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="rt-rr-cards" data-rt-reveal style="--d:90ms;">
+      {%- for i in (1..4) -%}
+        {%- assign no_key = 'elig' | append: i | append: '_no' -%}
+        {%- assign name_key = 'elig' | append: i | append: '_name' -%}
+        {%- assign sub_key = 'elig' | append: i | append: '_sub' -%}
+        {%- assign card_name = s[name_key] -%}
+        {%- if card_name != blank -%}
+          <div class="rt-rr-card">
+            {%- if s[no_key] != blank -%}<span class="no">{{ s[no_key] | escape }}</span>{%- endif -%}
+            <span class="tick" aria-hidden="true"><span>✓</span></span>
+            <span class="name">{{ card_name | escape }}</span>
+            {%- if s[sub_key] != blank -%}<span class="sub">{{ s[sub_key] | escape }}</span>{%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if s.elig_note_body != blank -%}
+      <div class="rt-rr-note" data-rt-reveal style="--d:150ms;">
+        {%- if s.elig_note_label != blank -%}<span class="lbl">{{ s.elig_note_label | escape }}</span>{%- endif -%}
+        <p>{{ s.elig_note_body | escape }}</p>
+      </div>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%}════════ HOW TO EXCHANGE (head + steps) ════════{%- endcomment -%}
+  <div class="rt-shead" data-screen-label="How to request">
+    <div>
+      {%- if s.process_idx != blank -%}<span class="rt-shead__idx">{{ s.process_idx | escape }}</span>{%- endif -%}
+      {%- if s.process_title != blank -%}<h2 class="rt-shead__title" data-rt-reveal>{{ s.process_title }}</h2>{%- endif -%}
+    </div>
+    {%- if s.process_meta != blank -%}<div class="rt-shead__meta">{{ s.process_meta | escape | newline_to_br }}</div>{%- endif -%}
+  </div>
+  <section class="rt-rr-steps" data-screen-label="Steps">
+    {%- for i in (1..4) -%}
+      {%- assign name_key = 'step' | append: i | append: '_name' -%}
+      {%- assign body_key = 'step' | append: i | append: '_body' -%}
+      {%- assign step_name = s[name_key] -%}
+      {%- if step_name != blank -%}
+        {%- assign delay = i | minus: 1 | times: 80 -%}
+        <div class="rt-rr-step" data-rt-reveal style="--d:{{ delay }}ms;">
+          <span class="big-no">{{ i }}</span>
+          <span class="st-name">{{ step_name | escape }}</span>
+          {%- if s[body_key] != blank -%}<span class="st-body">{{ s[body_key] | escape }}</span>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </section>
+
+  {%- comment -%}════════ CONDITIONS ════════{%- endcomment -%}
+  <section class="rt-rr-conds" data-screen-label="Conditions">
+    {%- for i in (1..3) -%}
+      {%- assign cond_key = 'cond' | append: i -%}
+      {%- assign cond = s[cond_key] -%}
+      {%- if cond != blank -%}
+        {%- assign delay = i | minus: 1 | times: 80 -%}
+        <div class="rt-rr-cond" data-rt-reveal style="--d:{{ delay }}ms;"><span class="dia"></span><span class="txt">{{ cond | escape }}</span></div>
+      {%- endif -%}
+    {%- endfor -%}
+  </section>
+
+  {%- comment -%}════════ REFUND POLICY ════════{%- endcomment -%}
+  <section class="rt-rr-refund" data-screen-label="Refund policy">
+    <div class="l" data-rt-reveal>
+      {%- if s.refund_kicker != blank -%}<span class="rt-rr-kicker">{{ s.refund_kicker | escape }}</span>{%- endif -%}
+      {%- if s.refund_headline != blank -%}<h2 class="rt-rr-h">{{ s.refund_headline }}</h2>{%- endif -%}
+      {%- if s.refund_body != blank -%}<p class="body">{{ s.refund_body | escape }}</p>{%- endif -%}
+    </div>
+    <div class="r">
+      {%- for i in (1..2) -%}
+        {%- assign no_key = 'refund' | append: i | append: '_no' -%}
+        {%- assign name_key = 'refund' | append: i | append: '_name' -%}
+        {%- assign body_key = 'refund' | append: i | append: '_body' -%}
+        {%- assign case_name = s[name_key] -%}
+        {%- if case_name != blank -%}
+          {%- assign delay = i | times: 80 | minus: 20 -%}
+          <div class="rt-rr-rcase" data-rt-reveal style="--d:{{ delay }}ms;">
+            {%- if s[no_key] != blank -%}<span class="no">{{ s[no_key] | escape }}</span>{%- endif -%}
+            <div>
+              <span class="name">{{ case_name | escape }}</span>
+              {%- if s[body_key] != blank -%}<p class="body">{{ s[body_key] | escape }}</p>{%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if s.refund_foot != blank -%}
+        <div class="foot" data-rt-reveal style="--d:220ms;"><span class="dia"></span>{{ s.refund_foot | escape }}</div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%}════════ QUESTIONS CTA (on ink) ════════{%- endcomment -%}
+  <section class="rt-rr-cta" data-screen-label="Questions">
+    <div>
+      {%- if s.cta_kicker != blank -%}<span class="kick" data-rt-reveal>{{ s.cta_kicker | escape }}</span>{%- endif -%}
+      {%- if s.cta_headline != blank -%}<h2 data-rt-reveal style="--d:80ms;">{{ s.cta_headline }}</h2>{%- endif -%}
+      {%- if s.cta_sub != blank -%}<p class="sub" data-rt-reveal style="--d:160ms;">{{ s.cta_sub | escape }}</p>{%- endif -%}
+      {%- if s.cta_hours != blank -%}<p class="hours" data-rt-reveal style="--d:220ms;">{{ s.cta_hours | escape }}</p>{%- endif -%}
+    </div>
+    <div class="rt-rr-cta-actions" data-rt-reveal style="--d:200ms;">
+      {%- if s.cta_whatsapp_url != blank and s.cta_wa_label != blank -%}
+        <a class="rt-rr-btn rt-rr-btn--wa" href="{{ s.cta_whatsapp_url }}" target="_blank" rel="noopener">{{ s.cta_wa_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+      {%- endif -%}
+      {%- if s.cta_email != blank and s.cta_email_label != blank -%}
+        <a class="rt-rr-btn rt-rr-btn--onink" href="mailto:{{ s.cta_email | escape }}?subject=Returns%20%26%20Exchange&body=Order%20Number%3A%20%0AIssue%3A%20">{{ s.cta_email_label | escape }} <span class="arr" aria-hidden="true">→</span></a>
+      {%- endif -%}
+    </div>
+    {%- if s.cta_deva != blank -%}<span class="rt-rr-cta-deva" aria-hidden="true">{{ s.cta_deva | escape }}</span>{%- endif -%}
+  </section>
+
+</div>
+
+{% schema %}
+{
+  "name": "Returns & Exchange",
+  "tag": "section",
+  "class": "section-rt-returns",
+  "settings": [
+    { "type": "header", "content": "Masthead" },
+    { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "Returns & Exchange · We reply within 24 hours" },
+    { "type": "richtext", "id": "hero_headline", "label": "Headline", "info": "Italicise words to accent them in gold.", "default": "<p>Make it <em>right.</em></p>" },
+    { "type": "textarea", "id": "hero_sub", "label": "Sub-text", "default": "Every Rangtarini piece is handcrafted by skilled artisans, so minor variations in stone, finish or colour are part of its character. But if something arrives wrong, we'll set it right — quickly, and at no cost to you." },
+    { "type": "text", "id": "hero_deva", "label": "Devanagari accent", "default": "विनिमय" },
+
+    { "type": "header", "content": "Assurance band" },
+    { "type": "text", "id": "assure_kicker", "label": "Kicker", "default": "Our promise" },
+    { "type": "text", "id": "assure_headline", "label": "Headline", "default": "We stand behind our craft." },
+    { "type": "textarea", "id": "assure_body", "label": "Body", "default": "All Rangtarini pieces are handcrafted by skilled artisans, so each is unique. Small variations in stone, finish or colour are inherent to the craft and add to their beauty — never a defect. When there's a genuine problem, our bench in Udaipur sets it right, personally." },
+
+    { "type": "header", "content": "Exchange eligibility" },
+    { "type": "text", "id": "elig_kicker", "label": "Kicker", "default": "Exchange policy" },
+    { "type": "text", "id": "elig_headline", "label": "Headline", "default": "We're here to help." },
+    { "type": "textarea", "id": "elig_body", "label": "Intro", "default": "We want you to love your jewellery. If any of the following applies within 7 days of delivery, we'll arrange an exchange at no cost to you." },
+
+    { "type": "header", "content": "Eligibility · Card 1" },
+    { "type": "text", "id": "elig1_no", "label": "Number", "default": "01" },
+    { "type": "text", "id": "elig1_name", "label": "Title", "default": "Damaged in transit" },
+    { "type": "text", "id": "elig1_sub", "label": "Description", "default": "Arrived broken or damaged during shipping." },
+
+    { "type": "header", "content": "Eligibility · Card 2" },
+    { "type": "text", "id": "elig2_no", "label": "Number", "default": "02" },
+    { "type": "text", "id": "elig2_name", "label": "Title", "default": "Wrong product delivered" },
+    { "type": "text", "id": "elig2_sub", "label": "Description", "default": "You received a different piece than ordered." },
+
+    { "type": "header", "content": "Eligibility · Card 3" },
+    { "type": "text", "id": "elig3_no", "label": "Number", "default": "03" },
+    { "type": "text", "id": "elig3_name", "label": "Title", "default": "Manufacturing defect" },
+    { "type": "text", "id": "elig3_sub", "label": "Description", "default": "A genuine fault in the making of the piece." },
+
+    { "type": "header", "content": "Eligibility · Card 4" },
+    { "type": "text", "id": "elig4_no", "label": "Number", "default": "04" },
+    { "type": "text", "id": "elig4_name", "label": "Title", "default": "Quality concerns" },
+    { "type": "text", "id": "elig4_sub", "label": "Description", "default": "Something isn't up to our usual standard." },
+
+    { "type": "header", "content": "Eligibility · Note" },
+    { "type": "text", "id": "elig_note_label", "label": "Label", "default": "Please note" },
+    { "type": "textarea", "id": "elig_note_body", "label": "Note", "default": "Minor variations in handcrafted pieces, change of mind, or sizing preferences are part of the unique character of artisan jewellery and are not eligible for exchange. Exchange is not applicable on products delivered outside of India." },
+
+    { "type": "header", "content": "How to exchange · Head" },
+    { "type": "text", "id": "process_idx", "label": "Kicker", "default": "The process" },
+    { "type": "richtext", "id": "process_title", "label": "Title", "info": "Use a line break where the title should wrap.", "default": "<p>How to<br>exchange.</p>" },
+    { "type": "textarea", "id": "process_meta", "label": "Meta (one line per row)", "default": "Four simple steps\nReviewed within 24 hours" },
+
+    { "type": "header", "content": "How to exchange · Step 1" },
+    { "type": "text", "id": "step1_name", "label": "Title", "default": "Contact us" },
+    { "type": "text", "id": "step1_body", "label": "Description", "default": "Reach out within 7 days of delivery via WhatsApp or email." },
+
+    { "type": "header", "content": "How to exchange · Step 2" },
+    { "type": "text", "id": "step2_name", "label": "Title", "default": "Share details" },
+    { "type": "text", "id": "step2_body", "label": "Description", "default": "Send us photos of the product and describe the issue." },
+
+    { "type": "header", "content": "How to exchange · Step 3" },
+    { "type": "text", "id": "step3_name", "label": "Title", "default": "We review" },
+    { "type": "text", "id": "step3_body", "label": "Description", "default": "Our team reviews and confirms your request within 24 hours." },
+
+    { "type": "header", "content": "How to exchange · Step 4" },
+    { "type": "text", "id": "step4_name", "label": "Title", "default": "Free return pickup" },
+    { "type": "text", "id": "step4_body", "label": "Description", "default": "We'll arrange a pickup and handle the return shipping at no cost." },
+
+    { "type": "header", "content": "Conditions strip" },
+    { "type": "text", "id": "cond1", "label": "Condition 1", "default": "Free return shipping, arranged by us" },
+    { "type": "text", "id": "cond2", "label": "Condition 2", "default": "Items must be unworn, in original packaging" },
+    { "type": "text", "id": "cond3", "label": "Condition 3", "default": "Exchange processed within 10–15 working days" },
+
+    { "type": "header", "content": "Refund policy" },
+    { "type": "text", "id": "refund_kicker", "label": "Kicker", "default": "Refund policy" },
+    { "type": "richtext", "id": "refund_headline", "label": "Headline", "info": "Use a line break where the title should wrap.", "default": "<p>When we<br>refund.</p>" },
+    { "type": "textarea", "id": "refund_body", "label": "Body", "default": "We prefer to make things right with an exchange — but a refund is available in these situations." },
+
+    { "type": "header", "content": "Refund · Case 1" },
+    { "type": "text", "id": "refund1_no", "label": "Number", "default": "01" },
+    { "type": "text", "id": "refund1_name", "label": "Title", "default": "Lost in transit" },
+    { "type": "textarea", "id": "refund1_body", "label": "Description", "default": "If your package is lost during shipping by our courier partner, we'll issue a full refund immediately." },
+
+    { "type": "header", "content": "Refund · Case 2" },
+    { "type": "text", "id": "refund2_no", "label": "Number", "default": "02" },
+    { "type": "text", "id": "refund2_name", "label": "Title", "default": "Cannot replace" },
+    { "type": "textarea", "id": "refund2_body", "label": "Description", "default": "If we're unable to provide a suitable replacement for your piece, we'll refund your purchase in full." },
+
+    { "type": "text", "id": "refund_foot", "label": "Refund footnote", "default": "All approved refunds are returned to your original payment method within 7 working days." },
+
+    { "type": "header", "content": "Questions CTA" },
+    { "type": "text", "id": "cta_kicker", "label": "Kicker", "default": "Still have questions?" },
+    { "type": "richtext", "id": "cta_headline", "label": "Headline", "info": "Italicise words to accent them in gold.", "default": "<p>Talk to <em>us.</em></p>" },
+    { "type": "textarea", "id": "cta_sub", "label": "Sub-text", "default": "Our team is here to help with returns, exchanges, or any concern about your order. Please have your order number ready." },
+    { "type": "text", "id": "cta_hours", "label": "Hours", "default": "Available Mon–Sat · 10:00–19:00 IST" },
+    { "type": "text", "id": "cta_wa_label", "label": "WhatsApp button label", "default": "WhatsApp us" },
+    { "type": "url", "id": "cta_whatsapp_url", "label": "WhatsApp link", "default": "https://wa.me/919251110762?text=Hi%20Rangtarini%2C%0A%0AI%20need%20help%20with%3A%0A%0AOrder%20Number%3A%20%0AIssue%3A%20" },
+    { "type": "text", "id": "cta_email_label", "label": "Email button label", "default": "Email us" },
+    { "type": "text", "id": "cta_email", "label": "Email address", "default": "info@rangtarini.com" },
+    { "type": "text", "id": "cta_deva", "label": "Devanagari accent", "default": "वापसी" }
+  ],
+  "presets": [
+    { "name": "Returns & Exchange" }
+  ]
+}
+{% endschema %}
