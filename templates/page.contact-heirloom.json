@@ -1,0 +1,75 @@
+{
+  "sections": {
+    "main": {
+      "type": "rt-contact",
+      "blocks": {
+        "method_email": {
+          "type": "method",
+          "settings": {
+            "label": "Email",
+            "value": "info@rangtarini.com",
+            "note": "Orders, custom work & press",
+            "url": "mailto:info@rangtarini.com"
+          }
+        },
+        "method_whatsapp": {
+          "type": "method",
+          "settings": {
+            "label": "WhatsApp",
+            "value": "+91 92511 10762",
+            "note": "Fastest reply · 10am–7pm IST",
+            "url": "https://wa.me/919251110762"
+          }
+        },
+        "method_instagram": {
+          "type": "method",
+          "settings": {
+            "label": "Instagram",
+            "value": "@rangtarini",
+            "note": "New drops & bench stories",
+            "url": "https://instagram.com/rangtarini"
+          }
+        },
+        "faq_order": {
+          "type": "faq",
+          "settings": {
+            "question": "Where is my order?",
+            "answer": "Every order ships with a tracking link by email and WhatsApp. If it’s been more than 48 hours since your confirmation and you haven’t received one, message us with your order number and we’ll trace it the same day."
+          }
+        },
+        "faq_custom": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I commission a custom piece?",
+            "answer": "Yes — bridal sets, jadau kundan, temple silver and restorations of family heirlooms. Send a reference, a sketch, or the piece that needs a second life over WhatsApp and our bench will reply with a plan and a date."
+          }
+        },
+        "faq_returns": {
+          "type": "faq",
+          "settings": {
+            "question": "What is your return & exchange policy?",
+            "answer": "Unworn pieces can be exchanged within 7 days of delivery in their original packaging. Custom and made-to-order commissions are final sale. Reach us before returning anything so we can guide you through it."
+          }
+        },
+        "faq_silver": {
+          "type": "faq",
+          "settings": {
+            "question": "Is the silver really 925 & hallmarked?",
+            "answer": "Every sterling piece is authentic 925 silver and BIS hallmarked — no coating on the base metal, made to be polished, re-strung and worn for a lifetime. Certificates accompany applicable orders."
+          }
+        }
+      },
+      "block_order": [
+        "method_email",
+        "method_whatsapp",
+        "method_instagram",
+        "faq_order",
+        "faq_custom",
+        "faq_returns",
+        "faq_silver"
+      ],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
