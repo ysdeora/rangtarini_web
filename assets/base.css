@@ -166,35 +166,13 @@ p,
    ============================================ */
 
 :root {
-  /* Primary Colors — new design palette (paper / ink / bone / gold) */
-  --color-gold: var(--rt-gold);        /* #b59159 */
-  --color-gold-dark: var(--rt-gold-deep); /* #7a5e2c */
-  --color-gold-light: #E8D5A0;
-
-  /* Backgrounds */
-  --color-bg-primary: var(--rt-paper);      /* #efece4 */
-  --color-bg-secondary: var(--rt-paper-soft); /* #e6e0d0 */
-  --color-bg-dark: var(--rt-ink-soft);      /* #16140f */
-  --color-bg-white: #FFFFFF;
-
-  /* Text */
-  --color-text-primary: var(--rt-ink);  /* #0a0a0a */
-  --color-text-secondary: #666666;  /* neutral gray */
-  --color-text-light: #999999;  /* lighter gray */
-  --color-text-on-dark: var(--rt-paper);
-  
-  /* Accents - Simplified (remove if not using) */
-  --color-ruby: #8B2E3E;
-  
-  /* Borders - Simplified */
-  --color-border-light: #f0f0f0;  /* Changed - more neutral */
-  --color-border-medium: #e0e0e0;  /* Changed - more neutral */
-  
-  /* Shadows - Subtler */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);  /* Lighter */
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+  /* Dawn-facing aliases mapped onto the --rt-* palette — only the ones still referenced */
+  --color-gold: var(--rt-gold);              /* #b59159 */
+  --color-gold-dark: var(--rt-gold-deep);    /* #7a5e2c — card/product prices */
+  --color-bg-primary: var(--rt-paper);       /* #efece4 — body background */
+  --color-bg-secondary: var(--rt-paper-soft);/* #e6e0d0 — .gradient stop */
+  --color-text-primary: var(--rt-ink);       /* #0a0a0a — links, inputs */
+  --color-ruby: #8B2E3E;                      /* sale-price accent */
 }
 
 /* Base styling */
