@@ -26,6 +26,9 @@
 .rt-returns .rt-rr-hero h1 p,
 .rt-returns .rt-rr-cta h2 p,
 .rt-returns .rt-shead__title p { margin: 0; font: inherit; }
+/* Dawn's global `h1,h2` set color:foreground + word-break:break-word straight on
+   the element — restore each heading's own colour and stop mid-word breaks. */
+.rt-returns .rt-shead__title { word-break: normal; }
 
 /* ─── reveals (global rt-reveal.js adds .rt-in) ──────────────────── */
 .rt-returns [data-rt-reveal] {
